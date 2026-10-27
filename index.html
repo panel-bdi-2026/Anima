@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Ánima: Región Alba</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#2a1e50">
+<style>
+  html, body { margin: 0; height: 100%; background: #0d0b14; overflow: hidden; overscroll-behavior: none; touch-action: none; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; -webkit-tap-highlight-color: transparent; }
+  body { display: flex; align-items: center; justify-content: center; }
+  canvas { image-rendering: pixelated; image-rendering: crisp-edges; display: block; box-shadow: 0 0 40px #000; cursor: none; }
+</style>
+</head>
+<body>
+<canvas id="game" width="320" height="240"></canvas>
+<script src="js/core.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/gfx.js"></script>
+<script src="js/creaturegfx.js"></script>
+<script src="js/chargfx.js"></script>
+<script src="js/tiles2.js"></script>
+<script src="js/data.js"></script>
+<script src="js/maps.js"></script>
+<script src="js/npcai.js"></script>
+<script src="js/game.js"></script>
+<script src="js/clock.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/hud.js"></script>
+<script src="js/mouse.js"></script>
+<script src="js/world.js"></script>
+<script src="js/battle.js"></script>
+<script src="js/battlefx.js"></script>
+<script src="js/fieldbattle.js"></script>
+<script src="js/capture.js"></script>
+<script src="js/combat2.js"></script>
+<script src="js/creatureanim.js"></script>
+<script src="js/handsprites.js"></script>
+<script src="js/hand_fuego.js"></script>
+<script src="js/hand_agua.js"></script>
+<script src="js/hand_planta.js"></script>
+<script src="js/hand_conejo.js"></script>
+<script src="js/hand_ave.js"></script>
+<script src="js/hand_bicho.js"></script>
+<script src="js/hand_electrico.js"></script>
+<script src="js/hand_roca.js"></script>
+<script src="js/hand_sombra.js"></script>
+<script src="js/hand_pez.js"></script>
+<script src="js/hand_mente.js"></script>
+<script src="js/hand_hongo.js"></script>
+<script src="js/hand_viento.js"></script>
+<script src="js/hand_murcielago.js"></script>
+<script src="js/hand_legend.js"></script>
+<script src="js/battleai.js"></script>
+<script src="js/wildlife.js"></script>
+<script src="js/story.js"></script>
+<script src="js/world2.js"></script>
+<script src="js/ux.js"></script>
+<script src="js/chapter2.js"></script>
+<script src="js/events.js"></script>
+<script src="js/terrain.js"></script>
+<script src="js/terrain_obj.js"></script>
+<script src="js/terrain_layer.js"></script>
+<script src="js/buildings2.js"></script>
+<script src="js/interiors2.js"></script>
+<script src="js/dungeon.js"></script>
+<script src="js/bag2.js"></script>
+<script src="js/regionmap2.js"></script>
+<script src="js/practice.js"></script>
+<script src="js/widescreen.js"></script>
+<script src="js/controls2.js"></script>
+<script src="js/battle_hud.js"></script>
+<script src="js/gear.js"></script>
+<script src="js/gear_ui.js"></script>
+<script src="js/board.js"></script>
+<script src="js/board_ui.js"></script>
+<script src="js/chimeras.js"></script>
+<script src="js/chimeras_ui.js"></script>
+<script src="js/polish.js"></script>
+<script src="js/vendor/three.min.js"></script>
+<script src="js/chargfx_hd.js"></script>
+<script src="js/world3d.js"></script>
+<script src="js/world3d_props.js"></script>
+<script src="js/world3d_plants.js"></script>
+<script src="js/world3d_sky.js"></script>
+<script src="js/world3d_polish.js"></script>
+<script src="js/world3d_interior.js"></script>
+<script src="js/world3d_towns.js"></script>
+<script src="js/title3d.js"></script>
+<script src="js/regionmap3d.js"></script>
+<script src="js/puzzles.js"></script>
+<script src="js/battlefx3d.js"></script>
+<script src="js/mobile.js"></script>
+<script src="js/main.js"></script>
+<script>
+  // instalable como aplicación (PWA); solo funciona servido por http(s)
+  if ("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("sw.js").catch(() => {});
+</script>
+</body>
+</html>

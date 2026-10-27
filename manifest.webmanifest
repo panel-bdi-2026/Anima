@@ -1,0 +1,15 @@
+{
+  "name": "Ánima: Región Alba",
+  "short_name": "Ánima",
+  "description": "RPG de criaturas en tiempo real con gráficos y música generados por código.",
+  "lang": "es",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "fullscreen",
+  "orientation": "landscape",
+  "background_color": "#0d0b14",
+  "theme_color": "#2a1e50",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
