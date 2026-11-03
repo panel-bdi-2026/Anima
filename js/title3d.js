@@ -290,9 +290,6 @@ const Title3D = {
     this.classic = Options.gfx3d === false || !Title3D.render(t);
     if (this.classic) return _draw.call(this, ctx);
     ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, WIDE, H); ctx.restore();
-    // franjas de cine durante la entrada de cámara
-    const bars = Math.round(Math.max(0, 1 - Math.max(0, t - 3.5) / 1) * 22);
-    if (bars > 0) { P(ctx, 0, 0, W, bars, '#05030a'); P(ctx, 0, H - bars, W, bars, '#05030a'); }
     // logotipo: aparece tras la entrada, con resplandor y destello que lo recorre
     const L = Title3D.logo(), lx = Math.round(W / 2 - L.width / 2), k = U.clamp((t - 2.6) / 1.4, 0, 1), e = 1 - Math.pow(1 - k, 3);
     const ly = Math.round(10 + Math.sin(t * 1.3) * 1.5 - (1 - e) * 16);
@@ -333,6 +330,6 @@ const Title3D = {
         Font.draw(ctx, 'Códice: ' + this.sum.dex, x + 7, y + 31, '#d0c0e8'); Font.draw(ctx, Game.timeStr(this.sum.time), x + 7, y + 43, '#d0c0e8');
       }
     }
-    if (bars <= 0) { Font.drawRight(ctx, this.menu ? '' : 'Un juego original', W - 6, 229, '#ffe8d8'); }
+    if (t > 4.5) { Font.drawRight(ctx, this.menu ? '' : 'Un juego original', W - 6, 229, '#ffe8d8'); }
   };
 }
