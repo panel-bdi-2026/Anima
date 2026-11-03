@@ -72,12 +72,10 @@
 
   // ---------- aviso fijo «versión de prueba» ----------
   const css = `
-#canal-prueba{position:fixed;left:50%;top:env(safe-area-inset-top,0);transform:translateX(-50%);z-index:20;display:flex;align-items:center;gap:6px;
-  padding:3px 4px 3px 10px;background:rgba(200,70,20,.92);color:#fff;font:bold 12px/1.2 system-ui,sans-serif;border-radius:0 0 10px 10px;
-  box-shadow:0 2px 8px rgba(0,0,0,.5);max-width:calc(100vw - 16px);box-sizing:border-box;-webkit-user-select:none;user-select:none}
-#canal-prueba .t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:46vw}
-#canal-prueba button{font:bold 12px system-ui,sans-serif;color:#3a1400;background:#ffe2a8;border:0;border-radius:7px;padding:5px 9px;cursor:pointer;touch-action:manipulation}
-#canal-panel{position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) + 34px);transform:translateX(-50%);z-index:21;display:none;flex-direction:column;gap:8px;
+#canal-prueba{position:fixed;left:calc(env(safe-area-inset-left,0px) + 6px);top:calc(env(safe-area-inset-top,0px) + 6px);z-index:20;
+  font:bold 11px/1 system-ui,sans-serif;color:#fff;background:rgba(200,70,20,.9);border:1px solid #ffd0a0;border-radius:8px;padding:6px 9px;
+  box-shadow:0 1px 5px rgba(0,0,0,.5);cursor:pointer;touch-action:manipulation;-webkit-user-select:none;user-select:none;letter-spacing:.5px}
+#canal-panel{position:fixed;left:calc(env(safe-area-inset-left,0px) + 6px);top:calc(env(safe-area-inset-top,0px) + 36px);z-index:21;display:none;flex-direction:column;gap:8px;
   padding:12px;background:#2a1638;color:#fff;font:13px/1.35 system-ui,sans-serif;border:2px solid #ffb060;border-radius:10px;width:min(320px,calc(100vw - 24px));box-sizing:border-box}
 #canal-panel.open{display:flex}
 #canal-panel button{font:bold 13px system-ui,sans-serif;border:0;border-radius:8px;padding:9px;cursor:pointer;color:#2a1638;background:#ffd048;touch-action:manipulation}
@@ -85,10 +83,8 @@
 #canal-panel .msg{color:#ffe2a8}`;
   const build = () => {
     const st = document.createElement('style'); st.textContent = css; document.head.appendChild(st);
-    const bar = document.createElement('div'); bar.id = 'canal-prueba';
-    const t = document.createElement('span'); t.className = 't'; t.textContent = 'VERSIÓN DE PRUEBA';
-    const b = document.createElement('button'); b.type = 'button'; b.textContent = 'Opciones';
-    bar.append(t, b);
+    // etiqueta pequeña en la esquina superior izquierda; al tocarla se abre el panel
+    const bar = document.createElement('button'); bar.type = 'button'; bar.id = 'canal-prueba'; bar.textContent = 'VERSIÓN DE PRUEBA';
     const panel = document.createElement('div'); panel.id = 'canal-panel';
     const info = document.createElement('div');
     const msg = document.createElement('div'); msg.className = 'msg';
@@ -104,11 +100,10 @@
     panel.append(info, back, copy, close, msg);
     const showInfo = () => {
       const l = Canal.label();
-      t.textContent = l ? 'VERSIÓN DE PRUEBA ' + l : 'VERSIÓN DE PRUEBA';
       info.textContent = (l ? `Estás en la versión de prueba (Pull Request ${l}). ` : 'Estás en la versión de prueba. ') + 'Sus partidas y opciones están separadas de la versión publicada.';
     };
     showInfo(); Canal.onInfo = showInfo;
-    b.addEventListener('click', () => { msg.textContent = ''; panel.classList.toggle('open'); });
+    bar.addEventListener('click', () => { msg.textContent = ''; panel.classList.toggle('open'); });
     // que el juego no reciba los toques ni clics del aviso
     for (const el of [bar, panel]) for (const ev of ['mousedown', 'pointerdown', 'touchstart']) el.addEventListener(ev, (e) => e.stopPropagation());
     document.body.append(bar, panel);
