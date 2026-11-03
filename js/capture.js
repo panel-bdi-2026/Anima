@@ -137,7 +137,7 @@ Object.assign(BattleScene.prototype, {
     // esquiva si el rival prepara un ataque cerca
     if (e.act && !e.act.fired && U.dist(f.x, f.y, e.x, e.y) < 60 && f.dodgeCd <= 0 && Math.random() < 0.05) {
       const a = angTo(e, f) + (Math.random() < 0.5 ? 1.4 : -1.4);
-      f.dodgeT = 0.24; f.dodgeCd = 1.2; f.invuln = 0.2; f.vx = Math.cos(a) * 220; f.vy = Math.sin(a) * 220; return;
+      f.dodgeT = 0.24; f.dodgeCd = f.dodgeMax = DODGE_CD; f.invuln = 0.2; f.vx = Math.cos(a) * 220; f.vy = Math.sin(a) * 220; return;
     }
     const ang = Math.atan2(e.y - T.y, e.x - T.x), dd = Math.min(46, U.dist(T.x, T.y, e.x, e.y) * 0.5);
     const gx = T.x + Math.cos(ang) * dd + Math.cos(ang + Math.PI / 2) * 22, gy = T.y + Math.sin(ang) * dd + Math.sin(ang + Math.PI / 2) * 22;
