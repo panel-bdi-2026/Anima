@@ -1,7 +1,7 @@
 // Servidor estático mínimo para jugar en local: node server.js  ->  http://localhost:8080
 const http = require('http'), fs = require('fs'), path = require('path');
 const root = __dirname;
-const types = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css', '.png': 'image/png', '.svg': 'image/svg+xml', '.webmanifest': 'application/manifest+json', '.json': 'application/json' };
+const types = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css', '.png': 'image/png', '.svg': 'image/svg+xml', '.webmanifest': 'application/manifest+json', '.json': 'application/json', '.wasm': 'application/wasm', '.pck': 'application/octet-stream' };
 http.createServer((req, res) => {
   // solo desarrollo: guarda capturas enviadas por el kit de pruebas
   if (req.method === 'POST' && req.url.startsWith('/__shot')) {

@@ -18,6 +18,10 @@
 </head>
 <body>
 <canvas id="game" width="320" height="240"></canvas>
+<script>
+  // Prueba de comparación en Godot (solo en esta rama): al abrirla desde «VERSIÓN», va directo a la escena de Godot
+  if (/probar/.test(location.hash) && location.pathname.indexOf('/prueba/') >= 0) location.replace('godot/web/');
+</script>
 <script src="js/channel.js"></script>
 <script src="js/core.js"></script>
 <script src="js/audio.js"></script>

@@ -3,3 +3,6 @@ tools/shots/
 node_modules/
 .claude/
 *.log
+
+# caché de Godot (se regenera al exportar)
+godot/.godot/
