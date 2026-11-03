@@ -80,12 +80,97 @@ const HandSprites = {
     for (const [ch, c] of Object.entries(H0.pal)) pal[ch] = 'ewi'.includes(ch) ? c : sh(c);
     return Object.assign({}, H0, { pal, outline: sh(H0.outline), parts: H0.parts.map((p) => (p.outline ? Object.assign({}, p, { outline: sh(p.outline) }) : p)) });
   },
-  rig(sp, shiny) {
-    const k = sp + ':rig' + (shiny ? ':s' : '');
+  // las ánimas miran a la izquierda, pero muchas patas tenían el pie apuntando hacia atrás (a la derecha):
+  // las filas del pie que sobresalen por la derecha se reflejan sobre el eje de la pata
+  fixFeet(p) {
+    if (!/^leg/.test(p.role) || p.rows.length < 3) return p;
+    const span = (r) => { let a = -1, b = -1; for (let i = 0; i < r.length; i++) if (r[i] !== '.') { if (a < 0) a = i; b = i; } return [a, b]; };
+    const [L0, R0] = span(p.rows[0]);
+    if (L0 < 0) return p;
+    let j = p.rows.length - 1, k = 0;
+    const feet = [];
+    for (; j > 0; j--) { const [a, b] = span(p.rows[j]); if (a < 0 || b <= R0 || a < L0) break; feet.push(j); k = Math.max(k, b - R0); }
+    if (!feet.length) return p;
+    const rows = p.rows.map((r, n) => {
+      if (!feet.includes(n)) return '.'.repeat(k) + r;
+      const out = new Array(r.length + k).fill('.');
+      for (let i = 0; i < r.length; i++) if (r[i] !== '.') out[L0 + R0 - i + k] = r[i];
+      return out.join('').replace(/\.+$/, '');
+    });
+    return Object.assign({}, p, { rows, at: [p.at[0] - k, p.at[1]], piv: p.piv ? [p.piv[0] + k, p.piv[1]] : p.piv });
+  },
+  // ---------- vistas de frente y de espaldas ----------
+  // Se construyen a partir del perfil: la mitad delantera de la cabeza (y del cuerpo) se refleja sobre sí
+  // misma, así el hocico y el pecho quedan en el centro y aparecen los dos ojos. De espaldas se usa la
+  // mitad trasera, sin ojos. Las piezas pares (patas, brazos, alas, orejas) se duplican en espejo.
+  turnDef(H0, view) {
+    const CX = 20, front = view === 'front', fur = H0.eyeFur || '3';
+    const rev = (r) => r.split('').reverse().join('');
+    const W0 = (p) => Math.max(...p.rows.map((r) => r.length));
+    const padded = (p) => { const w = W0(p); return p.rows.map((r) => r + '.'.repeat(w - r.length)); };
+    const noEyes = (r) => r.replace(/[ewi]/g, fur);
+    const hasEyes = (p) => p.rows.some((r) => /[ewi]/.test(r));
+    const src = H0.parts.map((p) => this.fixFeet(p));
+    const near = (role) => src.filter((p) => p.role === role && !p.far);
+    const out = [];
+    const add = (p, rows, x, extra = {}) => out.push(Object.assign({}, p, { rows, at: [Math.round(x), p.at[1]] }, extra));
+    const mirPiv = (p) => (p.piv ? [W0(p) - 1 - p.piv[0], p.piv[1]] : p.piv);
+    // cabeza y cuerpo: mitad delantera reflejada (frente) o mitad trasera reflejada (espalda)
+    // silueta del cuerpo: la de la mitad reflejada al revés (redondeada hacia fuera); colores y cara: los del giro normal
+    const merge = (A, Bm) => A.split('').map((ch, i) => (Bm[i] === '.' || !Bm[i] ? '.' : ch !== '.' ? ch : Bm[i])).join('');
+    const turnBlock = (p, cutK, fill) => {
+      const w = W0(p), rows = padded(p);
+      if (front) {
+        const c = Math.max(2, Math.ceil(w * cutK));
+        return { rows: rows.map((r) => { const L = r.slice(0, c), A = rev(L) + L; return fill ? merge(A, noEyes(L + rev(L))) : A; }), half: c, map: (col) => col };
+      }
+      const st = Math.min(w - 2, Math.floor(w * (1 - cutK))), rw = w - st;
+      return { rows: rows.map((r) => { const R = noEyes(r.slice(st)), A = R + rev(R); return fill ? merge(A, rev(R) + R) : A; }), half: rw, map: (col) => col - st };
+    };
+    const head = src.find((p) => p.role === 'head' && !p.far), body = src.find((p) => p.role === 'body');
+    const B = body && turnBlock(body, hasEyes(body) ? 0.5 : 0.42, true);
+    const Hd = head && turnBlock(head, 0.55);
+    const hw = B ? B.half : 6;
+    const anchor = head ? { p: head, T: Hd } : { p: body, T: B };
+    const pairs = (list, place, extra = {}) => {
+      for (const p of list) {
+        const w = W0(p), rows = padded(p), [xl, xr] = place(p, w);
+        add(p, rows.map(rev), xl, Object.assign({ mir: true, piv: mirPiv(p) }, extra)); add(p, rows, xr, extra);
+      }
+    };
+    const bodyPart = () => { if (body) add(body, B.rows, CX - B.half, { piv: undefined }); };
+    const headPart = () => { if (head) add(head, Hd.rows, CX - Hd.half, { piv: [Hd.half, head.piv ? head.piv[1] : 4] }); };
+    const ears = () => {
+      if (!anchor.p) return;
+      const A = anchor.p, T = anchor.T, ax = CX - T.half;
+      pairs(near('ear'), (p, w) => {
+        const c = U.clamp(T.map(p.at[0] - A.at[0]), 0, Math.max(0, T.half - w));
+        return front ? [ax + T.half - c - w, ax + T.half + c] : [ax + c, ax + 2 * T.half - c - w];
+      });
+    };
+    const crests = () => { for (const p of near('crest')) { const w = W0(p), rows = padded(p); add(p, front ? rows : rows.map(noEyes), CX - w / 2); } };
+    const legRole = H0.body === 'biped' || H0.body === 'bird' || !src.some((p) => p.role === 'legF') ? 'leg' : front ? 'legF' : 'legB';
+    let legs = near(legRole); if (!legs.length) legs = near('legF').concat(near('legB'), near('leg'));
+    const gap = Math.max(2, Math.round(hw * 0.5));
+    const legsPart = () => pairs(legs.slice(0, 1), (p, w) => [CX - gap - Math.floor(w / 2), CX + gap - Math.ceil(w / 2)]);
+    // las aletas anchas (crines, nubes sobre el lomo) no son pares: van centradas y reflejadas como el cuerpo
+    const wide = (p) => p.role === 'fin' && W0(p) >= 10;
+    const side = (role, inset) => pairs(near(role).filter((p) => !wide(p)), (p, w) => [CX - hw - w + inset, CX + hw - inset]);
+    const wideFins = () => { for (const p of near('fin').filter(wide)) { const T = turnBlock(p, 0.4, true); add(p, T.rows, CX - T.half, { piv: [T.half, p.piv ? p.piv[1] : 0] }); } };
+    const tail = () => { for (const p of near('tail')) add(p, padded(p), CX - W0(p) / 2); };
+    const known = new Set(['head', 'body', 'ear', 'crest', 'leg', 'legF', 'legB', 'arm', 'wing', 'fin', 'tail']);
+    const rest = () => { for (const p of src) if (!p.far && !known.has(p.role)) add(p, padded(p), CX - W0(p) / 2); };
+    if (front) { tail(); side('wing', 3); side('fin', 2); wideFins(); bodyPart(); rest(); legsPart(); side('arm', 2); headPart(); ears(); crests(); }
+    else { headPart(); ears(); crests(); legsPart(); bodyPart(); rest(); side('arm', 2); side('fin', 2); wideFins(); side('wing', 3); tail(); }
+    return Object.assign({}, H0, { parts: out });
+  },
+  rig(sp, shiny, view = 'side') {
+    const k = sp + ':rig' + (shiny ? ':s' : '') + (view !== 'side' ? ':' + view : '');
     if (this.cache[k]) return this.cache[k];
-    const H0 = shiny ? this.shinyDef(sp) : HAND[sp];
-    const parts = H0.parts.map((p) => Object.assign({ name: p.name, role: p.role, far: !!p.far, onHead: !!p.onHead }, this.partCanvas(H0, p)));
-    return (this.cache[k] = { hand: true, parts, feet: [20, 37], flyer: !!H0.flyer, body: H0.body || 'quad' });
+    let H0 = shiny ? this.shinyDef(sp) : HAND[sp];
+    if (view !== 'side') H0 = this.turnDef(H0, view);
+    const parts = H0.parts.map((p) => Object.assign({ name: p.name, role: p.role, far: !!p.far, onHead: !!p.onHead, mir: !!p.mir }, this.partCanvas(H0, view === 'side' ? this.fixFeet(p) : p)));
+    return (this.cache[k] = { hand: true, parts, feet: [20, 37], flyer: !!H0.flyer, body: H0.body || 'quad', view });
   },
   // imagen fija (pose de reposo), escalada al tamaño pedido
   full(sp, S, shiny) {
@@ -148,7 +233,12 @@ CreatureAnim.composeHand = function (e, o) {
   const head = rig.parts.find((q) => q.role === 'head');
   for (const p of rig.parts) {
     let ang = 0, dx = 0, dy = 0;
-    if (p.role === 'legF' || p.role === 'legB') {
+    if (rig.view && rig.view !== 'side' && /^leg/.test(p.role)) {
+      // de frente o de espaldas las patas no giran: suben y bajan por turnos
+      const phase = p.mir ? Math.PI : 0;
+      if (walking) dy = Math.max(0, Math.sin(ph + phase)) * -1.6;
+      if (tuck) dy -= 1;
+    } else if (p.role === 'legF' || p.role === 'legB') {
       const phase = (p.role === 'legF') === !p.far ? 0 : Math.PI;
       ang = Math.sin(ph + phase) * legAmp;
       if (!walking) ang += Math.sin(t * 2.6 + phase) * 0.03;
@@ -176,7 +266,7 @@ CreatureAnim.composeHand = function (e, o) {
       if (hurt) ang += 0.45;
       if (p.far) ang *= 0.9;
     } else if (p.role === 'fin') ang = Math.sin(t * 5 + (p.far ? 1.5 : 0)) * 0.22 + (walking ? Math.sin(ph) * 0.2 : 0);
-    else if (p.role === 'tail') ang = tailA;
+    else if (p.role === 'tail') ang = rig.view && rig.view !== 'side' ? tailA * 0.5 : tailA;
     else if (p.role === 'head') { ang = P.hrot; dx = P.hx; dy = P.hy; }
     else if (p.role === 'body') {
       // respiración: el cuerpo se ensancha un poco desde abajo
@@ -186,9 +276,10 @@ CreatureAnim.composeHand = function (e, o) {
       // las orejas giran con la cabeza y además por su cuenta
       x.save();
       if (head && P.hrot) { const hx = head.ox + head.piv[0] + P.hx, hy = head.oy + head.piv[1] + P.hy; x.translate(hx, hy); x.rotate(P.hrot); x.translate(-hx, -hy); }
-      const ea = p.role === 'ear' ? earA * (p.far ? 0.8 : 1) : p.role === 'crest' ? earA * 0.9 + Math.sin(t * 3.1) * 0.05 : 0;
+      const ea = (p.role === 'ear' ? earA * (p.far ? 0.8 : 1) : p.role === 'crest' ? earA * 0.9 + Math.sin(t * 3.1) * 0.05 : 0) * (p.mir ? -1 : 1);
       draw(p, p.canvas, ea, P.hx, P.hy); if (p.eyes) draw(p, eyesImg(p), ea, P.hx, P.hy); x.restore(); continue;
     }
+    if (p.mir) ang = -ang;
     draw(p, p.canvas, ang, dx, dy);
     if (p.eyes) draw(p, eyesImg(p), ang, dx, dy);
   }
@@ -199,7 +290,22 @@ CreatureAnim.composeHand = function (e, o) {
   const _compose = CreatureAnim.compose;
   CreatureAnim.compose = function (e, o) { return o.rig && o.rig.hand ? this.composeHand(e, o) : _compose.call(this, e, o); };
   const _rig = CreatureAnim.rig;
-  CreatureAnim.rig = function (sp, S, shiny) { return HandSprites.has(sp) ? HandSprites.rig(sp, shiny) : _rig.call(this, sp, S, shiny); };
+  CreatureAnim.rig = function (sp, S, shiny) { return HandSprites.has(sp) ? HandSprites.rig(sp, shiny, this.view || 'side') : _rig.call(this, sp, S, shiny); };
+  // o.view = 'front' | 'back' | 'side' (de frente y de espaldas no se voltea)
+  const _draw = CreatureAnim.draw;
+  CreatureAnim.draw = function (ctx, e, o) {
+    const v = o.view && o.view !== 'side' && HandSprites.has(o.sp) ? o.view : 'side';
+    this.view = v; if (v !== 'side') o.flip = false;
+    try { return _draw.call(this, ctx, e, o); } finally { this.view = 'side'; }
+  };
+  // vista según hacia dónde mira en el mapa (abajo = hacia la cámara), con histéresis para que no parpadee
+  CreatureAnim.viewOf = function (e, ang, moving = true) {
+    const s = Math.sin(ang), c = Math.abs(Math.cos(ang));
+    let v = e.view3 || 'side';
+    if (v === 'side') { if (moving && s > 0.82) v = 'front'; else if (moving && s < -0.82) v = 'back'; }
+    else if (c > 0.72 || (v === 'front' && s < 0.3) || (v === 'back' && s > -0.3)) v = 'side';
+    return (e.view3 = v);
+  };
   const _get = CreatureGfx.get;
   CreatureGfx.get = function (sp, S, shiny) { return HandSprites.has(sp) ? HandSprites.full(sp, S, shiny) : _get.call(this, sp, S, shiny); };
 }

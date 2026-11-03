@@ -201,7 +201,7 @@ const Title3D = {
     const pg = new THREE.BufferGeometry(); pg.setAttribute('position', new THREE.BufferAttribute(ppos, 3)); pg.setAttribute('color', new THREE.BufferAttribute(pcol, 3));
     const [dc, dx] = U.makeCanvas(8, 8); const dg = dx.createRadialGradient(4, 4, 0, 4, 4, 4); dg.addColorStop(0, 'rgba(255,255,255,1)'); dg.addColorStop(1, 'rgba(255,255,255,0)'); dx.fillStyle = dg; dx.fillRect(0, 0, 8, 8);
     this.motes = new THREE.Points(pg, new THREE.PointsMaterial({ size: 0.16, map: new THREE.CanvasTexture(dc), vertexColors: true, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending })); this.moteBase = ppos.slice(); S.add(this.motes);
-    this.cam = new THREE.PerspectiveCamera(42, WIDE / H, 0.1, 400);
+    this.cam = new THREE.PerspectiveCamera(42, WIDE / H, 0.5, 400);
     this.built = true;
     return true;
   },
@@ -241,7 +241,7 @@ const Title3D = {
     p.needsUpdate = true;
     W3D.fitCanvas();
     const post = W3D.post.uniforms; post.exposure.value = 0.95; post.night.value = 0.4; post.dof.value = 0;
-    W3D.r.setRenderTarget(W3D.rt); W3D.r.render(this.scene, this.cam);
+    W3D.r.setRenderTarget(W3D.rt); W3D.renderScene(this.scene, this.cam);
     post.tDiffuse.value = W3D.rt.texture;
     W3D.r.setRenderTarget(null); W3D.r.render(W3D.postScene, W3D.postCam);
     post.dof.value = W3D.dofBase !== undefined ? W3D.dofBase : 1;
@@ -287,7 +287,8 @@ const Title3D = {
   };
   TS.draw = function (ctx) {
     const t = this.t;
-    if (Options.gfx3d === false || !Title3D.render(t)) return _draw.call(this, ctx);
+    this.classic = Options.gfx3d === false || !Title3D.render(t);
+    if (this.classic) return _draw.call(this, ctx);
     ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, WIDE, H); ctx.restore();
     // franjas de cine durante la entrada de cámara
     const bars = Math.round(Math.max(0, 1 - Math.max(0, t - 3.5) / 1) * 22);

@@ -204,3 +204,181 @@ const FX3D = {
   const _burst = BP.burst;
   BP.burst = function (x, y, type, n = 12, spd = 80) { return _burst.call(this, x, y, type, on() ? Math.ceil(n / 3) : n, spd); };
 }
+
+// ============================================================
+//  ATAQUES CON VOLUMEN (3D)
+//  - Proyectiles: núcleo con forma según el tipo (bola de fuego,
+//    burbuja, hoja, roca, anillo de viento...) y un halo de luz.
+//  - Rayos: tubo de luz con núcleo blanco y destellos en los extremos.
+//  - Cortes: arco luminoso que barre delante del atacante.
+//  - Ondas de choque: cúpula de luz que se expande.
+//  - Golpes: destello de halo en el punto de impacto.
+//  Sustituyen a los dibujos planos equivalentes cuando hay 3D.
+// ============================================================
+Object.assign(FX3D, {
+  glowTex() {
+    if (this._glow) return this._glow;
+    const [c, x] = U.makeCanvas(64, 64), g = x.createRadialGradient(32, 32, 0, 32, 32, 32);
+    g.addColorStop(0, 'rgba(255,255,255,1)'); g.addColorStop(0.25, 'rgba(255,255,255,0.7)'); g.addColorStop(0.6, 'rgba(255,255,255,0.18)'); g.addColorStop(1, 'rgba(255,255,255,0)');
+    x.fillStyle = g; x.fillRect(0, 0, 64, 64);
+    return (this._glow = new THREE.CanvasTexture(c));
+  },
+  // degradado vertical (opaco abajo, transparente arriba) para las cúpulas
+  fadeTex() {
+    if (this._fade) return this._fade;
+    const [c, x] = U.makeCanvas(4, 64), g = x.createLinearGradient(0, 64, 0, 0);
+    g.addColorStop(0, 'rgba(255,255,255,1)'); g.addColorStop(1, 'rgba(255,255,255,0)');
+    x.fillStyle = g; x.fillRect(0, 0, 4, 64);
+    return (this._fade = new THREE.CanvasTexture(c));
+  },
+  addMat(color, op = 1, map) { return new THREE.MeshBasicMaterial({ color, map: map || null, transparent: true, opacity: op, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide }); },
+  halo(color, s, op = 0.9) {
+    const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: this.glowTex(), color, transparent: true, opacity: op, depthWrite: false, blending: THREE.AdditiveBlending }));
+    sp.scale.set(s, s, s); sp.renderOrder = 11; return sp;
+  },
+  geo(k) {
+    this._geo = this._geo || {};
+    if (this._geo[k]) return this._geo[k];
+    const G = {
+      ball: () => new THREE.IcosahedronGeometry(1, 1), rock: () => new THREE.DodecahedronGeometry(1, 0), star: () => new THREE.OctahedronGeometry(1, 0),
+      torus: () => new THREE.TorusGeometry(1, 0.22, 6, 18), leaf: () => { const g = new THREE.CircleGeometry(1, 4); g.scale(1.6, 0.7, 1); return g; },
+      tube: () => new THREE.CylinderGeometry(1, 1, 1, 12, 1, true), dome: () => new THREE.CylinderGeometry(1, 1, 1, 32, 1, true),
+      arc: () => new THREE.RingGeometry(0.6, 1, 28, 1, -1.2, 2.4), arcIn: () => new THREE.RingGeometry(0.8, 0.9, 28, 1, -1.1, 2.2),
+    };
+    const g = G[k](); if (k === 'dome') g.translate(0, 0.5, 0);
+    return (this._geo[k] = g);
+  },
+  disposeObj(o) { o.traverse((q) => { if (q.material) q.material.dispose(); }); World3D.scene.remove(o); },
+  // ---------- proyectiles ----------
+  makeProj(p) {
+    const t = p.m.type, C = this.COL[t] || this.COL.normal, s = Math.max(0.12, (p.r || 4) / 16) * (p.cm > 1 ? 1.25 : 1);
+    const g = new THREE.Group(); let core;
+    const lit = (col) => new THREE.MeshLambertMaterial({ color: col, flatShading: true, emissive: col, emissiveIntensity: 0.25 });
+    if (t === 'roca') core = new THREE.Mesh(this.geo('rock'), lit('#8a7058'));
+    else if (t === 'planta') core = new THREE.Mesh(this.geo('leaf'), new THREE.MeshBasicMaterial({ color: '#58c048', side: THREE.DoubleSide }));
+    else if (t === 'viento' || t === 'mente') core = new THREE.Mesh(this.geo('torus'), this.addMat(C[0], 0.95));
+    else if (t === 'normal') core = new THREE.Mesh(this.geo('star'), new THREE.MeshBasicMaterial({ color: '#ffffff' }));
+    else if (t === 'sombra') core = new THREE.Mesh(this.geo('ball'), new THREE.MeshBasicMaterial({ color: '#1a0830' }));
+    else if (t === 'agua') core = new THREE.Mesh(this.geo('ball'), new THREE.MeshBasicMaterial({ color: '#b8ecff', transparent: true, opacity: 0.85 }));
+    else core = new THREE.Mesh(this.geo('ball'), new THREE.MeshBasicMaterial({ color: t === 'fuego' ? '#fff0a0' : C[0] }));
+    core.scale.setScalar(s * (t === 'viento' || t === 'mente' ? 1.1 : 0.75));
+    g.add(core);
+    if (t !== 'roca') { const h = this.halo(C[1], s * (t === 'sombra' ? 4.5 : 3.6), t === 'planta' ? 0.4 : 0.65); g.add(h); g.userData.halo = h; }
+    if (t === 'fuego' || t === 'electrico') { const h2 = this.halo(C[0], s * 2.2, 1); g.add(h2); g.userData.halo2 = h2; }
+    g.userData.core = core; g.userData.s = s;
+    World3D.scene.add(g);
+    return g;
+  },
+  syncProjs(B, dt) {
+    const live = new Set(B.projs), tt = Engine.time;
+    for (const p of B.projs) {
+      const g = p._m3 || (p._m3 = this.makeProj(p)), D = g.userData, t = p.m.type;
+      g.position.set(p.x / 16, 0.5, p.y / 16 + 0.2);
+      const c = D.core, a = Math.atan2(p.vy, p.vx);
+      if (t === 'roca') { c.rotation.x += dt * 9; c.rotation.y += dt * 6; }
+      else if (t === 'planta') c.rotation.set(-0.9, -a, tt * 14);
+      else if (t === 'viento' || t === 'mente') { c.rotation.set(0, -a + Math.PI / 2, 0); c.scale.setScalar(D.s * 1.1 * (1 + 0.15 * Math.sin(tt * 30))); }
+      else if (t === 'normal') { c.rotation.y += dt * 10; c.rotation.x += dt * 5; }
+      else c.scale.setScalar(D.s * 0.75 * (1 + 0.12 * Math.sin(tt * 40 + p.x)));
+      if (D.halo) D.halo.material.opacity = (t === 'planta' ? 0.4 : 0.65) * (0.85 + 0.15 * Math.sin(tt * 25));
+      if (D.halo2) D.halo2.scale.setScalar(D.s * (2 + 0.6 * Math.random()));
+    }
+    for (const [p, g] of this.projMeshes || []) if (!live.has(p) && g) this.disposeObj(g);
+    this.projMeshes = new Map(B.projs.map((p) => [p, p._m3]));
+  },
+  // ---------- rayos, cortes y ondas ----------
+  makeFx(e) {
+    const g = new THREE.Group();
+    const type = Object.keys(this.COL).find((k) => TYPES[k] && TYPES[k].color === e.color) || 'normal', C = this.COL[type];
+    if (e.k === 'beam') {
+      const len = e.len / 16, r = Math.max(0.08, (e.w || 8) / 32);
+      // por fuera, mezcla normal (conserva el color del tipo); por dentro, núcleo aditivo
+      const om = this.addMat(C[1], 0.85); om.blending = THREE.NormalBlending;
+      const outer = new THREE.Mesh(this.geo('tube'), om), inner = new THREE.Mesh(this.geo('tube'), this.addMat(C[0], 0.8));
+      for (const [m, k] of [[outer, 1], [inner, 0.4]]) { m.rotation.z = Math.PI / 2; m.scale.set(r * k, len, r * k); m.position.x = len / 2; g.add(m); }
+      const h0 = this.halo(C[1], r * 6, 0.7), h1 = this.halo(C[1], r * 5, 0.6); h1.position.x = len; g.add(h0, h1);
+      g.position.set(e.x / 16, 0.5, e.y / 16 + 0.15); g.rotation.y = -e.ang;
+      g.userData = { outer, inner, h0, h1, r };
+    } else if (e.k === 'slash') {
+      const arc = new THREE.Mesh(this.geo('arc'), this.addMat(e.color, 0.8)), core = new THREE.Mesh(this.geo('arcIn'), this.addMat('#ffffff', 0.8));
+      const tilt = new THREE.Group(); tilt.rotation.x = -Math.PI / 2 + 0.55; tilt.add(arc, core); g.add(tilt);
+      const s = Math.max(0.9, e.r / 16 * 1.3); g.scale.setScalar(s * 0.7);
+      g.position.set(e.x / 16, 0.45, e.y / 16 + 0.2); g.rotation.y = -e.ang;
+      g.userData = { arc, core, s, tilt };
+    } else if (e.k === 'ring') {
+      const dome = new THREE.Mesh(this.geo('dome'), this.addMat(e.color, 0.7, this.fadeTex()));
+      g.add(dome); g.position.set(e.x / 16, 0.02, e.y / 16);
+      g.userData = { dome, r: Math.max(0.6, e.r / 16) };
+    } else return null;
+    World3D.scene.add(g);
+    return g;
+  },
+  syncFx(B) {
+    const live = new Set();
+    for (const e of B.fx) {
+      if (e.k !== 'beam' && e.k !== 'slash' && e.k !== 'ring') continue;
+      if (e._m3 === undefined) e._m3 = this.makeFx(e);
+      const g = e._m3; if (!g) continue; live.add(e);
+      const k = U.clamp(e.t / e.dur, 0, 1), D = g.userData;
+      if (e.k === 'beam') {
+        const w = 1 - k * 0.6, wob = 0.85 + 0.15 * Math.sin(Engine.time * 50);
+        D.outer.scale.x = D.outer.scale.z = D.r * w * wob; D.inner.scale.x = D.inner.scale.z = D.r * 0.4 * w;
+        D.outer.material.opacity = 0.85 * (1 - k); D.inner.material.opacity = 0.45 * (1 - k * k);
+        D.h0.material.opacity = 0.7 * (1 - k); D.h1.material.opacity = 0.6 * (1 - k); D.h1.scale.setScalar(D.r * 6 * (1 + 0.3 * Math.sin(Engine.time * 40)));
+      } else if (e.k === 'slash') {
+        g.scale.setScalar(D.s * (0.7 + 0.45 * Math.sqrt(k)));
+        D.arc.material.opacity = 0.8 * (1 - k); D.core.material.opacity = 0.8 * (1 - k);
+        D.tilt.rotation.z = (k - 0.5) * 0.9; // barrido
+      } else {
+        const r = 0.3 + D.r * (1 - Math.pow(1 - k, 2.5));
+        g.scale.set(r, 0.9 * (1 - k * 0.5), r); D.dome.material.opacity = 0.7 * (1 - k);
+      }
+    }
+    for (const [e, g] of this.fxMeshes || []) if (!live.has(e) && g) this.disposeObj(g);
+    this.fxMeshes = new Map([...live].map((e) => [e, e._m3]));
+  },
+  // destello de halo en el impacto
+  impact(type, x, y, z, big) {
+    if (!this.init()) return;
+    const C = this.COL[type] || this.COL.normal, h = this.halo(C[1], big ? 2.4 : 1.6, 0.8), h2 = this.halo(C[0], big ? 1.2 : 0.8, 0.9);
+    h.position.set(x, y, z); h2.position.set(x, y, z + 0.05); World3D.scene.add(h, h2);
+    (this.impacts = this.impacts || []).push({ h, h2, t: 0, dur: big ? 0.3 : 0.2, s: big ? 2.4 : 1.6 });
+  },
+  syncImpacts(dt) {
+    for (const I of this.impacts || []) { I.t += dt; const k = I.t / I.dur; I.h.scale.setScalar(I.s * (0.6 + k)); I.h.material.opacity = 0.8 * (1 - k); I.h2.material.opacity = 0.9 * (1 - k); I.h2.scale.setScalar(I.s * 0.5 * (1 - k * 0.5)); }
+    this.impacts = (this.impacts || []).filter((I) => { if (I.t < I.dur) return true; World3D.scene.remove(I.h, I.h2); I.h.material.dispose(); I.h2.material.dispose(); return false; });
+  },
+  clearMeshes() {
+    for (const [, g] of this.projMeshes || []) if (g) this.disposeObj(g);
+    for (const [, g] of this.fxMeshes || []) if (g) this.disposeObj(g);
+    for (const I of this.impacts || []) { World3D.scene.remove(I.h, I.h2); I.h.material.dispose(); I.h2.material.dispose(); }
+    this.projMeshes = null; this.fxMeshes = null; this.impacts = [];
+  },
+});
+{
+  const BP = BattleScene.prototype;
+  const on = () => typeof World3D !== 'undefined' && World3D.usable(World) && FX3D.init();
+  const _upd = FX3D.update;
+  FX3D.update = function (dt, B) {
+    _upd.call(this, dt, B);
+    if (!B || !on()) return;
+    this.syncProjs(B, dt); this.syncFx(B); this.syncImpacts(dt);
+  };
+  const _clear = FX3D.clear;
+  FX3D.clear = function () { _clear.call(this); if (this.ready) this.clearMeshes(); };
+  const _hit = BP.hit;
+  BP.hit = function (tgt, att, m, mult, ang) {
+    const h0 = tgt ? tgt.hp : 0, r = _hit.call(this, tgt, att, m, mult, ang);
+    if (on() && tgt && m && h0 - tgt.hp > 0) FX3D.impact(m.type, tgt.x / 16, 0.75, (tgt.y + 2) / 16 + 0.5, typeMult(m.type, tgt.types) > 1 || m.pow >= 90);
+    return r;
+  };
+  // en 3D no se dibujan los proyectiles, cortes y rayos planos (los sustituyen los de volumen)
+  const _proj = BP.drawProj;
+  BP.drawProj = function (ctx, p) { if (on()) return; return _proj.call(this, ctx, p); };
+  const _draw = BP.draw;
+  BP.draw = function (ctx) {
+    if (!on()) return _draw.call(this, ctx);
+    const fx = this.fx; this.fx = fx.filter((e) => e.k !== 'slash' && e.k !== 'beam');
+    try { return _draw.call(this, ctx); } finally { this.fx = fx; }
+  };
+}

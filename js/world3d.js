@@ -35,13 +35,13 @@ const World3D = {
       const cv = document.createElement('canvas');
       cv.style.cssText = 'position:fixed;left:0;top:0;pointer-events:none;z-index:0;display:none;image-rendering:auto';
       document.body.appendChild(cv);
-      Engine.canvas.style.position = 'relative'; Engine.canvas.style.zIndex = '1';
+      if (!Engine.canvas.style.position) Engine.canvas.style.position = 'relative'; Engine.canvas.style.zIndex = '1';
       const r = new THREE.WebGLRenderer({ canvas: cv, antialias: false, powerPreference: 'high-performance' });
       r.shadowMap.enabled = true; r.shadowMap.type = THREE.PCFSoftShadowMap;
       r.outputEncoding = THREE.LinearEncoding; r.physicallyCorrectLights = true;
       this.cv = cv; this.r = r;
       this.scene = new THREE.Scene();
-      this.cam = new THREE.PerspectiveCamera(W3.FOV, WIDE / H, 0.1, 200);
+      this.cam = new THREE.PerspectiveCamera(W3.FOV, WIDE / H, 2, 160);
       // luces
       this.sun = new THREE.DirectionalLight('#ffe6c0', 2.4);
       this.sun.castShadow = true; this.sun.shadow.mapSize.set(2048, 2048);
@@ -117,7 +117,7 @@ const World3D = {
       g.putImageData(im, 0, 0);
       this.aoTex = new THREE.CanvasTexture(c); this.aoTex.shared = true;
     }
-    const m = new THREE.Mesh(new THREE.PlaneGeometry(w, d), new THREE.MeshBasicMaterial({ map: this.aoTex, color: '#0a0812', transparent: true, depthWrite: false }));
+    const m = new THREE.Mesh(new THREE.PlaneGeometry(w, d), new THREE.MeshBasicMaterial({ map: this.aoTex, color: '#0a0812', transparent: true, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -1, polygonOffsetUnits: -2 }));
     m.rotation.x = -Math.PI / 2; m.position.set(x, 0.012, z); m.renderOrder = 1;
     return m;
   },
@@ -209,10 +209,11 @@ const World3D = {
     const far = new THREE.Mesh(new THREE.PlaneGeometry(400, 400), new THREE.MeshLambertMaterial({ color: this.mode === 'out' ? '#2f5a32' : '#050308' }));
     far.rotation.x = -Math.PI / 2; far.position.set(m.w / 2, -0.02, m.h / 2); far.receiveShadow = true; this.root.add(far);
     // capa de efectos 2D sobre el suelo (habilidades, cebos, recolección, avisos de combate)
-    const [d] = U.makeCanvas(MW, MH);
+    // es una ventana de 640x480 que sigue a la cámara: subir a la GPU todo el mapa cada fotograma daba tirones
+    const [d] = U.makeCanvas(640, 480);
     this.dCanvas = d; this.dTex = this.tex(d);
-    const decal = new THREE.Mesh(new THREE.PlaneGeometry(m.w, m.h), new THREE.MeshBasicMaterial({ map: this.dTex, transparent: true, depthWrite: false }));
-    decal.rotation.x = -Math.PI / 2; decal.position.set(m.w / 2, 0.015, m.h / 2); decal.renderOrder = 1; this.root.add(decal);
+    const decal = new THREE.Mesh(new THREE.PlaneGeometry(40, 30), new THREE.MeshBasicMaterial({ map: this.dTex, transparent: true, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -2, polygonOffsetUnits: -4 }));
+    decal.rotation.x = -Math.PI / 2; decal.position.set(20, 0.015, 15); decal.renderOrder = 1; this.root.add(decal); this.decal = decal;
     this.buildWater(world);
     if (this.mode === 'out') { this.buildClouds(m); for (const b of m.buildings) this.buildBuilding(b); this.buildCave(world, true); }
     if (this.mode === 'in') this.buildInterior(world);
@@ -696,11 +697,11 @@ for (int i = 0; i < 6; i++) { vec2 d = base - uPush[i].xy; float l = length(d); 
   syncDecal(world) {
     const x = this.dCanvas.getContext('2d'), [px, py] = this.centerPx(world), B = world.battle;
     const wx = Math.max(0, Math.round(px - 320)), wy = Math.max(0, Math.round(py - 240));
-    x.clearRect(0, 0, this.dCanvas.width, this.dCanvas.height);
+    x.clearRect(0, 0, 640, 480); this.decal.position.set(wx / 16 + 20, 0.015, wy / 16 + 15);
     const oldW = W, oldCam = world.cam; W = 640;
     try {
       for (const oy of [0, 240]) {
-        x.save(); x.translate(wx, wy + oy);
+        x.save(); x.translate(0, oy);
         Ambient.draw(x, wx, wy + oy, 'ground');
         if (world.drawTerrainFX) world.drawTerrainFX(x, wx, wy + oy);
         if (Critters.baits && Critters.baits.length) { const l = Critters.list; Critters.list = []; Critters.draw(x, wx, wy + oy, world); Critters.list = l; }
@@ -716,7 +717,11 @@ for (int i = 0; i < 6; i++) { vec2 d = base - uPush[i].xy; float l = length(d); 
     const wx = Math.max(0, Math.round(p.px - 320)), wy = Math.max(0, Math.round(p.py - 260));
     x.drawImage(this.gStatic, wx, wy, 640, 520, wx, wy, 640, 520);
     const keep = world.animTiles;
-    world.animTiles = keep.filter((a) => a[2] !== 'lamp' && a[2] !== 'ashlamp' && a[2] !== 'tallgrass' && a[2] !== 'healer' && a[2] !== 'machine');
+    // el agua, las flores y la hierba ya son 3D: solo se repinta lo que de verdad se anima en el suelo (lava, grietas...)
+    world.animTiles = keep.filter((a) => !['lamp', 'ashlamp', 'tallgrass', 'healer', 'machine', 'water', 'flower'].includes(a[2]));
+    const live = world.animTiles.length > 0;
+    if (!live && this.gDone === this.mapId + ':' + wx + ',' + wy) { world.animTiles = keep; return; }
+    this.gDone = this.mapId + ':' + wx + ',' + wy;
     const oldW = W; W = 640;
     try {
       for (const oy of [0, 240, 480]) { x.save(); x.translate(wx, wy + oy); world.drawAnimTiles(x, wx, wy + oy, L); x.restore(); }
@@ -847,9 +852,15 @@ for (int i = 0; i < 6; i++) { vec2 d = base - uPush[i].xy; float l = length(d); 
     this.cam.lookAt(cx, 0, cz - 1.2 + (this.zoomK || 0) * 1.4);
     this.cam.updateMatrixWorld();
     // el sol recorre el cielo según la hora: sale por la derecha, se pone por la izquierda; al amanecer y al atardecer las sombras se alargan
-    if (this.mode === 'out') { const h = U.clamp(Clock.hour(), 6, 18), a = ((h - 6) / 12) * Math.PI, el = Math.sin(a); this.sun.position.set(cx + Math.cos(a) * 15, 4 + el * 15, cz + 6 + (1 - el) * 2); }
-    else this.sun.position.set(cx - 11, 17, cz + 7);
-    this.sun.target.position.set(cx, 0, cz);
+    let off;
+    if (this.mode === 'out') { const h = U.clamp(Clock.hour(), 6, 18), a = Math.round(((h - 6) / 12) * Math.PI * 200) / 200, el = Math.sin(a); off = [Math.cos(a) * 15, 4 + el * 15, 6 + (1 - el) * 2]; }
+    else off = [-11, 17, 7];
+    // sombras estables: el centro de la sombra se ajusta a la rejilla de texeles del mapa de sombras
+    // (si no, al moverse la cámara los bordes de las sombras 'nadan' y parpadean)
+    const V = THREE.Vector3, dz = new V(...off).normalize(), dx = new V(0, 1, 0).cross(dz).normalize(), dy = dz.clone().cross(dx);
+    const A = new V(cx, 0, cz), tex = 40 / this.sun.shadow.mapSize.x, ax = A.dot(dx), ay = A.dot(dy);
+    A.addScaledVector(dx, Math.round(ax / tex) * tex - ax).addScaledVector(dy, Math.round(ay / tex) * tex - ay);
+    this.sun.target.position.copy(A); this.sun.position.set(A.x + off[0], A.y + off[1], A.z + off[2]);
   },
   // proyección afín del suelo (a media altura) a la pantalla, para dibujar en 2D los efectos del combate
   affine(h = 0.45) {
@@ -887,7 +898,7 @@ for (int i = 0; i < 6; i++) { vec2 d = base - uPush[i].xy; float l = length(d); 
     if (this.mapId !== world.map.id || this.layerRef !== world.layer) this.build(world);
     this.updateCamera(world);
     this.syncSprites(world);
-    if (this.frame % 3 === 0) this.syncGround(world);
+    if (this.frame % 4 === 0) this.syncGround(world);
     if (this.frame % 2 === 0 || world.battle) this.syncDecal(world);
     this.syncLight(world);
     this.occlusion(world);
@@ -908,14 +919,26 @@ for (int i = 0; i < 6; i++) { vec2 d = base - uPush[i].xy; float l = length(d); 
     // agujero de visión en las rocas de las cuevas, alrededor del jugador
     if (this.cutU) {
       const p = world.battle && world.battle.trainer ? { px: world.battle.trainer.x - 8, py: world.battle.trainer.y - 14 } : world.player;
-      const x = (p.px + 8) / 16, z = (p.py + 14) / 16, v = new THREE.Vector3(x, 0.8, z).project(this.cam);
-      this.cutU.uP.value.set(x, z); this.cutU.uS.value.set((v.x + 1) / 2 * this.cv.width, (v.y + 1) / 2 * this.cv.height); this.cutU.uR.value = this.cv.width * 0.075;
+      const x = (p.px + 8) / 16, z = (p.py + 14) / 16, v = this.ndcFull(new THREE.Vector3(x, 0.8, z).project(this.cam));
+      this.cutU.uP.value.set(x, z); this.cutU.uS.value.set((v.x + 1) / 2 * this.cv.width, (v.y + 1) / 2 * this.cv.height); this.cutU.uR.value = this.cv.width * (this.ext ? this.ext.sx : 1) * 0.075;
     }
-    this.r.setRenderTarget(this.rt); this.r.render(this.scene, this.cam);
+    this.r.setRenderTarget(this.rt); this.renderScene(this.scene, this.cam);
     this.post.uniforms.tDiffuse.value = this.rt.texture;
     this.r.setRenderTarget(null); this.r.render(this.postScene, this.postCam);
     this.used = true;
   },
+  // dibuja una escena con la cámara del juego, ampliada a toda la pantalla si hace falta (ver fitCanvas en mobile.js)
+  renderScene(scene, cam) {
+    const E = this.ext;
+    if (E) {
+      const P = cam.projectionMatrix, keep = P.clone(), M = new THREE.Matrix4().set(E.sx, 0, 0, E.ox, 0, E.sy, 0, E.oy, 0, 0, 1, 0, 0, 0, 0, 1);
+      P.premultiply(M); cam.projectionMatrixInverse.copy(P).invert();
+      this.r.render(scene, cam);
+      P.copy(keep); cam.projectionMatrixInverse.copy(P).invert();
+    } else this.r.render(scene, cam);
+  },
+  // de coordenadas normalizadas del juego a las del lienzo 3D completo
+  ndcFull(v) { const E = this.ext; if (E) { v.x = v.x * E.sx + E.ox; v.y = v.y * E.sy + E.oy; } return v; },
   hide() { if (this.cv && this.cv.style.display !== 'none') this.cv.style.display = 'none'; },
 };
 

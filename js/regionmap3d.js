@@ -121,7 +121,7 @@ const RegionMap3D = {
     this.ring = new THREE.Mesh(new THREE.RingGeometry(0.75, 0.95, 32), new THREE.MeshBasicMaterial({ color: '#ffffff', transparent: true, opacity: 0.9, side: THREE.DoubleSide, depthWrite: false }));
     this.ring.rotation.x = -Math.PI / 2; S.add(this.ring);
     this.pin = new THREE.Mesh(new THREE.OctahedronGeometry(0.2, 0), new THREE.MeshLambertMaterial({ color: '#ffd048', emissive: '#a06010', emissiveIntensity: 0.6 })); S.add(this.pin);
-    this.cam = new THREE.PerspectiveCamera(34, WIDE / H, 0.1, 200);
+    this.cam = new THREE.PerspectiveCamera(34, WIDE / H, 1, 200);
     this.camT = null;
   },
   render(screen) {
@@ -144,7 +144,7 @@ const RegionMap3D = {
     const W3D = World3D, post = W3D.post.uniforms;
     W3D.fitCanvas();
     post.exposure.value = 1.0; post.night.value = 0; post.dof.value = 0.35; post.focus.value = 0.45;
-    W3D.r.setRenderTarget(W3D.rt); W3D.r.render(this.scene, this.cam);
+    W3D.r.setRenderTarget(W3D.rt); W3D.renderScene(this.scene, this.cam);
     post.tDiffuse.value = W3D.rt.texture;
     W3D.r.setRenderTarget(null); W3D.r.render(W3D.postScene, W3D.postCam);
     post.dof.value = 1; post.focus.value = 0.42;

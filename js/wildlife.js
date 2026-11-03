@@ -264,8 +264,8 @@ Object.assign(Critters, {
       if (c.c.alpha) { ctx.globalAlpha = c.alpha * (0.3 + 0.15 * Math.sin(Engine.time * 5)); pixCircle(ctx, x, y - 2, 13, '#ff2040'); ctx.globalAlpha = c.alpha; }
       drawShadow(ctx, x, y, S / 3.6, 2, 0.25);
       if (c.animSeed === undefined) { c.animSeed = Math.random() * 6; c.px0 = c.x; c.py0 = c.y; }
-      const spd = Math.hypot(c.x - c.px0, c.y - c.py0) * 60; c.px0 = c.x; c.py0 = c.y;
-      CreatureAnim.draw(ctx, c, { sp: c.sp, S, shiny: c.c.shiny, px: x, py: y + 2, flip: c.dir < 0, t: Engine.time, dt: 1 / 60, speed: spd,
+      const spd = Math.hypot(c.x - c.px0, c.y - c.py0) * 60, view = spd > 6 ? CreatureAnim.viewOf(c, Math.atan2(c.y - c.py0, c.x - c.px0)) : c.view3 || 'side'; c.px0 = c.x; c.py0 = c.y;
+      CreatureAnim.draw(ctx, c, { sp: c.sp, S, shiny: c.c.shiny, px: x, py: y + 2, flip: c.dir < 0, view, t: Engine.time, dt: 1 / 60, speed: spd,
         act: c.state === 'alert' ? { m: { kind: 'melee' }, t: 0.6 - c.alertT, windup: 0.6, fired: false } : null });
       const t = world.tileAt(Math.floor(c.x / 16), Math.floor((c.y - 2) / 16));
       if (t && t.grass) ctx.drawImage(Tiles.get('tallgrass_top', Math.floor(Engine.time * 3) % 2), Math.floor(c.x / 16) * 16 - cx, Math.floor((c.y - 2) / 16) * 16 - cy);

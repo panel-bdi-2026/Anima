@@ -369,7 +369,7 @@ class BattleScene {
     // apuntado asistido
     if (tgt && !tgt.inBall && (RANGED[m.kind] || m.kind === 'melee' || m.kind === 'dash')) {
       const a = angTo(f, tgt), d = Math.abs(U.angDiff(f.ang, a));
-      if (d < (f.side === 'ally' ? (Input.usingMouse() ? 0.22 : 0.7) : 1.2) || m.kind === 'ring') f.ang = a;
+      if (d < (f.side === 'ally' ? (Input.usingMouse() || (typeof Mobile !== 'undefined' && Mobile.moveAim != null) ? 0.22 : 0.7) : 1.2) || m.kind === 'ring') f.ang = a;
     }
     if (f.side === 'foe' && tgt && this.inGrass(tgt)) f.ang += U.rand(-0.35, 0.35); // la hierba alta dificulta apuntar
     let windup = m.windup || 0.06;
@@ -917,7 +917,7 @@ class BattleScene {
     ctx.restore();
     for (const e of this.fx) if (e.k === 'flash') { ctx.globalAlpha = (1 - e.t / e.dur) * 0.7; P(ctx, 0, 0, W, H, e.color); ctx.globalAlpha = 1; }
     // HUD a 320 de ancho, centrado; la barra inferior ocupa toda la pantalla
-    if (this.ally && !this.capture) { P(ctx, 0, 199, W, 41, '#14101e'); P(ctx, 0, 199, W, 1, '#5a5078'); }
+    if (this.ally && !this.capture && !(Input.mode === 'touch' && typeof Mobile !== 'undefined' && Mobile.wanted())) { P(ctx, 0, 199, W, 41, '#14101e'); P(ctx, 0, 199, W, 1, '#5a5078'); }
     else if (this.capture) { P(ctx, 0, 199, W, 41, '#1c1430'); P(ctx, 0, 199, W, 1, '#f0c040'); }
     ctx.save(); ctx.translate(UIX, 0); W = UI_W;
     try {
@@ -1046,7 +1046,7 @@ class BattleScene {
     if (f.animSeed === undefined) f.animSeed = Math.random() * 6;
     // ánima animada por partes (respira, camina, ataca, reacciona)
     CreatureAnim.draw(ctx, f, {
-      sp: f.c.sp, S, shiny: f.c.shiny, px: f.x, py: f.y + 4, flip, scale: f.fainted ? 1 : sc, t: this.t, dt: 1 / 60,
+      sp: f.c.sp, S, shiny: f.c.shiny, px: f.x, py: f.y + 4, flip, view: f.fainted ? 'side' : CreatureAnim.viewOf(f, f.ang), scale: f.fainted ? 1 : sc, t: this.t, dt: 1 / 60,
       speed: Math.hypot(f.vx, f.vy), act: f.act, dash: !!f.dash, dodge: f.dodgeT > 0, stun: f.stun > 0,
       charging: f === this.ally && this.chg && this.chg.t > 0.15, faintT: f.fainted ? this.t - (f.faintT || (f.faintT = this.t)) : undefined,
       flash: f.flash > 0 && Math.floor(f.flash * 40) % 2 === 0, flashColor: f.flashColor,

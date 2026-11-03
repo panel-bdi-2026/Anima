@@ -69,8 +69,14 @@ class PracticeSetup {
     const M = Input.mouse;
     if (Input.repeat('up')) { this.row = (this.row + 4) % 5; Sound.sfx('blip'); }
     if (Input.repeat('down')) { this.row = (this.row + 1) % 5; Sound.sfx('blip'); }
-    if (M.inside && (M.moved || M.pressed[0])) for (let k = 0; k < 5; k++) if (M.y >= 128 + k * 18 && M.y < 146 + k * 18 && M.x > 20 && M.x < 300) this.row = k;
-    const d = Input.repeat('left') ? -1 : Input.repeat('right') ? 1 : M.pressed[0] && this.row < 4 ? (M.x > 160 ? 1 : -1) : 0;
+    // ratón / dedo: tocar una fila la selecciona; tocar la fila ya seleccionada cambia el valor (mitad izquierda: anterior, derecha: siguiente)
+    let tapRow = -1;
+    if (M.inside && (M.moved || M.pressed[0])) for (let k = 0; k < 5; k++) if (M.y >= 127 + k * 18 && M.y < 145 + k * 18 && M.x > 20 && M.x < 300) tapRow = k;
+    if (M.pressed[0] && tapRow < 0) M.pressed[0] = false;
+    let tapD = 0;
+    if (M.pressed[0]) { if (tapRow === this.row && tapRow < 4) { tapD = M.x > 220 ? 1 : -1; M.pressed[0] = false; } else if (tapRow !== this.row) { this.row = tapRow; Sound.sfx('blip'); M.pressed[0] = false; } }
+    else if (tapRow >= 0 && M.moved && Input.mode === 'mouse') this.row = tapRow;
+    const d = Input.repeat('left') ? -1 : Input.repeat('right') ? 1 : tapD;
     if (d) {
       if (this.row === 0) this.cycle('mine', d);
       if (this.row === 1) this.cycle('foe', d);

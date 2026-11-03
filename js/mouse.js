@@ -41,7 +41,8 @@ MouseUI.wrap(StartMenu, function () {
 });
 MouseUI.wrap(TitleScreen, function () {
   if (!this.menu || this.busy) return;
-  const n = this.options().length, over = MouseUI.list(this, 'i', n, W - 146, H - 26 - n * 19 + 2, 19, 128);
+  // el título clásico (2D) tiene el menú en el centro; el 3D, abajo a la derecha
+  const n = this.options().length, over = this.classic ? MouseUI.list(this, 'i', n, W / 2 - 60, 104, 15, 120) : MouseUI.list(this, 'i', n, W - 146, H - 26 - n * 19 + 2, 19, 128);
   if (!over && Input.mouse.pressed[0]) MouseUI.swallow();
 });
 MouseUI.wrap(PartyScreen, function () {

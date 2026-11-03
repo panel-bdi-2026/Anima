@@ -121,7 +121,7 @@ En los menús también se puede usar el ratón: pasar por encima selecciona, cli
 
 ## Móvil, tablet y mandos
 
-- **Táctil** (`js/mobile.js`): joystick flotante a la izquierda y botones a la derecha que cambian según el momento (mundo, combate, captura, lanzar esferas, menús). En combate, tocar el campo ataca hacia ese punto (mantener = cargar) y tocar una tarjeta usa ese ataque. En los menús se toca para elegir y se arrastra para desplazar. Los controles aparecen solos al tocar la pantalla (Opciones → Controles táctiles: Auto / Siempre / No).
+- **Táctil** (`js/mobile.js`): joystick flotante a la izquierda y botones a la derecha que cambian según el momento (mundo, combate, captura, lanzar esferas, menús). En combate, los 4 ataques son botones en arco: tocar = lanzarlo al rival, arrastrar = apuntar a mano (flecha), mantener = cargar. En menús, diálogos y título hay cruceta fija + A + B (y también se puede tocar cada opción). Con controles táctiles, la escena 3D ocupa toda la pantalla (sin franjas negras) y el HUD queda en el centro. Los controles aparecen desde el inicio en móviles y tablets (Opciones → Controles táctiles: Auto / Siempre / No).
 - **Pantalla**: el juego ocupa todo el espacio y respeta la muesca. En móviles los botones van en los márgenes laterales; en tablets en vertical el juego queda arriba y los controles debajo. En un móvil en vertical se pide girarlo. Al tocar por primera vez se pasa a pantalla completa y horizontal (si el sistema lo permite).
 - **Calidad 3D** (Opciones → Calidad 3D): Auto, Alta, Media o Baja. En Auto se elige según el aparato y baja sola si los fotogramas van lentos.
 - **Al cambiar de app** el juego se pausa, se guarda (si estás en el mapa y el autoguardado está activo) y el combate abre su menú de pausa.

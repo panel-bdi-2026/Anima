@@ -65,6 +65,8 @@ const Mobile = {
     window.addEventListener('resize', () => this.layoutScreen());
     window.addEventListener('orientationchange', () => setTimeout(() => this.layoutScreen(), 200));
     document.addEventListener('visibilitychange', () => this.onVisibility());
+    // en móviles y tablets los controles se colocan desde el principio (si no, el primer toque movía toda la pantalla)
+    try { if (matchMedia('(pointer: coarse)').matches && !matchMedia('(any-pointer: fine)').matches) { this.active = true; Input.mode = 'touch'; } } catch (e) { /* sin matchMedia */ }
     this.layoutScreen();
   },
   insets() {
@@ -78,7 +80,7 @@ const Mobile = {
     this.portrait = this.active && this.isPhone() && vh > vw;
     const aw = vw - ins.l - ins.r, ah = vh - ins.t - ins.b;
     if (!this.wanted()) {
-      g.style.position = ''; g.style.left = ''; g.style.top = '';
+      g.style.position = 'relative'; g.style.left = ''; g.style.top = '';
       document.body.style.display = '';
     } else {
       let s = Math.min(aw / WIDE, ah / H);
@@ -122,21 +124,43 @@ const Mobile = {
     ];
     // en combate, los botones quedan por encima de la barra de ataques (que se toca directamente)
     const by = this.band ? ay : Math.min(ay, gr.top + (202 / H) * gr.height - u * 0.72);
-    if (ctxName === 'battle') return [
-      B('dodge', 'Esquivar', ['Space'], ax, by, u * 0.62, { col: '#60c0f0' }),
-      B('tactic', 'Táctico', ['ShiftLeft'], ax - u * 1.5, by + u * 0.05, u * 0.48, { col: '#c080ff' }),
-      B('ult', 'Arte', ['KeyF'], ax - u * 1.1, by - u * 1.2, u * 0.44, { col: '#ffb040' }),
-      B('duo', 'Dúo', ['KeyG'], ax + u * 0.12, by - u * 1.5, u * 0.42, { col: '#80d0ff' }),
-      B('cap', 'Captura', ['KeyE'], ax - u * 2.45, by - u * 0.85, u * 0.4, { col: '#f0c040', show: () => Battle.active && Battle.active.wild }),
-      corner('pause', 'Pausa', ['Enter'], 0), corner('swap', 'Cambiar', ['KeyQ'], 1),
-    ].filter((b) => !b.show || b.show());
+    // combate: los 4 ataques en arco alrededor del principal (tocar = al rival; arrastrar = apuntar; mantener = cargar)
+    if (ctxName === 'battle') {
+      const cx = this.vw - this.ins.r - u * 1.05, cy = this.vh - this.ins.b - u * 1.05, R = u * 1.5, mv = [];
+      const f = Battle.active && Battle.active.ally, moves = (f && f.c.moves) || [];
+      const arc = [[0, 0, 0.66], [Math.PI, R, 0.48], [Math.PI * 1.25, R, 0.48], [Math.PI * 1.5, R, 0.48]];
+      for (let i = 0; i < 4; i++) {
+        if (!moves[i]) continue;
+        const [a, d, k] = arc[i], m = MOVES[moves[i]];
+        mv.push(B('m' + i, m.name, [['Digit1', 'Digit2', 'Digit3', 'Digit4'][i]], cx + Math.cos(a) * d, cy + Math.sin(a) * d, u * k, { col: TYPES[m.type].color, move: i }));
+      }
+      return mv.concat([
+        B('dodge', 'Esquivar', ['Space'], cx - u * 2.75, cy + u * 0.3, u * 0.5, { col: '#60c0f0' }),
+        B('ult', 'Arte', ['KeyF'], cx - u * 0.1, cy - u * 2.75, u * 0.38, { col: '#ffb040', show: () => f && f.syn >= 100 }),
+        B('duo', 'Dúo', ['KeyG'], cx - u * 1.05, cy - u * 2.55, u * 0.36, { col: '#80d0ff' }),
+        B('cap', 'Captura', ['KeyE'], cx - u * 2.6, cy - u * 1.05, u * 0.38, { col: '#f0c040', show: () => Battle.active && Battle.active.wild }),
+        corner('pause', 'Pausa', ['Enter'], 0), corner('swap', 'Cambiar', ['KeyQ'], 1),
+      ]).filter((b) => !b.show || b.show());
+    }
     if (ctxName === 'capture') return [B('back', 'Volver', ['KeyE'], ax, ay, u * 0.56, { col: '#f0c040' }), B('cyc', 'Esfera', ['KeyR'], ax - u * 1.35, ay + u * 0.3, u * 0.44, { col: '#c0c0d0' }), corner('pause', 'Pausa', ['Enter'], 0)];
     if (ctxName === 'throw') return [B('back', 'Salir', ['KeyX'], ax, ay, u * 0.54, { col: '#e06060' }), B('cyc', 'Cambiar', ['KeyR'], ax - u * 1.35, ay + u * 0.3, u * 0.44, { col: '#c0c0d0' })];
-    if (ctxName === 'title') return [];
-    // menús: un B pequeño, en el margen derecho si cabe (para no tapar las opciones)
-    if (this.band) return [B('b', 'B', ['KeyX'], ax, ay, u * 0.5, { col: '#e06060', faint: true })];
-    if (mr >= u * 0.95) return [B('b', 'B', ['KeyX'], gr.right + mr / 2, this.vh - this.ins.b - u * 0.7, Math.min(u * 0.42, mr / 2 - 4), { col: '#e06060', faint: true })];
-    return [B('b', 'B', ['KeyX'], this.ins.l + u * 0.6, this.vh - this.ins.b - u * 0.6, u * 0.4, { col: '#e06060', faint: true })];
+    // menús, diálogos y título: cruceta fija + A + B, siempre en el mismo sitio
+    // (en los márgenes laterales si caben; si no, debajo del juego o en las esquinas, más tenues)
+    const ml = gr.left - this.ins.l, side = Math.min(ml, mr) >= u * 1.25, bot = this.vh - this.ins.b;
+    if (side) {
+      const pr = Math.min(u * 0.95, ml / 2 - 6), br = Math.min(u * 0.5, mr / 2 - 6), cx = gr.right + mr / 2;
+      return [
+        B('dpad', '', [], this.ins.l + ml / 2, bot - pr - u * 0.55, pr, { dpad: true }),
+        B('a', 'A', ['KeyZ'], cx, bot - br - u * 1.35, br, { col: '#58c060' }),
+        B('b', 'B', ['KeyX'], cx, bot - br - u * 0.2, br * 0.85, { col: '#e06060' }),
+      ];
+    }
+    const faint = !this.band, pr = u * (this.band ? 0.95 : 0.8), py = this.band ? Math.max(gr.bottom + pr + 8, bot - pr - u * 0.4) : bot - pr - u * 0.25;
+    return [
+      B('dpad', '', [], this.ins.l + pr + u * 0.35, py, pr, { dpad: true, faint }),
+      B('a', 'A', ['KeyZ'], ax, this.band ? py - u * 0.3 : ay, u * 0.55, { col: '#58c060', faint }),
+      B('b', 'B', ['KeyX'], ax - u * 1.35, (this.band ? py - u * 0.3 : ay) + u * 0.45, u * 0.45, { col: '#e06060', faint }),
+    ];
   },
   usesJoy(c) { return c === 'world' || c === 'battle' || c === 'capture'; },
   // ---------- toques ----------
@@ -154,24 +178,30 @@ const Mobile = {
       const id = t.identifier, x = t.clientX, y = t.clientY;
       if (phase === 'start') {
         const b = btns.find((q) => Math.hypot(x - q.x, y - q.y) < q.r * 1.25);
-        if (b) { this.press(b); this.touches.set(id, { kind: 'btn', b }); continue; }
+        if (b && b.dpad) { this.touches.set(id, { kind: 'dpad', b }); this.dpadAt(b, x, y); continue; }
+        if (b) { this.press(b); this.touches.set(id, { kind: 'btn', b, sx: x, sy: y }); if (b.move !== undefined) { this.moveAim = null; this.moveTouch = b.move; } continue; }
         const [gx, gy, inside] = this.toGame(x, y);
-        const onBar = (ctxName === 'battle') && inside && gy >= 202;
-        if (this.usesJoy(ctxName) && !onBar && x < this.vw * 0.42 && !this.joy) {
+        if (this.usesJoy(ctxName) && x < this.vw * 0.42 && !this.joy) {
           this.joy = { id, ox: x, oy: y, x, y };
           this.touches.set(id, { kind: 'joy' }); continue;
         }
-        if (!inside) { this.touches.set(id, { kind: 'none' }); continue; }
+        // en combate, tocar el campo no hace nada: se ataca con los botones
+        if (!inside || ctxName === 'battle') { this.touches.set(id, { kind: 'none' }); continue; }
         this.touches.set(id, { kind: 'game', sx: x, sy: y, drag: 0, ctxName });
         this.mouseAt(gx, gy);
         const M = Input.mouse;
-        if (ctxName === 'battle' || ctxName === 'capture') { M.down[0] = true; M.pressed[0] = true; this.aimT = 1e9; }
+        if (ctxName === 'capture') { M.down[0] = true; M.pressed[0] = true; this.aimT = 1e9; }
         else if (ctxName === 'throw') { this.aimT = 1e9; }
         // en menús: el toque selecciona; se confirma al levantar el dedo (si no se arrastró)
       } else {
         const T = this.touches.get(id); if (!T) continue;
         if (T.kind === 'joy' && this.joy && this.joy.id === id) { if (phase === 'move') { this.joy.x = x; this.joy.y = y; } else { this.joy = null; } }
-        else if (T.kind === 'btn') { if (phase === 'end') this.release(T.b); }
+        else if (T.kind === 'btn') {
+          // arrastrar desde un ataque: apuntar a mano (la vertical de la pantalla se estira por la inclinación de la cámara)
+          if (T.b.move !== undefined && phase === 'move') { const dx = x - T.sx, dy = y - T.sy; if (Math.hypot(dx, dy) > T.b.r * 0.55) this.moveAim = Math.atan2(dy / 0.78, dx); }
+          if (phase === 'end') { this.release(T.b); if (T.b.move !== undefined) this.moveEnd = 3; }
+        }
+        else if (T.kind === 'dpad') this.dpadAt(phase === 'end' ? null : T.b, x, y);
         else if (T.kind === 'game') {
           const [gx, gy] = this.toGame(x, y), M = Input.mouse;
           if (phase === 'move') {
@@ -192,6 +222,15 @@ const Mobile = {
     }
     this.dirty = true;
   },
+  // cruceta: 4 direcciones según dónde esté el dedo dentro del círculo (se puede deslizar sin levantarlo)
+  dpadAt(b, x, y) {
+    let dir = null;
+    if (b) { const dx = x - b.x, dy = y - b.y; if (Math.hypot(dx, dy) > b.r * 0.22) dir = Math.abs(dx) > Math.abs(dy) ? (dx < 0 ? 'ArrowLeft' : 'ArrowRight') : (dy < 0 ? 'ArrowUp' : 'ArrowDown'); }
+    if (dir === this.dpadDir) return;
+    if (this.dpadDir) Input.held[this.dpadDir] = false;
+    if (dir) { Input.pressedKeys[dir] = true; Input.held[dir] = true; this.vib(6); }
+    this.dpadDir = dir; this.dirty = true;
+  },
   mouseAt(gx, gy) { const M = Input.mouse; M.x = gx; M.y = gy; M.inside = true; M.moved = true; M.last = performance.now(); },
   press(b) {
     for (const k of b.keys) { if (!Input.held[k]) Input.pressedKeys[k] = true; Input.held[k] = true; }
@@ -201,6 +240,7 @@ const Mobile = {
   releaseAll() {
     for (const b of this.btnHeld.values()) this.release(b);
     this.joy = null; for (const k of ['T_up', 'T_down', 'T_left', 'T_right']) Input.held[k] = false;
+    this.dpadAt(null);
     const M = Input.mouse; if (M.down[0]) { M.down[0] = false; M.released[0] = true; }
     this.touches.clear();
   },
@@ -215,6 +255,7 @@ const Mobile = {
     if (!this.usesJoy(c) && this.joy) this.joy = null;
     // los botones que ya no están en pantalla se sueltan
     for (const [id, b] of this.btnHeld) if (!this.buttons(c).some((q) => q.id === id)) this.release(b);
+    if (this.dpadDir && c !== 'menu' && c !== 'title') { this.dpadAt(null); for (const [id, T] of this.touches) if (T.kind === 'dpad') this.touches.delete(id); }
     const J = this.joy; let ux = 0, uy = 0;
     if (J) {
       const R = this.u * 0.85; let dx = J.x - J.ox, dy = J.y - J.oy; const l = Math.hypot(dx, dy);
@@ -229,6 +270,8 @@ const Mobile = {
     const set = (k, on) => { if (on && !Input.held[k]) Input.pressedKeys[k] = true; Input.held[k] = on; };
     set('T_up', up); set('T_down', down); set('T_left', left); set('T_right', right);
     this.aimT = Math.max(0, this.aimT - 1 / 60);
+    // la puntería del ataque táctil dura hasta que el ataque sale (unos fotogramas tras soltar)
+    if (this.moveEnd && --this.moveEnd === 0) { this.moveTouch = null; this.moveAim = null; }
   },
   // ---------- dibujo de los controles ----------
   label(text, col = '#ffffff') {
@@ -270,6 +313,8 @@ const Mobile = {
       x.globalAlpha = 1;
     }
     for (const b of this.buttons(c)) {
+      if (b.dpad) { this.drawDpad(x, b); continue; }
+      if (b.move !== undefined) { this.drawMove(x, b); continue; }
       const held = this.btnHeld.has(b.id);
       x.globalAlpha = (b.faint ? 0.35 : alpha) + (held ? 0.3 : 0);
       x.fillStyle = '#0c0818'; x.beginPath(); x.arc(b.x, b.y, b.r, 0, Math.PI * 2); x.fill();
@@ -280,6 +325,46 @@ const Mobile = {
       x.drawImage(L, Math.round(b.x - (L.width * s) / 2), Math.round(b.y - (L.height * s) / 2 + s), L.width * s, L.height * s);
       x.globalAlpha = 1;
     }
+  },
+  // botón de ataque: color del tipo, nombre, enfriamiento en forma de reloj y brillo al cargar
+  drawMove(x, b) {
+    const B = Battle.active, f = B && B.ally; if (!f) return;
+    const i = b.move, m = MOVES[f.c.moves[i]], held = this.btnHeld.has(b.id);
+    const cd = f.cds[i] > 0 ? U.clamp(f.cds[i] / (m.cd * (f.mods.cd || 1)), 0, 1) : 0;
+    x.globalAlpha = held ? 0.85 : 0.62; x.fillStyle = '#0c0818'; x.beginPath(); x.arc(b.x, b.y, b.r, 0, Math.PI * 2); x.fill();
+    x.globalAlpha = held ? 0.7 : 0.38; x.fillStyle = b.col; x.beginPath(); x.arc(b.x, b.y, b.r * 0.86, 0, Math.PI * 2); x.fill();
+    if (cd > 0) { x.globalAlpha = 0.6; x.fillStyle = '#05030a'; x.beginPath(); x.moveTo(b.x, b.y); x.arc(b.x, b.y, b.r * 0.9, -Math.PI / 2, -Math.PI / 2 + cd * Math.PI * 2); x.closePath(); x.fill(); }
+    const chg = held && B.chg && B.chg.i === i ? U.clamp((B.chg.t - 0.28) / 0.7, 0, 1) : 0;
+    x.globalAlpha = 1; x.strokeStyle = chg > 0 ? '#fff4a0' : b.col; x.lineWidth = held ? 4 : 2.5;
+    x.beginPath(); x.arc(b.x, b.y, b.r - 1, -Math.PI / 2, -Math.PI / 2 + (chg > 0 ? chg : 1) * Math.PI * 2); x.stroke();
+    const L = this.label(m.name), s = Math.max(1, Math.min(2.4, (b.r * 1.7) / L.width));
+    x.globalAlpha = cd > 0 ? 0.6 : 1;
+    x.drawImage(L, Math.round(b.x - (L.width * s) / 2), Math.round(b.y - (L.height * s) / 2 + s), L.width * s, L.height * s);
+    x.globalAlpha = 1;
+    // flecha de puntería desde el ánima mientras se arrastra
+    if (held && this.moveAim != null && this.moveTouch === i) {
+      let gx, gy;
+      if (typeof World3D !== 'undefined' && World3D.used && World3D.cv.style.display !== 'none') [gx, gy] = World3D.project(f.x / 16, 0.3, f.y / 16);
+      else { const c = World.cam || [0, 0]; gx = f.x - c[0]; gy = f.y - c[1]; }
+      const r = this.gameRect(), px = r.left + (gx * r.width) / WIDE, py = r.top + (gy * r.height) / H, a = this.moveAim, sc = r.height / H;
+      const dx = Math.cos(a), dy = Math.sin(a) * 0.78, l = Math.hypot(dx, dy), ux = dx / l, uy = dy / l, L2 = 70 * sc;
+      x.globalAlpha = 0.85; x.strokeStyle = b.col; x.lineWidth = 3 * sc; x.setLineDash([6 * sc, 4 * sc]);
+      x.beginPath(); x.moveTo(px + ux * 10 * sc, py + uy * 10 * sc); x.lineTo(px + ux * L2, py + uy * L2); x.stroke(); x.setLineDash([]);
+      x.fillStyle = b.col; x.beginPath(); x.moveTo(px + ux * (L2 + 9 * sc), py + uy * (L2 + 9 * sc)); x.lineTo(px + ux * L2 - uy * 6 * sc, py + uy * L2 + ux * 6 * sc); x.lineTo(px + ux * L2 + uy * 6 * sc, py + uy * L2 - ux * 6 * sc); x.fill();
+      x.globalAlpha = 1;
+    }
+  },
+  drawDpad(x, b) {
+    const a = b.faint ? 0.3 : 0.5;
+    x.globalAlpha = a; x.fillStyle = '#0c0818'; x.beginPath(); x.arc(b.x, b.y, b.r, 0, Math.PI * 2); x.fill();
+    x.strokeStyle = '#ffffff'; x.lineWidth = 2; x.beginPath(); x.arc(b.x, b.y, b.r - 1, 0, Math.PI * 2); x.stroke();
+    const dirs = [['ArrowUp', 0, -1], ['ArrowDown', 0, 1], ['ArrowLeft', -1, 0], ['ArrowRight', 1, 0]], k = b.r * 0.62, s = b.r * 0.2;
+    for (const [d, dx, dy] of dirs) {
+      const on = this.dpadDir === d, cx = b.x + dx * k, cy = b.y + dy * k;
+      x.globalAlpha = on ? 0.95 : a + 0.3; x.fillStyle = on ? '#ffd048' : '#e8e0ff';
+      x.beginPath(); x.moveTo(cx + dx * s, cy + dy * s); x.lineTo(cx - dx * s * 0.6 + dy * s, cy - dy * s * 0.6 + dx * s); x.lineTo(cx - dx * s * 0.6 - dy * s, cy - dy * s * 0.6 - dx * s); x.closePath(); x.fill();
+    }
+    x.globalAlpha = 1;
   },
   // ---------- pausa al cambiar de app ----------
   onVisibility() {
@@ -392,6 +477,11 @@ Input.pollGamepad = function () {
   const BP = BattleScene.prototype, _hai = BP.handleAttackInput;
   BP.handleAttackInput = function (f, dt) {
     if (Input.padAim !== null && f === this.ally) { f.ang = Input.padAim; f.aimAng = Input.padAim; }
+    // ataques táctiles: arrastrando se apunta a mano; si no, al rival
+    else if (f === this.ally && Mobile.moveTouch != null) {
+      const tgt = this.targetOf(f), a = Mobile.moveAim != null ? Mobile.moveAim : tgt && !tgt.inBall ? angTo(f, tgt) : f.ang;
+      f.ang = a; f.aimAng = a;
+    }
     return _hai.call(this, f, dt);
   };
   // vibración al recibir golpes
@@ -437,9 +527,16 @@ if (typeof World3D !== 'undefined') {
   World3D.fitCanvas = function () {
     const q = Q[Mobile.quality()] || Q.alta;
     const r = Engine.canvas.getBoundingClientRect(), dpr = Math.min(window.devicePixelRatio || 1, q.dpr);
-    const w = Math.max(426, Math.min(q.max, Math.round(r.width * dpr))), h = Math.round(w * H / WIDE);
+    // con controles táctiles, el 3D ocupa toda la pantalla (sin franjas negras): el juego 2D queda en su
+    // rectángulo y el mundo se extiende a los lados con la misma cámara (ext = ampliación del encuadre)
+    const full = Mobile.wanted() && !Mobile.portrait, R = full ? { left: 0, top: 0, width: Mobile.vw, height: Mobile.vh } : r;
+    this.ext = full && (Math.abs(R.width - r.width) > 2 || Math.abs(R.height - r.height) > 2)
+      ? { sx: r.width / R.width, sy: r.height / R.height, ox: ((r.left + r.width / 2) - R.width / 2) * 2 / R.width, oy: -((r.top + r.height / 2) - R.height / 2) * 2 / R.height } : null;
+    const k = R.width / r.width;
+    const w = Math.max(426, Math.min(Math.round(q.max * Math.min(k, 1.6)), Math.round(R.width * dpr))), h = Math.round(w * R.height / R.width);
     const st = this.cv.style;
-    st.left = r.left + 'px'; st.top = r.top + 'px'; st.width = r.width + 'px'; st.height = r.height + 'px'; st.display = 'block';
+    st.left = R.left + 'px'; st.top = R.top + 'px'; st.width = R.width + 'px'; st.height = R.height + 'px'; st.display = 'block';
+    Engine.canvas.style.boxShadow = this.ext ? 'none' : '';
     if (this.cv.width !== w || this.cv.height !== h) { this.r.setSize(w, h, false); this.rt.setSize(w, h); this.post.uniforms.res.value.set(w, h); }
     this.dofBase = q.dof;
     if (this.sun && this.sun.shadow.mapSize.x !== q.shadow) { this.sun.shadow.mapSize.set(q.shadow, q.shadow); if (this.sun.shadow.map) { this.sun.shadow.map.dispose(); this.sun.shadow.map = null; } }
@@ -451,12 +548,14 @@ if (typeof World3D !== 'undefined') {
 {
   const _bar = BattleScene.prototype.drawMoveBar;
   BattleScene.prototype.drawMoveBar = function (ctx) {
+    // con controles táctiles los ataques son botones propios: la barra sobra
+    if (Input.mode === 'touch' && Mobile.wanted()) return;
     const keys = MOVE_KEYS.slice();
     if (Input.mode === 'pad' || Input.mode === 'touch') MOVE_KEYS.fill('');
     try { _bar.call(this, ctx); } finally { for (let i = 0; i < 4; i++) MOVE_KEYS[i] = keys[i]; }
-    if (Input.mode === 'pad' || Input.mode === 'touch') {
+    if (Input.mode === 'pad') {
       P(ctx, 0, 228, 332, 12, '#0e0a18');
-      Font.draw(ctx, Input.mode === 'pad' ? 'A: atacar · B: esquivar · X: táctico · Y: arte · LB/RB: elegir' : 'Toca el campo: atacar · Mantén: cargar · Toca un ataque: usarlo', 6, 230, '#6a6288');
+      Font.draw(ctx, 'A: atacar · B: esquivar · X: táctico · Y: arte · LB/RB: elegir', 6, 230, '#6a6288');
     }
   };
   const _tut = BattleScene.prototype.drawTutorial;
@@ -468,8 +567,8 @@ if (typeof World3D !== 'undefined') {
       ['Stick izquierdo', 'Mover a tu ánima'], ['Stick derecho', 'Apuntar'], ['A / RT', 'Ataque armado (mantén = cargar)'], ['LB / RB', 'Elegir el ataque armado'],
       ['X (mantener)', 'Selector táctico (cámara lenta)'], ['B', 'Esquivar (invulnerable)'], ['LT', 'Modo captura'], ['Y · L3', 'Arte Ánima · Dúo'], ['Select · Start', 'Cambiar ánima · Pausa'],
     ] : [
-      ['Joystick (izquierda)', 'Mover a tu ánima'], ['Tocar el campo', 'Atacar hacia ese punto'], ['Mantener el dedo', 'Cargar el ataque'], ['Tocar un ataque', 'Usar ese ataque'],
-      ['Táctico (mantener)', 'Elegir ataque a cámara lenta'], ['Esquivar', 'Invulnerable un instante'], ['Captura', 'Lanzar esferas'], ['Arte · Dúo', 'Ataques especiales'], ['Pausa · Cambiar', 'Mochila, huir, cambiar'],
+      ['Joystick (izquierda)', 'Mover a tu ánima'], ['Tocar un ataque', 'Lanzarlo contra el rival'], ['Arrastrar un ataque', 'Apuntar a mano'], ['Mantener un ataque', 'Cargarlo'],
+      ['Esquivar', 'Invulnerable un instante'], ['Captura', 'Lanzar esferas'], ['Arte · Dúo', 'Ataques especiales'], ['Pausa · Cambiar', 'Mochila, huir, cambiar'],
     ];
     lines.forEach(([k, d], i) => { Font.draw(ctx, k, 28, 52 + i * 13, '#c04830'); Font.draw(ctx, d, 128, 52 + i * 13, '#2a2236'); });
     Font.drawCenter(ctx, 'Los ataques enemigos se marcan en ROJO: ¡esquívalos!', 160, 172, '#5a5068');

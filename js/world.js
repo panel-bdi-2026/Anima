@@ -631,7 +631,7 @@ const World = {
       drawShadow(ctx, sx + 8, sy + 14, 6, 2, 0.25);
       if (e.animSeed === undefined) e.animSeed = Math.random() * 6;
       if (e.animSp !== c.sp) { e.animSp = c.sp; e.anim = null; }
-      CreatureAnim.draw(ctx, e, { sp: c.sp, S: 22, shiny: c.shiny, px: sx + 8, py: sy + 15, flip: e.dir === 'right', t: Engine.time, dt: 1 / 60, speed: e.moving ? 60 : 0 });
+      CreatureAnim.draw(ctx, e, { sp: c.sp, S: 22, shiny: c.shiny, px: sx + 8, py: sy + 15, flip: e.dir === 'right', view: e.dir === 'down' ? 'front' : e.dir === 'up' ? 'back' : 'side', t: Engine.time, dt: 1 / 60, speed: e.moving ? 60 : 0 });
     } else {
       const look = e === this.player ? LOOKS.player : LOOKS[e.look] || LOOKS.boy;
       const spr = CharSprites.get(look);
