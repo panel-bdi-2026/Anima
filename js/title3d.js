@@ -333,6 +333,6 @@ const Title3D = {
         Font.draw(ctx, 'Códice: ' + this.sum.dex, x + 7, y + 31, '#d0c0e8'); Font.draw(ctx, Game.timeStr(this.sum.time), x + 7, y + 43, '#d0c0e8');
       }
     }
-    if (bars <= 0) { Font.draw(ctx, 'v1.0', 6, 229, '#ffe8d8'); Font.drawRight(ctx, this.menu ? '' : 'Un juego original', W - 6, 229, '#ffe8d8'); }
+    if (bars <= 0) { Font.drawRight(ctx, this.menu ? '' : 'Un juego original', W - 6, 229, '#ffe8d8'); }
   };
 }
