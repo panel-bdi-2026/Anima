@@ -105,9 +105,21 @@
     // ---------- escenario de prueba ----------
     escenarios: {}, // escenarios con código propio: AnimaCanal.escenarios.nombre = async (cfg) => { … }
     async runScenario(cfg) {
-      cfg = cfg || (this.info && this.info.escenario);
-      if (!cfg) return false;
+      // sin escenario: se muestra la pantalla de título (su entrada) y luego la revisión
+      cfg = cfg || (this.info && this.info.escenario) || { tipo: 'titulo' };
+      const tipo = cfg.tipo || 'mapa';
+      const until = (f) => new Promise((res) => { const k = () => (f() ? res() : setTimeout(k, 200)); k(); });
       this.scenarioActive = true;
+      if (tipo === 'titulo') {
+        // la entrada del título se ve completa; mientras tanto el menú no responde
+        let ts = Scenes.stack.find((x) => x instanceof TitleScreen);
+        if (!ts) { Scenes.clear(); ts = Scenes.push(new TitleScreen()); }
+        ts.menu = false; ts.t = 0; ts.busy = true; Fade.a = 0;
+        await until(() => ts.t >= (cfg.segundos || 7));
+        ts.busy = false;
+        if (this.openPanel) this.openPanel('fin');
+        return true;
+      }
       // la partida del escenario es de mentira: no se guarda
       if (!Game._canalSave) { const s = Game.save; Game._canalSave = s; Game.save = function () { return Canal.scenarioActive ? true : s.apply(this, arguments); }; }
       G = newGameState(); // eslint-disable-line no-global-assign
@@ -120,7 +132,6 @@
       G.map = cfg.mapa || 'ruta1'; G.x = cfg.x !== undefined ? cfg.x : 10; G.y = cfg.y !== undefined ? cfg.y : 8;
       Scenes.clear(); World.map = null; World.start(); Fade.a = 0;
       await wait(0.4);
-      const tipo = cfg.tipo || 'mapa';
       const arg = (a) => (typeof a === 'string' && /^\$equipo\d+$/.test(a) ? G.party[+a.slice(7)] : a);
       try {
         if (tipo === 'combate') {
@@ -135,7 +146,9 @@
           await World.runScript(async () => { await runScene(new Cls(...(cfg.args || []).map(arg))); });
         } else if (this.escenarios[tipo]) {
           await World.runScript(() => this.escenarios[tipo](cfg));
-        } else return true; // 'mapa': se juega libre; la revisión se abre con la etiqueta de la esquina
+        } else if (cfg.segundos) {
+          await wait(cfg.segundos); // 'mapa' con «segundos»: se recorre un rato y luego la revisión
+        } else return true; // 'mapa' sin «segundos»: se juega libre; la revisión se abre con la etiqueta de la esquina
       } catch (e) { console.error(e); }
       if (this.openPanel) this.openPanel('fin');
       return true;
@@ -149,28 +162,29 @@
   window.addEventListener('load', () => {
     if (!/probar/.test(location.hash)) return;
     history.replaceState(null, '', location.pathname); // al recargar a mano, no se repite solo
-    const start = () => { if (Canal.info && Canal.info.escenario) Canal.runScenario(); };
+    const start = () => Canal.runScenario();
     Canal.refresh().then(() => setTimeout(start, 300));
   });
 
   // ---------- etiqueta «versión de prueba» y panel de revisión ----------
+  // El panel es una ventana centrada sobre el juego oscurecido, con solo 4 botones.
   const css = `
 #canal-prueba{position:fixed;left:calc(env(safe-area-inset-left,0px) + 6px);top:calc(env(safe-area-inset-top,0px) + 6px);z-index:20;
   font:bold 11px/1 system-ui,sans-serif;color:#fff;background:rgba(200,70,20,.9);border:1px solid #ffd0a0;border-radius:8px;padding:6px 9px;
   box-shadow:0 1px 5px rgba(0,0,0,.5);cursor:pointer;touch-action:manipulation;-webkit-user-select:none;user-select:none;letter-spacing:.5px}
-#canal-panel{position:fixed;left:calc(env(safe-area-inset-left,0px) + 6px);top:calc(env(safe-area-inset-top,0px) + 36px);z-index:21;display:none;flex-direction:column;gap:7px;
-  padding:12px;background:#2a1638;color:#fff;font:13px/1.35 system-ui,sans-serif;border:2px solid #ffb060;border-radius:10px;width:min(340px,calc(100vw - 24px));
-  max-height:calc(100vh - 48px);overflow:auto;box-sizing:border-box;touch-action:pan-y;-webkit-user-select:text;user-select:text}
+#canal-panel{position:fixed;inset:0;z-index:21;display:none;align-items:center;justify-content:center;padding:12px;box-sizing:border-box;background:rgba(5,3,10,.6)}
 #canal-panel.open{display:flex}
-#canal-panel .row{display:flex;gap:7px}
+#canal-panel .box{display:flex;flex-direction:column;gap:8px;padding:14px;background:#2a1638;color:#fff;font:14px/1.35 system-ui,sans-serif;
+  border:2px solid #ffb060;border-radius:12px;width:min(380px,100%);max-height:100%;overflow:auto;box-sizing:border-box;touch-action:pan-y}
+#canal-panel .row{display:flex;gap:8px}
 #canal-panel .row button{flex:1}
-#canal-panel button{font:bold 13px system-ui,sans-serif;border:0;border-radius:8px;padding:9px;cursor:pointer;color:#2a1638;background:#c8b0e0;touch-action:manipulation}
+#canal-panel button{font:bold 14px system-ui,sans-serif;border:0;border-radius:9px;padding:11px 8px;cursor:pointer;color:#2a1638;background:#c8b0e0;touch-action:manipulation}
 #canal-panel button:disabled{opacity:.5}
 #canal-panel button.ok{background:#7ad070}
 #canal-panel button.no{background:#f08070}
 #canal-panel button.main{background:#ffd048}
-#canal-panel textarea,#canal-panel input{font:13px system-ui,sans-serif;border-radius:6px;border:1px solid #9a6ac0;padding:6px;background:#1a0c24;color:#fff;width:100%;box-sizing:border-box;margin-bottom:6px}
-#canal-panel textarea{min-height:60px;resize:vertical}
+#canal-panel textarea,#canal-panel input{font:14px system-ui,sans-serif;border-radius:6px;border:1px solid #9a6ac0;padding:7px;background:#1a0c24;color:#fff;width:100%;box-sizing:border-box;margin-bottom:6px}
+#canal-panel textarea{min-height:64px;resize:vertical}
 #canal-panel .msg{color:#ffe2a8}
 #canal-panel .msg:empty{display:none}
 #canal-panel .t{font-weight:bold;color:#ffd048}
@@ -183,63 +197,63 @@
     // etiqueta pequeña en la esquina superior izquierda; al tocarla se abre el panel
     const bar = el('button', '', 'VERSIÓN DE PRUEBA'); bar.type = 'button'; bar.id = 'canal-prueba';
     const panel = el('div'); panel.id = 'canal-panel';
-    const title = el('div', 't'), info = el('div'), msg = el('div', 'msg');
-    // nota para Claude
+    const box = el('div', 'box'), title = el('div', 't'), msg = el('div', 'msg');
+    // nota para Claude (aparece al tocar «Revisar con Claude»)
     const noteBox = el('div', 'hide'), noteTxt = el('textarea');
-    noteTxt.placeholder = 'Escribe qué viste o qué cambiarías (opcional)';
-    // llave de GitHub
+    noteTxt.placeholder = 'Qué viste o qué cambiarías (opcional)';
+    // llave de GitHub (solo se pide la primera vez)
     const keyBox = el('div', 'hide'), keyIn = el('input');
     keyIn.type = 'password'; keyIn.placeholder = 'Pega aquí la llave de GitHub'; keyIn.autocomplete = 'off';
-    let pending = null; // acción que espera la llave
+    let pending = null, atEnd = false; // acción que espera la llave; panel abierto al terminar la prueba
     const say = (t) => { msg.textContent = t; };
-    const needKey = (fn) => { if (Canal.token()) return fn(); pending = fn; keyBox.classList.remove('hide'); say('Para esto la app necesita la llave de GitHub (solo la primera vez).'); keyIn.focus(); };
-    const busy = (on) => { for (const b of panel.querySelectorAll('button')) b.disabled = on; };
+    const needKey = (fn) => { if (Canal.token()) return fn(); pending = fn; keyBox.classList.remove('hide'); say('La primera vez, la app necesita la llave de GitHub.'); keyIn.focus(); };
+    const busy = (on) => { for (const b of box.querySelectorAll('button')) b.disabled = on; };
     const act = async (fn, okMsg) => {
       busy(true); say('Enviando a GitHub…');
       try { await fn(); say(okMsg); setTimeout(() => Canal.goPublished(), 1800); }
-      catch (e) { say('No se pudo: ' + e.message); busy(false); }
+      catch (e) {
+        say('No se pudo: ' + e.message); busy(false);
+        if (/llave/.test(e.message)) { Canal.setToken(''); } // si la llave falló, se vuelve a pedir la próxima vez
+      }
     };
     keyBox.append(keyIn, row(
-      btn('Guardar llave', 'main', () => { if (!keyIn.value.trim()) return; Canal.setToken(keyIn.value); keyIn.value = ''; keyBox.classList.add('hide'); forget.classList.remove('hide'); say('Llave guardada.'); const f = pending; pending = null; if (f) f(); }),
+      btn('Guardar llave', 'main', () => { if (!keyIn.value.trim()) return; Canal.setToken(keyIn.value); keyIn.value = ''; keyBox.classList.add('hide'); say(''); const f = pending; pending = null; if (f) f(); }),
       btn('Cancelar', '', () => { keyBox.classList.add('hide'); pending = null; say(''); }),
     ));
-    const accept = btn('Aceptar cambio', 'ok', () => {
-      if (!confirm('¿Aceptar este cambio? Se une a la versión publicada y queda en vivo en un par de minutos.')) return;
-      needKey(() => act(() => Canal.accept(), '¡Aceptado! La versión publicada se actualiza en un par de minutos. Volviendo…'));
+    const accept = btn('Aceptar', 'ok', () => {
+      if (!confirm('¿Aceptar este cambio? Pasa a la versión publicada en un par de minutos.')) return;
+      needKey(() => act(() => Canal.accept(), '¡Aceptado! La versión publicada se actualiza en un par de minutos.'));
     });
-    const reject = btn('Rechazar cambio', 'no', () => {
+    const reject = btn('Rechazar', 'no', () => {
       if (!confirm('¿Rechazar este cambio? Se descarta y la versión publicada no cambia.')) return;
       needKey(() => act(() => Canal.reject(), 'Rechazado. Volviendo a la versión publicada…'));
     });
-    const retry = btn('Reintentar', '', () => { location.replace(location.pathname + '#probar'); location.reload(); });
+    const retry = btn('Ver de nuevo', '', () => { location.replace(location.pathname + '#probar'); location.reload(); });
     const sendNote = () => {
       const t = noteTxt.value.trim();
       if (!t) { Canal.goPublished(); return; }
       needKey(() => act(() => Canal.note('📝 Nota de Alejandro desde la app:\n\n' + t), 'Nota enviada. Volviendo a la versión publicada…'));
     };
-    const claude = btn('Revisar con Claude', '', () => { noteBox.classList.remove('hide'); noteTxt.focus(); say('Si quieres, deja una nota: Claude la lee en GitHub. Luego vuelves a la versión publicada.'); });
-    noteBox.append(noteTxt, row(btn('Enviar nota y volver', 'main', sendNote), btn('Volver sin nota', '', () => Canal.goPublished())));
-    const back = btn('Volver a la versión publicada', 'main', () => Canal.goPublished());
-    const copy = btn('Copiar aquí las partidas publicadas', '', () => {
-      if (!confirm('Las partidas de esta prueba se reemplazarán por una copia de las publicadas. Las publicadas no cambian. El juego se reiniciará. ¿Seguir?')) return;
-      const n = Canal.copyPublished();
-      say(n ? `Copiadas ${n} partida(s). Reiniciando…` : 'No hay partidas publicadas para copiar.');
-      if (n) setTimeout(() => location.reload(), 700);
-    });
-    const forget = btn('Olvidar la llave de GitHub', '', () => { Canal.setToken(''); say('Llave borrada de este aparato.'); forget.classList.add('hide'); });
-    const close = btn('Cerrar', '', () => panel.classList.remove('open'));
+    const claude = btn('Revisar con Claude', '', () => { noteBox.classList.remove('hide'); noteTxt.focus(); say('Si quieres, deja una nota para Claude. Luego vuelves a la versión publicada.'); });
+    noteBox.append(noteTxt, row(btn('Enviar y volver', 'main', sendNote), btn('Volver sin nota', '', () => Canal.goPublished())));
+    const back = btn('Volver a la versión publicada', 'main', () => Canal.goPublished()); // solo sin Pull Request (pruebas locales)
     const review = [row(accept, reject), row(retry, claude)];
-    panel.append(title, info, ...review, noteBox, keyBox, msg, back, copy, forget, close);
+    box.append(title, msg, ...review, noteBox, keyBox, back);
+    panel.append(box);
     const showInfo = () => {
       const i = Canal.info;
       title.textContent = i ? `Cambio #${i.pr}: ${i.title}` : 'Versión de prueba';
-      info.textContent = 'Partidas y opciones de esta prueba están separadas de la versión publicada.' + (Canal.scenarioActive ? ' Estás en una partida armada para probar este cambio (no se guarda).' : '');
       for (const r of review) r.classList.toggle('hide', !PR);
-      forget.classList.toggle('hide', !Canal.token());
+      back.classList.toggle('hide', !!PR);
     };
-    Canal.openPanel = (why) => { showInfo(); say(why === 'fin' ? 'Terminó la prueba. ¿Qué hacemos con este cambio?' : ''); panel.classList.add('open'); };
+    Canal.openPanel = (why) => {
+      atEnd = why === 'fin'; showInfo(); noteBox.classList.add('hide'); keyBox.classList.add('hide');
+      say(atEnd ? '¿Qué hacemos con este cambio?' : ''); panel.classList.add('open');
+    };
     showInfo(); Canal.onInfo = showInfo;
-    bar.addEventListener('click', () => { if (panel.classList.contains('open')) panel.classList.remove('open'); else Canal.openPanel(); });
+    bar.addEventListener('click', () => Canal.openPanel());
+    // tocar fuera de la ventana la cierra, salvo al terminar la prueba (ahí hay que elegir)
+    panel.addEventListener('click', (e) => { if (e.target === panel && !atEnd) panel.classList.remove('open'); });
     // que el juego no reciba los toques, clics ni teclas del panel
     for (const x of [bar, panel]) for (const ev of ['mousedown', 'pointerdown', 'touchstart', 'keydown', 'keyup']) x.addEventListener(ev, (e) => e.stopPropagation());
     document.body.append(bar, panel);

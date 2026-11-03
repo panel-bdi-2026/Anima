@@ -3,7 +3,7 @@
 //  Opción «VERSIÓN» en la pantalla de título (ver js/channel.js)
 //  - Publicada: lista de cambios en prueba; al elegir uno se abre directo en
 //    su escenario de prueba.
-//  - Prueba: probar el cambio otra vez, revisarlo (aceptar, rechazar…),
+//  - Prueba: ver el cambio otra vez, revisarlo (aceptar, rechazar…),
 //    volver a la publicada o copiar las partidas publicadas.
 // ============================================================
 {
@@ -21,8 +21,7 @@
       if (C.isPreview) {
         if (C.status === 'loading') await C.refresh();
         const opts = [], acts = [];
-        if (C.info && C.info.escenario) { opts.push('Probar el cambio'); acts.push('probar'); }
-        if (C.pr) { opts.push('Revisar el cambio'); acts.push('revisar'); }
+        if (C.pr) { opts.push('Ver el cambio', 'Revisar el cambio'); acts.push('probar', 'revisar'); }
         opts.push('Volver a la publicada', 'Copiar partidas publicadas', 'Cancelar'); acts.push('volver', 'copiar', null);
         const head = C.info ? `Cambio #${C.info.pr}: ${clean(C.info.title, 60)}.` : 'Versión de prueba.';
         const r = await ask(head + ' Partidas y opciones aparte.', opts);
