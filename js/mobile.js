@@ -167,7 +167,7 @@ const Mobile = {
   gameRect() { return Engine.canvas.getBoundingClientRect(); },
   toGame(cx, cy) { const r = this.gameRect(); return [((cx - r.left) * WIDE) / r.width, ((cy - r.top) * H) / r.height, cx >= r.left && cy >= r.top && cx < r.right && cy < r.bottom]; },
   onTouch(e, phase) {
-    if (e.target && e.target.closest && e.target.closest('a,input,button,textarea')) return;
+    if (e.target && e.target.closest && e.target.closest('a,input,button,textarea,#canal-prueba,#canal-panel')) return;
     e.preventDefault();
     Input.setMode('touch');
     if (!this.active) { this.active = true; this.layoutScreen(); this.firstTouch(); }

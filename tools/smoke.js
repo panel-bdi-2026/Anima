@@ -57,6 +57,27 @@ const CHECKS = [
     const touchOk = ['dpad', 'a', 'b'].every((k) => ids.menu.includes(k)) && ids.battle.includes('m0') && ids.battle.includes('dodge') && !errors.length;
     console.log(`${touchOk ? 'ok   ' : 'FALLA'}  Controles táctiles${touchOk ? '' : ' — ' + JSON.stringify(ids) + ' ' + errors[0]}`);
     if (!touchOk) failed++;
+    // versión de prueba (/prueba/): partidas aparte, aviso visible y copia sin tocar las publicadas
+    const pc = await browser.newContext();
+    const p3 = await pc.newPage();
+    errors = [];
+    p3.on('pageerror', (e) => errors.push(e.message));
+    const ready = () => p3.waitForFunction(() => window.AnimaCanal && Scenes.top());
+    await p3.goto(URL); await ready();
+    const pub = await p3.evaluate(() => { localStorage.setItem(SAVE_KEY, '{"name":"PUB"}'); return { prev: AnimaCanal.isPreview, ver: Scenes.top().options().includes('VERSIÓN'), banner: !!document.getElementById('canal-prueba') }; });
+    await p3.goto(URL + 'prueba/'); await ready();
+    const pre = await p3.evaluate(() => {
+      const r = { prev: AnimaCanal.isPreview, empty: localStorage.getItem(SAVE_KEY) === null, banner: !!document.getElementById('canal-prueba'), ver: Scenes.top().options().includes('VERSIÓN') };
+      r.copied = AnimaCanal.copyPublished(); r.same = localStorage.getItem(SAVE_KEY) === '{"name":"PUB"}';
+      localStorage.setItem(SAVE_KEY, '{"name":"PRUEBA"}');
+      return r;
+    });
+    await p3.goto(URL); await ready();
+    const back = await p3.evaluate(() => localStorage.getItem(SAVE_KEY));
+    const chOk = !pub.prev && pub.ver && !pub.banner && pre.prev && pre.empty && pre.banner && pre.ver && pre.copied === 1 && pre.same && back === '{"name":"PUB"}' && !errors.length;
+    console.log(`${chOk ? 'ok   ' : 'FALLA'}  Versión de prueba separada${chOk ? '' : ' — ' + JSON.stringify({ pub, pre, back }) + ' ' + (errors[0] || '')}`);
+    if (!chOk) failed++;
+    await pc.close();
   } finally {
     await browser.close();
     server.kill();
