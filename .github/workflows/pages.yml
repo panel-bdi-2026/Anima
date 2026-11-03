@@ -1,0 +1,133 @@
+# Publica el juego en GitHub Pages:
+#   https://panel-bdi-2026.github.io/Anima/         -> versión publicada (rama main)
+#   https://panel-bdi-2026.github.io/Anima/prueba/  -> versión de prueba (el Pull Request abierto con el cambio más reciente)
+# Se ejecuta al cambiar main y al abrir, actualizar, reabrir o cerrar un Pull Request.
+# Requisito (una sola vez): Settings -> Pages -> Source = "GitHub Actions".
+#
+# Seguridad: pull_request_target usa siempre este archivo tal como está en main
+# (un Pull Request no puede cambiar cómo se publica) y el código del Pull Request
+# solo se copia, nunca se ejecuta. Solo se publican ramas de este mismo
+# repositorio, no de copias (forks) de otras personas.
+name: Publicar en GitHub Pages
+on:
+  push:
+    branches: [main]
+  pull_request_target:
+    types: [opened, reopened, synchronize, closed]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: read
+  pages: write
+  id-token: write
+
+# una publicación a la vez; cada una calcula el estado actual, así que la última siempre queda bien
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Descargar main
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          path: main
+          persist-credentials: false
+
+      - name: Elegir el Pull Request para la versión de prueba
+        id: pick
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          # Pull Requests abiertos desde ramas de este mismo repositorio
+          gh api "repos/$REPO/pulls?state=open&per_page=100" \
+            | jq --arg repo "$REPO" '[.[] | select(.head.repo != null and .head.repo.full_name == $repo)]' > prs.json
+          best=""; best_date=""
+          # "actualizado más recientemente" = el último cambio de código (commit) o la apertura del Pull Request;
+          # los comentarios no cuentan, para que una revisión no cambie qué se está probando
+          for row in $(jq -r '.[] | "\(.number)|\(.head.sha)|\(.created_at)"' prs.json); do
+            IFS='|' read -r num sha created <<< "$row"
+            cdate=$(gh api "repos/$REPO/commits/$sha" --jq '.commit.committer.date')
+            d=$(printf '%s\n%s\n' "$created" "$cdate" | sort | tail -n 1)
+            echo "Pull Request #$num: último cambio $d"
+            if [[ -z "$best_date" || "$d" > "$best_date" ]]; then best="$num"; best_date="$d"; fi
+          done
+          if [[ -n "$best" ]]; then
+            jq --argjson n "$best" --arg d "$best_date" \
+              '.[] | select(.number == $n) | {pr: .number, title: .title, branch: .head.ref, sha: .head.sha, url: .html_url, updated: $d}' \
+              prs.json > canal.json
+            echo "Versión de prueba: Pull Request #$best"; cat canal.json
+            echo "pr=$best" >> "$GITHUB_OUTPUT"
+            echo "sha=$(jq -r .sha canal.json)" >> "$GITHUB_OUTPUT"
+          else
+            echo "No hay Pull Requests abiertos: la versión de prueba mostrará un aviso"
+          fi
+
+      - name: Descargar el Pull Request (solo se copia, no se ejecuta)
+        if: steps.pick.outputs.pr != ''
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.pick.outputs.sha }}
+          path: pr
+          persist-credentials: false
+
+      - name: Armar el sitio
+        env:
+          HAS_PR: ${{ steps.pick.outputs.pr }}
+        run: |
+          set -euo pipefail
+          mkdir -p _site
+          cp -a main/. _site/
+          rm -rf _site/.git _site/.github _site/prueba
+          mkdir -p _site/prueba
+          if [[ -n "$HAS_PR" ]]; then
+            cp -a pr/. _site/prueba/
+            rm -rf _site/prueba/.git _site/prueba/.github
+            cp canal.json _site/prueba/canal.json
+            # Si el Pull Request es anterior a js/channel.js, se le añade el de main: así la prueba
+            # siempre tiene partidas separadas y el aviso visible. Además se quita el manifiesto,
+            # para que la prueba no se pueda instalar como otra app.
+            cp main/js/channel.js _site/prueba/canal_inyectado.js
+            python3 - <<'EOF'
+          import re
+          p = '_site/prueba/index.html'
+          s = open(p, encoding='utf-8').read()
+          s = re.sub(r'<link[^>]*rel="manifest"[^>]*>\s*', '', s)
+          if 'js/channel.js' not in s:
+              s = re.sub(r'(<head[^>]*>)', r'\1\n<script src="canal_inyectado.js"></script>', s, count=1)
+          open(p, 'w', encoding='utf-8').write(s)
+          EOF
+          else
+            cat > _site/prueba/index.html <<'EOF'
+          <!doctype html>
+          <html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+          <title>Ánima: sin versión de prueba</title>
+          <style>body{margin:0;height:100vh;display:flex;align-items:center;justify-content:center;background:#0d0b14;color:#fff;font:16px system-ui,sans-serif;text-align:center}
+          button{margin-top:16px;font:bold 16px system-ui,sans-serif;padding:12px 18px;border:0;border-radius:10px;background:#ffd048;color:#2a1638}</style></head>
+          <body><div><p>Ahora mismo no hay ninguna versión de prueba.</p>
+          <button onclick="location.replace('../')">Volver a la versión publicada</button></div>
+          <script>setTimeout(function () { location.replace('../'); }, 5000);</script></body></html>
+          EOF
+          fi
+          echo "Contenido de prueba/:"; ls _site/prueba | head -n 20
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

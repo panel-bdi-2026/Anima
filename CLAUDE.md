@@ -2,6 +2,8 @@
 
 RPG de criaturas en tiempo real para navegador, en español. Se juega en https://panel-bdi-2026.github.io/Anima/ (GitHub Pages publica la rama `main`, también en el celular).
 
+Versión de prueba: https://panel-bdi-2026.github.io/Anima/prueba/ muestra el Pull Request abierto con el cambio de código más reciente. La publica `.github/workflows/pages.yml`; desde la app se entra con «VERSIÓN» en la pantalla de título. Tiene partidas y opciones aparte (`js/channel.js`) y un aviso fijo para volver a la publicada.
+
 ## Quién hace qué
 
 - **Alejandro** decide qué se hace, prueba jugando (sobre todo en el celular) y aprueba. No es programador: háblale en español y en lenguaje simple.

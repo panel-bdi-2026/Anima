@@ -16,6 +16,8 @@ http.createServer((req, res) => {
     return;
   }
   let p = decodeURIComponent(req.url.split('?')[0]);
+  // /prueba/ sirve el mismo juego, para probar la versión de prueba en local (en internet la publica .github/workflows/pages.yml)
+  if (p === '/prueba' || p.startsWith('/prueba/')) p = p.slice(7) || '/';
   if (p === '/') p = '/index.html';
   const f = path.join(root, p);
   if (!f.startsWith(root)) { res.writeHead(403); return res.end(); }
