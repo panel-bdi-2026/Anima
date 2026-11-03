@@ -1,0 +1,94 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Maqueta 3D</title>
+<style>html,body{margin:0;background:#000}canvas{display:block}</style>
+<script type="importmap">{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }</script>
+</head><body>
+<script type="module">
+// Maqueta de 3D real con sprites 2D (solo desarrollo). 1 unidad = 1 casilla (16 px).
+import * as THREE from 'three';
+const S = {"w":36,"h":28,"buildings":[{"x":10,"y":6,"w":8,"h":5,"img":"m3d_b0","roofH":40},{"x":3,"y":13,"w":5,"h":4,"img":"m3d_b1","roofH":36},{"x":11,"y":15,"w":5,"h":4,"img":"m3d_b2","roofH":36},{"x":3,"y":20,"w":5,"h":4,"img":"m3d_b3","roofH":36},{"x":15,"y":21,"w":5,"h":4,"img":"m3d_b4","roofH":36}],"trees":[[0,0,0],[1,0,3],[2,0,0],[3,0,2],[4,0,0],[5,0,3],[6,0,1],[7,0,1],[8,0,0],[9,0,3],[10,0,0],[11,0,0],[12,0,3],[13,0,3],[14,0,0],[15,0,0],[16,0,0],[17,0,1],[18,0,1],[19,0,1],[20,0,1],[21,0,3],[22,0,3],[23,0,1],[24,0,2],[25,0,2],[26,0,1],[27,0,1],[28,0,1],[29,0,1],[30,0,0],[31,0,2],[32,0,1],[33,0,2],[34,0,1],[35,0,0],[0,1,3],[0,2,0],[0,3,3],[0,4,0],[0,5,1],[0,6,2],[0,7,3],[0,8,1],[0,9,0],[0,10,2],[0,11,2],[0,12,1],[0,13,0],[0,14,0],[0,15,2],[0,16,1],[0,17,0],[0,18,0],[0,19,1],[0,20,2],[0,21,0],[0,22,0],[0,23,1],[0,24,2],[0,25,3],[0,26,2],[0,27,2],[1,27,3],[2,27,1],[3,27,0],[4,27,0],[5,27,3],[6,27,1],[7,27,1],[8,27,0],[9,27,3],[10,27,0],[11,27,0],[13,27,0],[14,27,0],[15,27,2],[16,27,1],[17,27,3],[18,27,0],[19,27,1],[20,27,1],[21,27,2],[22,27,1],[23,27,1],[24,27,0],[25,27,1]],"chars":[{"x":312,"y":318,"img":"m3d_c0","w":16,"h":24,"player":true},{"x":424,"y":190,"img":"m3d_c1","w":16,"h":24},{"x":472,"y":334,"img":"m3d_c2","w":16,"h":24},{"x":152,"y":238,"img":"m3d_c3","w":16,"h":24},{"x":328,"y":302,"img":"m3d_c4","w":16,"h":24},{"x":408,"y":94,"img":"m3d_c5","w":16,"h":24},{"x":152,"y":222,"img":"m3d_c6","w":16,"h":24},{"x":376,"y":302,"img":"m3d_c7","w":16,"h":24},{"x":232,"y":206,"img":"m3d_c8","w":16,"h":24},{"x":200,"y":430,"img":"m3d_c9","w":16,"h":24},{"x":312,"y":302,"img":"m3d_c10","w":32,"h":32}],"lamps":[[4,11],[10,11],[20,11],[21,20]]};
+const RW = 852, RH = 480;
+const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+renderer.setSize(RW, RH); renderer.setPixelRatio(1);
+renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+document.body.appendChild(renderer.domElement);
+const scene = new THREE.Scene();
+scene.background = new THREE.Color('#b8d4f0');
+scene.fog = new THREE.Fog('#b8d4f0', 16, 34);
+const loader = new THREE.TextureLoader();
+const tex = (n) => new Promise((r) => loader.load('shots/' + n + '.png', (t) => { t.magFilter = THREE.NearestFilter; t.minFilter = THREE.NearestFilter; t.generateMipmaps = false; t.colorSpace = THREE.SRGBColorSpace; r(t); }));
+const px = (v) => v / 16;
+
+// luces: sol de la tarde y cielo
+const sun = new THREE.DirectionalLight('#ffe2b0', 2.6);
+sun.position.set(-14, 18, 6); sun.castShadow = true;
+sun.shadow.mapSize.set(2048, 2048); Object.assign(sun.shadow.camera, { left: -26, right: 26, top: 26, bottom: -26, near: 1, far: 70 });
+sun.shadow.bias = -0.0008;
+scene.add(sun);
+scene.add(new THREE.HemisphereLight('#c8dcff', '#4a6a3a', 0.9));
+
+// suelo
+const gt = await tex('m3d_ground');
+const ground = new THREE.Mesh(new THREE.PlaneGeometry(S.w, S.h), new THREE.MeshStandardMaterial({ map: gt, roughness: 0.95 }));
+ground.rotation.x = -Math.PI / 2; ground.position.set(S.w / 2, 0, S.h / 2); ground.receiveShadow = true; scene.add(ground);
+
+// recorta una imagen en una textura nueva
+const crop = (t, sx, sy, sw, sh) => { const c = document.createElement('canvas'); c.width = sw; c.height = sh; c.getContext('2d').drawImage(t.image, sx, sy, sw, sh, 0, 0, sw, sh); const n = new THREE.CanvasTexture(c); n.magFilter = THREE.NearestFilter; n.minFilter = THREE.NearestFilter; n.generateMipmaps = false; n.colorSpace = THREE.SRGBColorSpace; return n; };
+const mat = (map, opts = {}) => new THREE.MeshStandardMaterial(Object.assign({ map, roughness: 0.9, transparent: false, alphaTest: 0.5 }, opts));
+
+// edificios: caja con la fachada delante y tejado a dos aguas
+for (const b of S.buildings) {
+  const t = await tex(b.img), W = t.image.width, Hh = t.image.height, rh = b.roofH;
+  const wd = px(W), depth = px(rh) * 1.5, hgt = px(Hh - rh) * 1.15;
+  const front = (b.y + b.h), cxw = b.x + b.w / 2, cz = front - depth / 2;
+  const facade = crop(t, 0, rh, W, Hh - rh);
+  // muros
+  const sideMat = new THREE.MeshStandardMaterial({ map: crop(t, 2, rh + 2, 8, Hh - rh - 4), roughness: 0.9 });
+  const box = new THREE.Mesh(new THREE.BoxGeometry(wd, hgt, depth), [sideMat, sideMat, sideMat, sideMat, mat(facade), sideMat]);
+  box.position.set(cxw, hgt / 2, cz); box.castShadow = box.receiveShadow = true; scene.add(box);
+  // tejado a dos aguas: la mitad inferior de la imagen va en la vertiente delantera
+  const roofT = crop(t, 0, 0, W, rh), rise = depth * 0.42, x0 = cxw - wd / 2 - 0.1, x1 = cxw + wd / 2 + 0.1;
+  const zf = front + 0.12, zb = front - depth - 0.12, zm = (zf + zb) / 2, y0 = hgt, y1 = hgt + rise;
+  const rg = new THREE.BufferGeometry();
+  rg.setAttribute('position', new THREE.Float32BufferAttribute([x0, y0, zf, x1, y0, zf, x1, y1, zm, x0, y1, zm, x0, y1, zm, x1, y1, zm, x1, y0, zb, x0, y0, zb], 3));
+  rg.setAttribute('uv', new THREE.Float32BufferAttribute([0, 0, 1, 0, 1, 0.5, 0, 0.5, 0, 0.5, 1, 0.5, 1, 1, 0, 1], 2));
+  rg.setIndex([0, 1, 2, 0, 2, 3, 4, 5, 6, 4, 6, 7]); rg.computeVertexNormals();
+  const roof = new THREE.Mesh(rg, new THREE.MeshStandardMaterial({ map: roofT, roughness: 0.8, side: THREE.DoubleSide }));
+  roof.castShadow = roof.receiveShadow = true; scene.add(roof);
+  // hastiales (triángulos laterales)
+  const tri = new THREE.Shape(); tri.moveTo(-depth / 2, 0); tri.lineTo(depth / 2, 0); tri.lineTo(0, rise); tri.lineTo(-depth / 2, 0);
+  for (const s of [-1, 1]) { const m = new THREE.Mesh(new THREE.ShapeGeometry(tri), sideMat); m.rotation.y = Math.PI / 2; m.position.set(cxw + s * wd / 2, hgt, cz); m.castShadow = true; scene.add(m); }
+}
+
+// billboards de pie (árboles y personajes), girados hacia la cámara en el eje vertical
+const bills = [];
+const billboard = (t, x, z, w, h, opts = {}) => {
+  const m = new THREE.MeshStandardMaterial({ map: t, alphaTest: 0.5, roughness: 1, side: THREE.DoubleSide });
+  const mesh = new THREE.Mesh(new THREE.PlaneGeometry(w, h), m);
+  mesh.position.set(x, h / 2 + (opts.lift || 0), z); mesh.castShadow = true;
+  mesh.customDepthMaterial = new THREE.MeshDepthMaterial({ depthPacking: THREE.RGBADepthPacking, map: t, alphaTest: 0.5 });
+  scene.add(mesh); bills.push(mesh); return mesh;
+};
+const treeT = []; for (let k = 0; k < 7; k++) treeT.push(await tex('m3d_tree' + k));
+for (const [x, y, v] of S.trees) billboard(treeT[v], x + 0.5, y + 0.85, 2, 2.5);
+const MOVE = { m3d_c0: [18.5, 13.4], m3d_c10: [17.6, 13.2], m3d_c4: [20.2, 12.6] };
+for (const c of S.chars) { const t = await tex(c.img), p = MOVE[c.img] || [px(c.x), px(c.y)]; billboard(t, p[0], p[1], px(c.w) * 1.15, px(c.h) * 1.15); }
+// farolas con luz cálida
+for (const [x, y] of S.lamps) {
+  const post = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.06, 1.1, 6), new THREE.MeshStandardMaterial({ color: '#3a3a48' }));
+  post.position.set(x + 0.5, 0.55, y + 0.6); post.castShadow = true; scene.add(post);
+  const bulb = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.2, 0.22), new THREE.MeshStandardMaterial({ color: '#fff0c0', emissive: '#ffd070', emissiveIntensity: 0.6 }));
+  bulb.position.set(x + 0.5, 1.15, y + 0.6); scene.add(bulb);
+}
+
+// cámara estilo "HD-2D": inclinada, lente larga, centrada en el jugador
+const tx = 18.5, tz = 13.2;
+const cam = new THREE.PerspectiveCamera(30, RW / RH, 0.1, 100);
+cam.position.set(tx, 13, tz + 15); cam.lookAt(tx, 0, tz - 1);
+for (const b of bills) b.rotation.y = 0;
+renderer.render(scene, cam);
+window.done = true;
+</script>
+</body></html>
