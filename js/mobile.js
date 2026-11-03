@@ -320,7 +320,10 @@ const Mobile = {
       x.fillStyle = '#0c0818'; x.beginPath(); x.arc(b.x, b.y, b.r, 0, Math.PI * 2); x.fill();
       x.strokeStyle = b.col || '#ffffff'; x.lineWidth = held ? 4 : 2.5; x.beginPath(); x.arc(b.x, b.y, b.r - 1, 0, Math.PI * 2); x.stroke();
       if (held) { x.globalAlpha = 0.3; x.fillStyle = b.col || '#ffffff'; x.beginPath(); x.arc(b.x, b.y, b.r, 0, Math.PI * 2); x.fill(); }
-      x.globalAlpha = 0.95;
+      // esquivar: reloj de recarga (oscuro mientras no está listo)
+      const af = b.id === 'dodge' && Battle.active && Battle.active.ally, dcd = af && af.dodgeCd > 0 ? U.clamp(af.dodgeCd / (af.dodgeMax || DODGE_CD), 0, 1) : 0;
+      if (dcd > 0) { x.globalAlpha = 0.65; x.fillStyle = '#05030a'; x.beginPath(); x.moveTo(b.x, b.y); x.arc(b.x, b.y, b.r * 0.92, -Math.PI / 2, -Math.PI / 2 + dcd * Math.PI * 2); x.closePath(); x.fill(); }
+      x.globalAlpha = dcd > 0 ? 0.5 : 0.95;
       const L = this.label(b.label), s = Math.max(1, Math.min(3, (b.r * 1.55) / Math.max(L.width, 14)));
       x.drawImage(L, Math.round(b.x - (L.width * s) / 2), Math.round(b.y - (L.height * s) / 2 + s), L.width * s, L.height * s);
       x.globalAlpha = 1;

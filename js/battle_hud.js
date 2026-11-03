@@ -59,7 +59,7 @@ BattleScene.prototype.drawMoveBar = function (ctx) {
   P(ctx, bx, 203, 88, 34, '#06040c'); P(ctx, bx + 1, 204, 86, 32, '#16122a');
   const dReady = a.dodgeCd <= 0;
   Font.draw(ctx, 'ESQ', bx + 4, 205, dReady ? '#a0e8ff' : '#5a5478');
-  UI.bar(ctx, bx + 24, 208, 58, 2, 1 - a.dodgeCd / 0.75, dReady ? '#a0e8ff' : '#4a6a8a');
+  UI.bar(ctx, bx + 24, 208, 58, 2, 1 - a.dodgeCd / (a.dodgeMax || DODGE_CD), dReady ? '#a0e8ff' : '#4a6a8a');
   const ball = this.currentBall ? this.currentBall() : null;
   if (this.wild) {
     if (ball) { ctx.drawImage(Icons.sphere(ITEMS[ball].sphere, 8), bx + 4, 214); Font.draw(ctx, `×${G.bag[ball]}`, bx + 14, 213, this.throwCd > 0 ? '#706888' : '#ffffff'); Font.drawRight(ctx, K.ball, bx + 84, 213, '#6a6288'); }

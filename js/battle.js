@@ -13,6 +13,8 @@ const ARENA = { x0: 14, y0: 40, x1: 306, y1: 194 };
 const stageMul = (s) => (s >= 0 ? (3 + s) / 3 : 3 / (3 - s));
 const angTo = (a, b) => Math.atan2(b.y - a.y, b.x - a.x);
 const RANGED = { proj: 1, beam: 1, area: 1, ring: 1 };
+// esquiva: segundos de recarga (jugador y rival por igual); una esquiva perfecta (justo al recibir un golpe) devuelve parte
+const DODGE_CD = 1.6, DODGE_PERFECT_REFUND = 0.6;
 const CLASS_PAY = { Joven: 15, Chica: 15, Cazabichos: 12, Montañero: 25, Exploradora: 20, 'Recluta Eclipse': 25, Comandante: 60, Líder: 100, Rival: 40, Pescador: 25, Jardinera: 20, Jardinero: 20, Marinero: 25, Nadador: 20, Minero: 20 };
 
 function pixCircle(ctx, x, y, r, color) {
@@ -336,7 +338,7 @@ class BattleScene {
     // esquiva
     if (Input.pressed('dodge') && f.dodgeCd <= 0) {
       const a = ax || ay ? Math.atan2(ay, ax) : f.ang;
-      f.dodgeT = 0.24; f.dodgeCd = 0.75 * (f.mods.cd < 1 ? 0.92 : 1); f.invuln = Math.max(f.invuln, 0.2); f.dodgeAng = a;
+      f.dodgeT = 0.24; f.dodgeCd = f.dodgeMax = DODGE_CD * (f.mods.cd < 1 ? 0.92 : 1); f.invuln = Math.max(f.invuln, 0.2); f.dodgeAng = a;
       f.vx = Math.cos(a) * 230; f.vy = Math.sin(a) * 230;
       Sound.sfx('dodge');
       return;
@@ -539,6 +541,7 @@ class BattleScene {
           this.slow(0.35, 0.35);
           tgt.perfectT = true; Timers.wait(0.3).then(() => { tgt.perfectT = false; });
           tgt.counterT = 1.6; this.addNum(tgt.x, tgt.y - 32, '¡Contraataca!', '#ffe080');
+          tgt.dodgeCd *= 1 - DODGE_PERFECT_REFUND; // premio al buen momento: la esquiva vuelve antes
         } else if (tgt.side === 'foe') this.addNum(tgt.x, tgt.y - 20, 'Esquivó', '#d0d0d0');
       }
       return;
@@ -681,7 +684,7 @@ class BattleScene {
       for (const p of this.projs) if (p.owner.side !== f.side) { const d = U.dist(p.x, p.y, f.x, f.y); if (d < 46) { const pa = Math.atan2(p.vy, p.vx); if (Math.abs(U.angDiff(pa, Math.atan2(f.y - p.y, f.x - p.x))) < 0.5) threat = pa; } }
       if (!threat && (t.dash || (t.act && !t.act.fired && dist < 45))) threat = aTo + Math.PI;
       if (threat !== null) {
-        ai.dodgeCd = U.lerp(2.2, 0.9, sk);
+        ai.dodgeCd = U.lerp(DODGE_CD + 1, DODGE_CD, sk); // como el jugador: nunca más seguido que DODGE_CD
         if (Math.random() < sk * 0.6) {
           const da = threat + (Math.random() < 0.5 ? Math.PI / 2 : -Math.PI / 2);
           f.dodgeT = 0.22; f.invuln = 0.18; f.vx = Math.cos(da) * 220; f.vy = Math.sin(da) * 220;

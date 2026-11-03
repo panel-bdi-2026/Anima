@@ -115,8 +115,9 @@
       let threat = null;
       for (const p of this.projs) if (p.owner.side !== f.side && U.dist(p.x, p.y, f.x, f.y) < 46) threat = Math.atan2(p.vy, p.vx);
       if (threat === null && T.act && !T.act.fired && U.dist(f.x, f.y, T.x, T.y) < 50) threat = Math.atan2(f.y - T.y, f.x - T.x) + Math.PI;
-      if (threat !== null && Math.random() < sk * 0.7) {
-        ai.dodgeCd = U.lerp(2, 0.8, sk);
+      if (threat !== null && Math.random() >= sk * 0.7) ai.dodgeCd = 0.5; // decidió no esquivar: no lo vuelve a intentar al instante
+      else if (threat !== null) {
+        ai.dodgeCd = U.lerp(DODGE_CD + 1, DODGE_CD, sk); // como el jugador: nunca más seguido que DODGE_CD
         const da = threat + (Math.random() < 0.5 ? Math.PI / 2 : -Math.PI / 2);
         f.dodgeT = 0.22; f.invuln = 0.18; f.vx = Math.cos(da) * 220; f.vy = Math.sin(da) * 220;
         return;
