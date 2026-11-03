@@ -2,7 +2,7 @@
 
 RPG de criaturas en tiempo real para navegador, en español. Se juega en https://panel-bdi-2026.github.io/Anima/ (GitHub Pages publica la rama `main`, también en el celular).
 
-Versiones de prueba: cada Pull Request abierto se publica en https://panel-bdi-2026.github.io/Anima/prueba/pr-N/ (`.github/workflows/pages.yml`). En la app, «VERSIÓN» en la pantalla de título muestra la lista de cambios y abre el elegido directo en su escenario de prueba. Cada prueba tiene partidas y opciones aparte, una etiqueta «VERSIÓN DE PRUEBA» en la esquina y un panel con Aceptar (une el Pull Request), Rechazar (lo cierra), Reintentar y Revisar con Claude (deja una nota en el Pull Request). Código: `js/channel.js` y `js/channel_ui.js`.
+Versiones de prueba: cada Pull Request abierto se publica en https://panel-bdi-2026.github.io/Anima/prueba/pr-N/ (`.github/workflows/pages.yml`). En la app, «VERSIÓN» en la pantalla de título muestra la lista de cambios y abre el elegido directo en su escenario de prueba. Cada prueba tiene partidas y opciones aparte, una etiqueta «VERSIÓN DE PRUEBA» en la esquina y una ventana con Aceptar (une el Pull Request), Rechazar (lo cierra), Ver de nuevo y Revisar con Claude (deja una nota en el Pull Request). Código: `js/channel.js` y `js/channel_ui.js`.
 
 ### Escenario de prueba
 
@@ -12,7 +12,8 @@ Cada Pull Request lleva en su descripción un bloque que dice a qué parte del j
 <!-- escenario {"tipo": "combate", "equipo": [["ignito", 30]], "rival": [["burbujo", 28]]} -->
 ```
 
-- `tipo`: `combate` (con `rival`, y opcionales `salvaje`, `jefe`, `dificultad`), `pantalla` (con `pantalla`: nombre de la clase, p. ej. `ConstelScreen`, y `args`, donde `"$equipo0"` es la primera ánima del equipo) o `mapa` (juego libre en `mapa`, `x`, `y`).
+- `tipo`: `titulo` (la entrada del título; es lo que se usa si no hay bloque), `combate` (con `rival`, y opcionales `salvaje`, `jefe`, `dificultad`), `pantalla` (con `pantalla`: nombre de la clase, p. ej. `ConstelScreen`, y `args`, donde `"$equipo0"` es la primera ánima del equipo) o `mapa` (en `mapa`, `x`, `y`; con `segundos` se recorre ese rato).
+- Al terminar la demostración (fin del combate, al cerrar la pantalla, al pasar los `segundos`) aparece sola la ventana de revisión: Aceptar, Rechazar, Ver de nuevo y Revisar con Claude. La prueba se enfoca solo en el cambio.
 - Comunes: `equipo`, `mochila`, `dinero`, `medallas` (cuántas), `flags`, `mapa`, `x`, `y`.
 - Si hace falta algo más, el Pull Request puede definir `AnimaCanal.escenarios.nombre = async (cfg) => { … }` y usar `"tipo": "nombre"`.
 
