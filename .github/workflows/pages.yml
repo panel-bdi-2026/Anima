@@ -1,19 +1,23 @@
 # Publica el juego en GitHub Pages:
-#   https://panel-bdi-2026.github.io/Anima/         -> versión publicada (rama main)
-#   https://panel-bdi-2026.github.io/Anima/prueba/  -> versión de prueba (el Pull Request abierto con el cambio más reciente)
-# Se ejecuta al cambiar main y al abrir, actualizar, reabrir o cerrar un Pull Request.
+#   https://panel-bdi-2026.github.io/Anima/              -> versión publicada (rama main)
+#   https://panel-bdi-2026.github.io/Anima/prueba/pr-N/  -> versión de prueba de cada Pull Request abierto
+#   https://panel-bdi-2026.github.io/Anima/prueba/cambios.json -> lista de pruebas (la más reciente primero)
+# Se ejecuta al cambiar main y al abrir, actualizar, editar, reabrir o cerrar un Pull Request.
 # Requisito (una sola vez): Settings -> Pages -> Source = "GitHub Actions".
 #
+# Escenario de prueba: si la descripción del Pull Request tiene un bloque
+#   <!-- escenario {"tipo": "combate", ...} -->
+# se guarda en canal.json y la app abre la prueba directo ahí (ver js/channel.js y CLAUDE.md).
+#
 # Seguridad: pull_request_target usa siempre este archivo tal como está en main
-# (un Pull Request no puede cambiar cómo se publica) y el código del Pull Request
-# solo se copia, nunca se ejecuta. Solo se publican ramas de este mismo
-# repositorio, no de copias (forks) de otras personas.
+# (un Pull Request no puede cambiar cómo se publica) y el código de los Pull Requests
+# solo se copia, nunca se ejecuta. Solo se publican ramas de este mismo repositorio.
 name: Publicar en GitHub Pages
 on:
   push:
     branches: [main]
   pull_request_target:
-    types: [opened, reopened, synchronize, closed]
+    types: [opened, reopened, synchronize, edited, closed]
   workflow_dispatch:
 
 permissions:
@@ -30,93 +34,102 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - name: Descargar main
         uses: actions/checkout@v4
         with:
           ref: ${{ github.event.repository.default_branch }}
           path: main
-          persist-credentials: false
 
-      - name: Elegir el Pull Request para la versión de prueba
-        id: pick
+      - name: Armar el sitio
         env:
           GH_TOKEN: ${{ github.token }}
           REPO: ${{ github.repository }}
         run: |
           set -euo pipefail
+          MAIN_SHA=$(git -C main rev-parse --short HEAD)
+          mkdir -p _site
+          cp -a main/. _site/
+          rm -rf _site/.git _site/.github _site/prueba
+          sed -i "s/build: 'dev'/build: '$MAIN_SHA'/" _site/js/version.js
+          mkdir -p _site/prueba
+
           # Pull Requests abiertos desde ramas de este mismo repositorio
           gh api "repos/$REPO/pulls?state=open&per_page=100" \
             | jq --arg repo "$REPO" '[.[] | select(.head.repo != null and .head.repo.full_name == $repo)]' > prs.json
-          best=""; best_date=""
-          # "actualizado más recientemente" = el último cambio de código (commit) o la apertura del Pull Request;
-          # los comentarios no cuentan, para que una revisión no cambie qué se está probando
+          # "cambio más reciente" = el último commit o la apertura del Pull Request (los comentarios no cuentan)
+          echo '[]' > cambios.json
           for row in $(jq -r '.[] | "\(.number)|\(.head.sha)|\(.created_at)"' prs.json); do
             IFS='|' read -r num sha created <<< "$row"
             cdate=$(gh api "repos/$REPO/commits/$sha" --jq '.commit.committer.date')
             d=$(printf '%s\n%s\n' "$created" "$cdate" | sort | tail -n 1)
-            echo "Pull Request #$num: último cambio $d"
-            if [[ -z "$best_date" || "$d" > "$best_date" ]]; then best="$num"; best_date="$d"; fi
+            jq --argjson n "$num" --arg d "$d" '. + [{pr: $n, updated: $d}]' cambios.json > t.json && mv t.json cambios.json
           done
-          if [[ -n "$best" ]]; then
-            jq --argjson n "$best" --arg d "$best_date" \
-              '.[] | select(.number == $n) | {pr: .number, title: .title, branch: .head.ref, sha: .head.sha, url: .html_url, updated: $d}' \
-              prs.json > canal.json
-            echo "Versión de prueba: Pull Request #$best"; cat canal.json
-            echo "pr=$best" >> "$GITHUB_OUTPUT"
-            echo "sha=$(jq -r .sha canal.json)" >> "$GITHUB_OUTPUT"
-          else
-            echo "No hay Pull Requests abiertos: la versión de prueba mostrará un aviso"
-          fi
+          jq 'sort_by(.updated) | reverse | .[:8]' cambios.json > t.json && mv t.json cambios.json
+          echo "Pruebas a publicar:"; cat cambios.json
 
-      - name: Descargar el Pull Request (solo se copia, no se ejecuta)
-        if: steps.pick.outputs.pr != ''
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ steps.pick.outputs.sha }}
-          path: pr
-          persist-credentials: false
-
-      - name: Armar el sitio
-        env:
-          HAS_PR: ${{ steps.pick.outputs.pr }}
-        run: |
-          set -euo pipefail
-          mkdir -p _site
-          cp -a main/. _site/
-          rm -rf _site/.git _site/.github _site/prueba
-          mkdir -p _site/prueba
-          if [[ -n "$HAS_PR" ]]; then
-            cp -a pr/. _site/prueba/
-            rm -rf _site/prueba/.git _site/prueba/.github
-            cp canal.json _site/prueba/canal.json
-            # Si el Pull Request es anterior a js/channel.js, se le añade el de main: así la prueba
-            # siempre tiene partidas separadas y el aviso visible. Además se quita el manifiesto,
-            # para que la prueba no se pueda instalar como otra app.
-            cp main/js/channel.js _site/prueba/canal_inyectado.js
-            python3 - <<'EOF'
-          import re
-          p = '_site/prueba/index.html'
+          for num in $(jq -r '.[].pr' cambios.json); do
+            dest="_site/prueba/pr-$num"
+            sha=$(jq -r --argjson n "$num" '.[] | select(.number == $n) | .head.sha' prs.json)
+            git -C main fetch --quiet --no-tags --depth=1 origin "pull/$num/head"
+            mkdir -p "$dest"
+            git -C main archive "$sha" | tar -x -C "$dest"
+            rm -rf "$dest/.github"
+            # datos de la prueba (título, rama, escenario sacado de la descripción)
+            jq --argjson n "$num" '.[] | select(.number == $n)' prs.json > pr.json
+            python3 - "$dest/canal.json" "$REPO" "$(jq -r --argjson n "$num" '.[] | select(.pr == $n) | .updated' cambios.json)" <<'EOF'
+          import json, re, sys
+          out, repo, updated = sys.argv[1], sys.argv[2], sys.argv[3]
+          p = json.load(open('pr.json', encoding='utf-8'))
+          body = p.get('body') or ''
+          esc = None
+          m = re.search(r'<!--\s*escenario\s*(\{.*?\})\s*-->', body, re.S)
+          if m:
+              try:
+                  esc = json.loads(m.group(1))
+              except Exception as e:
+                  print('Escenario no válido en #%s: %s' % (p['number'], e))
+          data = {'pr': p['number'], 'title': p['title'], 'branch': p['head']['ref'], 'sha': p['head']['sha'],
+                  'url': p['html_url'], 'updated': updated, 'repo': repo, 'escenario': esc}
+          json.dump(data, open(out, 'w', encoding='utf-8'), ensure_ascii=False)
+          print('#%s: %s | escenario: %s' % (p['number'], p['title'], json.dumps(esc, ensure_ascii=False)))
+          EOF
+            # Si la prueba es anterior a js/channel.js, se le añade el de main: así siempre tiene
+            # partidas separadas, el aviso y la revisión. Se quita el manifiesto (no se instala aparte).
+            cp main/js/channel.js "$dest/canal_inyectado.js"
+            python3 - "$dest/index.html" <<'EOF'
+          import re, sys
+          p = sys.argv[1]
           s = open(p, encoding='utf-8').read()
           s = re.sub(r'<link[^>]*rel="manifest"[^>]*>\s*', '', s)
           if 'js/channel.js' not in s:
               s = re.sub(r'(<head[^>]*>)', r'\1\n<script src="canal_inyectado.js"></script>', s, count=1)
           open(p, 'w', encoding='utf-8').write(s)
           EOF
+            if [[ -f "$dest/js/version.js" ]]; then sed -i "s/build: 'dev'/build: '${sha:0:7}'/" "$dest/js/version.js"; fi
+          done
+
+          # lista para el menú VERSIÓN de la versión publicada
+          if ls _site/prueba/pr-*/canal.json > /dev/null 2>&1; then
+            jq -s '{cambios: (sort_by(.updated) | reverse | map(del(.escenario)))}' _site/prueba/pr-*/canal.json > _site/prueba/cambios.json
           else
-            cat > _site/prueba/index.html <<'EOF'
+            echo '{"cambios":[]}' > _site/prueba/cambios.json
+          fi
+          cat _site/prueba/cambios.json
+
+          # prueba/ sin número (enlaces viejos): lleva a la más reciente, o de vuelta a la publicada
+          cat > _site/prueba/index.html <<'EOF'
           <!doctype html>
           <html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-          <title>Ánima: sin versión de prueba</title>
-          <style>body{margin:0;height:100vh;display:flex;align-items:center;justify-content:center;background:#0d0b14;color:#fff;font:16px system-ui,sans-serif;text-align:center}
-          button{margin-top:16px;font:bold 16px system-ui,sans-serif;padding:12px 18px;border:0;border-radius:10px;background:#ffd048;color:#2a1638}</style></head>
-          <body><div><p>Ahora mismo no hay ninguna versión de prueba.</p>
-          <button onclick="location.replace('../')">Volver a la versión publicada</button></div>
-          <script>setTimeout(function () { location.replace('../'); }, 5000);</script></body></html>
+          <title>Ánima: versión de prueba</title>
+          <style>body{margin:0;height:100vh;display:flex;align-items:center;justify-content:center;background:#0d0b14;color:#fff;font:16px system-ui,sans-serif;text-align:center}</style></head>
+          <body><p>Buscando la versión de prueba…</p>
+          <script>fetch('cambios.json', { cache: 'no-store' }).then(function (r) { return r.json(); }).then(function (j) {
+            var c = j.cambios && j.cambios[0]; location.replace(c ? 'pr-' + c.pr + '/#probar' : '../');
+          }).catch(function () { location.replace('../'); });</script></body></html>
           EOF
-          fi
-          echo "Contenido de prueba/:"; ls _site/prueba | head -n 20
+          echo "Contenido de prueba/:"; ls _site/prueba
 
       - uses: actions/upload-pages-artifact@v3
         with:

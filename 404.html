@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ánima: página no encontrada</title>
+<style>body{margin:0;height:100vh;display:flex;align-items:center;justify-content:center;background:#0d0b14;color:#fff;font:16px system-ui,sans-serif;text-align:center;padding:16px;box-sizing:border-box}
+button{margin-top:16px;font:bold 16px system-ui,sans-serif;padding:12px 18px;border:0;border-radius:10px;background:#ffd048;color:#2a1638}</style></head>
+<body><div><p id="t">Esta página no existe.</p><button id="b">Volver a la versión publicada</button></div>
+<script>
+  // GitHub Pages muestra esta página cuando algo no existe; p. ej. una versión de prueba de un cambio que ya se unió o se rechazó
+  var p = location.pathname, i = p.indexOf('/prueba/');
+  var base = i >= 0 ? p.slice(0, i + 1) : '/' + (p.split('/')[1] || '') + '/';
+  if (i >= 0) document.getElementById('t').textContent = 'Esta versión de prueba ya no existe: el cambio se aceptó o se rechazó.';
+  document.getElementById('b').onclick = function () { location.replace(base); };
+  setTimeout(function () { location.replace(base); }, 6000);
+</script></body></html>

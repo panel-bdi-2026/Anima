@@ -17,7 +17,8 @@ http.createServer((req, res) => {
   }
   let p = decodeURIComponent(req.url.split('?')[0]);
   // /prueba/ sirve el mismo juego, para probar la versión de prueba en local (en internet la publica .github/workflows/pages.yml)
-  if (p === '/prueba' || p.startsWith('/prueba/')) p = p.slice(7) || '/';
+  // y /prueba/pr-N/ también (cada Pull Request se publica en su carpeta)
+  if (p === '/prueba' || p.startsWith('/prueba/')) p = p.replace(/^\/prueba(\/pr-\d+)?/, '') || '/';
   if (p === '/') p = '/index.html';
   const f = path.join(root, p);
   if (!f.startsWith(root)) { res.writeHead(403); return res.end(); }

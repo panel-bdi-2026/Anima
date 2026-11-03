@@ -1,27 +1,36 @@
 'use strict';
 // ============================================================
-//  Versión publicada y versión de prueba
+//  Versión publicada y versiones de prueba
 //  - La publicada vive en la carpeta del juego (…/Anima/).
-//  - La de prueba vive en la subcarpeta prueba/ (…/Anima/prueba/), la publica
-//    .github/workflows/pages.yml con el Pull Request abierto que cambió más
-//    recientemente. Al estar dentro de la carpeta del juego, la app instalada
-//    la abre en su propia ventana, sin navegador ni links.
-//  - En la de prueba, las partidas y opciones se guardan aparte: cada clave de
-//    localStorage lleva el prefijo PFX. Así lo que haga la prueba nunca toca lo
-//    publicado. Se cubren getItem/setItem/removeItem/key/length/clear (lo único
-//    que usa el juego); el acceso como propiedad (localStorage.algo) no.
+//  - Cada Pull Request abierto se publica en …/Anima/prueba/pr-N/
+//    (.github/workflows/pages.yml). La lista está en prueba/cambios.json y los
+//    datos de cada uno (título, escenario…) en prueba/pr-N/canal.json.
+//    Al estar dentro de la carpeta del juego, la app instalada los abre en su
+//    propia ventana, sin navegador ni links.
+//  - En una prueba, partidas y opciones se guardan aparte: cada clave de
+//    localStorage lleva el prefijo de esa prueba. Se cubren getItem/setItem/
+//    removeItem/key/length/clear (lo único que usa el juego); el acceso como
+//    propiedad (localStorage.algo) no.
+//  - Escenario: el Pull Request puede indicar a qué parte del juego llevar
+//    directamente (un combate, una pantalla, un mapa) con una partida armada
+//    al vuelo. Ver «Escenario de prueba» en CLAUDE.md.
+//  - Revisión: Aceptar (une el cambio), Rechazar (cierra el Pull Request),
+//    Reintentar y Revisar con Claude (deja una nota). Aceptar, Rechazar y la
+//    nota usan una llave de GitHub que se pega una vez en la app.
 //  - Este archivo se carga antes que todo lo demás. El flujo de publicación lo
-//    inyecta también en la prueba si el Pull Request es anterior a él, para que
-//    la separación y el aviso funcionen siempre.
+//    inyecta también en las pruebas que no lo tengan.
 // ============================================================
 (() => {
   if (window.AnimaCanal) return; // ya cargado (inyectado y también en index.html)
-  const DIR = 'prueba/', PFX = 'anima_prueba__';
   const path = location.pathname;
-  const at = path.indexOf('/' + DIR);
+  const at = path.indexOf('/prueba/');
   const isPreview = at >= 0;
+  const prMatch = isPreview ? path.slice(at).match(/^\/prueba\/pr-(\d+)\//) : null;
+  const PR = prMatch ? +prMatch[1] : null;
+  const PFX = PR ? `anima_prueba_${PR}__` : 'anima_prueba__';
   // carpeta de la versión publicada, con barra final (p. ej. /Anima/)
   const BASE = isPreview ? path.slice(0, at + 1) : path.slice(0, path.lastIndexOf('/') + 1);
+  const TOKEN_KEY = 'anima_github_llave';
   let LS = null;
   try { LS = window.localStorage; } catch (e) { /* sin almacenamiento */ }
 
@@ -30,6 +39,7 @@
   const lenDesc = Object.getOwnPropertyDescriptor(P, 'length');
   const rawKeys = () => { const out = []; if (!LS) return out; const n = lenDesc.get.call(LS); for (let i = 0; i < n; i++) { const k = oKey.call(LS, i); if (k !== null) out.push(k); } return out; };
   const previewKeys = () => rawKeys().filter((k) => k.startsWith(PFX)).map((k) => k.slice(PFX.length));
+  const isPreviewKey = (k) => k.startsWith('anima_prueba_');
   if (isPreview && LS) {
     P.getItem = function (k) { return oGet.call(this, this === LS ? PFX + k : k); };
     P.setItem = function (k, v) { return oSet.call(this, this === LS ? PFX + k : k, v); };
@@ -38,74 +48,200 @@
     P.clear = function () { if (this !== LS) return oClear.call(this); for (const k of previewKeys()) oRem.call(this, PFX + k); };
     Object.defineProperty(P, 'length', { configurable: true, enumerable: true, get() { return this === LS ? previewKeys().length : lenDesc.get.call(this); } });
   }
+  const rawGet = (k) => (LS ? oGet.call(LS, k) : null);
+  const rawSet = (k, v) => { if (LS) { if (v === null) oRem.call(LS, k); else oSet.call(LS, k, v); } };
 
   // partidas = ranuras de guardado y la última ranura usada (las opciones no se copian)
   const isSaveKey = (k) => k.startsWith('anima_region_alba_save') || k === 'anima_region_alba_last_slot';
 
+  const getJSON = (url) => fetch(url, { cache: 'no-store' }).then((r) => (r.ok ? r.json() : null)).catch(() => null);
+
   const Canal = {
-    isPreview, BASE, info: null, status: 'loading',
-    // copia las partidas publicadas a la prueba; las publicadas no se modifican
+    isPreview, pr: PR, BASE, info: null, list: [], status: 'loading', scenarioActive: false,
+    // ---------- partidas ----------
     copyPublished() {
       if (!isPreview || !LS) return 0;
       for (const k of previewKeys()) if (isSaveKey(k)) oRem.call(LS, PFX + k);
       let n = 0;
-      for (const k of rawKeys()) if (!k.startsWith(PFX) && isSaveKey(k)) { oSet.call(LS, PFX + k, oGet.call(LS, k)); if (k !== 'anima_region_alba_last_slot') n++; }
+      for (const k of rawKeys()) if (!isPreviewKey(k) && isSaveKey(k)) { oSet.call(LS, PFX + k, oGet.call(LS, k)); if (k !== 'anima_region_alba_last_slot') n++; }
       return n;
     },
-    publishedSaveCount() { return rawKeys().filter((k) => !k.startsWith(PFX) && isSaveKey(k) && k !== 'anima_region_alba_last_slot').length; },
-    goPreview() { location.replace(BASE + DIR); },
+    publishedSaveCount() { return rawKeys().filter((k) => !isPreviewKey(k) && isSaveKey(k) && k !== 'anima_region_alba_last_slot').length; },
+    // ---------- navegación ----------
+    goPreview(n) { location.replace(BASE + 'prueba/pr-' + n + '/#probar'); },
     goPublished() { location.replace(BASE); },
-    // texto corto que describe la prueba (p. ej. «#12 · Nuevo pueblo»)
-    label() { const i = this.info; return i && i.pr ? `#${i.pr} · ${i.title || ''}` : ''; },
-    // datos de la prueba publicada (número y título del Pull Request); null si no hay
+    // publicada: lista de pruebas; prueba: sus propios datos
     refresh() {
-      return fetch((isPreview ? '' : DIR) + 'canal.json', { cache: 'no-store' })
-        .then((r) => (r.ok ? r.json() : null))
-        .then((j) => { this.info = j && j.pr ? j : null; this.status = this.info ? 'ok' : 'none'; })
-        .catch(() => { this.info = null; this.status = 'none'; })
-        .then(() => { if (this.onInfo) this.onInfo(); return this.info; });
+      const p = isPreview
+        ? getJSON('canal.json').then((j) => { this.info = j && j.pr ? j : null; this.status = this.info ? 'ok' : 'none'; })
+        : getJSON('prueba/cambios.json').then((j) => { this.list = j && Array.isArray(j.cambios) ? j.cambios : []; this.status = this.list.length ? 'ok' : 'none'; });
+      return p.then(() => { if (this.onInfo) this.onInfo(); return isPreview ? this.info : this.list; });
+    },
+    // ---------- GitHub (Aceptar, Rechazar, nota) ----------
+    token() { return rawGet(TOKEN_KEY) || ''; },
+    setToken(t) { rawSet(TOKEN_KEY, t ? t.trim() : null); },
+    async gh(method, url, body) {
+      const repo = (this.info && this.info.repo) || 'panel-bdi-2026/Anima';
+      const r = await fetch(`https://api.github.com/repos/${repo}${url}`, {
+        method, headers: { Accept: 'application/vnd.github+json', Authorization: 'Bearer ' + this.token(), 'X-GitHub-Api-Version': '2022-11-28', 'Content-Type': 'application/json' },
+        body: body ? JSON.stringify(body) : undefined,
+      });
+      let j = null; try { j = await r.json(); } catch (e) { /* sin cuerpo */ }
+      if (!r.ok) {
+        const why = r.status === 401 ? 'la llave no es válida o venció' : r.status === 403 || r.status === 404 ? 'la llave no tiene permiso para esto' : r.status === 405 || r.status === 409 ? 'GitHub no permite unirlo ahora (puede que choque con otro cambio)' : 'error ' + r.status;
+        throw new Error(why + (j && j.message ? ` (${j.message})` : ''));
+      }
+      return j;
+    },
+    note(text) { return this.gh('POST', `/issues/${PR}/comments`, { body: text }); },
+    async accept() {
+      await this.gh('PUT', `/pulls/${PR}/merge`, { merge_method: 'squash', sha: this.info && this.info.sha });
+      try { await this.note('✅ Cambio aceptado desde la app.'); } catch (e) { /* la unión ya se hizo */ }
+    },
+    async reject() {
+      try { await this.note('❌ Cambio rechazado desde la app.'); } catch (e) { /* seguir y cerrar igual */ }
+      await this.gh('PATCH', `/pulls/${PR}`, { state: 'closed' });
+    },
+    // ---------- escenario de prueba ----------
+    escenarios: {}, // escenarios con código propio: AnimaCanal.escenarios.nombre = async (cfg) => { … }
+    async runScenario(cfg) {
+      cfg = cfg || (this.info && this.info.escenario);
+      if (!cfg) return false;
+      this.scenarioActive = true;
+      // la partida del escenario es de mentira: no se guarda
+      if (!Game._canalSave) { const s = Game.save; Game._canalSave = s; Game.save = function () { return Canal.scenarioActive ? true : s.apply(this, arguments); }; }
+      G = newGameState(); // eslint-disable-line no-global-assign
+      G.name = cfg.nombre || 'Prueba'; G.rival = 'Rival'; G.rivalStarter = 'semillin';
+      for (const f of ['met_prof', 'got_starter', 'got_dex', 'rival1_left', 'tut_battle', 'mom_talk', 'starter_taken_burbujo', 'starter_taken_semillin'].concat(cfg.flags || [])) G.flags[f] = true;
+      for (const [k, lv] of (cfg.equipo || [['ignito', 15]])) Game.addCreature(newCreature(k, lv));
+      Object.assign(G.bag, { esfera: 10, pocion: 5 }, cfg.mochila || {});
+      if (cfg.dinero !== undefined) G.money = cfg.dinero;
+      for (let i = 0; i < (cfg.medallas || 0); i++) G.badges[i] = true;
+      G.map = cfg.mapa || 'ruta1'; G.x = cfg.x !== undefined ? cfg.x : 10; G.y = cfg.y !== undefined ? cfg.y : 8;
+      Scenes.clear(); World.map = null; World.start(); Fade.a = 0;
+      await wait(0.4);
+      const tipo = cfg.tipo || 'mapa';
+      const arg = (a) => (typeof a === 'string' && /^\$equipo\d+$/.test(a) ? G.party[+a.slice(7)] : a);
+      try {
+        if (tipo === 'combate') {
+          const rival = cfg.rival || [['burbujo', 12]];
+          await World.runScript(async () => {
+            if (cfg.salvaje) await Battle.wild(newCreature(rival[0][0], rival[0][1]));
+            else await Battle.trainer({ title: 'Prueba', cls: 'Entrenador', name: 'Rival', party: rival, skill: cfg.dificultad !== undefined ? cfg.dificultad : 0.5, boss: !!cfg.jefe });
+          });
+        } else if (tipo === 'pantalla') {
+          if (!/^[A-Za-z_$][\w$]*$/.test(cfg.pantalla || '')) throw new Error('pantalla no válida: ' + cfg.pantalla);
+          const Cls = Function('return ' + cfg.pantalla)();
+          await World.runScript(async () => { await runScene(new Cls(...(cfg.args || []).map(arg))); });
+        } else if (this.escenarios[tipo]) {
+          await World.runScript(() => this.escenarios[tipo](cfg));
+        } else return true; // 'mapa': se juega libre; la revisión se abre con la etiqueta de la esquina
+      } catch (e) { console.error(e); }
+      if (this.openPanel) this.openPanel('fin');
+      return true;
     },
   };
   window.AnimaCanal = Canal;
   if (location.protocol.startsWith('http')) Canal.refresh(); else Canal.status = 'none';
   if (!isPreview) return;
 
-  // ---------- aviso fijo «versión de prueba» ----------
+  // al abrir la prueba desde el menú VERSIÓN (#probar), se va directo al escenario
+  window.addEventListener('load', () => {
+    if (!/probar/.test(location.hash)) return;
+    history.replaceState(null, '', location.pathname); // al recargar a mano, no se repite solo
+    const start = () => { if (Canal.info && Canal.info.escenario) Canal.runScenario(); };
+    Canal.refresh().then(() => setTimeout(start, 300));
+  });
+
+  // ---------- etiqueta «versión de prueba» y panel de revisión ----------
   const css = `
 #canal-prueba{position:fixed;left:calc(env(safe-area-inset-left,0px) + 6px);top:calc(env(safe-area-inset-top,0px) + 6px);z-index:20;
   font:bold 11px/1 system-ui,sans-serif;color:#fff;background:rgba(200,70,20,.9);border:1px solid #ffd0a0;border-radius:8px;padding:6px 9px;
   box-shadow:0 1px 5px rgba(0,0,0,.5);cursor:pointer;touch-action:manipulation;-webkit-user-select:none;user-select:none;letter-spacing:.5px}
-#canal-panel{position:fixed;left:calc(env(safe-area-inset-left,0px) + 6px);top:calc(env(safe-area-inset-top,0px) + 36px);z-index:21;display:none;flex-direction:column;gap:8px;
-  padding:12px;background:#2a1638;color:#fff;font:13px/1.35 system-ui,sans-serif;border:2px solid #ffb060;border-radius:10px;width:min(320px,calc(100vw - 24px));box-sizing:border-box}
+#canal-panel{position:fixed;left:calc(env(safe-area-inset-left,0px) + 6px);top:calc(env(safe-area-inset-top,0px) + 36px);z-index:21;display:none;flex-direction:column;gap:7px;
+  padding:12px;background:#2a1638;color:#fff;font:13px/1.35 system-ui,sans-serif;border:2px solid #ffb060;border-radius:10px;width:min(340px,calc(100vw - 24px));
+  max-height:calc(100vh - 48px);overflow:auto;box-sizing:border-box;touch-action:pan-y;-webkit-user-select:text;user-select:text}
 #canal-panel.open{display:flex}
-#canal-panel button{font:bold 13px system-ui,sans-serif;border:0;border-radius:8px;padding:9px;cursor:pointer;color:#2a1638;background:#ffd048;touch-action:manipulation}
-#canal-panel button.sec{background:#c8b0e0}
-#canal-panel .msg{color:#ffe2a8}`;
+#canal-panel .row{display:flex;gap:7px}
+#canal-panel .row button{flex:1}
+#canal-panel button{font:bold 13px system-ui,sans-serif;border:0;border-radius:8px;padding:9px;cursor:pointer;color:#2a1638;background:#c8b0e0;touch-action:manipulation}
+#canal-panel button:disabled{opacity:.5}
+#canal-panel button.ok{background:#7ad070}
+#canal-panel button.no{background:#f08070}
+#canal-panel button.main{background:#ffd048}
+#canal-panel textarea,#canal-panel input{font:13px system-ui,sans-serif;border-radius:6px;border:1px solid #9a6ac0;padding:6px;background:#1a0c24;color:#fff;width:100%;box-sizing:border-box;margin-bottom:6px}
+#canal-panel textarea{min-height:60px;resize:vertical}
+#canal-panel .msg{color:#ffe2a8}
+#canal-panel .msg:empty{display:none}
+#canal-panel .t{font-weight:bold;color:#ffd048}
+#canal-panel .hide{display:none}`;
   const build = () => {
     const st = document.createElement('style'); st.textContent = css; document.head.appendChild(st);
+    const el = (tag, cls, txt) => { const x = document.createElement(tag); if (cls) x.className = cls; if (txt) x.textContent = txt; return x; };
+    const btn = (txt, cls, fn) => { const x = el('button', cls, txt); x.type = 'button'; x.addEventListener('click', fn); return x; };
+    const row = (...k) => { const r = el('div', 'row'); r.append(...k); return r; };
     // etiqueta pequeña en la esquina superior izquierda; al tocarla se abre el panel
-    const bar = document.createElement('button'); bar.type = 'button'; bar.id = 'canal-prueba'; bar.textContent = 'VERSIÓN DE PRUEBA';
-    const panel = document.createElement('div'); panel.id = 'canal-panel';
-    const info = document.createElement('div');
-    const msg = document.createElement('div'); msg.className = 'msg';
-    const mk = (txt, cls, fn) => { const x = document.createElement('button'); x.type = 'button'; x.textContent = txt; if (cls) x.className = cls; x.addEventListener('click', fn); return x; };
-    const back = mk('Volver a la versión publicada', '', () => Canal.goPublished());
-    const copy = mk('Copiar aquí las partidas publicadas', 'sec', () => {
-      if (!confirm('Las partidas de prueba se reemplazarán por una copia de las publicadas. Las publicadas no cambian. El juego se reiniciará: lo no guardado en la prueba se pierde. ¿Seguir?')) return;
+    const bar = el('button', '', 'VERSIÓN DE PRUEBA'); bar.type = 'button'; bar.id = 'canal-prueba';
+    const panel = el('div'); panel.id = 'canal-panel';
+    const title = el('div', 't'), info = el('div'), msg = el('div', 'msg');
+    // nota para Claude
+    const noteBox = el('div', 'hide'), noteTxt = el('textarea');
+    noteTxt.placeholder = 'Escribe qué viste o qué cambiarías (opcional)';
+    // llave de GitHub
+    const keyBox = el('div', 'hide'), keyIn = el('input');
+    keyIn.type = 'password'; keyIn.placeholder = 'Pega aquí la llave de GitHub'; keyIn.autocomplete = 'off';
+    let pending = null; // acción que espera la llave
+    const say = (t) => { msg.textContent = t; };
+    const needKey = (fn) => { if (Canal.token()) return fn(); pending = fn; keyBox.classList.remove('hide'); say('Para esto la app necesita la llave de GitHub (solo la primera vez).'); keyIn.focus(); };
+    const busy = (on) => { for (const b of panel.querySelectorAll('button')) b.disabled = on; };
+    const act = async (fn, okMsg) => {
+      busy(true); say('Enviando a GitHub…');
+      try { await fn(); say(okMsg); setTimeout(() => Canal.goPublished(), 1800); }
+      catch (e) { say('No se pudo: ' + e.message); busy(false); }
+    };
+    keyBox.append(keyIn, row(
+      btn('Guardar llave', 'main', () => { if (!keyIn.value.trim()) return; Canal.setToken(keyIn.value); keyIn.value = ''; keyBox.classList.add('hide'); forget.classList.remove('hide'); say('Llave guardada.'); const f = pending; pending = null; if (f) f(); }),
+      btn('Cancelar', '', () => { keyBox.classList.add('hide'); pending = null; say(''); }),
+    ));
+    const accept = btn('Aceptar cambio', 'ok', () => {
+      if (!confirm('¿Aceptar este cambio? Se une a la versión publicada y queda en vivo en un par de minutos.')) return;
+      needKey(() => act(() => Canal.accept(), '¡Aceptado! La versión publicada se actualiza en un par de minutos. Volviendo…'));
+    });
+    const reject = btn('Rechazar cambio', 'no', () => {
+      if (!confirm('¿Rechazar este cambio? Se descarta y la versión publicada no cambia.')) return;
+      needKey(() => act(() => Canal.reject(), 'Rechazado. Volviendo a la versión publicada…'));
+    });
+    const retry = btn('Reintentar', '', () => { location.replace(location.pathname + '#probar'); location.reload(); });
+    const sendNote = () => {
+      const t = noteTxt.value.trim();
+      if (!t) { Canal.goPublished(); return; }
+      needKey(() => act(() => Canal.note('📝 Nota de Alejandro desde la app:\n\n' + t), 'Nota enviada. Volviendo a la versión publicada…'));
+    };
+    const claude = btn('Revisar con Claude', '', () => { noteBox.classList.remove('hide'); noteTxt.focus(); say('Si quieres, deja una nota: Claude la lee en GitHub. Luego vuelves a la versión publicada.'); });
+    noteBox.append(noteTxt, row(btn('Enviar nota y volver', 'main', sendNote), btn('Volver sin nota', '', () => Canal.goPublished())));
+    const back = btn('Volver a la versión publicada', 'main', () => Canal.goPublished());
+    const copy = btn('Copiar aquí las partidas publicadas', '', () => {
+      if (!confirm('Las partidas de esta prueba se reemplazarán por una copia de las publicadas. Las publicadas no cambian. El juego se reiniciará. ¿Seguir?')) return;
       const n = Canal.copyPublished();
-      msg.textContent = n ? `Copiadas ${n} partida(s). Reiniciando…` : 'No hay partidas publicadas para copiar.';
+      say(n ? `Copiadas ${n} partida(s). Reiniciando…` : 'No hay partidas publicadas para copiar.');
       if (n) setTimeout(() => location.reload(), 700);
     });
-    const close = mk('Cerrar', 'sec', () => panel.classList.remove('open'));
-    panel.append(info, back, copy, close, msg);
+    const forget = btn('Olvidar la llave de GitHub', '', () => { Canal.setToken(''); say('Llave borrada de este aparato.'); forget.classList.add('hide'); });
+    const close = btn('Cerrar', '', () => panel.classList.remove('open'));
+    const review = [row(accept, reject), row(retry, claude)];
+    panel.append(title, info, ...review, noteBox, keyBox, msg, back, copy, forget, close);
     const showInfo = () => {
-      const l = Canal.label();
-      info.textContent = (l ? `Estás en la versión de prueba (Pull Request ${l}). ` : 'Estás en la versión de prueba. ') + 'Sus partidas y opciones están separadas de la versión publicada.';
+      const i = Canal.info;
+      title.textContent = i ? `Cambio #${i.pr}: ${i.title}` : 'Versión de prueba';
+      info.textContent = 'Partidas y opciones de esta prueba están separadas de la versión publicada.' + (Canal.scenarioActive ? ' Estás en una partida armada para probar este cambio (no se guarda).' : '');
+      for (const r of review) r.classList.toggle('hide', !PR);
+      forget.classList.toggle('hide', !Canal.token());
     };
+    Canal.openPanel = (why) => { showInfo(); say(why === 'fin' ? 'Terminó la prueba. ¿Qué hacemos con este cambio?' : ''); panel.classList.add('open'); };
     showInfo(); Canal.onInfo = showInfo;
-    bar.addEventListener('click', () => { msg.textContent = ''; panel.classList.toggle('open'); });
-    // que el juego no reciba los toques ni clics del aviso
-    for (const el of [bar, panel]) for (const ev of ['mousedown', 'pointerdown', 'touchstart']) el.addEventListener(ev, (e) => e.stopPropagation());
+    bar.addEventListener('click', () => { if (panel.classList.contains('open')) panel.classList.remove('open'); else Canal.openPanel(); });
+    // que el juego no reciba los toques, clics ni teclas del panel
+    for (const x of [bar, panel]) for (const ev of ['mousedown', 'pointerdown', 'touchstart', 'keydown', 'keyup']) x.addEventListener(ev, (e) => e.stopPropagation());
     document.body.append(bar, panel);
   };
   if (document.body) build(); else document.addEventListener('DOMContentLoaded', build);

@@ -72,10 +72,13 @@ const CHECKS = [
       localStorage.setItem(SAVE_KEY, '{"name":"PRUEBA"}');
       return r;
     });
+    // cada Pull Request (/prueba/pr-N/) tiene además sus propias partidas
+    await p3.goto(URL + 'prueba/pr-3/'); await ready();
+    const own = await p3.evaluate(() => AnimaCanal.pr === 3 && localStorage.getItem(SAVE_KEY) === null);
     await p3.goto(URL); await ready();
     const back = await p3.evaluate(() => localStorage.getItem(SAVE_KEY));
-    const chOk = !pub.prev && pub.ver && !pub.banner && pre.prev && pre.empty && pre.banner && pre.ver && pre.copied === 1 && pre.same && back === '{"name":"PUB"}' && !errors.length;
-    console.log(`${chOk ? 'ok   ' : 'FALLA'}  Versión de prueba separada${chOk ? '' : ' — ' + JSON.stringify({ pub, pre, back }) + ' ' + (errors[0] || '')}`);
+    const chOk = !pub.prev && pub.ver && !pub.banner && pre.prev && pre.empty && pre.banner && pre.ver && pre.copied === 1 && pre.same && own && back === '{"name":"PUB"}' && !errors.length;
+    console.log(`${chOk ? 'ok   ' : 'FALLA'}  Versión de prueba separada${chOk ? '' : ' — ' + JSON.stringify({ pub, pre, own, back }) + ' ' + (errors[0] || '')}`);
     if (!chOk) failed++;
     await pc.close();
   } finally {

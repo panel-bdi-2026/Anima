@@ -69,7 +69,8 @@ class Choice {
     this.options = options; this.i = opt.start || 0; this.opt = opt;
     this.w = opt.w || Math.max(...options.map((o) => Font.width(typeof o === 'string' ? o : o.label))) + 26;
     this.h = options.length * 14 + 10;
-    this.x = opt.x !== undefined ? opt.x : W - this.w - 6;
+    // siempre se dibuja en los 320 px del centro (UI_W), aunque se abra desde una escena de ancho completo
+    this.x = opt.x !== undefined ? opt.x : UI_W - this.w - 6;
     this.y = opt.y !== undefined ? opt.y : 176 - this.h;
   }
   update() {
@@ -1016,6 +1017,6 @@ class TitleScreen {
         Font.draw(ctx, 'Códice: ' + this.sum.dex, W / 2 + 76, 128, '#d0c8e0'); Font.draw(ctx, Game.timeStr(this.sum.time), W / 2 + 76, 140, '#d0c8e0');
       }
     }
-    Font.draw(ctx, 'Un juego original · v1.0', 4, 230, '#c8f0c8');
+    Font.drawRight(ctx, 'Un juego original', W - 4, 230, '#c8f0c8');
   }
 }
