@@ -41,6 +41,7 @@ jobs:
         with:
           ref: ${{ github.event.repository.default_branch }}
           path: main
+          fetch-depth: 0 # para contar los cambios unidos (número de versión)
 
       - name: Armar el sitio
         env:
@@ -53,6 +54,11 @@ jobs:
           cp -a main/. _site/
           rm -rf _site/.git _site/.github _site/prueba
           sed -i "s/build: 'dev'/build: '$MAIN_SHA'/" _site/js/version.js
+          # versión: cada cambio unido a main suma 0,01 (con 11 cambios en main era la v0.05)
+          N=$(( $(git -C main rev-list --count --first-parent HEAD) - 6 ))
+          V=$(awk -v n="$N" 'BEGIN { printf "%.2f", n / 100 }')
+          sed -i "s/^const ANIMA_VERSION = { v: '[^']*'/const ANIMA_VERSION = { v: '$V'/" _site/js/version.js
+          echo "Versión publicada: v$V"; grep -m1 'ANIMA_VERSION = ' _site/js/version.js
           mkdir -p _site/prueba
 
           # Pull Requests abiertos desde ramas de este mismo repositorio
