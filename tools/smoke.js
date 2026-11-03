@@ -9,7 +9,7 @@ const PORT = 8080, URL = `http://localhost:${PORT}/`;
 
 // cada comprobación se ejecuta dentro de la página, con el kit de pruebas cargado
 const CHECKS = [
-  ['El mundo 3D carga', async () => { await T.quick({ map: 'ruta1', x: 10, y: 8 }); await T.run(60); if (T.top() !== 'World') throw new Error('escena: ' + T.top()); }],
+  ['El mundo 3D carga', async () => { await T.quick({ map: 'ruta1', x: 10, y: 8 }); Critters.list.length = 0; Critters.timer = 999; /* sin criaturas sueltas que empiecen un combate al azar */ await T.run(60); if (T.top() !== 'World') throw new Error('escena: ' + T.top()); }],
   ['Un combate llega a su final', async () => { const r = await T.duel(['ignito', 14], ['burbujo', 12], 0.5, false); if (!r.res) throw new Error('sin resultado: ' + JSON.stringify(r)); }],
   ['Vistas de frente y espalda de todas las ánimas', async () => { const [c] = U.makeCanvas(40, 40), x = c.getContext('2d'); for (const k of Object.keys(HAND)) for (const view of ['side', 'front', 'back']) CreatureAnim.portrait(x, k, 40, false, 0, 0, 'smoke' + k + view, { view }); }],
   ['Entradas al azar', async () => { await T.quick({ party: [['voltin', 14]], map: 'ruta1', x: 10, y: 8 }); await T.fuzz(1500); }],

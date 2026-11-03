@@ -279,9 +279,6 @@ class FieldIntro {
   draw(ctx) {
     const k = this.t / 0.5;
     if (k < 0.4 && Math.floor(this.t * 30) % 2) { ctx.globalAlpha = 0.5; P(ctx, 0, 0, W, H, this.boss ? '#ffb0a0' : '#ffffff'); ctx.globalAlpha = 1; }
-    // franjas de cine
-    const h = Math.round(Math.min(1, k * 2) * 10);
-    P(ctx, 0, 0, W, h, '#0a0612'); P(ctx, 0, H - h, W, h, '#0a0612');
   }
 }
 
