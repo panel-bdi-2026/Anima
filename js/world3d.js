@@ -25,6 +25,30 @@ const W3 = {
   TREE: 1.35, // escala de los árboles
 };
 
+// ---------- píxeles nítidos sin titileo ----------
+// Con perspectiva, cada píxel de una textura ocupa en pantalla entre 2 y 3 píxeles según la fila. Con
+// muestreo «vecino más cercano» esos bordes saltan de fila en fila al moverse la cámara hacia arriba o
+// abajo (titileo). Aquí cada píxel de textura se ve sólido y solo su borde se suaviza en un píxel de
+// pantalla. Se activa por material con la definición PIXEL_ART (ver World3D.pixelize; solo WebGL2).
+if (typeof THREE !== 'undefined') {
+  const C = THREE.ShaderChunk;
+  C.map_pars_fragment += `
+#if defined( USE_MAP ) && defined( PIXEL_ART )
+	vec2 pixUv( vec2 uv ) {
+		vec2 sz = vec2( textureSize( map, 0 ) );
+		vec2 p = uv * sz;
+		vec2 seam = floor( p + 0.5 );
+		p = seam + clamp( ( p - seam ) / max( fwidth( p ), vec2( 1e-4 ) ), -0.5, 0.5 );
+		return p / sz;
+	}
+#endif`;
+  C.map_fragment = C.map_fragment.replace('vec4 sampledDiffuseColor = texture2D( map, vUv );', `#ifdef PIXEL_ART
+		vec4 sampledDiffuseColor = textureGrad( map, pixUv( vUv ), dFdx( vUv ), dFdy( vUv ) );
+	#else
+		vec4 sampledDiffuseColor = texture2D( map, vUv );
+	#endif`);
+}
+
 const World3D = {
   ok: false, mapId: null, used: false, t: 0, frame: 0,
   init() {
@@ -62,7 +86,10 @@ const World3D = {
   // ---------- texturas ----------
   tex(canvas, repeat) {
     const t = new THREE.CanvasTexture(canvas);
-    t.magFilter = THREE.NearestFilter; t.minFilter = THREE.NearestFilter; t.generateMipmaps = false;
+    // de lejos se usan versiones reducidas y suavizadas de la textura (mipmaps); de cerca, ver pixelize
+    t.magFilter = THREE.NearestFilter; t.minFilter = THREE.LinearMipmapLinearFilter; t.generateMipmaps = true;
+    if (this.r) t.anisotropy = Math.min(8, this.r.capabilities.getMaxAnisotropy());
+    t.userData.pixel = true; // ver pixelize
     t.encoding = THREE.sRGBEncoding;
     if (repeat) { t.wrapS = t.wrapT = THREE.RepeatWrapping; }
     return t;
@@ -895,7 +922,8 @@ for (int i = 0; i < 6; i++) { vec2 d = base - uPush[i].xy; float l = length(d); 
   },
   render(world) {
     this.frame++; this.t += 1 / 60;
-    if (this.mapId !== world.map.id || this.layerRef !== world.layer) this.build(world);
+    if (this.mapId !== world.map.id || this.layerRef !== world.layer) { this.build(world); this.pixelize(this.scene); }
+    else if (this.frame % 30 === 1) this.pixelize(this.scene); // lo que se agregó después (personajes, efectos…)
     this.updateCamera(world);
     this.syncSprites(world);
     if (this.frame % 4 === 0) this.syncGround(world);
@@ -939,6 +967,23 @@ for (int i = 0; i < 6; i++) { vec2 d = base - uPush[i].xy; float l = length(d); 
   },
   // de coordenadas normalizadas del juego a las del lienzo 3D completo
   ndcFull(v) { const E = this.ext; if (E) { v.x = v.x * E.sx + E.ox; v.y = v.y * E.sy + E.oy; } return v; },
+  // activa el muestreo «píxel nítido sin titileo» en los materiales con texturas de pixel art
+  pixelize(root) {
+    if (!this.r || !this.r.capabilities.isWebGL2) return;
+    const seen = this.pixSeen || (this.pixSeen = new WeakSet());
+    root.traverse((o) => {
+      if (!o.material) return;
+      for (const m of Array.isArray(o.material) ? o.material : [o.material]) {
+        if (seen.has(m)) continue;
+        seen.add(m);
+        const t = m.map;
+        if (!t || !t.userData.pixel || m.isShaderMaterial) continue;
+        m.defines = Object.assign(m.defines || {}, { PIXEL_ART: '' });
+        if (t.magFilter !== THREE.LinearFilter) { t.magFilter = THREE.LinearFilter; t.needsUpdate = true; }
+        m.needsUpdate = true;
+      }
+    });
+  },
   hide() { if (this.cv && this.cv.style.display !== 'none') this.cv.style.display = 'none'; },
 };
 
@@ -1004,12 +1049,41 @@ for (int i = 0; i < 6; i++) { vec2 d = base - uPush[i].xy; float l = length(d); 
     World3D.used = false;
     _edraw.call(this);
     if (!World3D.used) World3D.hide();
-    // en el celular el 3D llena también los costados (fuera del lienzo 2D): se oscurece con el fundido,
-    // para que al entrar a una casa o cambiar de pantalla no queden dos franjas del mundo a los lados
-    else if (World3D.cv) {
-      const o = World3D.ext ? String(Math.round((1 - Fade.a) * 100) / 100) : '';
-      if (World3D.cv.style.opacity !== o) World3D.cv.style.opacity = o;
-    }
+    FadeSides.draw();
+  };
+  // En el celular el 3D llena también los costados, fuera del lienzo 2D. El fundido (rombos) se dibuja
+  // en el lienzo 2D, así que se repite aquí, en una capa a pantalla completa justo encima del 3D:
+  // al entrar a una casa o cambiar de pantalla no quedan franjas a los lados.
+  const FadeSides = {
+    on: false,
+    draw() {
+      if (!this.cv) {
+        if (!World3D.cv) return;
+        this.cv = document.createElement('canvas');
+        this.cv.style.cssText = 'position:fixed;left:0;top:0;width:100vw;height:100vh;pointer-events:none;z-index:0';
+        this.x = this.cv.getContext('2d');
+      }
+      // siempre justo encima del lienzo 3D (y debajo del 2D)
+      if (this.cv.previousSibling !== World3D.cv) World3D.cv.after(this.cv);
+      const a = Fade.a, x = this.x;
+      if (a <= 0) { if (this.on) { x.clearRect(0, 0, this.cv.width, this.cv.height); this.on = false; } return; }
+      this.on = true;
+      const vw = window.innerWidth, vh = window.innerHeight;
+      if (this.cv.width !== vw || this.cv.height !== vh) { this.cv.width = vw; this.cv.height = vh; }
+      x.clearRect(0, 0, vw, vh);
+      if (a >= 1 || Fade.color !== '#000') { x.globalAlpha = a; x.fillStyle = Fade.color; x.fillRect(0, 0, vw, vh); x.globalAlpha = 1; return; }
+      // mismos rombos que el fundido del juego (polish.js), en coordenadas de pantalla
+      const r = Engine.canvas.getBoundingClientRect(), k = r.width / WIDE, S = 16, cell = S * k;
+      const cols = Math.ceil(WIDE / S) + 1, rows = Math.ceil(H / S) + 1;
+      const i0 = Math.floor(-r.left / cell) - 1, i1 = Math.ceil((vw - r.left) / cell) + 1, j0 = Math.floor(-r.top / cell) - 1, j1 = Math.ceil((vh - r.top) / cell) + 1;
+      x.fillStyle = '#08060e';
+      for (let j = j0; j <= j1; j++) for (let i = i0; i <= i1; i++) {
+        const d = (U.clamp(i, 0, cols) / cols) * 0.55 + (U.clamp(j, 0, rows) / rows) * 0.45, rr = U.clamp((a * 1.6 - d * 0.6) * 1.25, 0, 1) * cell * 1.05;
+        if (rr <= 0) continue;
+        const cx = r.left + i * cell, cy = r.top + j * cell;
+        x.beginPath(); x.moveTo(cx, cy - rr); x.lineTo(cx + rr, cy); x.lineTo(cx, cy + rr); x.lineTo(cx - rr, cy); x.fill();
+      }
+    },
   };
   // cambios de casillas (arbustos cortados, rocas rotas…): se reconstruye
   const _set = World.setTile;
