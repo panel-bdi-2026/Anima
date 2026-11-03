@@ -1004,6 +1004,12 @@ for (int i = 0; i < 6; i++) { vec2 d = base - uPush[i].xy; float l = length(d); 
     World3D.used = false;
     _edraw.call(this);
     if (!World3D.used) World3D.hide();
+    // en el celular el 3D llena también los costados (fuera del lienzo 2D): se oscurece con el fundido,
+    // para que al entrar a una casa o cambiar de pantalla no queden dos franjas del mundo a los lados
+    else if (World3D.cv) {
+      const o = World3D.ext ? String(Math.round((1 - Fade.a) * 100) / 100) : '';
+      if (World3D.cv.style.opacity !== o) World3D.cv.style.opacity = o;
+    }
   };
   // cambios de casillas (arbustos cortados, rocas rotas…): se reconstruye
   const _set = World.setTile;
