@@ -7,7 +7,7 @@
 //  - En la pantalla de título se compara con el archivo publicado: si hay una
 //    versión más nueva, la app se recarga sola; si no, dice «Versión más reciente».
 // ============================================================
-const ANIMA_VERSION = { v: '0.03', build: 'dev' };
+const ANIMA_VERSION = { v: '0.04', build: 'dev' };
 
 const Updater = {
   state: 'idle', t: 0, shownT: 0, newV: null,

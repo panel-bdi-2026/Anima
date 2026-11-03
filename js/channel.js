@@ -31,6 +31,9 @@
   // carpeta de la versión publicada, con barra final (p. ej. /Anima/)
   const BASE = isPreview ? path.slice(0, at + 1) : path.slice(0, path.lastIndexOf('/') + 1);
   const TOKEN_KEY = 'anima_github_llave';
+  // cambios aceptados o rechazados desde este aparato: se ocultan de la lista mientras GitHub
+  // vuelve a publicar (tarda un par de minutos en sacarlos de prueba/cambios.json)
+  const DONE_KEY = 'anima_prueba_resueltos';
   let LS = null;
   try { LS = window.localStorage; } catch (e) { /* sin almacenamiento */ }
 
@@ -74,7 +77,7 @@
     refresh() {
       const p = isPreview
         ? getJSON('canal.json').then((j) => { this.info = j && j.pr ? j : null; this.status = this.info ? 'ok' : 'none'; })
-        : getJSON('prueba/cambios.json').then((j) => { this.list = j && Array.isArray(j.cambios) ? j.cambios : []; this.status = this.list.length ? 'ok' : 'none'; });
+        : getJSON('prueba/cambios.json').then((j) => { const done = this.resolved(); this.list = (j && Array.isArray(j.cambios) ? j.cambios : []).filter((c) => !done[c.pr]); this.status = this.list.length ? 'ok' : 'none'; });
       return p.then(() => { if (this.onInfo) this.onInfo(); return isPreview ? this.info : this.list; });
     },
     // ---------- GitHub (Aceptar, Rechazar, nota) ----------
@@ -93,14 +96,23 @@
       }
       return j;
     },
+    resolved() {
+      let d = {};
+      try { d = JSON.parse(rawGet(DONE_KEY) || '{}') || {}; } catch (e) { /* dato dañado */ }
+      for (const k of Object.keys(d)) if (Date.now() - d[k] > 30 * 60000) delete d[k]; // a los 30 minutos ya no hace falta
+      return d;
+    },
+    markResolved() { const d = this.resolved(); d[PR] = Date.now(); rawSet(DONE_KEY, JSON.stringify(d)); },
     note(text) { return this.gh('POST', `/issues/${PR}/comments`, { body: text }); },
     async accept() {
       await this.gh('PUT', `/pulls/${PR}/merge`, { merge_method: 'squash', sha: this.info && this.info.sha });
+      this.markResolved();
       try { await this.note('✅ Cambio aceptado desde la app.'); } catch (e) { /* la unión ya se hizo */ }
     },
     async reject() {
       try { await this.note('❌ Cambio rechazado desde la app.'); } catch (e) { /* seguir y cerrar igual */ }
       await this.gh('PATCH', `/pulls/${PR}`, { state: 'closed' });
+      this.markResolved();
     },
     // ---------- escenario de prueba ----------
     escenarios: {}, // escenarios con código propio: AnimaCanal.escenarios.nombre = async (cfg) => { … }
