@@ -3,7 +3,7 @@
 Se pone en dos patas: un guerrero erguido. El fuego de Fogarzo sigue (crin en la nuca y los hombros,
 cola que se enciende como la de Ignito) y la roca aparece como armadura: hombrera, guanteletes,
 grebas, placa de pecho, cresta-cuerno. Casi sin lava: solo juntas finas que brillan entre placas."""
-import os, sys
+import math, os, sys
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
 import numpy as np
 from motor import Lienzo, args
@@ -31,6 +31,17 @@ def seams(step, ang=0.6, w=0.42):
     return f
 
 
+def cracks(scale=1.0, ph=0.0, base='rock'):
+    """roca volcánica con grietas de magma irregulares (una red, no rayas parejas)"""
+    def f(X, Y):
+        m = np.full(X.shape, base, object)
+        u = X * scale + ph; v = Y * scale
+        n = np.sin(u * 0.95 + np.sin(v * 0.7) * 1.6) + 0.8 * np.sin(v * 1.15 + u * 0.35 + 1.3)
+        m[np.abs(n) < 0.3] = 'lava'
+        return m
+    return f
+
+
 def build(P):
     c = Lienzo(RAMP, P, S=0.96, OX=34, OY=75, outline='#1a0a0a', mid=MID, span=SPAN,
                lit={'fur': 'fur2', 'fur2': 'fur2', 'furd': 'furd'})
@@ -39,12 +50,16 @@ def build(P):
 
     def greave(top):
         def f(X, Y):
-            return np.where(Y > top + np.sin(X * 2) * 0.8, 'rock', 'fur').astype(object)
+            m = np.where(Y > top + np.sin(X * 2) * 0.8, 'rock', 'fur').astype(object)
+            cr = cracks(0.62, 2.0)(X, Y)
+            m[(m == 'rock') & (cr == 'lava')] = 'lava'
+            return m
         return f
     c.parte(legF, greave(60.5), R=3.5, bias=-0.3, far=True)
     # ---------- brazo lejano ----------
-    c.parte(c.caps([(42, 30), (41, 39), (34, 38)], [4.0, 3.2, 3.0]), 'fur', R=3, bias=-0.3, far=True)
-    c.parte(c.caps([(40.5, 39), (34.5, 38)], [3.4, 3.4]) | c.ell(31.5, 37, 3.9, 3.6), seams(9), R=3, bias=-0.3, far=True)
+    c.parte(c.caps([(42, 30), (41.5, 38.5)], [4.0, 3.2]), 'fur', R=3, bias=-0.3, far=True)
+    c.parte(c.caps([(41.5, 39), (35, 34)], [3.6, 2.8]) | c.ell(41, 39.5, 3.4, 2.8), cracks(0.6, 4.0), R=3, bias=-0.3, far=True, outline='#120a0a')
+    c.parte(c.ell(31.8, 32.6, 3.4, 3.1), cracks(0.75, 1.0), R=2.5, bias=-0.3, far=True, outline='#120a0a')
     # ---------- cola: como la de Ignito, el pelo se va encendiendo; placas de roca solo en la base ----------
     c.local(rot=P['tail'], piv=(49, 50))
     SPINE = [(49, 50), (56, 51), (62, 48.5), (66.5, 43), (68.5, 36), (68, 28)]
@@ -62,7 +77,7 @@ def build(P):
         return m
     c.parte(tail, tail_mat, R=6, outline='#8a180c', fire=(inner, core))
     for (x, y, r) in [(52, 48.5, 3.0), (57.5, 47.8, 2.8)]:          # placas de roca sobre la base de la cola
-        c.parte(c.poly([(x - r, y + 1.6), (x - r * 0.4, y - r * 0.9), (x + r * 0.7, y - r * 0.6), (x + r, y + 1.4)]), 'rock', R=2.5, outline='#120a0a')
+        c.parte(c.poly([(x - r, y + 1.6), (x - r * 0.4, y - r * 0.9), (x + r * 0.7, y - r * 0.6), (x + r, y + 1.4)]), cracks(0.8, x), R=2.5, outline='#120a0a')
     c.local()
     # ---------- torso erguido ----------
     torso = c.ell(37, 37, 10, 11.5, 0.12) | c.ell(41, 47, 8.5, 7.5) | c.ell(34, 29, 7.5, 6)
@@ -84,10 +99,20 @@ def build(P):
     mane, minner, mcore = c.fuego(ridge, MANE, inner_base=c.caps([(33, 15.5), (42, 25.5)], 1.4), core=c.caps([(35, 17), (39, 21)], 1.0))
     c.parte(mane, 'flame', R=4, outline='#8a180c', fire=(minner, mcore))
     c.local()
-    # ---------- brazo cercano: hombrera de roca, antebrazo acorazado y puño grande ----------
-    c.parte(c.caps([(32, 30), (29, 39.5), (23.5, 37)], [4.4, 3.4, 3.2]), 'fur', R=4)
-    c.parte(c.caps([(29, 39.5), (24, 37.5)], [3.6, 3.6]) | c.ell(21.2, 35.8, 4.4, 4.2), seams(8, 0.9), R=3.5, outline='#120a0a')
-    c.parte(c.poly([(27, 28.5), (30, 24.5), (36, 24.5), (38.5, 28), (37, 32.5), (30.5, 33.5)]), seams(10, 1.1), R=4, outline='#120a0a')
+    # ---------- brazo cercano: brazo de pelo, codera, antebrazo de roca y puño cerrado ----------
+    c.parte(c.caps([(32, 29.5), (31, 38.5)], [4.3, 3.4]), 'fur', R=4)
+    gaunt = c.caps([(31, 40), (24.5, 37)], [3.7, 2.9]) | c.ell(31.2, 40.2, 3.8, 3.1)          # antebrazo con codera ancha
+    c.parte(gaunt, cracks(0.6, 0.5), R=3.5, outline='#120a0a')
+    fist = c.ell(21.2, 35.6, 3.9, 3.6)
+    c.parte(fist, cracks(0.75, 3.0), R=3, bias=0.04, outline='#120a0a')
+    # ---------- hombrera-volcán: un cono de roca con cráter de lava que echa fuego ----------
+    cone = c.poly([(30.5, 35), (32.5, 30.5), (35.2, 27.2), (40.2, 27.2), (42.6, 30.5), (44, 35), (37.5, 36.6)])
+    c.parte(cone, cracks(0.6, 6.0), R=4, outline='#120a0a')
+    crater = c.ell(37.7, 27.4, 2.6, 1.0)
+    c.parte(crater, 'lava', R=1.5, outline='#3a0a06')
+    VT = [(36.7, 27, 6, -0.25, 0.1, 1.5), (38.3, 26.8, 8, 0.15, 0.12, 1.8), (39.7, 27.2, 5, 0.6, 0.1, 1.3)]
+    vent, vin, _ = c.fuego(c.ell(37.7, 26.8, 2, 0.8), VT)
+    c.parte(vent, 'flame', R=2, outline='#8a180c', fire=(vin, Z))
     # ---------- cabeza: la misma cabeza de zorro de Fogarzo, más madura (se mantiene el parentesco) ----------
     HX, HY, HS = 6, -11, 0.8               # dónde va la cabeza de Fogarzo sobre este cuerpo, y a qué tamaño
     c.local(dx=HX, dy=P['head'] + HY, sc=HS, piv=(22, 32))
@@ -122,7 +147,11 @@ def build(P):
     c.putd(7.6, 40.9, '#f4ecdc')                 # un colmillito asoma
     c.local()
     for x in (32, 34.5, 37, 42, 44.5): c.putd(x, 74.4, '#e8dcc8')     # garras de los pies
-    for x, y in [(17.6, 33.6), (17.2, 36), (17.6, 38.4)]: c.putd(x, y, '#ff9a26')   # nudillos que brillan
+    for x, y in [(17.6, 33.4), (17.3, 35.6), (17.6, 37.8)]: c.putd(x, y, '#ffb030')   # nudillos que brillan
+    for x, y in [(19.6, 33.2), (19.4, 35.4), (19.6, 37.6)]: c.putd(x, y, '#120a0a')   # separación entre dedos
+    f = P['fl']
+    for i, (x, y) in enumerate([(36, 18), (41, 16), (38.5, 13)]):                   # chispas del volcán
+        c.putd(x + math.sin(f + i * 2) * 1.2, y - (f * 2 + i * 1.6) % 4, ['#ffe680', '#ffc038', '#ff8e24'][i])
     return c
 
 
