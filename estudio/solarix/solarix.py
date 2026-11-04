@@ -5,6 +5,7 @@ alas de plumas doradas cuyas puntas son fuego, y cola larga que flamea hacia atr
 import math, os, sys
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
 import numpy as np
+import motor
 from motor import Lienzo, args
 
 RAMP = {
@@ -43,7 +44,7 @@ FEATHERS = [(0.15, 80, 10), (0.32, 63, 13), (0.5, 45, 16.5), (0.67, 28, 19), (0.
 
 def wing_parts(c, P, dx=0, dy=0, dark=0.0, far=False):
     """dibuja un ala pluma por pluma (cada una con su contorno) y su borde de cobertoras encima"""
-    Z = np.zeros((80, 80), bool)
+    Z = np.zeros((motor.N, motor.N), bool)
     for i, (u, ang, L) in enumerate(FEATHERS):
         bx, by = edge_at(u); bx += dx; by += dy
         a = math.radians(ang)
@@ -65,8 +66,9 @@ def wing_parts(c, P, dx=0, dy=0, dark=0.0, far=False):
 
 
 def build(P):
-    c = Lienzo(RAMP, P, S=0.87, OX=31, mid=MID, span=SPAN, lit={'fur': 'fur2', 'fur2': 'fur2', 'furd': 'furd'}, glow_rad={'flame': (3, 10)}, flame_detail=True)
-    Z = np.zeros((80, 80), bool)
+    motor.tamano(96)                      # forma final: lienzo más grande, mismo tamaño de cuadradito
+    c = Lienzo(RAMP, P, S=0.87 * 1.2, OX=31, CX=31 * 1.2, CY=90, mid=MID, span=SPAN, lit={'fur': 'fur2', 'fur2': 'fur2', 'furd': 'furd'}, glow_rad={'flame': (3, 10)}, flame_detail=True)
+    Z = np.zeros((motor.N, motor.N), bool)
 
     def anklet(x, y, i, far=False):
         """llamitas en el tobillo: pisa sobre fuego"""

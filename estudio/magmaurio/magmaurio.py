@@ -6,6 +6,7 @@ grebas, placa de pecho, cresta-cuerno. Casi sin lava: solo juntas finas que bril
 import math, os, sys
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
 import numpy as np
+import motor
 from motor import Lienzo, args
 
 RAMP = {
@@ -20,7 +21,6 @@ RAMP = {
 }
 MID = {'claw': 2.2, 'fur': 3.6, 'cream': 3.4, 'rock': 3.6, 'fur2': 4, 'furd': 3}
 SPAN = {'rock': 5, 'cream': 3, 'claw': 3}
-Z = np.zeros((80, 80), bool)
 
 
 def seams(step, ang=0.6, w=0.42):
@@ -53,7 +53,9 @@ def hand(c, x, y, far=False):
 
 
 def build(P):
-    c = Lienzo(RAMP, P, S=0.96, OX=34, OY=75, outline='#1a0a0a', mid=MID, span=SPAN,
+    motor.tamano(96)                      # forma final: lienzo más grande, mismo tamaño de cuadradito
+    Z = np.zeros((motor.N, motor.N), bool)
+    c = Lienzo(RAMP, P, S=0.96 * 1.2, OX=34, OY=75, CX=34 * 1.2, CY=90, outline='#1a0a0a', mid=MID, span=SPAN,
                lit={'fur': 'fur2', 'fur2': 'fur2', 'furd': 'furd'})
     # ---------- pierna lejana (digitígrada: muslo, corvejón hacia atrás, pie hacia adelante) ----------
     legF = c.caps([(46, 48), (43.5, 56), (49, 65), (47.5, 72)], [5.0, 3.4, 2.4, 2.3]) | c.ell(44.8, 73, 4.4, 1.9)

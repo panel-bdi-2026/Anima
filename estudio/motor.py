@@ -20,6 +20,12 @@ N = 80
 YY, XX = np.mgrid[0:N, 0:N]
 
 
+def tamano(n):
+    """cambia el tamaño del lienzo (80 para etapas 1 y 2, 96 para formas finales; mismo tamaño de cuadradito)"""
+    global N, YY, XX
+    N = n; YY, XX = np.mgrid[0:N, 0:N]
+
+
 def hexc(h):
     h = h.lstrip('#')
     return tuple(int(h[i:i + 2], 16) for i in (0, 2, 4))
@@ -64,9 +70,10 @@ def distancia(m):
 
 
 class Lienzo:
-    def __init__(self, ramps, P, S=0.82, OX=40, OY=75, outline='#2a0e12', mid=None, span=None, glow=('flame', 'lava'),
+    def __init__(self, ramps, P, S=0.82, OX=40, OY=75, CX=None, CY=None, outline='#2a0e12', mid=None, span=None, glow=('flame', 'lava'),
                  lit=None, glow_rad=None, flame_detail=False):
         self.R = ramps; self.P = P; self.S = S; self.OX = OX; self.OY = OY
+        self.CX = OX if CX is None else CX; self.CY = OY if CY is None else CY   # dónde cae el origen en el lienzo
         self.OUT = hexc(outline)
         self.MID = mid or {}; self.SPAN = span or {}
         self.glow = glow                      # materiales que emiten luz
@@ -89,12 +96,12 @@ class Lienzo:
             px, py = L['piv']; c, s = math.cos(r), math.sin(r)
             x, y = px + (x - px) * c - (y - py) * s, py + (x - px) * s + (y - py) * c
         x += L['dx']; y += L['dy']
-        return self.OX + (x - self.OX) * self.S, self.OY + (y - self.OY) * self.S
+        return self.CX + (x - self.OX) * self.S, self.CY + (y - self.OY) * self.S
 
     def inv(self):
         L = self.loc
-        X = self.OX + (XX + 0.5 - self.OX) / self.S - L['dx']
-        Y = self.OY + (YY + 0.5 - self.OY) / self.S - L['dy']
+        X = self.OX + (XX + 0.5 - self.CX) / self.S - L['dx']
+        Y = self.OY + (YY + 0.5 - self.CY) / self.S - L['dy']
         r = L['rot']
         if r:
             px, py = L['piv']; c, s = math.cos(-r), math.sin(-r)

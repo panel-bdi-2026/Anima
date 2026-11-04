@@ -4,6 +4,7 @@ crin de fuego a lo largo del lomo y cola encendida más larga."""
 import os, sys
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
 import numpy as np
+import motor
 from motor import Lienzo, args
 
 RAMP = {
@@ -28,7 +29,7 @@ def socks(top):
     return f
 
 
-Z = np.zeros((80, 80), bool)
+Z = np.zeros((motor.N, motor.N), bool)
 
 
 def rockplate(c, pts, far=False):
