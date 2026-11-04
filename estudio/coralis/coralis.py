@@ -15,9 +15,12 @@ RAMP = {
     'coral': ['#5a1430', '#92244a', '#cc3c64', '#f0607e', '#ff8e9e', '#ffc2c8', '#ffe8ea'],
     'veil':  ['#2a4e8a', '#4a76b4', '#74a2d8', '#a2c8ee', '#d0e6fa'],
     'veilp': ['#6a2a6a', '#9a4a8e', '#c878b0', '#eaa8d0', '#fcd8ec'],
+    'veild': ['#1a3466', '#2a4e8a', '#4a76b4', '#74a2d8'],
+    'pearl': ['#8a7a9a', '#c8bcd8', '#f4eefc', '#ffffff'],
+    'hoof':  ['#0a1024', '#14203c', '#22325a', '#34487a'],
 }
-MID = {'skin': 4, 'belly': 3, 'coral': 3.6, 'veil': 2.6, 'veilp': 2.4}
-SPAN = {'belly': 3, 'veil': 3, 'coral': 4.5, 'veilp': 3}
+MID = {'veild': 1.6, 'pearl': 2.2, 'hoof': 1.8, 'skin': 4, 'belly': 3, 'coral': 3.6, 'veil': 2.6, 'veilp': 2.4}
+SPAN = {'pearl': 2, 'belly': 3, 'veil': 3, 'coral': 4.5, 'veilp': 3}
 
 
 def coral(c, bx, by, ang, L, far, seed):
@@ -32,14 +35,30 @@ def coral(c, bx, by, ang, L, far, seed):
     c.parte(m, 'coral', R=2, bias=-0.3 if far else 0.04, outline='#4a0e24', far=far)
 
 
+def veil_mat(y_pink, ang=0.35):
+    """velo azul que se vuelve rosado en el borde, con radios finos como las aletas de un pez"""
+    def f(X, Y):
+        m = np.where(Y > y_pink + np.sin(X * 1.3) * 0.8, 'veilp', 'veil').astype(object)
+        m[((X * math.cos(ang) - Y * math.sin(ang)) % 2.9) < 0.75] = 'veild'
+        return m
+    return f
+
+
 def veil(c, pts, far):
     """velo de aleta que cuelga detrás de una pata"""
-    c.parte(c.poly(pts), lambda X, Y: np.where(Y > 67.5 + np.sin(X * 1.3) * 0.8, 'veilp', 'veil').astype(object), R=2.5,
-            bias=-0.3 if far else 0.0, outline='#1a3466', far=far)
+    c.parte(c.poly(pts), veil_mat(67.5, 0.12), R=2.5, bias=-0.3 if far else 0.0, outline='#1a3466', far=far)
 
 
 def leg(c, pts, rr, foot, far):
-    c.parte(c.caps(pts, rr) | c.ell(*foot), 'skin', R=2.5, bias=-0.3 if far else 0.0, far=far)
+    """pata fina con pezuña oscura y brazalete de coral en el tobillo"""
+    b = -0.3 if far else 0.0
+    fx, fy = foot[0], foot[1]
+    c.parte(c.caps(pts, rr) | c.ell(*foot), lambda X, Y: np.where(Y > fy - 1.4, 'hoof', 'skin').astype(object), R=2.5, bias=b, far=far)
+    ax, ay = pts[-1][0], 66.5
+    cuff = c.ell(ax + 0.2, ay, rr[-1] + 1.2, 1.1)
+    for k in range(3):                                           # ramitas del brazalete
+        cuff |= c.caps([(ax - 1.6 + k * 1.6, ay - 0.6), (ax - 2.2 + k * 1.9, ay - 2.4)], [0.7, 0.4])
+    c.parte(cuff, 'coral', R=1.5, bias=b, outline='#4a0e24', far=far)
 
 
 def build(P):
@@ -54,7 +73,7 @@ def build(P):
     # ---- cola larga con velo de betta ----
     c.local(rot=P['tail'], piv=(60, 46))
     tveil = c.poly([(60, 44.5), (66, 42), (71.5, 39), (75 + w, 41), (77 + w, 47), (76 + w, 55), (73, 61), (69, 57), (66, 52), (62, 49.5)])
-    c.parte(tveil, lambda X, Y: np.where(Y > 52, 'veilp', 'veil').astype(object), R=3, outline='#1a3466')
+    c.parte(tveil, veil_mat(52, -0.5), R=3, outline='#1a3466')
     c.parte(c.caps([(59, 46), (65, 43.5), (70, 40.5), (73.5, 37.5)], [3.8, 3.0, 2.0, 1.0]), 'skin', R=3)
     c.local()
     # ---- corona de coral, astas lejanas ----
@@ -62,9 +81,23 @@ def build(P):
     for i, (bx, by, ang, L) in enumerate([(28.5, 23.5, 22, 13.5), (30.5, 27, 62, 12)]):
         coral(c, bx + 2.5, by - 1.2, ang, L, True, i + 5)
     c.local()
+    # ---- crin-aleta translúcida en la nuca, con radios ----
+    c.local(dy=P['head'] * 0.5)
+    mane = c.poly([(26, 27), (29.5, 26.5), (33.5 + w * 0.6, 29), (37 + w, 33), (39.5 + w, 37.5), (40.5, 41.5), (36, 42.5), (33, 38), (30, 33.5)])
+    c.parte(mane, veil_mat(38.5, 0.9), R=3, outline='#1a3466')
+    c.local()
     # ---- cuerpo esbelto y cuello erguido ----
     body = c.ell(33, 47, 8.5, 7.8) | c.ell(45, 48, 13.5, 6.6) | c.ell(56, 47.2, 7.5, 6.8) | c.ell(28.5, 39.5, 5.8, 8, 0.25)
-    c.parte(body, lambda X, Y: np.where(((X < 31.5 + (Y - 40) * 0.25) & (Y > 38)) | ((Y > 51.5 + (X - 40) ** 2 * 0.002) & (X < 50)), 'belly', 'skin').astype(object), R=8)
+    def body_mat(X, Y):
+        m = np.where(((X < 31.5 + (Y - 40) * 0.25) & (Y > 38)) | ((Y > 51.5 + (X - 40) ** 2 * 0.002) & (X < 50)), 'belly', 'skin').astype(object)
+        for i in range(7):                                              # fila de perlas en el costado
+            px, py = 37.5 + i * 3.2, 47.4 + math.sin(i * 0.9) * 0.5
+            m[np.hypot(X - px, Y - py) < 1.05] = 'pearl'
+        return m
+    c.parte(body, body_mat, R=8)
+    # pequeñas ramas de coral a lo largo del lomo
+    for i, (bx, by, ang, L) in enumerate([(41, 42.4, 10, 3.6), (46, 42.2, 20, 4.4), (51, 42.4, 28, 3.8), (55.2, 41.8, 40, 3.2)]):
+        coral(c, bx, by, ang, L, False, i + 11)
     # ---- patas cercanas, con sus velos ----
     veil(c, [(31.5, 56), (35, 58.5), (38 + w, 64.5), (39 + w, 71), (36, 72.5), (33, 69), (31.5, 63)], False)
     leg(c, [(30, 54), (30.5, 63), (30, 71)], [3.3, 2.2, 1.9], (28.8, 72.8, 3.1, 1.5), False)
