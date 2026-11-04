@@ -158,6 +158,7 @@
       Object.assign(G.bag, { esfera: 10, pocion: 5 }, cfg.mochila || {});
       if (cfg.dinero !== undefined) G.money = cfg.dinero;
       for (let i = 0; i < (cfg.medallas || 0); i++) G.badges[i] = true;
+      if (cfg.hora !== undefined) G.time = cfg.hora * 60; // hora del día (0-24), p. ej. 20 para ver la noche
       G.map = cfg.mapa || 'ruta1'; G.x = cfg.x !== undefined ? cfg.x : 10; G.y = cfg.y !== undefined ? cfg.y : 8;
       Scenes.clear(); World.map = null; World.start(); Fade.a = 0;
       await wait(0.4);

@@ -14,7 +14,7 @@ Cada Pull Request lleva en su descripción un bloque que dice a qué parte del j
 
 - `tipo`: `titulo` (la entrada del título; es lo que se usa si no hay bloque), `combate` (con `rival`, y opcionales `salvaje`, `jefe`, `dificultad`), `pantalla` (con `pantalla`: nombre de la clase, p. ej. `ConstelScreen`, y `args`, donde `"$equipo0"` es la primera ánima del equipo) o `mapa` (en `mapa`, `x`, `y`; con `segundos` se recorre ese rato).
 - Al terminar la demostración (fin del combate, al cerrar la pantalla, al pasar los `segundos`) aparece sola la ventana de revisión: Aceptar, Rechazar, Ver de nuevo y Revisar con Claude. La prueba se enfoca solo en el cambio.
-- Comunes: `equipo`, `mochila`, `dinero`, `medallas` (cuántas), `flags`, `mapa`, `x`, `y`.
+- Comunes: `equipo`, `mochila`, `dinero`, `medallas` (cuántas), `flags`, `mapa`, `x`, `y`, `hora` (0-24, p. ej. 20 para la noche).
 - Si hace falta algo más, el Pull Request puede definir `AnimaCanal.escenarios.nombre = async (cfg) => { … }` y usar `"tipo": "nombre"`.
 
 ### Versión
