@@ -60,3 +60,5 @@ node server.js
 Abre http://localhost:8080. El kit `tools/testkit.js` (objeto `T`: `T.quick`, `T.duel`, `T.fuzz`, `T.shot`) se carga a mano en la página; no lo carga `index.html`. Las capturas van a `tools/shots/`, que Git ignora.
 
 Prueba automática: `npm i --no-save playwright && npx playwright install chromium && node tools/smoke.js`
+
+Cambios visuales: seguir `docs/estilo.md` (dirección de arte) y comparar con `node tools/capturas.js URL_ANTES URL_DESPUES [escena…]`, que deja capturas de antes y después en `tools/shots/capturas/`.
