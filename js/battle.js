@@ -1049,7 +1049,8 @@ class BattleScene {
     if (f.animSeed === undefined) f.animSeed = Math.random() * 6;
     // ánima animada por partes (respira, camina, ataca, reacciona)
     CreatureAnim.draw(ctx, f, {
-      sp: f.c.sp, S, shiny: f.c.shiny, px: f.x, py: f.y + 4, flip, view: f.fainted ? 'side' : CreatureAnim.viewOf(f, f.ang), scale: f.fainted ? 1 : sc, t: this.t, dt: 1 / 60,
+      // se compone con sus píxeles originales (40) y se muestra al tamaño del combate (f.size)
+      sp: f.c.sp, S: 40, shiny: f.c.shiny, px: f.x, py: f.y + 4, flip, view: f.fainted ? 'side' : CreatureAnim.viewOf(f, f.ang), scale: (f.fainted ? 1 : sc) * S / 40, t: this.t, dt: 1 / 60,
       speed: Math.hypot(f.vx, f.vy), act: f.act, dash: !!f.dash, dodge: f.dodgeT > 0, stun: f.stun > 0,
       charging: f === this.ally && this.chg && this.chg.t > 0.15, faintT: f.fainted ? this.t - (f.faintT || (f.faintT = this.t)) : undefined,
       flash: f.flash > 0 && Math.floor(f.flash * 40) % 2 === 0, flashColor: f.flashColor,
