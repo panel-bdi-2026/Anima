@@ -225,7 +225,7 @@
     const btn = (txt, cls, fn) => { const x = el('button', cls, txt); x.type = 'button'; x.addEventListener('click', fn); return x; };
     const row = (...k) => { const r = el('div', 'row'); r.append(...k); return r; };
     // etiqueta pequeña en la esquina superior izquierda; al tocarla se abre el panel
-    const bar = el('button', '', 'VERSIÓN DE PRUEBA'); bar.type = 'button'; bar.id = 'canal-prueba';
+    const bar = el('button', '', PR ? `VERSIÓN DE PRUEBA #${PR}` : 'VERSIÓN DE PRUEBA'); bar.type = 'button'; bar.id = 'canal-prueba';
     const panel = el('div'); panel.id = 'canal-panel';
     const box = el('div', 'box'), title = el('div', 't'), msg = el('div', 'msg');
     // nota para Claude (aparece al tocar «Revisar con Claude»)
