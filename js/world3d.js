@@ -772,7 +772,23 @@ for (int i = 0; i < 6; i++) { vec2 d = base - uPush[i].xy; float l = length(d); 
     if (world.battle) for (const f of world.battle.fighters()) if (!f.inBall && (f.types.includes("fuego") || f.types.includes("electrico"))) glow.push([f.x / 16, 0.8, f.y / 16, 0.9]);
     srcs.sort((p, q) => Math.hypot(p[0] - tg.x, p[2] - tg.z) - Math.hypot(q[0] - tg.x, q[2] - tg.z));
     srcs.unshift(...glow);
-    this.pl.forEach((p, i) => { const s = srcs[i]; if (!s || night < 0.05) { p.intensity = 0; return; } p.position.set(s[0], s[1], s[2]); p.color.set('#ffc070'); p.distance = 8; p.intensity = night * 7 * s[3]; });
+    // las 8 luces disponibles van a los faroles y puertas más cercanos; al caminar, una luz que deja de
+    // estar entre las más cercanas se apaga poco a poco y recién entonces pasa a otro farol (antes
+    // saltaban de golpe y los charcos de luz parpadeaban)
+    {
+      const want = new Map(); srcs.slice(0, this.pl.length).forEach((s) => want.set(s[0].toFixed(2) + ',' + s[2].toFixed(2), s));
+      const held = new Set(this.pl.map((p) => p.userData.key).filter(Boolean));
+      for (const p of this.pl) {
+        const k = p.userData.key, s = k && want.get(k);
+        if (s && night >= 0.05) { p.position.set(s[0], s[1], s[2]); p.color.set('#ffc070'); p.distance = 8; p.intensity += (night * 7 * s[3] - p.intensity) * 0.08; continue; }
+        p.intensity *= 0.9;
+        if (p.intensity < 0.05) {
+          p.intensity = 0; p.userData.key = null;
+          const free = [...want.keys()].find((q) => !held.has(q));
+          if (free && night >= 0.05) { p.userData.key = free; held.add(free); const s2 = want.get(free); p.position.set(s2[0], s2[1], s2[2]); }
+        }
+      }
+    }
     if (this.motes) { this.motes.material.color.set(night > 0.5 ? '#c8ff80' : '#fff8d0'); this.motes.material.size = night > 0.5 ? 0.16 : 0.1; this.motes.material.opacity = night > 0.5 ? 0.9 : 0.45; }
     this.night = night;
   },
