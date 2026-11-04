@@ -240,6 +240,7 @@ const Title3D = {
     for (let i = 0; i < p.count; i++) { p.array[i * 3] = mb[i * 3] + Math.sin(t * 0.4 + i) * 0.8 - ((t * 0.3 + i) % 6) + 3; p.array[i * 3 + 1] = mb[i * 3 + 1] + Math.sin(t * 0.7 + i * 1.7) * 0.3; }
     p.needsUpdate = true;
     W3D.fitCanvas();
+    if ((this.pixN = (this.pixN || 0) + 1) % 60 === 1) W3D.pixelize(this.scene); // mismo muestreo sin titileo que el mundo
     const post = W3D.post.uniforms; post.exposure.value = 0.95; post.night.value = 0.4; post.dof.value = 0;
     W3D.r.setRenderTarget(W3D.rt); W3D.renderScene(this.scene, this.cam);
     post.tDiffuse.value = W3D.rt.texture;
