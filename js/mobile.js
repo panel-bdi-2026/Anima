@@ -154,8 +154,9 @@ const Mobile = {
       const pr = Math.min(u * 0.95, ml / 2 - 6), br = Math.min(u * 0.5, mr / 2 - 6), cx = gr.right + mr / 2;
       return [
         B('dpad', '', [], this.ins.l + ml / 2, bot - pr - u * 0.55, pr, { dpad: true }),
-        B('a', 'A', ['KeyZ'], cx, bot - br - u * 1.35, br, { col: '#58c060' }),
-        B('b', 'B', ['KeyX'], cx, bot - br - u * 0.2, br * 0.85, { col: '#e06060' }),
+        // A y B en diagonal, como en el mundo y el combate (A arriba a la derecha, B abajo a la izquierda)
+        B('a', 'A', ['KeyZ'], Math.min(cx + br * 0.45, this.vw - this.ins.r - br * 0.9 - 4), bot - br - u * 1.05, br * 0.9, { col: '#58c060' }),
+        B('b', 'B', ['KeyX'], cx - br * 0.55, bot - br * 0.85 - u * 0.15, br * 0.8, { col: '#e06060' }),
       ];
     }
     const faint = !this.band, pr = u * (this.band ? 0.95 : 0.8), py = this.band ? Math.max(gr.bottom + pr + 8, bot - pr - u * 0.4) : bot - pr - u * 0.25;
