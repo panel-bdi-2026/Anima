@@ -210,7 +210,7 @@ CreatureAnim.composeHand = function (e, o) {
   const tuck = e.hopZ || (o.act && !o.act.fired && (o.act.m.kind === 'ring' || o.act.m.kind === 'area')) ? 1 : 0;
   const hurt = P.eyes === 'hurt';
   // cola: vaivén constante + empuje según el movimiento
-  let tailT = Math.sin(t * 2.4 + (e.animSeed || 0)) * 0.22 + P.trot * 0.9;
+  let tailT = P.trot * 1.4; // en reposo, la cola en tres posiciones fijas (ver pose)
   if (walking) tailT += Math.sin(ph * 0.5) * 0.35 - 0.15;
   if (o.act && !o.act.fired) tailT -= 0.45;
   if (hurt) tailT += 0.5;
@@ -241,19 +241,19 @@ CreatureAnim.composeHand = function (e, o) {
     } else if (p.role === 'legF' || p.role === 'legB') {
       const phase = (p.role === 'legF') === !p.far ? 0 : Math.PI;
       ang = Math.sin(ph + phase) * legAmp;
-      if (!walking) ang += Math.sin(t * 2.6 + phase) * 0.03;
+      // en reposo las patas no se mueven: girar unos grados hace bailar sus píxeles
       if (tuck) ang += p.role === 'legF' ? -0.6 : 0.6;
       if (hurt) ang += p.role === 'legF' ? 0.25 : -0.25;
       if (walking) dy = Math.max(0, Math.sin(ph + phase)) * -1.2;
     } else if (p.role === 'leg') {
       // patas de bípedo: alternan
       const phase = p.far ? Math.PI : 0;
-      ang = walking ? Math.sin(ph + phase) * 0.5 : Math.sin(t * 2.6 + phase) * 0.03;
+      ang = walking ? Math.sin(ph + phase) * 0.5 : 0;
       if (tuck) ang += p.far ? 0.5 : -0.5;
       if (walking) dy = Math.max(0, Math.sin(ph + phase)) * -1.5;
     } else if (p.role === 'arm') {
       const phase = p.far ? 0 : Math.PI;
-      ang = walking ? Math.sin(ph + phase) * 0.6 : Math.sin(t * 2.2 + phase) * 0.08;
+      ang = walking ? Math.sin(ph + phase) * 0.6 : P.trot * 0.5;
       if (o.act && !o.act.fired && !p.far) ang += 0.9;
       if (A.atk && (A.atk.kind === 'melee' || A.atk.kind === 'stealth') && !p.far) ang -= 1.3 * (1 - A.atk.t / A.atk.dur);
       if (hurt) ang += 0.5;
@@ -261,11 +261,11 @@ CreatureAnim.composeHand = function (e, o) {
     } else if (p.role === 'wing') {
       const phase = p.far ? 0.35 : 0;
       if (rig.flyer) ang = Math.sin(t * (walking ? 22 : 13) + phase) * 0.55;
-      else ang = walking ? Math.sin(ph * 2 + phase) * 0.18 : Math.sin(t * 3 + phase) * 0.05;
+      else ang = walking ? Math.sin(ph * 2 + phase) * 0.18 : 0;
       if (o.act && !o.act.fired) ang -= 0.6;
       if (hurt) ang += 0.45;
       if (p.far) ang *= 0.9;
-    } else if (p.role === 'fin') ang = Math.sin(t * 5 + (p.far ? 1.5 : 0)) * 0.22 + (walking ? Math.sin(ph) * 0.2 : 0);
+    } else if (p.role === 'fin') ang = [0, 0.18, 0, -0.18][Math.floor(t * 4 + (p.far ? 2 : 0)) % 4] + (walking ? Math.sin(ph) * 0.2 : 0);
     else if (p.role === 'tail') ang = rig.view && rig.view !== 'side' ? tailA * 0.5 : tailA;
     else if (p.role === 'head') { ang = P.hrot; dx = P.hx; dy = P.hy; }
     else if (p.role === 'body') {
@@ -276,7 +276,7 @@ CreatureAnim.composeHand = function (e, o) {
       // las orejas giran con la cabeza y además por su cuenta
       x.save();
       if (head && P.hrot) { const hx = head.ox + head.piv[0] + P.hx, hy = head.oy + head.piv[1] + P.hy; x.translate(hx, hy); x.rotate(P.hrot); x.translate(-hx, -hy); }
-      const ea = (p.role === 'ear' ? earA * (p.far ? 0.8 : 1) : p.role === 'crest' ? earA * 0.9 + Math.sin(t * 3.1) * 0.05 : 0) * (p.mir ? -1 : 1);
+      const ea = (p.role === 'ear' ? earA * (p.far ? 0.8 : 1) : p.role === 'crest' ? earA * 0.9 : 0) * (p.mir ? -1 : 1);
       draw(p, p.canvas, ea, P.hx, P.hy); if (p.eyes) draw(p, eyesImg(p), ea, P.hx, P.hy); x.restore(); continue;
     }
     if (p.mir) ang = -ang;

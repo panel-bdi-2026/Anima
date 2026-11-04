@@ -47,12 +47,14 @@ const CreatureAnim = {
     const P = { rx: 0, ry: 0, rot: 0, sx: 1, sy: 1, hx: 0, hy: 0, hrot: 0, trot: 0, flap: 1, legA: 0, legB: 0, eyes: 'open', alpha: 1, hover: 0, shake: 0 };
     const flyer = o.rig.flyer;
     // reposo
-    const br = Math.sin(t * 2.6 + (e.animSeed || 0));
-    P.sy = 1 + br * 0.035; P.sx = 1 - br * 0.02;
-    P.hy = Math.sin(t * 2.6 - 0.7 + (e.animSeed || 0)) * 0.7;
-    P.trot = Math.sin(t * 2.2 + (e.animSeed || 0)) * 0.16;
-    if (flyer) { P.hover = -4 + Math.sin(t * 4) * 2; P.flap = 0.6 + 0.4 * Math.cos(t * 14); }
-    else P.flap = 1 + Math.sin(t * 3) * 0.06;
+    // Reposo «a lo pixel art»: nada se estira ni se encoge (eso deforma el dibujo y se ve como
+    // titileo). Respira con la cabeza: arriba y abajo 1 píxel, en dos tiempos, despacio; la cola se
+    // mece en tres posiciones fijas.
+    const seed = e.animSeed || 0;
+    P.hy = Math.floor((t * 1.1 + seed * 0.37) % 2);
+    P.trot = [-1, 0, 1, 0][Math.floor((t * 1.6 + seed) % 4)] * 0.14;
+    if (flyer) { P.hover = -4 + Math.round(Math.sin(t * 4) * 2); P.flap = [1, 0.6, 0.2, 0.6][Math.floor(t * 12) % 4]; }
+    else P.flap = 1;
     // parpadeo
     A.nextBlink -= dt;
     if (A.nextBlink <= 0) { A.blinkT = 0.13; A.nextBlink = 2 + Math.random() * 3.5; }
