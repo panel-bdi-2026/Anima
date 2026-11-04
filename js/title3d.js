@@ -127,6 +127,54 @@ const TitleArt = {
     const halo = new THREE.Sprite(new THREE.SpriteMaterial({ map: this.softTex(), color: '#ff6a30', transparent: true, opacity: 0.55, blending: THREE.AdditiveBlending, depthWrite: false, fog: false }));
     halo.position.set(pos.x, pos.y + 24, pos.z); halo.scale.set(16, 9, 1); S.add(halo);
   },
+  // detalles de los patios del pueblo: pozo, cercas, huerto, barriles, leña, carreta y ropa tendida
+  // (coordenadas del pueblo, en casillas; el suelo está en y = 0)
+  yard(G) {
+    const K = HouseKit, mats = {};
+    const mat = (k, o) => mats[k] || (mats[k] = new THREE.MeshLambertMaterial(o));
+    const wood = mat('wood', { map: K.doorTex('wood', '#8a5a34') }), dark = mat('dark', { color: '#4a3020' }), stone = mat('stone', { map: K.stoneTex() });
+    const put = (geo, m, x, y, z, ry = 0) => { const o = new THREE.Mesh(geo, m); o.position.set(x, y, z); o.rotation.y = ry; o.castShadow = o.receiveShadow = true; G.add(o); return o; };
+    const box = (w, h, d, m, x, y, z, ry) => put(new THREE.BoxGeometry(w, h, d), m, x, y + h / 2, z, ry);
+    // cerca de madera entre dos puntos, con un hueco opcional (la entrada)
+    const fence = (x0, z0, x1, z1, gap) => {
+      const L = Math.hypot(x1 - x0, z1 - z0), ang = -Math.atan2(z1 - z0, x1 - x0), n = Math.max(2, Math.round(L / 0.7));
+      for (let i = 0; i <= n; i++) { const k = i / n, x = x0 + (x1 - x0) * k, z = z0 + (z1 - z0) * k; if (gap && Math.abs(x - gap) < 0.45) continue; box(0.09, 0.55, 0.09, wood, x, 0, z); }
+      for (const y of [0.22, 0.42]) {
+        if (gap) { for (const [a, bb] of [[x0, gap - 0.45], [gap + 0.45, x1]]) { const l = Math.abs(bb - a); if (l > 0.1) box(l, 0.05, 0.04, wood, (a + bb) / 2, y, z0, 0); } }
+        else box(L, 0.05, 0.04, wood, (x0 + x1) / 2, y, (z0 + z1) / 2, ang);
+      }
+    };
+    // pozo de piedra con techito
+    { const x = 5.9, z = 5.2;
+      const ring = new THREE.CylinderGeometry(0.42, 0.46, 0.5, 14, 1, true), uv = ring.attributes.uv; for (let i = 0; i < uv.count; i++) uv.setX(i, uv.getX(i) * 3);
+      put(ring, mat('stone2', { map: K.stoneTex(), side: THREE.DoubleSide }), x, 0.25, z);
+      put(new THREE.CircleGeometry(0.4, 14).rotateX(-Math.PI / 2), mat('water', { color: '#2a3a5a' }), x, 0.32, z);
+      for (const s of [-1, 1]) box(0.08, 1.05, 0.08, wood, x + s * 0.38, 0, z);
+      box(0.9, 0.06, 0.06, wood, x, 0.92, z);
+      for (const s of [-1, 1]) { const r = box(1.05, 0.05, 0.42, mat('roofW', { map: K.roofTex('#a04434') }), x, 0, z + s * 0.18); r.position.y = 1.16; r.rotation.x = s * 0.55; }
+      box(0.12, 0.14, 0.12, wood, x + 0.1, 0.55, z); }
+    // cercas de los patios
+    fence(-0.6, 5.9, 5.4, 5.9, 2.5);
+    fence(-12.4, -5.6, -7.6, -5.6, -11.5);
+    fence(16.6, 2.6, 21.2, 2.6, 19);
+    // huerto junto a la casa rosada: tierra en surcos y matas
+    { const soil = mat('soil', { color: '#6a4a34' }), leaf = mat('leaf', { color: '#4a9a3a' }), leaf2 = mat('leaf2', { color: '#7aba48' });
+      for (let r = 0; r < 4; r++) { box(4.2, 0.08, 0.3, soil, -4.1, 0, 0.35 + r * 0.42); for (let k = 0; k < 7; k++) box(0.18, 0.16 + hash2(r, k) * 0.12, 0.18, (r + k) % 2 ? leaf : leaf2, -6 + k * 0.62, 0.06, 0.35 + r * 0.42, k); } }
+    // barriles junto a la tienda
+    { const bg = new THREE.CylinderGeometry(0.22, 0.22, 0.5, 10), hoop = new THREE.CylinderGeometry(0.235, 0.235, 0.05, 10);
+      for (const [x, z] of [[17.4, -4.4], [17.8, -3.8], [17.3, -3.6]]) { put(bg, wood, x, 0.25, z); put(hoop, dark, x, 0.12, z); put(hoop, dark, x, 0.38, z); } }
+    // leña apilada
+    { const lg = new THREE.CylinderGeometry(0.08, 0.08, 0.8, 7).rotateZ(Math.PI / 2), lm = mat('log', { color: '#8a5a34' });
+      for (let r = 0; r < 3; r++) for (let k = 0; k < 4 - r; k++) put(lg, lm, 6.9, 0.08 + r * 0.14, -11.6 + k * 0.17 + r * 0.085); }
+    // carreta con ruedas
+    { const x = 14.2, z = 1.8; box(1.2, 0.3, 0.7, wood, x, 0.32, z, 0.4);
+      for (const s of [-1, 1]) { const w = put(new THREE.CylinderGeometry(0.28, 0.28, 0.06, 12).rotateX(Math.PI / 2), dark, x + Math.sin(0.4) * s * 0.4, 0.28, z + Math.cos(0.4) * s * 0.4, 0.4); w.rotation.y = 0.4; }
+      const h = box(0.9, 0.05, 0.05, wood, x - 0.9, 0.3, z - 0.36, 0.4); h.rotation.z = 0.2; }
+    // ropa tendida entre dos postes
+    { const z = -9.4; for (const x of [-3.2, 0.4]) box(0.07, 1.1, 0.07, wood, x, 0, z);
+      box(3.6, 0.02, 0.02, dark, -1.4, 1.02, z);
+      ['#f0f0f0', '#e86a6a', '#6a9ae0', '#f0d060', '#ffffff'].forEach((c, i) => box(0.36, 0.42 - (i % 2) * 0.1, 0.02, mat('cl' + c, { color: c, side: THREE.DoubleSide }), -2.8 + i * 0.66, 0.6 + (i % 2) * 0.1, z)); }
+  },
   // mancha suave (halos, humo, brillo)
   softTex() {
     if (this._soft) return this._soft;
@@ -301,8 +349,20 @@ const Title3D = {
     // pueblo con las casas del juego
     const village = new THREE.Group(); village.position.set(2, -7, -24); S.add(village);
     const proxy = Object.assign(Object.create(W3D), { root: village, buildings: [], chimney: new Map() });
-    const houses = [{ x: 0, y: 0, w: 5, h: 4, style: 'house', door: 2 }, { x: 7, y: -2, w: 5, h: 4, style: 'house2', door: 2 }, { x: -6, y: -5, w: 5, h: 4, style: 'house3', door: 2 }, { x: 3, y: -9, w: 7, h: 5, style: 'center', door: 3 }, { x: 12, y: -8, w: 5, h: 4, style: 'mart', door: 2 }, { x: -3, y: -14, w: 5, h: 4, style: 'house', door: 2 }, { x: 9, y: -15, w: 5, h: 4, style: 'house2', door: 2 }];
+    // cada casa con su color, su forma y sus detalles (porche, entramado, piedra, buhardilla, cobertizo)
+    const houses = [
+      { x: 0, y: 0, w: 5, h: 4, style: 'house', door: 2, wall: '#f4e2c4', roof: '#c8483a', porch: true, chim: -1 },
+      { x: 7, y: -2, w: 5, h: 4, style: 'house2', door: 2, wall: '#f6e6a8', roof: '#4a70c0', timber: true, annex: 1, pitch: 0.46 },
+      { x: -6, y: -5, w: 5, h: 4, style: 'house3', door: 1, wall: '#f2cec4', roof: '#5a9a48', stone: true, dormer: true, chim: -1 },
+      { x: 3, y: -9, w: 7, h: 5, style: 'center', door: 3 },
+      { x: 12, y: -8, w: 5, h: 4, style: 'mart', door: 2 },
+      { x: -3, y: -14, w: 5, h: 4, style: 'house', door: 3, wall: '#dce6ee', roof: '#5a6276', tall: 1.3, pitch: 0.5, dormer: -0.9, stone: true },
+      { x: 9, y: -15, w: 5, h: 4, style: 'house2', door: 1, wall: '#faf4ea', roof: '#d0743a', timber: true, porch: true, annex: -1, chim: -1 },
+      { x: -12, y: -9, w: 4, h: 3, style: 'house3', door: 1, wall: '#e2e8cc', roof: '#8a5236', pitch: 0.52, annex: 1 },
+      { x: 17, y: -1, w: 4, h: 3, style: 'house', door: 2, wall: '#f0d8e8', roof: '#7a4a9a', dormer: true },
+    ];
     for (const b of houses) proxy.buildBuilding(b);
+    TitleArt.yard(village);
     for (const B of proxy.buildings) B.faceM.emissiveIntensity = 0.75;
     this.chim = [...proxy.chimney.values()].map(([x, y, z]) => [x + 2, y - 7, z - 24]);
     // faroles del pueblo
