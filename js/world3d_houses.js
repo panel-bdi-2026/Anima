@@ -67,7 +67,7 @@ const HouseKit = {
     const [c, x] = U.makeCanvas(8, 8);
     this.px(x, '#3a2008', 0, 0, 8, 8); this.px(x, '#a86420', 1, 1, 6, 6); this.px(x, '#e8a040', 2, 2, 4, 4);
     this.px(x, '#1a0c04', 0, 3, 8, 1); this.px(x, '#1a0c04', 3, 0, 1, 8);
-    return (this._wl = World3D.tex(c));
+    return (this._wl = this.soft(World3D.tex(c)));
   },
   // vidrio: azul oscuro con un reflejo en diagonal (de noche brilla con la luz de dentro)
   glassTex() {
@@ -75,7 +75,7 @@ const HouseKit = {
     const [c, x] = U.makeCanvas(8, 8);
     this.px(x, '#34506e', 0, 0, 8, 8); this.px(x, '#4a6e90', 0, 0, 8, 3);
     for (let i = 0; i < 4; i++) this.px(x, '#b8d8f0', 4 - i, 1 + i, 2, 1);
-    return (this._glass = World3D.tex(c));
+    return (this._glass = this.soft(World3D.tex(c)));
   },
   doorTex(kind, wood) {
     const key = kind + wood; this._door = this._door || {};
@@ -96,6 +96,8 @@ const HouseKit = {
     Icons.drawSign(x, sign, 6, 2);
     return World3D.tex(c);
   },
+  // texturas diminutas (vidrio de ventanas): suavizadas en vez de pixeladas, para que no titilen de lejos
+  soft(t) { t.magFilter = THREE.LinearFilter; t.minFilter = THREE.LinearMipmapLinearFilter; t.userData.pixel = false; return t; },
   // junta geometrías (ya colocadas) en una sola
   merge(geos) {
     let n = 0; for (const g of geos) n += g.attributes.position.count;
@@ -210,7 +212,7 @@ World3D.buildBuilding = function (b) {
   // ---------- tejado ----------
   const ovh = 0.22, rise = depth * 0.36, y0 = hgt, y1 = hgt + rise, zm = cz, half = depth / 2 + ovh;
   const ang = Math.atan2(rise, depth / 2), L = half / Math.cos(ang), rw = wd + 0.5;
-  roofT.repeat.set(rw * 1.5, L * 1.5);
+  roofT.repeat.set(rw * 0.8, L * 0.8); // tejas de ~3 píxeles de pantalla: más finas «bailan» al moverse
   for (const s of [1, -1]) {
     // losa con grosor, inclinada; el centro a mitad de camino entre la cumbrera y el alero
     const g = new THREE.BoxGeometry(rw, 0.12, L);
