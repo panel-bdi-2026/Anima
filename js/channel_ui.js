@@ -39,6 +39,19 @@
           }
         }
       } else {
+        // si se está publicando un cambio aceptado, la lista espera (con aviso animado) hasta que termine
+        let pub = await C.publishing();
+        if (pub && pub.done) { await say(`✓ El cambio #${pub.pr} ya está publicado.`); pub = null; }
+        if (pub) {
+          const ch = new Choice([{ get label() { return `Publicando #${pub.pr}` + '.'.repeat(1 + (Math.floor(Engine.time * 3) % 3)); }, disabled: true }, 'Volver'], { w: 150, x: UI_W - 156 });
+          const tb = new TextBox(`Se está publicando el cambio #${pub.pr} (tarda unos 2 minutos). Mientras tanto no se puede revisar otro; te aviso cuando termine.`, { holdLast: true });
+          const shown = new Promise((r) => { tb.completeRes = r; }); Scenes.push(tb); await shown;
+          let fin = false;
+          const poll = setInterval(async () => { const p = await C.publishing(); if (!p || p.done) { fin = true; clearInterval(poll); if (Scenes.stack.includes(ch)) ch.done(-2); } }, 5000);
+          const r = await runScene(ch); clearInterval(poll); Scenes.pop(tb);
+          if (r === -2 || fin) { await say(`✓ El cambio #${pub.pr} ya está publicado. Ya puedes revisar otro.`); this.busy = false; return this.pick(); }
+          this.busy = false; return;
+        }
         await C.refresh();
         const L = C.list.slice(0, 6);
         if (!L.length) await say('Ahora mismo no hay cambios en prueba.');
