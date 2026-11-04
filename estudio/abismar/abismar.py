@@ -2,7 +2,7 @@
 «Habita las fosas oscuras del mar. Ataca de cerca, emergiendo de las sombras del agua.»
 Ajolote-serpiente de las profundidades: sin patas, cuerpo largo en S que se enrosca en el suelo y levanta
 la cabeza; piel azul noche con vientre más claro, puntos bioluminiscentes a lo largo del costado,
-aleta dorsal violeta con espinas, las branquias de la familia convertidas en frondas que brillan,
+aleta dorsal violeta con espinas, las branquias de la familia convertidas en frondas que brillan en rosa (el color de las branquias de la familia),
 ojo luminoso y partículas de luz en la oscuridad."""
 import math, os, sys
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
@@ -11,11 +11,11 @@ import motor
 from motor import Lienzo, args
 
 RAMP = {
-    'skin':  ['#04060e', '#080c20', '#0e1634', '#16224c', '#202f64', '#2c3f7c', '#3e5494'],
-    'skin2': ['#0a1a2c', '#10283e', '#163a52', '#1e4e68', '#28647e', '#347a92', '#4a92a8'],
-    'belly': ['#16203e', '#22305a', '#304476', '#425a90', '#5a74a8'],
-    'fin':   ['#1a0a30', '#2c1250', '#421c72', '#5a2a94', '#7a40b4', '#9c5ccc'],
-    'bio':   ['#0a5a78', '#14a0c4', '#4ee0f4', '#b4faff'],
+    'skin':  ['#060e26', '#0a1838', '#10264e', '#183668', '#224a86', '#2e60a2', '#4278bc'],
+    'skin2': ['#14143a', '#1e1e52', '#2c2a6a', '#3c3884', '#4e4a9c', '#625eb4', '#7a76c8'],
+    'belly': ['#2a4a7a', '#3e6294', '#5a7eae', '#7a9cc6', '#9ab8da'],
+    'fin':   ['#14143a', '#1e2452', '#2c346c', '#3c4888', '#5260a4', '#6c7cbe'],
+    'bio':   ['#7a1a5a', '#c43a88', '#ff6ab8', '#ffc4e4'],
     'mist':  ['#0c0818', '#160e28', '#22163a', '#2e1e4c'],
 }
 MID = {'skin': 4, 'skin2': 4, 'belly': 3, 'fin': 3.4, 'bio': 2.4, 'mist': 2}
@@ -38,7 +38,7 @@ def along(t):
 def build(P):
     motor.tamano(96)
     Z = np.zeros((motor.N, motor.N), bool)
-    c = Lienzo(RAMP, P, S=1.02 * 1.2, OX=40, OY=75, CX=48, CY=90, outline='#04040c', mid=MID, span=SPAN,
+    c = Lienzo(RAMP, P, S=1.02 * 1.2, OX=40, OY=75, CX=48, CY=90, outline='#060a1c', mid=MID, span=SPAN,
                glow=('bio',), glow_rad={'bio': (2, 9)}, lit={'skin': 'skin2', 'skin2': 'skin2'})
     f = P['fl']
     # ---- frondas lejanas ----
@@ -46,12 +46,12 @@ def build(P):
     for i, (bx, by, ang, L) in enumerate([(25, 28.5, 35, 12), (26.5, 32, 72, 12.5)]):
         a = math.radians(ang) + math.sin(f * 1.2 + i) * 0.08
         fr = c.lengua(bx + 2, by - 2, L, a, 0.15, 1.6, i + 7, wave=1.4)
-        c.parte(fr, 'bio', R=1.5, bias=-0.35, outline='#062a3a', far=True)
+        c.parte(fr, 'bio', R=1.5, bias=-0.35, outline='#4a0e34', far=True)
     c.local()
     # ---- aleta de la cola ----
     c.local(rot=P['tail'], piv=(62, 54))
-    tailfin = c.poly([(63, 49), (66.5, 42.5), (69.5, 37), (73, 35), (74.5, 39.5), (74, 45.5), (71.5, 50.5), (67, 53)])
-    c.parte(tailfin, 'fin', R=3, outline='#14062a')
+    tailfin = c.poly([(61, 50), (64.5, 42), (68, 35.5), (72.5, 31.5), (75.5, 34), (76, 41), (75, 47.5), (72, 52.5), (66.5, 55)])
+    c.parte(tailfin, 'fin', R=3, outline='#0a0e2a')
     c.local()
     # ---- cuerpo en S ----
     body = c.caps(SPINE, RAD)
@@ -83,7 +83,7 @@ def build(P):
         ox, oy = x + uy * (r + 0.6), y - ux * (r + 0.6)          # lado de afuera de la curva
         h = 3.2 * math.sin(math.pi * t) + 1.2
         dors |= c.caps([(ox, oy), (ox + uy * h - ux * 1.2, oy - ux * h - uy * 1.2)], [1.4, 0.5])
-    c.parte(dors, 'fin', R=2, outline='#14062a')
+    c.parte(dors, 'fin', R=2, outline='#0a0e2a')
     # ---- cabeza: la de la familia, más afinada y seria ----
     c.local(dy=P['head'])
     head = c.ell(17.5, 32, 10.5, 8.2, -0.12) | c.ell(9.5, 35, 6.8, 5.2, -0.1)
@@ -93,23 +93,23 @@ def build(P):
     for i, (bx, by, ang, L) in enumerate([(23, 27.5, 30, 13.5), (25, 31, 66, 14.5), (25, 35.5, 102, 12)]):
         a = math.radians(ang) + math.sin(f * 1.2 + i * 1.7) * 0.09
         fr = c.lengua(bx, by, L, a, 0.18, 1.8, i, wave=1.6)
-        c.parte(fr, 'bio', R=1.5, outline='#0a3a4c')
+        c.parte(fr, 'bio', R=1.5, outline='#5a1040')
     c.local()
     c.render()
     # ---- detalles ----
     c.local(dy=P['head'])
-    K = {'k': '#02020a', 'c': '#4ee0f4', 'C': '#e8ffff', 'd': '#14a0c4'}
+    K = {'k': '#04040e', 'c': '#ff6ab8', 'C': '#fff0f8', 'd': '#c43a88'}
     if P['blink']:
         c.patron(11.2, 30.6, ['', 'kkkkk'], K)
     else:   # ojo luminoso, rasgado: serio, no feroz
         ex, ey = c.patron(11.2, 30.6, ['kkkkkk', 'kCcdk.', '.kkkk.'], K)
         for dx in range(0, 6): c.put(ex + dx, ey - 1 - (dx > 2), '#0e1634')
     for x, y in [(4.5, 38), (6.5, 38.7), (8.5, 39.2), (10.5, 39.5), (12.5, 39.5), (14.5, 39.2)]: c.putd(x, y, '#02020a')
-    for x in (7, 10.5): c.putd(x, 39.9, '#c8f0ff')          # colmillitos
+    for x in (7, 10.5): c.putd(x, 39.9, '#e8f0ff')          # colmillitos
     c.local()
     # partículas de luz que flotan (como plancton en la oscuridad)
     for i, (x, y) in enumerate([(36, 36), (44, 30), (52, 40), (40, 50), (58, 30), (66, 40)]):
-        c.putd(x + math.sin(f + i) * 1.5, y - (f * 1.6 + i * 2.1) % 5, ['#4ee0f4', '#b4faff', '#14a0c4'][i % 3])
+        c.putd(x + math.sin(f + i) * 1.5, y - (f * 1.6 + i * 2.1) % 5, ['#ff6ab8', '#ffc4e4', '#9ab8da'][i % 3])
     return c
 
 

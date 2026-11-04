@@ -86,8 +86,8 @@ def build(P):
         ex, ey = c.patron(14.5, 48.6, ['', 'kkk'], K)
     else:   # ojitos chicos y brillantes, como los de un ajolote
         ex, ey = c.patron(14.5, 48.6, ['.kk.', 'kWkk', 'kkkk', '.kk.'], K)
-    # sonrisa ancha
-    for x, y in [(6, 55.2), (7.5, 56), (9, 56.6), (10.5, 57), (12, 57.2), (13.5, 57.1), (15, 56.7)]: c.putd(x, y, '#0c1a3a')
+    # sonrisa de perfil: solo la comisura, que sube hacia la mejilla
+    for x, y in [(10, 56.8), (11.4, 57), (12.8, 56.8), (14, 56.1), (14.8, 55.2)]: c.putd(x, y, '#0c1a3a')
     for x, y in [(17, 55), (18.3, 55)]: c.putd(x, y, '#ff9ab8')       # rubor
     c.local()
     for x in (28.5, 30.5, 32.5, 48.5, 50.5, 52.5): c.putd(x, 74.4, '#a8d8f8')   # deditos
