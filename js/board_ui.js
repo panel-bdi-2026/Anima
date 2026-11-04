@@ -109,6 +109,14 @@ class ConstelScreen {
     let over = null;
     if (M.inside) for (const n of this.B.nodes) { const [x, y] = this.pos(n); if (Math.abs(M.x - x) <= 9 && Math.abs(M.y - y) <= 9) over = n; }
     if (over && (M.moved || M.pressed[0]) && this.sel !== over.id) { this.sel = over.id; this.demoT = 0; Sound.sfx('blip'); }
+    // demostración del ataque: avanza sola; tocarla (o Intro) la abre en grande
+    const sn = this.B.nodes[this.sel];
+    if (this.mdemo && sn.info.t === 'move' && this.mdemo.mk === sn.move) this.mdemo.step(dt);
+    if (sn.info.t === 'move' && typeof MoveDemoScreen !== 'undefined') {
+      const [bx, by, bw, bh] = this.demoBox();
+      const tapDemo = M.pressed[0] && M.inside && M.x >= bx && M.x < bx + bw && M.y >= by && M.y < by + bh;
+      if (tapDemo || Input.pressed('start')) { M.pressed[0] = false; Sound.sfx('select'); this.busy = true; runScene(new MoveDemoScreen(this.c, sn.move)).then(() => { this.busy = false; }); return; }
+    }
     if (M.pressed[0]) M.pressed[0] = false;
     if (Input.repeat('left')) this.move(-1, 0);
     if (Input.repeat('right')) this.move(1, 0);
@@ -118,9 +126,23 @@ class ConstelScreen {
     if (Input.pressed('b') || M.pressed[2]) { Sound.sfx('cancel'); this.done(); }
   }
   // mini demostración del ataque del nodo seleccionado (recuadro arriba a la derecha)
+  // la demostración va donde está el retrato (ahí no tapa ningún nodo)
+  demoBox() { return [6, 24, 102, 64]; }
   drawDemo(ctx) {
     const n = this.B.nodes[this.sel]; if (n.info.t !== 'move') return;
     const m = MOVES[n.move], col = TYPES[m.type].color, light = U.mix(col, '#ffffff', 0.5);
+    // con el combate real (ver js/movedemo.js); si algo falla, queda el dibujo simple de abajo
+    if (typeof MoveDemo !== 'undefined') {
+      if (!this.mdemo || this.mdemo.mk !== n.move) this.mdemo = new MoveDemo(this.c, n.move);
+      const [bx, by, bw, bh] = this.demoBox();
+      P(ctx, bx, by, bw, bh, '#05040c');
+      if (this.mdemo.draw(ctx, bx + 1, by + 1, bw - 2, bh - 2)) {
+        P(ctx, bx, by, bw, 1, col);
+        P(ctx, bx + 1, by + bh - 11, bw - 2, 10, '#05040c');
+        Font.draw(ctx, Input.mode === 'touch' ? 'Toca: verlo en grande' : 'Intro: verlo en grande', bx + 4, by + bh - 10, light);
+        return;
+      }
+    }
     this.demoT = (this.demoT || 0) + 1 / 60;
     const bx = W - 112, by = 22, bw = 106, bh = 62, q = (this.demoT % 1.8) / 1.8;
     P(ctx, bx, by, bw, bh, '#05040c'); P(ctx, bx + 1, by + 1, bw - 2, bh - 2, '#141028'); P(ctx, bx + 1, by + 1, bw - 2, 1, U.mix(col, '#141028', 0.3));
