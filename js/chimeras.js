@@ -185,6 +185,7 @@ const Fusion = {
     for (const k in c.ivs) c.ivs[k] = Math.max(a.ivs[k] || 0, b.ivs[k] || 0);
     const own = SPECIES[f.to].learn.filter((e) => e.lv <= lv).map((e) => e.m).filter((m) => m !== keepA && m !== keepB);
     c.moves = [keepA, keepB].concat(own.slice(-2)).filter((m, i, arr) => MOVES[m] && arr.indexOf(m) === i).slice(0, 4);
+    for (const m of c.moves) addLearned(c, m);
     c.bond = Math.round((a.bond + b.bond) / 2);
     c.shiny = !!(a.shiny || b.shiny);
     c.hp = calcStats(c).hp;

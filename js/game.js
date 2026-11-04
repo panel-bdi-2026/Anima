@@ -75,11 +75,17 @@ const Game = {
 // ---------- instancias de ánima ----------
 function expFor(lv) { return lv <= 1 ? 0 : Math.floor(Math.pow(lv, 3) * 0.85); }
 
-function movesAt(sp, lv) {
+function movesAt(sp, lv) { return learnedAt(sp, lv).slice(-4); }
+// todos los ataques que la especie aprende por nivel hasta «lv» (sin repetir)
+function learnedAt(sp, lv) {
   const list = [];
-  for (const e of sp.learn) if (e.lv <= lv && !list.includes(e.m)) list.push(e.m);
-  return list.slice(-4);
+  for (const e of sp.learn) if (e.lv <= lv && MOVES[e.m] && !list.includes(e.m)) list.push(e.m);
+  return list;
 }
+// Cada ánima usa hasta 4 ataques (c.moves); los demás que aprendió quedan guardados (c.learned)
+// y se cambian desde su ficha (Datos → Ataques).
+function addLearned(c, mk) { if (!c.learned) c.learned = c.moves.slice(); if (MOVES[mk] && !c.learned.includes(mk)) c.learned.push(mk); }
+function storedMoves(c) { return (c.learned || []).filter((m) => MOVES[m] && !c.moves.includes(m)); }
 
 function newCreature(key, lv, opt = {}) {
   const sp = SPECIES[key];
@@ -90,6 +96,8 @@ function newCreature(key, lv, opt = {}) {
     ivs: { hp: iv(), atk: iv(), def: iv(), esp: iv(), vel: iv() },
     moves: opt.moves || movesAt(sp, lv), style: { imp: 0, tem: 0 }, bond: opt.bond || 70, hp: 1, ot: opt.ot || null,
   };
+  c.learned = learnedAt(sp, lv);
+  for (const m of c.moves) addLearned(c, m);
   c.hp = calcStats(c).hp;
   return c;
 }
@@ -98,6 +106,10 @@ function fixCreature(c) {
   if (c.bond === undefined) c.bond = 70;
   if (!c.ivs) c.ivs = { hp: 8, atk: 8, def: 8, esp: 8, vel: 8 };
   c.moves = c.moves.filter((m) => MOVES[m]);
+  // partidas de antes: se guardan todos los ataques que ya debería saber por su nivel
+  if (!c.learned && SPECIES[c.sp]) c.learned = learnedAt(SPECIES[c.sp], c.lv);
+  for (const m of c.moves) addLearned(c, m);
+  c.learned = c.learned.filter((m) => MOVES[m]);
 }
 function calcStats(c) {
   const b = SPECIES[c.sp].stats, iv = c.ivs, L2 = c.lv;
