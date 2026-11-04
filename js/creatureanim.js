@@ -170,6 +170,15 @@ const CreatureAnim = {
     const a0 = ctx.globalAlpha;
     for (const tr of A.trail) { ctx.globalAlpha = a0 * tr.a * P.alpha; blit(buf, tr.x, tr.y); tr.a *= 0.7; }
     ctx.globalAlpha = a0 * P.alpha;
+    // contorno de color (combate): la silueta teñida, corrida un poco en las cuatro direcciones, por detrás
+    if (o.outline) {
+      const ob = e.outBuf && e.outBuf.width === buf.width ? e.outBuf : (e.outBuf = U.makeCanvas(buf.width, buf.height)[0]);
+      const ox = ob.getContext('2d'); ox.globalCompositeOperation = 'source-over'; ox.clearRect(0, 0, ob.width, ob.height); ox.drawImage(buf, 0, 0);
+      ox.globalCompositeOperation = 'source-in'; ox.fillStyle = o.outline; ox.fillRect(0, 0, ob.width, ob.height); ox.globalCompositeOperation = 'source-over';
+      const w = o.outlineW || 1, a1 = ctx.globalAlpha; ctx.globalAlpha = a1 * (o.outlineA || 0.9);
+      for (const [ddx, ddy] of [[-w, 0], [w, 0], [0, -w], [0, w]]) blit(ob, dx + ddx, dy + ddy);
+      ctx.globalAlpha = a1;
+    }
     blit(buf, dx, dy);
     // destello blanco al recibir daño
     if (o.flash) {
