@@ -59,6 +59,10 @@ jobs:
           V=$(awk -v n="$N" 'BEGIN { printf "%.2f", n / 100 }')
           sed -i "s/^const ANIMA_VERSION = { v: '[^']*'/const ANIMA_VERSION = { v: '$V'/" _site/js/version.js
           echo "Versión publicada: v$V"; grep -m1 'ANIMA_VERSION = ' _site/js/version.js
+          # cada publicación pide sus archivos con su propio código (js/x.js?v=abc1234): así el celular
+          # nunca mezcla archivos nuevos con otros viejos guardados (eso dejaba la pantalla negra)
+          sed -i -E "s#(<script src=\"(js/[^\"?]+\.js))\"#\1?v=$MAIN_SHA\"#g" _site/index.html
+          grep -c "?v=$MAIN_SHA" _site/index.html
           mkdir -p _site/prueba
 
           # Pull Requests abiertos desde ramas de este mismo repositorio
@@ -114,6 +118,7 @@ jobs:
           open(p, 'w', encoding='utf-8').write(s)
           EOF
             if [[ -f "$dest/js/version.js" ]]; then sed -i "s/build: 'dev'/build: '${sha:0:7}'/" "$dest/js/version.js"; fi
+            sed -i -E "s#(<script src=\"(js/[^\"?]+\.js))\"#\1?v=${sha:0:7}\"#g" "$dest/index.html"
           done
 
           # lista para el menú VERSIÓN de la versión publicada

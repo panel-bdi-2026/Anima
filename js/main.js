@@ -10,6 +10,7 @@ window.addEventListener('load', () => {
   // si no, queda en pausa hasta el primer toque (y el título lo avisa)
   Sound.unlock();
   Engine.start();
+  if (window.Boot) Boot.ok(); // quita «Cargando…» (ver index.html)
   // ayuda de depuración accesible desde la consola
   window.ANIMA = { G: () => G, World, Battle, Scenes, MAPS, SPECIES, Game };
 });
