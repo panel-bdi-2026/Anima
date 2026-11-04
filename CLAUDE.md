@@ -19,7 +19,7 @@ Cada Pull Request lleva en su descripción un bloque que dice a qué parte del j
 
 ### Versión
 
-`js/version.js` tiene la versión que se ve en el título («BETA v0.01»). Súbela en 0.01 con cada cambio que se entrega. Al abrir la app, el título busca si hay una versión más nueva y, si la hay, se recarga sola.
+El título muestra «BETA v0.0N». El número lo calcula `.github/workflows/pages.yml` al publicar (cada cambio unido a `main` suma 0,01): no hay que editar `js/version.js`, así dos cambios abiertos a la vez no chocan. En las pruebas se ve «PRUEBA #N». Al abrir la app, el título busca si hay una versión más nueva y, si la hay, se recarga sola.
 
 ## Quién hace qué
 

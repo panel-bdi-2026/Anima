@@ -1,7 +1,8 @@
 'use strict';
 // ============================================================
 //  Versión del juego y búsqueda de actualizaciones
-//  - ANIMA_VERSION.v: súbela (0.01, 0.02…) cada vez que se entrega un cambio.
+//  - ANIMA_VERSION.v: la calcula .github/workflows/pages.yml al publicar: cada cambio
+//    unido a main suma 0,01. No hace falta tocarla (así dos cambios no chocan).
 //  - ANIMA_VERSION.build: la reemplaza .github/workflows/pages.yml al publicar
 //    (código del commit); en local queda 'dev'.
 //  - En la pantalla de título se compara con el archivo publicado: si hay una
@@ -11,7 +12,7 @@ const ANIMA_VERSION = { v: '0.06', build: 'dev' };
 
 const Updater = {
   state: 'idle', t: 0, shownT: 0, newV: null,
-  label() { return (window.AnimaCanal && AnimaCanal.isPreview ? 'PRUEBA' : 'BETA') + ' v' + ANIMA_VERSION.v; },
+  label() { const C = window.AnimaCanal; return C && C.isPreview ? 'PRUEBA' + (C.pr ? ' #' + C.pr : '') : 'BETA v' + ANIMA_VERSION.v; },
   check() {
     if (this.state === 'checking' || this.state === 'updating') return;
     if (!location.protocol.startsWith('http')) { this.state = 'ok'; this.shownT = 0; return; }
