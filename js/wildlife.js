@@ -499,3 +499,18 @@ MAPS.ruta1.encounters.list.push({ sp: 'umbrin', min: 3, max: 5, w: 8, time: 'noc
 MAPS.ruta2.encounters.list.push({ sp: 'escamin', min: 6, max: 8, w: 14, weather: 'lluvia' });
 MAPS.ruta3.encounters.list.push({ sp: 'nimbo', min: 13, max: 15, w: 10, weather: 'lluvia' });
 MAPS.bosque.encounters.list.push({ sp: 'escamin', min: 8, max: 10, w: 10, weather: 'lluvia' });
+
+// al empezar cualquier combate, las otras criaturas cercanas se calman y se ocultan mientras dura
+// (antes quedaban congeladas en pleno ataque, con el «!»); al terminar reaparecen suavemente
+{
+  const _start = Battle.start;
+  Battle.start = function (opts) {
+    const foe = opts && opts.wild;
+    for (const c of Critters.list) {
+      if (c.c === foe) continue;
+      if (c.state === 'alert' || c.state === 'charge') { c.state = 'wander'; c.tx = c.x; c.ty = c.y; c.wait = U.rand(2, 4); }
+      c.alpha = 0; c.hop = 0;
+    }
+    return _start.apply(this, arguments);
+  };
+}
