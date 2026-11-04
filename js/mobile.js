@@ -309,7 +309,8 @@ const Mobile = {
     if (Input.mode === 'pad' || (Input.mode !== 'touch' && Options.touch !== 'on')) return;
     const c = this.context(), alpha = 0.55;
     // joystick
-    if (this.usesJoy(c)) {
+    // el joystick solo se ve mientras se usa: aparece donde apoyas el dedo (mitad izquierda) y desaparece al soltarlo
+    if (this.usesJoy(c) && this.joy) {
       const J = this.joy, bx = J ? J.ox : this.ins.l + this.u * 1.5, by = J ? J.oy : this.vh - this.ins.b - this.u * 1.5, R = this.u * 0.85;
       x.globalAlpha = J ? 0.5 : 0.28;
       x.fillStyle = '#0c0818'; x.beginPath(); x.arc(bx, by, R, 0, Math.PI * 2); x.fill();
