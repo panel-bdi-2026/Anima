@@ -207,6 +207,12 @@ class PartyScreen {
 }
 
 // ---------- ficha de ánima ----------
+// potencia y recarga en dos columnas: el rótulo fijo y el número alineado a la derecha
+function moveCols(ctx, m, x0, y) {
+  const c = '#8a8098', v = '#5a5068';
+  Font.draw(ctx, 'Pot', x0 + 104, y, c); Font.drawRight(ctx, String(m.pow || '-'), x0 + 140, y, v);
+  Font.draw(ctx, 'Rec', x0 + 148, y, c); Font.drawRight(ctx, m.cd + 's', x0 + 188, y, v);
+}
 class SummaryScreen {
   constructor(list, i) { this.list = list; this.i = i; this.page = 0; this.opaque = true; this.edit = null; }
   // página Ataques: «edit» = { zone: 'act' (los 4 en uso) | 'sto' (guardados), i, slot, scroll }
@@ -333,7 +339,9 @@ class SummaryScreen {
         P(ctx, x0 + 1, y + 1, 4, 22, TYPES[m.type].color);
         Font.draw(ctx, `${k + 1}. ${m.name}`, x0 + 10, y + 3, '#2a2236');
         UI.typeBadge(ctx, m.type, x0 + 158, y + 3);
-        Font.draw(ctx, `${KIND_LABEL[m.kind]} · Pot ${m.pow || '-'} · Rec ${m.cd}s`, x0 + 10, y + 13, '#5a5068');
+        // dos columnas fijas: potencia y recarga (alineadas en todas las filas)
+        Font.draw(ctx, KIND_LABEL[m.kind], x0 + 10, y + 13, '#5a5068');
+        moveCols(ctx, m, x0, y + 13);
         if (on && E.zone === 'act') UI.cursor(ctx, x0 - 2, y + 8);
       }
       // guardados
@@ -347,7 +355,7 @@ class SummaryScreen {
         if (on) { P(ctx, x0 + 2, y - 1, 192, 12, '#fff4c8'); UI.cursor(ctx, x0 - 2, y + 2); }
         P(ctx, x0 + 8, y + 2, 4, 6, TYPES[m.type].color);
         Font.draw(ctx, m.name, x0 + 16, y, '#2a2236');
-        Font.drawRight(ctx, `Pot ${m.pow || '-'} · Rec ${m.cd}s`, x0 + 188, y, '#5a5068');
+        moveCols(ctx, m, x0, y);
       }
       if (sto.length > 5) Font.drawRight(ctx, `${sc + 1}-${Math.min(sto.length, sc + 5)}`, x0 + 188, y0 + 4, '#8a8098');
       // abajo: qué hacer, o qué hace el ataque marcado
