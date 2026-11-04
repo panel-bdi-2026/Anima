@@ -79,7 +79,7 @@ def build(P):
     c.parte(c.poly([(26.5, 28.5), (30, 25.5), (37, 26), (39, 30.5), (36, 34), (29, 34)]), stone(moss_top=27.6), R=4, outline='#0e0e10')   # hombrera
     c.parte(c.ell(24.5, 50.5, 5.0, 4.6), stone(), R=3.5, outline='#0e0e10')
     # ---- cabeza de geco de la familia, más grande y seria ----
-    c.local(dy=P['head'])
+    c.local(dx=5, dy=P['head'] + 2)
     head = c.ell(25.5, 21.5, 10.6, 9, -0.05) | c.ell(16, 24.8, 6.8, 5.4, -0.05)
     c.parte(head, lambda X, Y: np.where(Y > 27.4 + (X - 14) * 0.05, 'belly', 'skin').astype(object), R=6, bias=0.04)
     hoja(c, (27.5, 15), (39, 6.5), 3.2, shade=0.04)
@@ -87,7 +87,7 @@ def build(P):
     c.local()
     c.render()
     # ---- detalles ----
-    c.local(dy=P['head'])
+    c.local(dx=5, dy=P['head'] + 2)
     K = {'k': '#081a0a', 'W': '#fff8d0', 'g': '#6a4a10', 'G': '#d8b040'}
     if P['blink']:
         c.patron(18.4, 20, ['', 'kkkkkk'], K)

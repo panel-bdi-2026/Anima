@@ -66,6 +66,8 @@ def build(P):
     # ---- cola larga que termina en flor ----
     c.local(rot=P['tail'], piv=(59, 50))
     c.parte(c.caps([(58, 50), (65, 47.5), (70, 42.5), (71.5, 37)], [3.4, 2.6, 2.0, 1.6]), 'skin', R=3)
+    for (bx, by, tx, ty) in [(70.5, 39, 76, 40.5), (70, 40, 64.5, 39)]:
+        hoja(c, (bx, by), (tx, ty), 1.7)
     for k in range(6):
         petalo_r(c, 71.5, 35, -90 + (k - 2.5) * 42 + sw * 3, 3.6, 3.2, 1.9, 'petal', shade=0.05 if k % 2 else -0.03)
     c.parte(c.ell(71.5, 35, 1.6, 1.5), 'pollen', R=1.5, outline='#6a4a10')
@@ -82,7 +84,9 @@ def build(P):
         return m
     c.parte(body, body_mat, R=8)
     # florecitas a lo largo del lomo
-    for i, (x, y) in enumerate([(41, 44.8), (48, 45), (54.5, 44.2)]):
+    for i, (bx, by, tx, ty) in enumerate([(38, 45.5), (45, 45.6), (51.5, 45.2), (57, 44.6)] and [(38, 45.5, 41, 39), (45, 45.6, 48.5, 39.5), (51.5, 45.2, 55.5, 39.5), (57, 44.6, 61.5, 40)]):
+        hoja(c, (bx, by), (tx, ty), 1.8, shade=0.03)
+    for i, (x, y) in enumerate([(36.5, 45), (41.5, 44.6), (48, 45), (54.5, 44.2), (59.5, 44.6)]):
         for k in range(5):
             petalo_r(c, x, y, -90 + k * 72 + i * 20, 1.6, 1.5, 1.0, 'petal', shade=0.04)
         c.parte(c.ell(x, y, 0.8, 0.8), 'pollen', R=1)
@@ -91,6 +95,9 @@ def build(P):
     paw(c, [(29.5, 57.5), (29.5, 65), (29, 70.8)], [3.6, 2.5, 2.2], (28, 72.7, 3.4, 1.7), False)
     # ---- melena de pétalos alrededor de la cabeza (dos capas) ----
     c.local(dy=P['head'], rot=sw * 0.015, piv=(25, 38))
+    for k in range(9):                                      # hojas verdes detrás de los pétalos (follaje)
+        a = math.radians(-170 + k * 38 + sw * 2)
+        hoja(c, (26 + math.cos(a) * 6, 38.5 + math.sin(a) * 6), (26 + math.cos(a) * 17, 38.5 + math.sin(a) * 15), 2.6, shade=0.04 if k % 2 else -0.05)
     for k in range(8):                                      # pétalos grandes de afuera
         petalo_r(c, 26, 38.5, -160 + k * 40 + sw * 2, 9.5, 6.2, 3.6, 'petal', shade=0.06 if k % 2 else -0.04)
     for k in range(6):                                      # pétalos claros de adentro
@@ -106,11 +113,11 @@ def build(P):
     c.local(dy=P['head'])
     K = {'k': '#081a0a', 'W': '#ffffff', 'p': '#b4508a', 'P': '#ffaad4'}
     if P['blink']:
-        c.patron(12.6, 38.2, ['', 'kk..kk', '.kkkk.'], K)
-    else:   # mirada tranquila, iris rosado, pestañas
-        ex, ey = c.patron(12.6, 38.2, ['kkkkkk', 'kWPpk.', '.kkk..'], K)
-        c.put(ex + 6, ey - 1, '#081a0a'); c.put(ex + 5, ey - 1, '#081a0a')
-    c.linea_d([(7, 45), (9.6, 45.7), (12.4, 45.9), (14.6, 45.4)], '#0e2a14')
+        ex, ey = c.patron(12.6, 37.8, ['', '', 'k....k', '.kkkk.'], K)
+    else:   # ojos abiertos, dulces, con brillo e iris rosado; pestañas hacia atrás
+        ex, ey = c.patron(12.6, 37.8, ['.kkkk.', 'kWWkkk', 'kWkPpk', 'kkPPpk', '.kkkk.'], K)
+    c.put(ex + 6, ey, '#081a0a'); c.put(ex + 7, ey - 1, '#081a0a')
+    c.linea_d([(7.2, 44.8), (9.8, 45.6), (12.6, 45.8), (14.8, 45.1), (16, 44.2)], '#0e2a14')     # sonrisa suave
     for x, y in [(15.2, 43.8), (16.6, 43.8)]: c.putd(x, y, '#f4a0c0')
     c.local()
     for x in (26, 28, 30, 54, 56, 58): c.putd(x, 74.4, '#a4e080')
