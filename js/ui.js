@@ -347,7 +347,7 @@ class SummaryScreen {
         if (on) { P(ctx, x0 + 2, y - 1, 192, 12, '#fff4c8'); UI.cursor(ctx, x0 - 2, y + 2); }
         P(ctx, x0 + 8, y + 2, 4, 6, TYPES[m.type].color);
         Font.draw(ctx, m.name, x0 + 16, y, '#2a2236');
-        Font.drawRight(ctx, `Pot ${m.pow || '-'}`, x0 + 188, y, '#5a5068');
+        Font.drawRight(ctx, `Pot ${m.pow || '-'} · Rec ${m.cd}s`, x0 + 188, y, '#5a5068');
       }
       if (sto.length > 5) Font.drawRight(ctx, `${sc + 1}-${Math.min(sto.length, sc + 5)}`, x0 + 188, y0 + 4, '#8a8098');
       // abajo: qué hacer, o qué hace el ataque marcado
