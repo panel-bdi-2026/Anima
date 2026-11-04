@@ -65,12 +65,14 @@ def distancia(m):
 
 class Lienzo:
     def __init__(self, ramps, P, S=0.82, OX=40, OY=75, outline='#2a0e12', mid=None, span=None, glow=('flame', 'lava'),
-                 lit=None):
+                 lit=None, glow_rad=None):
         self.R = ramps; self.P = P; self.S = S; self.OX = OX; self.OY = OY
         self.OUT = hexc(outline)
         self.MID = mid or {}; self.SPAN = span or {}
         self.glow = glow                      # materiales que emiten luz
         self.lit = lit or {}                  # material -> material que toma cuando lo ilumina el fuego
+        self.RAD = {'flame': (12, 49), 'lava': (0, 1.1)}
+        self.RAD.update(glow_rad or {})
         self.loc = dict(rot=0.0, piv=(0, 0), dx=0, dy=0)
         self.parts = []
 
@@ -197,7 +199,7 @@ class Lienzo:
             under = s & (pid < k) & (pid >= 0) & ~m & (mm != 'cream') & ~np.isin(mm, self.glow)
             idx[under] = np.maximum(idx[under] - 1, 0)
         # luz de lo que brilla sobre lo que está cerca: el fuego ilumina fuerte y lejos, la lava poco y cerca
-        RAD = {'flame': (12, 49), 'lava': (0, 1.1)}
+        RAD = self.RAD
         best = np.zeros((N, N), int)
         for g in self.glow:
             gy, gx = np.nonzero(mm == g)
