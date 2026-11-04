@@ -50,7 +50,7 @@ const Routines = {
     const s = this.slot(n.def);
     n.slot = s; n.path = null; n.gone = false; n.wait = U.rand(0.2, 1.5);
     if (!s) return;
-    const pos = s.at || (s.path && s.path[0]) || (s.area && [s.area[0] + U.randi(0, s.area[2] - 1), s.area[1] + U.randi(0, s.area[3] - 1)]);
+    const pos = s.at || (s.path && s.path[0]) || (s.steps && s.steps[0].at) || (s.area && [s.area[0] + U.randi(0, s.area[2] - 1), s.area[1] + U.randi(0, s.area[3] - 1)]);
     if (s.do === 'home') { n.gone = true; if (pos) this.setPos(n, pos[0], pos[1]); return; }
     if (pos && this.free(n, pos[0], pos[1])) this.setPos(n, pos[0], pos[1]);
     if (s.face) n.dir = s.face;
@@ -61,6 +61,8 @@ const Routines = {
   target(n, s) {
     if (s.do === 'stay' || s.do === 'home') return s.at;
     if (s.do === 'patrol') return s.path[(n.pi || 0) % s.path.length];
+    // tareas: una lista de lugares, cada uno con su actividad y su duración (se repite en orden)
+    if (s.do === 'tasks') return s.steps[(n.si || 0) % s.steps.length].at;
     if (s.do === 'wander' || s.do === 'chase') {
       if (!n.wt || (n.x === n.wt[0] && n.y === n.wt[1])) {
         for (let i = 0; i < 8; i++) { const c = [s.area[0] + U.randi(0, s.area[2] - 1), s.area[1] + U.randi(0, s.area[3] - 1)]; const t = World.tileAt(c[0], c[1]); if (t && !t.solid) { n.wt = c; break; } }
@@ -74,7 +76,7 @@ const Routines = {
     if (s !== n.slot) {
       // cambio de actividad: si estaba en casa, sale por la puerta
       if (n.gone) { n.gone = false; if (World.npcAt(n.x, n.y, n) || (World.player.x === n.x && World.player.y === n.y)) { n.gone = true; return; } if (this.near(n)) Sound.sfx('door'); }
-      n.slot = s; n.path = null; n.pi = 0; n.wt = null; n.wait = 0;
+      n.slot = s; n.path = null; n.pi = 0; n.wt = null; n.wait = 0; n.si = 0; n.step = null; n.carry = false;
     }
     if (!s || n.gone || n.moving) return;
     n.actT = (n.actT || 0) + dt;
@@ -87,6 +89,11 @@ const Routines = {
       if (s.do === 'patrol') { n.pi = ((n.pi || 0) + 1) % s.path.length; n.wait = s.pause !== undefined ? s.pause : U.rand(0.5, 2); return; }
       if (s.do === 'wander') { n.wait = U.rand(1, 3.5); n.wt = null; if (Math.random() < 0.4) n.dir = U.choice(['up', 'down', 'left', 'right']); return; }
       if (s.do === 'chase') { n.wait = U.rand(0, 0.3); n.wt = null; return; }
+      if (s.do === 'tasks') {
+        const st = s.steps[(n.si || 0) % s.steps.length];
+        if (n.step !== st) { n.step = st; n.actT = 0; if (st.face) n.dir = st.face; n.wait = st.dur || U.rand(3, 6); n.carry = !!st.carry; return; }
+        n.si = ((n.si || 0) + 1) % s.steps.length; n.step = null; n.carry = !!s.steps[n.si].carryTo; return;
+      }
       if (s.face) n.dir = s.face;
       return;
     }
@@ -109,13 +116,18 @@ const Routines = {
   // diálogo según la actividad / la hora
   lines(def, n) {
     const s = n && n.slot;
+    if (n && n.step && n.step.say) return n.step.say;
     if (s && s.say) return s.say;
     if (def.night && !Clock.isDay()) return def.night;
     return def.say;
   },
   // efectos visuales de cada actividad
   drawExtras(ctx, n, sx, sy) {
-    const s = n.slot; if (!s || n.moving || n.gone || !s.act) return;
+    const s0 = n.slot; if (!s0 || n.gone) return;
+    // cargando algo (caja, cesta…) mientras camina hacia otra tarea
+    if (n.carry) { P(ctx, sx + 3, sy - 6, 10, 7, '#5a3a20'); P(ctx, sx + 4, sy - 5, 8, 5, '#b0844c'); P(ctx, sx + 4, sy - 5, 8, 1, '#d8b070'); P(ctx, sx + 7, sy - 5, 2, 5, '#8a6034'); }
+    const s = n.step || s0;
+    if (n.moving || !s.act) return;
     const t = n.actT || 0;
     const [fx, fy] = DIRS[n.dir];
     const ox = sx + 8 + fx * 12, oy = sy + 6 + fy * 10;
@@ -132,6 +144,9 @@ const Routines = {
     else if (s.act === 'sleep') { const k = (t * 0.6) % 1; ctx.globalAlpha = 1 - k; Font.drawOutlined(ctx, 'z', sx + 10 + k * 6, sy - 14 - k * 10, '#ffffff', '#3a3060'); ctx.globalAlpha = 1; }
     else if (s.act === 'sing' || s.act === 'talk') { const k = (t * 0.7) % 1; if (k < 0.75) { ctx.globalAlpha = Math.min(1, (0.75 - k) * 3); Font.drawOutlined(ctx, s.act === 'sing' ? '♪' : '…', sx + 9 + Math.sin(t * 4) * 2, sy - 16 - k * 8, s.act === 'sing' ? '#ffe080' : '#ffffff', '#3a3060'); ctx.globalAlpha = 1; } }
     else if (s.act === 'stretch') { if (Math.floor(t * 1.5) % 2) n.dir = 'up'; else n.dir = 'down'; }
+    else if (s.act === 'rest' || s.act === 'drink') { const k = (t * 0.5) % 1; if (s.act === 'drink') { P(ctx, sx + 11, sy + 3 - (k < 0.3 ? 3 : 0), 3, 5, '#78c8f0'); P(ctx, sx + 11, sy + 3 - (k < 0.3 ? 3 : 0), 3, 1, '#e8f8ff'); } else if (k < 0.6) { ctx.globalAlpha = 0.8; Font.drawOutlined(ctx, '~', sx + 10, sy - 14 - k * 6, '#ffffff', '#3a3060'); ctx.globalAlpha = 1; } }
+    else if (s.act === 'dig' || s.act === 'work') { const up = Math.floor(t * 2.5) % 2; P(ctx, sx + 12, sy + (up ? -1 : 3), 1, 10, '#8a6034'); P(ctx, sx + 11, sy + (up ? 8 : 12), 3, 3, s.act === 'dig' ? '#a0a0a8' : '#c8a060'); if (!up) { P(ctx, sx + 14, sy + 13, 1, 1, '#8a6a40'); P(ctx, sx + 16, sy + 12, 1, 1, '#8a6a40'); } }
+    else if (s.act === 'look') { if (Math.floor(t * 0.7) % 3 === 0) n.dir = 'left'; else if (Math.floor(t * 0.7) % 3 === 1) n.dir = 'up'; else n.dir = 'right'; }
   },
 };
 
@@ -212,15 +227,34 @@ decorate('villa_musgo', [['l', 10, 7], ['l', 18, 12], ['l', 10, 20], ['l', 19, 2
 decorate('ciudad_roca', [['l', 12, 12], ['l', 19, 12], ['l', 14, 22], ['l', 18, 22], ['y', 17, 22], ['O', 28, 10], ['O', 28, 11], ['E', 8, 11], ['y', 9, 15]]);
 decorate('puerto_marea', [['l', 4, 11], ['l', 10, 11], ['l', 20, 11], ['l', 21, 20], ['O', 21, 9], ['O', 21, 10], ['y', 8, 17], ['E', 2, 16]]);
 
+// Pueblo Alba: cada habitante tiene tareas que se ven (regar, cargar, entrenar, conversar, leer…)
+const T_ = (at, act, dur, extra = {}) => Object.assign({ at, act, dur }, extra);
 MAPS.pueblo_alba.npcs.push(
   { id: 'alba_farmer', x: 17, y: 2, look: 'farmer', dir: 'down', say: ['¡Mis flores son las más bonitas del pueblo!'], night: ['Zzz... ¿eh? ¿Qué haces despierto tan tarde?'],
-    routine: [R(6, 11, 'stay', { at: [18, 2], face: 'down', act: 'water', say: ['Riego las flores cada mañana. ¡Les encanta el agua fresca!'] }), R(11, 18, 'wander', { area: [14, 2, 7, 2] }), R(18, 6, 'home', { at: [18, 7] })] },
-  { id: 'alba_kid1', x: 6, y: 13, look: 'kid2', say: ['¡Me pillas si puedes!'], routine: [R(8, 19, 'chase', { area: [3, 12, 5, 4], speed: 1.6 }), R(19, 8, 'home', { at: [18, 7] })] },
-  { id: 'alba_kid2', x: 7, y: 14, look: 'boy', say: ['¡Estamos jugando a ser ánimas salvajes!'], routine: [R(8, 19, 'chase', { area: [3, 12, 5, 4], speed: 1.5 }), R(19, 8, 'home', { at: [18, 7] })] },
+    routine: [
+      R(6, 11, 'tasks', { steps: [T_([18, 2], 'water', 6, { face: 'down', say: ['Riego las flores cada mañana. ¡Les encanta el agua fresca!'] }), T_([20, 2], 'dig', 5, { face: 'down', say: ['Hay que remover la tierra para que respire.'] }),
+        T_([17, 8], 'work', 3, { face: 'up', say: ['Voy por más semillas.'] }), T_([19, 2], 'water', 5, { face: 'down', carryTo: true })] }),
+      R(11, 18, 'tasks', { steps: [T_([16, 9], 'talk', 7, { face: 'left', say: ['Estaba contándole a la vecina cómo crecen mis girasoles.'] }), T_([18, 16], 'water', 6, { face: 'down' }), T_([14, 2], 'look', 5, { face: 'down' })] }),
+      R(18, 6, 'home', { at: [18, 7] })] },
+  { id: 'alba_kid1', x: 6, y: 13, look: 'kid2', say: ['¡Me pillas si puedes!'],
+    routine: [R(8, 12, 'chase', { area: [3, 12, 5, 4], speed: 1.15 }), R(12, 14, 'tasks', { steps: [T_([8, 10], 'talk', 9, { face: 'right', say: ['Estamos descansando. ¡Correr da hambre!'] }), T_([4, 16], 'look', 6, { face: 'down', say: ['¡Mira, en el estanque hay ánimas de agua!'] })] }),
+      R(14, 19, 'chase', { area: [3, 12, 5, 4], speed: 1.15 }), R(19, 8, 'home', { at: [18, 7] })] },
+  { id: 'alba_kid2', x: 7, y: 14, look: 'boy', say: ['¡Estamos jugando a ser ánimas salvajes!'],
+    routine: [R(8, 12, 'chase', { area: [3, 12, 5, 4], speed: 1.1 }), R(12, 14, 'tasks', { steps: [T_([9, 10], 'talk', 9, { face: 'left', say: ['Cuando sea grande voy a tener un Buppa.'] }), T_([5, 16], 'look', 6, { face: 'down' })] }),
+      R(14, 19, 'chase', { area: [3, 12, 5, 4], speed: 1.1 }), R(19, 8, 'home', { at: [18, 7] })] },
   { id: 'alba_jogger', x: 12, y: 3, look: 'jogger', say: ['¡Uf, uf! ¡Correr por la mañana es lo mejor!'],
-    routine: [R(6, 9, 'patrol', { path: [[11, 3], [20, 9], [20, 16], [4, 16], [3, 9]], speed: 1.8, pause: 0 }), R(17, 20, 'patrol', { path: [[4, 16], [20, 16], [20, 9], [3, 9]], speed: 1.8, pause: 0 }), R(9, 17, 'home', { at: [12, 0] }), R(20, 6, 'home', { at: [12, 0] })] },
+    routine: [
+      R(6, 9, 'tasks', { speed: 1.2, steps: [T_([11, 3], 'stretch', 4, { say: ['Primero, a estirar. ¡Nunca te saltes el calentamiento!'] }), T_([20, 9], null, 0.2), T_([20, 16], null, 0.2), T_([4, 16], 'drink', 5, { face: 'down', say: ['Un poco de agua y sigo.'] }), T_([3, 9], null, 0.2)] }),
+      R(17, 20, 'tasks', { speed: 1.2, steps: [T_([4, 16], 'stretch', 4), T_([20, 16], null, 0.2), T_([20, 9], 'drink', 4, { face: 'down' }), T_([3, 9], null, 0.2)] }),
+      R(9, 17, 'home', { at: [12, 0] }), R(20, 6, 'home', { at: [12, 0] })] },
 );
-MAPS.pueblo_alba.npcs.find((n) => n.id === 'alba_man').routine = [R(7, 19, 'stay', { at: [10, 17], face: 'down', act: 'read', say: ['Leo un libro sobre las ánimas de otras regiones. ¡Fascinante!'] }), R(19, 7, 'home', { at: [5, 7] })];
+MAPS.pueblo_alba.npcs.find((n) => n.id === 'alba_girl').routine = [
+  R(8, 18, 'tasks', { steps: [T_([9, 9], 'look', 5, { face: 'up' }), T_([15, 9], 'talk', 7, { face: 'right', say: ['Le pregunto a todo el mundo por las ánimas raras. ¡Quiero verlas todas!'] }), T_([12, 16], 'read', 6, { face: 'up', say: ['Dicen que la Profesora Ceiba busca a alguien que la ayude a completar el Códice.'] })] }),
+  R(18, 8, 'home', { at: [5, 7] })];
+MAPS.pueblo_alba.npcs.find((n) => n.id === 'alba_man').routine = [
+  R(7, 12, 'stay', { at: [10, 17], face: 'down', act: 'read', say: ['Leo un libro sobre las ánimas de otras regiones. ¡Fascinante!'] }),
+  R(12, 15, 'tasks', { steps: [T_([8, 18], 'fish', 10, { face: 'left', say: ['En el estanque no hay peces... pero me relaja igual.'] }), T_([10, 17], 'rest', 6, { face: 'down' })] }),
+  R(15, 19, 'stay', { at: [10, 17], face: 'down', act: 'read' }), R(19, 7, 'home', { at: [5, 7] })];
 
 MAPS.villa_musgo.npcs.push(
   { id: 'vm_baker', x: 12, y: 14, look: 'baker', say: ['¡Pan recién hecho! Bueno, aún no tengo panadería... ¡pero algún día!'],
