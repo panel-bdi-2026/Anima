@@ -20,7 +20,7 @@ const Practice = {
     const ids = new Set();
     for (let i = 0; i < 3; i++) { const d = Game.slotData(i); if (d && d.caught) for (const k of Object.keys(d.caught)) ids.add(Number(k)); }
     const list = SPECIES_LIST.filter((s) => ids.has(s.id)).map((s) => s.key);
-    return list.length ? { list, starters: false } : { list: ['ignito', 'burbujo', 'semillin'], starters: true };
+    return list.length ? { list, starters: false } : { list: ['tofu', 'buppa', 'parker'], starters: true };
   },
   async run(cfg) {
     const prevG = G;

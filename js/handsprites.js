@@ -154,7 +154,7 @@ const HandSprites = {
     const gap = Math.max(2, Math.round(hw * 0.5));
     const legsPart = () => pairs(legs.slice(0, 1), (p, w) => [CX - gap - Math.floor(w / 2), CX + gap - Math.ceil(w / 2)]);
     // las aletas anchas (crines, nubes sobre el lomo) no son pares: van centradas y reflejadas como el cuerpo
-    const wide = (p) => p.role === 'fin' && W0(p) >= 10;
+    const wide = (p) => p.role === 'fin' && (W0(p) >= 10 || p.wide);
     const side = (role, inset) => pairs(near(role).filter((p) => !wide(p)), (p, w) => [CX - hw - w + inset, CX + hw - inset]);
     const wideFins = () => { for (const p of near('fin').filter(wide)) { const T = turnBlock(p, 0.4, true); add(p, T.rows, CX - T.half, { piv: [T.half, p.piv ? p.piv[1] : 0] }); } };
     const tail = () => { for (const p of near('tail')) add(p, padded(p), CX - W0(p) / 2); };

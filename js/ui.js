@@ -987,7 +987,7 @@ class TitleScreen {
     P(ctx, 0, 190, W, 50, '#2e6a3a');
     for (let x = 0; x < W + 16; x += 16) ctx.drawImage(Tiles.get('tallgrass', Math.floor(t * 3 + x / 16) % 2), (x - (t * 40) % 16), 190);
     // criaturas desfilando
-    const parade = ['ignito', 'burbujo', 'semillin', 'voltin', 'rabin', 'umbrin'];
+    const parade = ['tofu', 'buppa', 'parker', 'voltin', 'rabin', 'umbrin'];
     parade.forEach((k, i) => {
       const x = ((i * 60 + t * 36) % (W + 80)) - 50;
       const bob = Math.abs(Math.sin(t * 6 + i)) * 4;

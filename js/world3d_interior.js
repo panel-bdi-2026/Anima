@@ -49,7 +49,7 @@
         if (T(tx, 0) !== 'wall' || tx - last < 3 || Math.abs(tx - fireX) < 2) continue;
         const under = TILEDEF[(m.rows[1] || '')[tx]]; if (under && ['shelf', 'tv', 'pc', 'machine', 'healer'].includes(under.t)) continue;
         last = tx;
-        const isP = hash2(tx, m.h) < 0.4, sps = ['ignito', 'burbujo', 'semillin', 'voltin', 'pipio', 'umbrin', 'rabin', 'hongui'];
+        const isP = hash2(tx, m.h) < 0.4, sps = ['tofu', 'buppa', 'parker', 'voltin', 'pipio', 'umbrin', 'rabin', 'hongui'];
         const img = isP ? portrait(sps[Math.floor(hash2(tx * 7, m.w * 3) * sps.length)]) : landscape(tx * 31 + m.id.length * 7);
         const w = isP ? 0.62 : 0.86, h = isP ? 0.76 : 0.58, fr = hash2(tx, 9) < 0.5 ? wood : gold;
         const g = new THREE.Group(); g.position.set(tx + 0.5, 1.55, 1.02);

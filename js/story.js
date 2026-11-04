@@ -178,7 +178,7 @@ const Story = {
       const key = def.key, sp = SPECIES[key];
       if (!Game.flag('met_prof')) { await say('Son tres esferas. Será mejor hablar primero con la Profesora.'); return; }
       if (Game.flag('got_starter')) { await say('La Profesora guarda aquí sus ánimas de investigación.'); return; }
-      const desc = { ignito: 'el ánima de tipo FUEGO', burbujo: 'el ánima de tipo AGUA', semillin: 'el ánima de tipo PLANTA' }[key];
+      const desc = `el ánima de tipo ${TYPES[sp.types[0]].name.toUpperCase()}`;
       const peek = new StarterPeek(key);
       Scenes.push(peek);
       const r = await ask(`¿Eliges a ${sp.name}, ${desc}?`);
@@ -198,7 +198,7 @@ const Story = {
       const rv = World.npc('lab_rival');
       await say(`¡Entonces yo me quedo con este! ¡${SPECIES[rk].name}!`, { speaker: G.rival });
       if (rv) {
-        const tx = ({ ignito: 5, burbujo: 6, semillin: 7 })[rk];
+        const tx = (MAPS.lab.starters.find((s) => s[2] === rk) || [6])[0];
         const path = []; let x = rv.x; while (x < tx) { path.push('right'); x++; } while (x > tx) { path.push('left'); x--; }
         rv.scripted = true;
         const ok = await this.safeWalk(rv, path);
