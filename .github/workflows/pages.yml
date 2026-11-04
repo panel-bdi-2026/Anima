@@ -76,7 +76,7 @@ jobs:
             d=$(printf '%s\n%s\n' "$created" "$cdate" | sort | tail -n 1)
             jq --argjson n "$num" --arg d "$d" '. + [{pr: $n, updated: $d}]' cambios.json > t.json && mv t.json cambios.json
           done
-          jq 'sort_by(.updated) | reverse | .[:8]' cambios.json > t.json && mv t.json cambios.json
+          jq 'sort_by(.updated) | reverse | .[:10]' cambios.json > t.json && mv t.json cambios.json
           echo "Pruebas a publicar:"; cat cambios.json
 
           for num in $(jq -r '.[].pr' cambios.json); do

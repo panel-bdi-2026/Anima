@@ -53,11 +53,11 @@
           this.busy = false; return;
         }
         await C.refresh();
-        const L = C.list.slice(0, 6);
+        const L = C.list.slice(0, 10); // con el número de cada cambio (#N), el mismo que Claude usa al contarlos
         if (!L.length) await say('Ahora mismo no hay cambios en prueba.');
         else {
           const r = await ask(L.length === 1 ? 'Hay 1 cambio en prueba. Tus partidas no se tocan.' : `Hay ${L.length} cambios en prueba, el más reciente primero. Tus partidas no se tocan.`,
-            L.map((c, k) => `${k + 1}. ${clean(c.title, 30)}`).concat(['Cancelar']));
+            L.map((c) => `#${c.pr} ${clean(c.title, 30)}`).concat(['Cancelar']));
           if (r >= 0 && r < L.length) { await Fade.out(0.4); C.goPreview(L[r].pr); return; }
         }
       }
