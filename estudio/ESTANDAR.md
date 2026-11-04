@@ -30,3 +30,10 @@ Aprobado por Alejandro con la línea de Ignito (Ignito, Fogarzo, Magmaurio, Sola
 ## Cómo se presenta
 - Por línea evolutiva: hoja «hoy / propuesta» (`linea.py`) y animación de las cuatro juntas.
 - Antes de mostrar: revisar a ojo cada etapa agrandada y los 8 cuadros de la animación.
+
+## Aprendido con la línea de Burbujo
+- Caras de perfil: la boca es una línea suave y continua (con `linea_d`), no una franja clara que parezca mandíbula. La cabeza es una sola forma redonda.
+- Sin saltos bruscos de color entre etapas: la forma final mantiene la paleta de la familia (más oscura o más clara, pero reconocible) y sus colores de acento (por ejemplo, el rosa de las branquias).
+- Las formas finales llevan **detalle temático** para no verse planas: elementos del tipo repetidos en el cuerpo (ramitas de coral en el lomo, brazaletes, perlas, radios en las aletas, crin-aleta…).
+- Texturas: líneas continuas y formas redondas; evitar patrones de puntitos sueltos (se ven como ruido).
+- Si una postura se ve rara dos veces, cambiar de concepto (Coralis pasó de dos patas a cuatro, como un ciervo de coral). Evitar objetos sueltos como esferas en las manos.
