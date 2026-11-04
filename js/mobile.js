@@ -104,7 +104,13 @@ const Mobile = {
   context() {
     const top = Scenes.top();
     if (!top) return 'menu';
-    if (top === World) return World.busy ? 'menu' : 'world';
+    if (top === World) return World.busy ? 'talk' : 'world';
+    // diálogo o pregunta sobre el mapa: los controles no cambian de lugar (joystick, A y B como al caminar)
+    if (top instanceof TextBox || top instanceof Choice) {
+      let i = Scenes.stack.length - 1;
+      while (i >= 0 && (Scenes.stack[i] instanceof TextBox || Scenes.stack[i] instanceof Choice)) i--;
+      if (Scenes.stack[i] === World) return 'talk';
+    }
     if (top instanceof BattleScene) return top.state !== 'fight' || top.showTut ? 'menu' : top.capture ? 'capture' : 'battle';
     if (typeof FieldThrow !== 'undefined' && top instanceof FieldThrow) return 'throw';
     if (top instanceof TitleScreen) return 'title';
@@ -124,6 +130,11 @@ const Mobile = {
       B('b', 'B', ['KeyX', 'ShiftLeft'], ax - u * 1.45, ay + u * 0.45, u * 0.5, { col: '#e06060', hint: 'correr' }),
       B('ball', 'Esfera', ['KeyE'], ax - u * 0.25, ay - u * 1.4, u * 0.46, { col: '#f0c040' }),
       corner('menu', 'Menú', ['Enter'], 0), corner('map', 'Mapa', ['KeyM'], 1),
+    ];
+    // hablando: A y B exactamente donde están al caminar
+    if (ctxName === 'talk') return [
+      B('a', 'A', ['KeyZ'], ax, ay, u * 0.62, { col: '#58c060' }),
+      B('b', 'B', ['KeyX'], ax - u * 1.45, ay + u * 0.45, u * 0.5, { col: '#e06060' }),
     ];
     // en combate, los botones quedan por encima de la barra de ataques (que se toca directamente)
     const by = this.band ? ay : Math.min(ay, gr.top + (202 / H) * gr.height - u * 0.72);
@@ -166,7 +177,7 @@ const Mobile = {
       B('b', 'B', ['KeyX'], ax - u * 1.35, (this.band ? py - u * 0.3 : ay) + u * 0.45, u * 0.45, { col: '#e06060', faint }),
     ];
   },
-  usesJoy(c) { return c === 'world' || c === 'battle' || c === 'capture'; },
+  usesJoy(c) { return c === 'world' || c === 'talk' || c === 'battle' || c === 'capture'; },
   // ---------- toques ----------
   gameRect() { return Engine.canvas.getBoundingClientRect(); },
   toGame(cx, cy) { const r = this.gameRect(); return [((cx - r.left) * WIDE) / r.width, ((cy - r.top) * H) / r.height, cx >= r.left && cy >= r.top && cx < r.right && cy < r.bottom]; },
@@ -186,7 +197,7 @@ const Mobile = {
         if (b) { this.press(b); this.touches.set(id, { kind: 'btn', b, sx: x, sy: y }); if (b.move !== undefined) { this.moveAim = null; this.moveTouch = b.move; } continue; }
         const [gx, gy, inside] = this.toGame(x, y);
         if (this.usesJoy(ctxName) && x < this.vw * 0.42 && !this.joy) {
-          this.joy = { id, ox: x, oy: y, x, y };
+          this.joy = { id, ox: x, oy: y, x, y, sx: x, sy: y, drag: 0, ctxName };
           this.touches.set(id, { kind: 'joy' }); continue;
         }
         // en combate, tocar el campo no hace nada: se ataca con los botones
@@ -199,7 +210,15 @@ const Mobile = {
         // en menús: el toque selecciona; se confirma al levantar el dedo (si no se arrastró)
       } else {
         const T = this.touches.get(id); if (!T) continue;
-        if (T.kind === 'joy' && this.joy && this.joy.id === id) { if (phase === 'move') { this.joy.x = x; this.joy.y = y; } else { this.joy = null; } }
+        if (T.kind === 'joy' && this.joy && this.joy.id === id) {
+          const J = this.joy;
+          if (phase === 'move') { J.x = x; J.y = y; J.drag = Math.max(J.drag, Math.hypot(x - J.sx, y - J.sy)); }
+          else {
+            // hablando, tocar sin arrastrar (también del lado del joystick) pasa el texto o elige la opción tocada
+            if (J.ctxName === 'talk' && J.drag < 14) { const [gx, gy, inside] = this.toGame(x, y); if (inside) { this.mouseAt(gx, gy); Input.mouse.pressed[0] = true; } }
+            this.joy = null;
+          }
+        }
         else if (T.kind === 'btn') {
           // arrastrar desde un ataque: apuntar a mano (la vertical de la pantalla se estira por la inclinación de la cámara)
           if (T.b.move !== undefined && phase === 'move') { const dx = x - T.sx, dy = y - T.sy; if (Math.hypot(dx, dy) > T.b.r * 0.55) this.moveAim = Math.atan2(dy / 0.78, dx); }
@@ -210,7 +229,7 @@ const Mobile = {
           const [gx, gy] = this.toGame(x, y), M = Input.mouse;
           if (phase === 'move') {
             const dy = y - T.sy; T.drag = Math.max(T.drag, Math.hypot(x - T.sx, dy));
-            if (T.ctxName === 'menu' || T.ctxName === 'title') {
+            if (T.ctxName === 'menu' || T.ctxName === 'title' || T.ctxName === 'talk') {
               // arrastrar en vertical desplaza las listas
               const step = Math.max(12, this.u * 0.35), n = Math.trunc(dy / step);
               if (n) { M.wheel -= n; T.sy += n * step; M.last = performance.now(); }
@@ -400,7 +419,7 @@ for (const [act, k] of [['up', 'T_up'], ['down', 'T_down'], ['left', 'T_left'], 
 {
   const _um = Input.usingMouse.bind(Input);
   Input.usingMouse = function () {
-    if (this.mode === 'touch') return Mobile.aimT > 0 || Mobile.context() === 'menu' || Mobile.context() === 'title';
+    if (this.mode === 'touch') return Mobile.aimT > 0 || Mobile.context() === 'menu' || Mobile.context() === 'title' || Mobile.context() === 'talk';
     if (this.mode === 'pad') return false;
     return _um();
   };
