@@ -65,7 +65,7 @@ def wing_parts(c, P, dx=0, dy=0, dark=0.0, far=False):
 
 
 def build(P):
-    c = Lienzo(RAMP, P, S=0.87, OX=31, mid=MID, span=SPAN, lit={'fur': 'fur2', 'fur2': 'fur2', 'furd': 'furd'}, glow_rad={'flame': (3, 10)})
+    c = Lienzo(RAMP, P, S=0.87, OX=31, mid=MID, span=SPAN, lit={'fur': 'fur2', 'fur2': 'fur2', 'furd': 'furd'}, glow_rad={'flame': (3, 10)}, flame_detail=True)
     Z = np.zeros((80, 80), bool)
 
     def anklet(x, y, i, far=False):
@@ -87,7 +87,7 @@ def build(P):
     SPINE = [(58, 45), (62.5, 44), (66, 42)]
     tail = c.caps(SPINE, [2.6, 3.6, 4.2]) | c.ell(67, 41, 4.4, 4)
     TONG = [(67, 40, 26, 0.38, 0.12, 3.8), (68.5, 42, 15, 0.9, 0.06, 3.0), (68, 44, 10, 1.3, 0.0, 2.3),
-            (65, 39.5, 16, 0.02, 0.14, 2.6)]
+            (65, 39.5, 16, 0.02, 0.14, 2.6), (69.5, 39, 18, 0.62, 0.1, 2.4), (66, 41, 11, -0.3, 0.05, 1.8)]
     tail, inner, core = c.fuego(tail, TONG, inner_base=c.ell(67, 41.5, 3, 2.6),
                                 core=c.caps([(66.5, 41.5), (69, 38)], [1.6, 1.0]), wisps=[(62, 20, 1.0)])
 
@@ -165,6 +165,11 @@ def build(P):
     for x, y in [(18.5, 34.3), (20, 34.3)]: c.putd(x, y, '#f4a090')
     c.local()
     for x in (56.5, 58.8, 61): c.putd(x, 74.5, '#f0cca0')
+    # chispas que flotan alrededor de las alas y la cola (cambian con la animación)
+    f = P['fl']
+    for i, (x, y) in enumerate([(60, 8), (66, 14), (72, 20), (57, 24), (75, 30), (63, 30), (70, 8), (52, 3)]):
+        yy = y - (f * 2.5 + i * 1.7) % 4
+        c.putd(x + math.sin(f + i) * 1.2, yy, ['#ffe680', '#ffc038', '#ff8e24'][i % 3])
     return c
 
 

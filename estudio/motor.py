@@ -65,7 +65,7 @@ def distancia(m):
 
 class Lienzo:
     def __init__(self, ramps, P, S=0.82, OX=40, OY=75, outline='#2a0e12', mid=None, span=None, glow=('flame', 'lava'),
-                 lit=None, glow_rad=None):
+                 lit=None, glow_rad=None, flame_detail=False):
         self.R = ramps; self.P = P; self.S = S; self.OX = OX; self.OY = OY
         self.OUT = hexc(outline)
         self.MID = mid or {}; self.SPAN = span or {}
@@ -73,6 +73,7 @@ class Lienzo:
         self.lit = lit or {}                  # material -> material que toma cuando lo ilumina el fuego
         self.RAD = {'flame': (12, 49), 'lava': (0, 1.1)}
         self.RAD.update(glow_rad or {})
+        self.fdetail = flame_detail          # vetas y chispitas dentro del fuego
         self.loc = dict(rot=0.0, piv=(0, 0), dx=0, dy=0, sc=1.0)
         self.parts = []
 
@@ -190,6 +191,12 @@ class Lienzo:
                     elif inner[y, x] and dd[y, x] > 1.2: j = 5 if dd[y, x] > 2.2 else 4
                     elif dd[y, x] < 1.3: j = 0 if y < 22 else 1
                     else: j = 2 if y < 24 else 3
+                    if self.fdetail:
+                        f = self.P['fl']
+                        veta = math.sin(x * 1.25 - y * 0.55 + f * 1.7) + 0.6 * math.sin(y * 0.9 + x * 0.3 - f)
+                        if j in (2, 3) and veta > 1.05: j -= 1             # vetas más oscuras que suben con el fuego
+                        elif j in (2, 3) and veta < -1.25: j += 1          # lengüitas claras dentro del fuego
+                        elif j == 5 and veta > 1.2: j = 6                  # destellos en el centro
                     j = min(j, len(ramp) - 1)
                 elif mt == 'lava':
                     j = min(len(ramp) - 1, 1 + int(dd[y, x] > 1.2) + int(sh[y, x] > 0.5))

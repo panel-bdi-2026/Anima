@@ -109,14 +109,17 @@ def build(P):
     c.render()
     # ---------- detalles ----------
     c.local(dx=HX, dy=P['head'] + HY, sc=HS, piv=(22, 32))
-    K = {'k': '#140a0c', 'a': '#a8461a', 'A': '#f0a030', 'W': '#ffffff'}
+    K = {'k': '#140a0c', 'a': '#a8461a', 'A': '#f0a030', 'W': '#fff4d8', 'b': '#3a1410'}
     if P['blink']:
-        ex, ey = c.patron(10.6, 28.6, ['', '', 'k...k', '.kkk.'], K)
-    else:   # ojo de zorro, decidido pero no feroz
-        ex, ey = c.patron(10.6, 28.6, ['.kkkk.', 'kWkkkk', 'kWkkak', '.kaAAk', '..kkk.'], K)
+        ex, ey = c.patron(10.2, 29.4, ['', 'kkkkkk'], K)
+    else:   # ojo serio: rasgado, párpado bajo, un solo brillo pequeño
+        ex, ey = c.patron(10.2, 29.4, ['kkkkkkk', 'kWaAAk.', '.kkkk..'], K)
+    # ceja de pelo gruesa y recta, apenas baja hacia el hocico: mirada firme
+    for dx in range(-1, 8): c.put(ex + dx, ey - 1 - (dx > 1), '#3a1410')
+    for dx in range(1, 7): c.put(ex + dx, ey - 2 - (dx > 3), '#5a1c12')
     c.patron(1.2, 34.2, ['.nn', 'nnn'], {'n': '#140a0c'}); c.putd(2.4, 34.2, '#6a4a54')
-    for x, y in [(5, 38.8), (6.5, 39.2), (8, 39.8), (9.5, 40.2), (11, 40.5)]: c.putd(x, y, '#8a4a3a')
-    c.putd(7.5, 40.6, '#f4ecdc')                 # un colmillito asoma
+    for x, y in [(4.5, 38.9), (6.2, 39.4), (8, 39.9), (9.8, 40.3), (11.5, 40.5), (13, 40.5)]: c.putd(x, y, '#5a2a22')   # boca firme
+    c.putd(7.6, 40.9, '#f4ecdc')                 # un colmillito asoma
     c.local()
     for x in (32, 34.5, 37, 42, 44.5): c.putd(x, 74.4, '#e8dcc8')     # garras de los pies
     for x, y in [(17.6, 33.6), (17.2, 36), (17.6, 38.4)]: c.putd(x, y, '#ff9a26')   # nudillos que brillan
