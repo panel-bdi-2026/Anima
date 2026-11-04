@@ -176,7 +176,9 @@ const World3D = {
   // en 2D encima del 3D y no tienen profundidad: sin esto, el polvo se veía sobre los techos)
   hiddenBehind(x, y, z) {
     for (const B of this.buildings || []) {
-      if (B.op < 0.6 || x < B.x0 - 0.1 || x > B.x1 + 0.1 || z > B.z1 - 0.05) continue;
+      // el tejado sobresale ~0,3 a los lados y por delante (alero): lo que queda bajo el alero también se tapa
+      if (B.op < 0.6 || x < B.x0 - 0.35 || x > B.x1 + 0.35) continue;
+      if (z > B.z1 + (y < (B.wallH || B.top) ? 0.3 : -0.05)) continue;
       // la cámara mira desde el sur y desde arriba: el edificio tapa lo que está detrás hasta cierta distancia
       if (z > B.z0 - (B.top - y) * 1.1) return true;
     }
