@@ -67,11 +67,11 @@ def build(P):
         c.parte(leg, 'skin', R=2.5)
     # ---- cabeza grande y ancha ----
     c.local(dy=P['head'])
-    head = c.ell(22.5, 50, 12.5, 11.5) | c.ell(14, 54, 8, 6.5)
+    head = c.ell(21.5, 50, 13, 11) | c.ell(12.5, 51.5, 7.5, 6.6)
 
     def head_mat(X, Y):
         m = np.full(X.shape, 'skin', object)
-        m[Y > 55.5 + (X - 15) * 0.05] = 'belly'
+        m[Y > 56.6 + (X - 12) * 0.05] = 'belly'          # claro bajo el mentón
         return m
     c.parte(head, head_mat, R=9, bias=0.04)
     # branquias cercanas: tres a cada lado, como plumitas rosadas
@@ -86,8 +86,8 @@ def build(P):
         ex, ey = c.patron(14.5, 48.6, ['', 'kkk'], K)
     else:   # ojitos chicos y brillantes, como los de un ajolote
         ex, ey = c.patron(14.5, 48.6, ['.kk.', 'kWkk', 'kkkk', '.kk.'], K)
-    # sonrisa de perfil: solo la comisura, que sube hacia la mejilla
-    for x, y in [(10, 56.8), (11.4, 57), (12.8, 56.8), (14, 56.1), (14.8, 55.2)]: c.putd(x, y, '#0c1a3a')
+    # sonrisa de perfil: línea suave desde la punta del hocico que sube un poco al final
+    c.linea_d([(5.6, 54.6), (8.6, 55.6), (11.8, 55.9), (14.2, 55.2), (15.4, 54.2)], '#0c1a3a')
     for x, y in [(17, 55), (18.3, 55)]: c.putd(x, y, '#ff9ab8')       # rubor
     c.local()
     for x in (28.5, 30.5, 32.5, 48.5, 50.5, 52.5): c.putd(x, 74.4, '#a8d8f8')   # deditos

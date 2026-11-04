@@ -275,5 +275,14 @@ class Lienzo:
                 if ch != '.': self.put(X + i, Y + j, colors[ch])
         return X, Y
 
+    def linea_d(self, pts, c):
+        """línea continua de un píxel por varios puntos (coordenadas de diseño), sin huecos"""
+        P = [self.tp(*p) for p in pts]
+        for (ax, ay), (bx, by) in zip(P, P[1:]):
+            n = int(max(abs(bx - ax), abs(by - ay))) + 1
+            for k in range(n + 1):
+                t = k / n
+                self.put(int(ax + (bx - ax) * t), int(ay + (by - ay) * t), c)
+
     def guardar(self, path=None):
         Image.fromarray(self.img, 'RGBA').save(path or self.P['out'])
