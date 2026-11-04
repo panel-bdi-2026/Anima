@@ -45,7 +45,7 @@ const PlantKit = {
     const t = World3D.tex(c); t.shared = true;
     return (this.tx[key] = t);
   },
-  mat(t) { this.mt = this.mt || new Map(); if (!this.mt.has(t)) this.mt.set(t, new THREE.MeshLambertMaterial({ map: t, alphaTest: 0.5, side: THREE.DoubleSide })); return this.mt.get(t); },
+  mat(t) { this.mt = this.mt || new Map(); if (!this.mt.has(t)) { const m = new THREE.MeshLambertMaterial({ map: t, alphaTest: 0.5, side: THREE.DoubleSide }); m.userData.a2c = true; this.mt.set(t, m); } return this.mt.get(t); },
   depth(t) { this.dt = this.dt || new Map(); if (!this.dt.has(t)) this.dt.set(t, new THREE.MeshDepthMaterial({ depthPacking: THREE.RGBADepthPacking, map: t, alphaTest: 0.5 })); return this.dt.get(t); },
   // una hoja plana anclada por la base, inclinada hacia fuera
   blade(grp, t, w, h, yaw, tilt, y = 0) {
