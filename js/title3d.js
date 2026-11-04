@@ -333,3 +333,18 @@ const Title3D = {
     if (t > 4.5) { Font.drawRight(ctx, this.menu ? '' : 'Un juego original', W - 6, 229, '#ffe8d8'); }
   };
 }
+
+// ---------- aviso de sonido ----------
+// Los navegadores no dejan sonar nada hasta el primer toque (salvo, normalmente, en la app instalada).
+{
+  const TS = TitleScreen.prototype, _draw = TS.draw;
+  TS.draw = function (ctx) {
+    _draw.call(this, ctx);
+    if (!(Options.music > 0 || Options.sfx > 0) || (Sound.ctx && Sound.ctx.state === 'running')) return;
+    if (!this.classic && this.t < 1) return;
+    const s = '♪ Toca para activar el sonido', w = Font.width(s);
+    ctx.globalAlpha = 0.65 + 0.35 * Math.sin(this.t * 3);
+    Font.drawOutlined(ctx, s, W - w - 8, 6, '#fff4d8', '#3a1030');
+    ctx.globalAlpha = 1;
+  };
+}
