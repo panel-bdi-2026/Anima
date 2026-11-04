@@ -53,11 +53,22 @@ const HandSprites = {
     for (let j = 0; j < H2; j++) for (let i = 0; i < W2; i++) {
       const ch = grid[j][i];
       if (ch === '.') {
-        if (filled(i - 1, j) || filled(i + 1, j) || filled(i, j - 1) || filled(i, j + 1)) { x.fillStyle = p.outline || H0.outline; x.fillRect(i, j, 1, 1); }
+        // contorno «selectivo»: arriba y a los costados toma un poco del color vecino (más suave y con
+        // volumen); abajo queda oscuro, como sombra
+        const nb = filled(i, j + 1) ? [i, j + 1] : filled(i - 1, j) ? [i - 1, j] : filled(i + 1, j) ? [i + 1, j] : filled(i, j - 1) ? [i, j - 1] : null;
+        if (nb) {
+          const base = p.outline || H0.outline, nc = H0.pal[grid[nb[1]][nb[0]]];
+          x.fillStyle = nb[1] < j || !nc || isEye(grid[nb[1]][nb[0]]) ? base : U.mix(base, nc, 0.28);
+          x.fillRect(i, j, 1, 1);
+        }
         continue;
       }
       if (isEye(ch)) { hasEyes = true; eyeCells.push([i, j]); ex.fillStyle = H0.pal[ch]; ex.fillRect(i, j, 1, 1); x.fillStyle = H0.pal[H0.eyeFur || '3']; }
-      else x.fillStyle = H0.pal[ch] || '#ff00ff';
+      else {
+        // volumen: el borde de arriba recibe luz y el de abajo queda en sombra
+        const col = H0.pal[ch] || '#ff00ff', up = filled(i, j - 1), dn = filled(i, j + 1);
+        x.fillStyle = !up && dn ? U.shade(col, 0.1) : up && !dn ? U.shade(col, -0.1) : col;
+      }
       x.fillRect(i, j, 1, 1);
     }
     // ojos cerrados (parpadeo) y apretados (daño)
