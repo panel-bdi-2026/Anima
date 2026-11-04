@@ -410,14 +410,20 @@ const Engine = {
       if (this.manual) { last = now; return; } // modo de pruebas: el test avanza los fotogramas
       acc += Math.min(0.1, (now - last) / 1000); last = now;
       let steps = 0;
-      while (acc >= STEP && steps < 4) {
-        Input.pollGamepad();
-        this.update(STEP);
-        Input.endFrame();
-        acc -= STEP; steps++;
+      // un error no detiene el juego en silencio (pantalla congelada o negra): se avisa (ver Boot en index.html)
+      try {
+        while (acc >= STEP && steps < 4) {
+          Input.pollGamepad();
+          this.update(STEP);
+          Input.endFrame();
+          acc -= STEP; steps++;
+        }
+        if (steps === 4) acc = 0;
+        this.draw();
+      } catch (e) {
+        acc = 0; Input.endFrame(); console.error(e);
+        if (window.Boot) Boot.crash(e);
       }
-      if (steps === 4) acc = 0;
-      this.draw();
     };
     requestAnimationFrame(loop);
   },
