@@ -72,17 +72,20 @@ def build(P):
         petalo_r(c, 71.5, 35, -90 + (k - 2.5) * 42 + sw * 3, 3.6, 3.2, 1.9, 'petal', shade=0.05 if k % 2 else -0.03)
     c.parte(c.ell(71.5, 35, 1.6, 1.5), 'pollen', R=1.5, outline='#6a4a10')
     c.local()
-    # ---- cuerpo ----
-    body = c.ell(32, 50.5, 9, 8) | c.ell(44, 51.5, 12, 6.4) | c.ell(55, 50.5, 7.5, 7)
+    # ---- cuerpo elegante: pecho hondo, cintura fina, cadera alta y cuello largo y arqueado ----
+    body = c.ell(31.5, 49.5, 8.6, 8.2) | c.ell(42.5, 51, 9.5, 5.2) | c.ell(53, 49.5, 7.2, 6.8) | c.ell(26.5, 43.5, 5.2, 8, 0.4)
+
     def body_mat(X, Y):
-        m = np.where(Y > 55.2 + (X - 40) ** 2 * 0.002, 'belly', 'skin').astype(object)
-        vy = 50.5 + np.sin(X * 0.42) * 1.6                       # enredadera dibujada en el costado
-        m[(np.abs(Y - vy) < 0.5) & (X > 33) & (X < 58)] = 'stem'
-        for lx in (37, 44.5, 52):                                # hojitas de la enredadera
-            ly = 50.5 + math.sin(lx * 0.42) * 1.6
-            m[np.hypot((X - lx - 1.2) * 0.8, Y - ly + 1.1) < 1.0] = 'leaf'
+        m = np.where(Y > 53.6 + (X - 42) ** 2 * 0.006 - (X < 36) * 1.5, 'belly', 'skin').astype(object)
         return m
     c.parte(body, body_mat, R=8)
+    # vestido de hojas: escamas en forma de hoja que cubren el costado, en dos filas, apuntando hacia atrás
+    for row, (y0, xs, w) in enumerate([(47.5, (33, 38, 43, 48), 1.9), (51.2, (31, 36.5, 42, 47.5, 52.5), 1.7)]):
+        for k, x in enumerate(xs):
+            hoja(c, (x, y0 + k * 0.15), (x + 6, y0 + 1.6 + k * 0.15 + row * 0.6), w, shade=0.06 if (k + row) % 2 else -0.04)
+    # pétalos sueltos en la cadera, como una cola de vestido
+    for k in range(3):
+        petalo_r(c, 57, 49 + k * 2.2, 15 + k * 18 + sw * 2, 2.2, 3.6, 2.0, 'petal' if k % 2 else 'petal2', shade=0.03)
     # florecitas a lo largo del lomo
     for i, (bx, by, tx, ty) in enumerate([(38, 45.5), (45, 45.6), (51.5, 45.2), (57, 44.6)] and [(38, 45.5, 41, 39), (45, 45.6, 48.5, 39.5), (51.5, 45.2, 55.5, 39.5), (57, 44.6, 61.5, 40)]):
         hoja(c, (bx, by), (tx, ty), 1.8, shade=0.03)
