@@ -180,7 +180,7 @@ BattleScene.prototype.mkFighter = function (c, side) {
   const [ox, oy] = side === 'ally' ? F.foeStart : F.allyStart;
   f.ang = Math.atan2(oy - y, ox - x);
   f.lastFlip = Math.cos(f.ang) > 0;
-  f.size = f.sp.legendary ? 56 : 40;
+  f.size = f.sp.legendary ? 28 : 20; // mismo tamaño que en el mapa (ver Critters.draw)
   f.r = Math.round((5 + (f.sp.look.size || 1) * 3) * (f.sp.legendary ? 1.35 : 1));
   return f;
 };

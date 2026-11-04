@@ -631,10 +631,11 @@ for (int i = 0; i < 6; i++) { vec2 d = base - uPush[i].xy; float l = length(d); 
       const list = Critters.list, baits = Critters.baits;
       for (const c of list) {
         if (c.ambush && c.state === 'wander') continue;
-        const s = this.sprite(c, 80, 80, 66);
-        s.x.clearRect(0, 0, 80, 80);
+        // a doble resolución: el ánima se dibuja con sus píxeles originales (ver Critters.draw)
+        const s = this.sprite(c, 80, 80, 66, 2);
+        s.x.setTransform(1, 0, 0, 1, 0, 0); s.x.clearRect(0, 0, 160, 160); s.x.setTransform(2, 0, 0, 2, 0, 0);
         Critters.list = [c]; if (baits) Critters.baits = [];
-        Critters.draw(s.x, c.x - 40, c.y - 64, world);
+        try { Critters.draw(s.x, c.x - 40, c.y - 64, world); } finally { s.x.setTransform(1, 0, 0, 1, 0, 0); }
         Critters.list = list; if (baits) Critters.baits = baits;
         s.t.needsUpdate = true;
         s.mesh.position.set(c.x / 16, 0, (c.y + 2) / 16);
@@ -646,9 +647,10 @@ for (int i = 0; i < 6; i++) { vec2 d = base - uPush[i].xy; float l = length(d); 
       if (B) {
         for (const f of B.fighters()) {
           if (f.inBall) continue;
-          const s = this.sprite(f, 160, 160, 132);
-          s.x.clearRect(0, 0, 160, 160);
-          s.x.save(); s.x.translate(80 - f.x, 132 - (f.y + 4)); B.drawFighter(s.x, f); s.x.restore();
+          const s = this.sprite(f, 160, 160, 132, 2);
+          s.x.setTransform(1, 0, 0, 1, 0, 0); s.x.clearRect(0, 0, 320, 320);
+          s.x.setTransform(2, 0, 0, 2, (80 - f.x) * 2, (132 - (f.y + 4)) * 2);
+          try { B.drawFighter(s.x, f); } finally { s.x.setTransform(1, 0, 0, 1, 0, 0); }
           s.t.needsUpdate = true;
           s.mesh.position.set(f.x / 16, 0, (f.y + 4) / 16);
         }
@@ -813,7 +815,8 @@ for (int i = 0; i < 6; i++) { vec2 d = base - uPush[i].xy; float l = length(d); 
     if (this.focus) [tx, tz] = this.focus; // solo para capturas de prueba
     // en combate la cámara se acerca un poco
     const base = this.mode === 'in' ? (B ? 19.5 : 15.5) : this.mode === 'cave' ? 17 : W3.DIST;
-    const dist = U.lerp(base, base * 0.86, this.zoomK = U.lerp(this.zoomK || 0, B ? 1 : 0, 0.06));
+    // en combate la cámara ya no se acerca (las ánimas se veían crecer al empezar la pelea)
+    const dist = U.lerp(base, base, this.zoomK = U.lerp(this.zoomK || 0, B ? 1 : 0, 0.06));
     if (!this.camT || this.camMap !== m.id) { this.camT = [tx, tz]; this.camMap = m.id; }
     else { const k = B ? 0.16 : 0.12; this.camT[0] += (tx - this.camT[0]) * k; this.camT[1] += (tz - this.camT[1]) * k; }
     const [cx, cz] = this.camT;
