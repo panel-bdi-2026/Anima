@@ -91,7 +91,7 @@ class ConstelScreen {
       const side = Math.abs(vx * dy - vy * dx), score = along + side * 2.2;
       if (score < bs) { bs = score; best = n; }
     }
-    if (best) { this.sel = best.id; Sound.sfx('blip'); }
+    if (best) { this.sel = best.id; this.demoT = 0; Sound.sfx('blip'); }
   }
   update(dt) {
     this.t += dt;
@@ -103,15 +103,42 @@ class ConstelScreen {
     this.rings = this.rings.filter((r) => r.t < 0.7);
     if (this.busy) return;
     const M = Input.mouse;
+    // arrastrar el dedo (o la rueda) no mueve el cursor: en el celular se sentía al revés
+    M.wheel = 0;
+    // tocar o hacer clic en un nodo solo lo selecciona y muestra su información; se activa con A / Z
+    let over = null;
+    if (M.inside) for (const n of this.B.nodes) { const [x, y] = this.pos(n); if (Math.abs(M.x - x) <= 9 && Math.abs(M.y - y) <= 9) over = n; }
+    if (over && (M.moved || M.pressed[0]) && this.sel !== over.id) { this.sel = over.id; this.demoT = 0; Sound.sfx('blip'); }
+    if (M.pressed[0]) M.pressed[0] = false;
     if (Input.repeat('left')) this.move(-1, 0);
     if (Input.repeat('right')) this.move(1, 0);
     if (Input.repeat('up')) this.move(0, -1);
     if (Input.repeat('down')) this.move(0, 1);
-    let over = null;
-    if (M.inside) for (const n of this.B.nodes) { const [x, y] = this.pos(n); if (Math.abs(M.x - x) <= 8 && Math.abs(M.y - y) <= 8) over = n; }
-    if (over && (M.moved || M.pressed[0])) this.sel = over.id;
-    if (Input.pressed('a') || (M.pressed[0] && over)) { this.activate(); return; }
+    if (Input.pressed('a')) { this.activate(); return; }
     if (Input.pressed('b') || M.pressed[2]) { Sound.sfx('cancel'); this.done(); }
+  }
+  // mini demostración del ataque del nodo seleccionado (recuadro arriba a la derecha)
+  drawDemo(ctx) {
+    const n = this.B.nodes[this.sel]; if (n.info.t !== 'move') return;
+    const m = MOVES[n.move], col = TYPES[m.type].color, light = U.mix(col, '#ffffff', 0.5);
+    this.demoT = (this.demoT || 0) + 1 / 60;
+    const bx = W - 112, by = 22, bw = 106, bh = 62, q = (this.demoT % 1.8) / 1.8;
+    P(ctx, bx, by, bw, bh, '#05040c'); P(ctx, bx + 1, by + 1, bw - 2, bh - 2, '#141028'); P(ctx, bx + 1, by + 1, bw - 2, 1, U.mix(col, '#141028', 0.3));
+    Font.draw(ctx, m.name, bx + 5, by + 4, light, '#05040c');
+    const gy = by + bh - 10; P(ctx, bx + 4, gy, bw - 8, 1, '#2e2850');
+    const ax = bx + 22, tx = bx + bw - 22;
+    // tu ánima (izquierda) y un blanco (derecha)
+    const k = m.kind, lunge = (k === 'melee' || k === 'dash' || k === 'stealth') ? Math.sin(Math.min(1, q * 3) * Math.PI) * (tx - ax - 16) : 0;
+    ctx.drawImage(CreatureGfx.get(this.c.sp, 24, this.c.shiny), Math.round(ax - 12 + lunge), gy - 22);
+    const hit = (k === 'proj' && q > 0.45 && q < 0.6) || (k === 'beam' && q > 0.25 && q < 0.7) || ((k === 'melee' || k === 'dash' || k === 'stealth') && q > 0.14 && q < 0.26) || ((k === 'area' || k === 'ring') && q > 0.3 && q < 0.55);
+    pixCircle(ctx, tx, gy - 7, 7, hit ? '#ffffff' : '#4a4468'); pixCircle(ctx, tx, gy - 7, 4, hit ? col : '#2a2440');
+    ctx.globalAlpha = 1;
+    if (k === 'proj' && q < 0.5) { const px = ax + 10 + (tx - ax - 10) * (q / 0.5); pixCircle(ctx, Math.round(px), gy - 9, 3, col); P(ctx, Math.round(px) - 1, gy - 10, 1, 1, '#ffffff'); }
+    else if (k === 'beam' && q > 0.1 && q < 0.7) { P(ctx, ax + 10, gy - 10, tx - ax - 10, 3, col); P(ctx, ax + 10, gy - 9, tx - ax - 10, 1, '#ffffff'); }
+    else if ((k === 'area' || k === 'ring') && q > 0.2 && q < 0.7) { ctx.globalAlpha = 1 - (q - 0.2) / 0.5; pixRing(ctx, k === 'ring' ? ax : tx, gy - 7, 4 + (q - 0.2) * 70, col, 2); ctx.globalAlpha = 1; }
+    else if ((k === 'buff' || k === 'heal' || k === 'blink') && q < 0.8) { for (let i = 0; i < 6; i++) { const a = i * 1.05 + q * 6, r = 6 + q * 10; P(ctx, Math.round(ax + Math.cos(a) * r), Math.round(gy - 10 + Math.sin(a) * r * 0.6 - q * 8), 2, 2, i % 2 ? col : '#ffffff'); } }
+    if (hit) for (let i = 0; i < 5; i++) { const a = i * 1.26 + q * 9; P(ctx, Math.round(tx + Math.cos(a) * 10), Math.round(gy - 7 + Math.sin(a) * 8), 1, 1, light); }
+    Font.draw(ctx, m.pow ? `Pot ${m.pow}` : 'Apoyo', bx + 5, by + bh - 8, '#7a72a0');
   }
   // ---------- dibujo ----------
   drawLinks(ctx, own) {
@@ -154,6 +181,8 @@ class ConstelScreen {
     } else pixCircle(ctx, x, y, r, U.mix(col, bg, locked ? 0.88 : st === 'ok' ? 0.5 : 0.72));
     if (inf.t === 'tal') pixRing(ctx, x, y, r + 1, has ? '#ffffff' : U.mix(col, bg, locked ? 0.8 : 0.4), 1);
     if (!has && !locked && (st === 'ok' || st === 'key' || st === 'pts')) { ctx.globalAlpha = st === 'ok' ? 0.55 + 0.45 * Math.sin(t * 6) : 0.4; pixRing(ctx, x, y, r + 2, col, 1); ctx.globalAlpha = 1; }
+    // costo en Esencia: un puntito por punto, debajo del nodo (si aún no está activado)
+    if (!has && inf.cost) { const pts = Board.points(c), w = inf.cost * 4 - 1; for (let i = 0; i < inf.cost; i++) { const px = x - Math.floor(w / 2) + i * 4, py = y + r + 3; P(ctx, px - 1, py - 1, 4, 4, '#05040c'); P(ctx, px, py, 2, 2, locked ? '#5a5478' : i < pts ? '#ffe060' : '#c07a30'); } }
     const ic = has ? U.shade(col, -0.55) : locked ? '#3a3450' : U.mix(col, '#ffffff', 0.5);
     if (inf.t === 'stat') drawStatIcon(ctx, inf.k, x - 2, y - 2, has ? '#ffffff' : ic);
     else if (inf.t === 'tal') Font.drawCenter(ctx, n.ch.toUpperCase(), x + 1, y - 4, has ? '#1a1430' : ic);
@@ -206,15 +235,17 @@ class ConstelScreen {
   }
   drawDetail(ctx) {
     const c = this.c, B = this.B, n = B.nodes[this.sel], st = Board.canBuy(c, n), [title, desc] = this.nodeText(n), col = this.colOf(n);
-    const x = 120, y = 186, w = 302, h = 50, sh = this.shake ? Math.round(Math.sin(this.shake * 80) * 2) : 0;
+    const keyA = Input.mode === 'touch' || Input.mode === 'pad' ? 'A' : 'Z';
+    const x = 120, y = 186, w = 236, h = 50, sh = this.shake ? Math.round(Math.sin(this.shake * 80) * 2) : 0;
     P(ctx, x + sh, y, w, h, '#05040c'); P(ctx, x + 1 + sh, y + 1, w - 2, h - 2, '#141028'); P(ctx, x + 1 + sh, y + 1, w - 2, 1, U.mix(col, '#141028', 0.3));
     const tx = x + 8 + sh;
     Font.draw(ctx, title, tx, y + 5, n.info.t === 'key' ? '#ffd048' : U.mix(col, '#ffffff', 0.45), '#05040c');
     if (n.info.cost) {
+      Font.drawRight(ctx, 'Esencia', x + w - 12 - n.info.cost * 7 + sh, y + 5, '#a098c0');
       for (let i = 0; i < n.info.cost; i++) { const gx = x + w - 10 - i * 7 + sh; pixCircle(ctx, gx, y + 9, 2, '#05040c'); pixCircle(ctx, gx, y + 9, 2, i < Board.points(c) || st === 'owned' ? '#ffe060' : '#3a3458'); }
     }
     Font.wrap(desc, w - 16).slice(0, 2).forEach((ln, k) => Font.draw(ctx, ln, tx, y + 16 + k * 10, '#b8b0d0'));
-    const msg = { owned: n.info.t === 'move' && !c.moves.includes(n.move) ? '✓ Activado · Z: volver a aprenderlo' : '✓ Activado', ok: '◆ Z / clic: activar', far: '✗ Debe estar unido a un nodo activado', pts: '✗ Falta Esencia (sube de nivel)', key: '✗ Necesitas una Llave Esencia', stage: `✗ Se abre en la etapa ${n.stage} (al evolucionar)` }[st];
+    const msg = { owned: n.info.t === 'move' && !c.moves.includes(n.move) ? `✓ Activado · ${keyA}: volver a aprenderlo` : '✓ Activado', ok: `◆ ${keyA}: activar`, far: '✗ Debe estar unido a un nodo activado', pts: '✗ Falta Esencia (sube de nivel)', key: '✗ Necesitas una Llave Esencia', stage: `✗ Se abre en la etapa ${n.stage} (al evolucionar)` }[st];
     Font.draw(ctx, msg, tx, y + 37, st === 'ok' ? (Math.floor(this.t * 3) % 2 ? '#80ff90' : '#50d070') : st === 'owned' ? '#ffe080' : '#ff8a70');
   }
   draw(ctx) {
@@ -245,8 +276,10 @@ class ConstelScreen {
     Font.drawRight(ctx, 'X / clic der.: salir', W - 6, 5, '#5a5278');
     this.drawSide(ctx);
     P(ctx, 0, 0, 114, 18, '#0a0816'); P(ctx, 0, 18, 114, 1, '#2e2850');
-    Font.draw(ctx, 'Z: activar nodo', 8, 5, '#5a5278');
+    const keyA = Input.mode === 'touch' || Input.mode === 'pad' ? 'A' : 'Z'; // en el celular «Z» se traduce a «Toca», que aquí no activa
+    Font.draw(ctx, keyA + ': activar nodo', 8, 5, '#5a5278');
     this.drawDetail(ctx);
+    this.drawDemo(ctx);
   }
 }
 TalentScreen = ConstelScreen;
