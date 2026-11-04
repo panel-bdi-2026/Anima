@@ -28,7 +28,7 @@ def socks(top):
     return f
 
 
-EDGE = [(36, 40), (38.5, 32), (43, 25), (49.5, 20.5), (56, 18.5)]   # borde delantero del ala (hombro -> muñeca -> punta)
+EDGE = [(36, 40), (38, 31), (42, 22.5), (48.5, 16), (56, 12.5)]   # borde delantero del ala (hombro -> muñeca -> punta)
 
 
 def edge_at(u):
@@ -38,7 +38,7 @@ def edge_at(u):
 
 
 # plumas: (posición en el borde 0..1, ángulo hacia atrás en grados: 90 = hacia abajo, 0 = hacia atrás, largo)
-FEATHERS = [(0.14, 82, 8), (0.30, 66, 10.5), (0.46, 50, 13), (0.62, 34, 15.5), (0.77, 18, 17.5), (0.90, 4, 18.5), (1.0, -10, 16)]
+FEATHERS = [(0.2, 74, 10), (0.4, 56, 13.5), (0.6, 38, 16.5), (0.8, 20, 19), (1.0, 2, 19)]
 
 
 def wing_parts(c, P, dx=0, dy=0, dark=0.0, far=False):
@@ -51,20 +51,21 @@ def wing_parts(c, P, dx=0, dy=0, dark=0.0, far=False):
         for k in range(7):
             t = k / 6
             pts.append((bx + math.cos(a) * L * t, by + math.sin(a) * L * t - 1.2 * t * t * (1 - u)))
-            rr.append(2.0 * (1 - t) ** 0.6 + 0.6)
+            rr.append(2.7 * (1 - t) ** 0.55 + 0.6)
         fm = c.caps(pts, rr)
 
         def fmat(X, Y, bx=bx, by=by, L=L):
             m = np.full(X.shape, 'gold', object)
-            m[np.hypot(X - bx, Y - by) > L * 0.62 + np.sin(X + Y) * 0.6] = 'flame'
+            m[np.hypot(X - bx, Y - by) > L * 0.42 + np.sin(X + Y) * 0.6] = 'flame'
             return m
-        c.parte(fm, fmat, R=2.5, bias=-dark + (0.07 if i % 2 else -0.05), outline='#6a2410', far=far, fire=(Z, Z))
-    cov = c.caps([(x + dx, y + dy) for x, y in EDGE], [3.2, 3.0, 2.6, 2.0, 1.2])
-    c.parte(cov, 'gold', R=3, bias=0.05 - dark, outline='#6a2410', far=far)
+        fin = c.caps(pts[2:], [max(0.6, v * 0.45) for v in rr[2:]])
+        c.parte(fm, fmat, R=2.5, bias=-dark + (0.07 if i % 2 else -0.05), outline='#8a1c0c', far=far, fire=(fin, Z))
+    cov = c.caps([(x + dx, y + dy) for x, y in EDGE], [2.6, 2.4, 2.0, 1.5, 0.9])
+    c.parte(cov, 'gold', R=3, bias=-0.1 - dark, outline='#6a2410', far=far)
 
 
 def build(P):
-    c = Lienzo(RAMP, P, S=0.95, mid=MID, span=SPAN, lit={'fur': 'fur2', 'fur2': 'fur2', 'furd': 'furd'})
+    c = Lienzo(RAMP, P, S=0.87, OX=30, mid=MID, span=SPAN, lit={'fur': 'fur2', 'fur2': 'fur2', 'furd': 'furd'})
     # ---- patas lejanas (largas y finas) ----
     c.parte(c.caps([(53, 50), (56, 58), (58.5, 63), (57, 71)], [3.8, 2.4, 1.5, 1.4]) | c.ell(55.8, 72.9, 2.7, 1.4), socks(64), R=3, bias=-0.3, far=True)
     c.parte(c.caps([(35, 50), (36, 61), (36, 71)], [2.8, 1.8, 1.5]) | c.ell(34.6, 72.9, 2.6, 1.4), socks(63), R=3, bias=-0.3, far=True)
@@ -72,19 +73,19 @@ def build(P):
     c.local(rot=-P['wing'] * 0.18, piv=(37, 41))
     wing_parts(c, P, dx=4, dy=-3, dark=0.28, far=True)
     c.local()
-    # ---- cola larga que flamea hacia atrás ----
+    # ---- cola de fénix: base corta de pelo y tres grandes plumas de fuego que flamean hacia atrás ----
     c.local(rot=P['tail'], piv=(58, 45))
-    SPINE = [(58, 45), (64, 44), (69.5, 41.5), (74, 37.5), (77, 33)]
-    tail = c.caps(SPINE, [2.6, 3.6, 4.2, 3.8, 2.6])
-    TONG = [(77, 33, 11, 0.55, 0.15, 2.8), (74, 36, 9, 0.9, 0.1, 2.2), (71, 39, 7, 1.15, 0.05, 1.8),
-            (75, 31, 7, 0.1, 0.15, 2.0)]
-    tail, inner, core = c.fuego(tail, TONG, inner_base=c.caps(SPINE[2:], [2.4, 2.0, 1.2]),
-                                core=c.caps([(70, 41), (74, 37.5)], [1.4, 1.0]), wisps=[(79, 22, 1.0)])
+    SPINE = [(58, 45), (62.5, 44), (66, 42)]
+    tail = c.caps(SPINE, [2.6, 3.6, 4.2]) | c.ell(67, 41, 4.4, 4)
+    TONG = [(67, 40, 24, 0.45, 0.10, 3.6), (68.5, 42, 15, 0.9, 0.06, 3.0), (68, 44, 10, 1.3, 0.0, 2.3),
+            (65, 39.5, 14, 0.05, 0.12, 2.4)]
+    tail, inner, core = c.fuego(tail, TONG, inner_base=c.ell(67, 41.5, 3, 2.6),
+                                core=c.caps([(66.5, 41.5), (69, 38)], [1.6, 1.0]), wisps=[(74, 9, 1.0), (62, 22, 1.0)])
 
     def tail_mat(X, Y):
         m = np.full(X.shape, 'fur', object)
-        k = X - (Y - 40) * 0.3; edge = 66 + 2 * np.sin(Y * 1.7 + X * 0.5)
-        m[k > edge - 4] = 'fur2'; m[k > edge] = 'flame'
+        k = X - (Y - 40) * 0.2; edge = 63 + 1.6 * np.sin(Y * 1.7 + X * 0.5)
+        m[k > edge - 3] = 'fur2'; m[k > edge] = 'flame'
         return m
     c.parte(tail, tail_mat, R=5, outline='#9a1a0c', fire=(inner, core))
     # ---- oreja lejana ----
