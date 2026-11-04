@@ -34,6 +34,8 @@
   // cambios aceptados o rechazados desde este aparato: se ocultan de la lista mientras GitHub
   // vuelve a publicar (tarda un par de minutos en sacarlos de prueba/cambios.json)
   const DONE_KEY = 'anima_prueba_resueltos';
+  // cambio aceptado que GitHub todavía está publicando: { pr, sha, t }
+  const PUB_KEY = 'anima_publicando';
   let LS = null;
   try { LS = window.localStorage; } catch (e) { /* sin almacenamiento */ }
 
@@ -102,11 +104,26 @@
       for (const k of Object.keys(d)) if (Date.now() - d[k] > 30 * 60000) delete d[k]; // a los 30 minutos ya no hace falta
       return d;
     },
+    // ¿hay un cambio aceptado que todavía no está en vivo? Se sabe porque la versión publicada
+    // (js/version.js, campo build) pasa a ser el código del cambio unido. Como mucho 15 minutos.
+    async publishing() {
+      let p = null;
+      try { p = JSON.parse(rawGet(PUB_KEY) || 'null'); } catch (e) { /* dato dañado */ }
+      if (!p || !p.sha) return null;
+      if (Date.now() - p.t > 15 * 60000) { rawSet(PUB_KEY, null); return null; }
+      try {
+        const txt = await fetch(BASE + 'js/version.js', { cache: 'no-store' }).then((r) => (r.ok ? r.text() : ''));
+        const b = (txt.match(/\bbuild:\s*'([^']*)'/) || [])[1];
+        if (b && b !== 'dev' && p.sha.startsWith(b)) { rawSet(PUB_KEY, null); return Object.assign(p, { done: true }); }
+      } catch (e) { /* sin conexión: se sigue esperando */ }
+      return p;
+    },
     markResolved() { const d = this.resolved(); d[PR] = Date.now(); rawSet(DONE_KEY, JSON.stringify(d)); },
     note(text) { return this.gh('POST', `/issues/${PR}/comments`, { body: text }); },
     async accept() {
-      await this.gh('PUT', `/pulls/${PR}/merge`, { merge_method: 'squash', sha: this.info && this.info.sha });
+      const r = await this.gh('PUT', `/pulls/${PR}/merge`, { merge_method: 'squash', sha: this.info && this.info.sha });
       this.markResolved();
+      if (r && r.sha) rawSet(PUB_KEY, JSON.stringify({ pr: PR, sha: r.sha, t: Date.now() }));
       try { await this.note('✅ Cambio aceptado desde la app.'); } catch (e) { /* la unión ya se hizo */ }
     },
     async reject() {
