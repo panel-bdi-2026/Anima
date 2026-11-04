@@ -107,12 +107,12 @@ def build(P):
         c.parte(c.ell(x, y, r, r * 0.9), 'gold', R=3, bias=0.08, outline='#7a3a14')
     # (cada pluma es su propia pieza: el contorno interior dibuja las escamas)
     c.parte(c.ell(55, 49.5, 6.5, 7.5, 0.3), 'fur', R=6, bias=0.03, soft=True)
-    # ---- patas cercanas: la trasera firme, la delantera levantada con elegancia ----
+    # ---- patas cercanas: las cuatro en el piso (en el juego camina) ----
     c.parte(c.caps([(55.5, 52), (59, 59), (61.5, 64), (60, 71)], [4.4, 2.7, 1.7, 1.6]) | c.ell(58.6, 72.9, 3.0, 1.5), socks(65), R=3)
     anklet(60.5, 67, 2)
-    c.parte(c.caps([(29.5, 51), (27.5, 58), (23, 61.5)], [3.0, 2.1, 1.8]) | c.ell(20.8, 62.2, 2.8, 1.6, -0.5),
-            socks(58.5), R=3)
-    anklet(23.5, 60.5, 3)
+    c.parte(c.caps([(29.5, 51), (29, 61), (28.5, 71)], [3.0, 2.0, 1.7]) | c.ell(27.1, 72.9, 2.9, 1.5),
+            socks(63), R=3)
+    anklet(28.6, 66, 3)
     # ---- ala cercana ----
     c.local(rot=-P['wing'] * 0.2, piv=(35, 40))
     wing_parts(c, P)
@@ -164,7 +164,7 @@ def build(P):
     for x, y in [(6, 36.5), (7.5, 37), (9, 37.4)]: c.putd(x, y, '#a0604a')
     for x, y in [(18.5, 34.3), (20, 34.3)]: c.putd(x, y, '#f4a090')
     c.local()
-    for x in (56.5, 58.8, 61): c.putd(x, 74.5, '#f0cca0')
+    for x in (25, 27.3, 29.6, 56.5, 58.8, 61): c.putd(x, 74.5, '#f0cca0')
     # chispas que flotan alrededor de las alas y la cola (cambian con la animación)
     f = P['fl']
     for i, (x, y) in enumerate([(60, 8), (66, 14), (72, 20), (57, 24), (75, 30), (63, 30), (70, 8), (52, 3)]):
