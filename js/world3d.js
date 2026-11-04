@@ -979,9 +979,10 @@ for (int i = 0; i < 6; i++) { vec2 d = base - uPush[i].xy; float l = length(d); 
         const t = m.map;
         if (!t || !t.userData.pixel || m.isShaderMaterial) continue;
         m.defines = Object.assign(m.defines || {}, { PIXEL_ART: '' });
-        // hojas, pasto, sprites…: borde «todo o nada» (alphaTest) que titila al moverse; con
-        // alpha-to-coverage el borde se suaviza con el antialiasing (MSAA) del render
-        if (m.alphaTest >= 0.3 && !m.transparent) { m.alphaToCoverage = true; m.alphaTest = 0.1; }
+        // hojas finas de las plantas en maceta: el borde «todo o nada» (alphaTest) titila; con
+        // alpha-to-coverage se suaviza con el antialiasing (MSAA). Solo ahí: en personajes y árboles,
+        // algunos celulares lo dibujan con un patrón de puntos que «bulle» en el borde al moverse.
+        if (m.userData.a2c && m.alphaTest >= 0.3 && !m.transparent) { m.alphaToCoverage = true; m.alphaTest = 0.1; }
         if (t.magFilter !== THREE.LinearFilter) { t.magFilter = THREE.LinearFilter; t.needsUpdate = true; }
         m.needsUpdate = true;
       }
