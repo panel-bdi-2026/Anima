@@ -63,6 +63,7 @@ const Mobile = {
     window.addEventListener('touchend', (e) => this.onTouch(e, 'end'), opt);
     window.addEventListener('touchcancel', (e) => this.onTouch(e, 'end'), opt);
     window.addEventListener('resize', () => this.layoutScreen());
+    if (window.visualViewport) window.visualViewport.addEventListener('resize', () => this.layoutScreen());
     window.addEventListener('orientationchange', () => setTimeout(() => this.layoutScreen(), 200));
     document.addEventListener('visibilitychange', () => this.onVisibility());
     // en móviles y tablets los controles se colocan desde el principio (si no, el primer toque movía toda la pantalla)
@@ -94,6 +95,8 @@ const Mobile = {
     }
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     this.cv.width = Math.round(vw * dpr); this.cv.height = Math.round(vh * dpr); this.dpr = dpr;
+    // la capa mide exactamente lo que se usó para ubicar los botones (si no, se estiran)
+    this.cv.style.width = vw + 'px'; this.cv.style.height = vh + 'px';
     this.vw = vw; this.vh = vh; this.ins = ins; this.u = Math.max(46, Math.min(96, Math.min(vw, vh) * 0.15));
     this.dirty = true;
   },
@@ -282,6 +285,9 @@ const Mobile = {
     return (this.lbl[k] = c);
   },
   draw() {
+    // si la pantalla cambió de tamaño sin avisar (teclado que se cierra, barras del sistema que se ocultan
+    // al abrir la app…), se vuelven a ubicar los botones
+    if (window.innerWidth !== this.vw || window.innerHeight !== this.vh) this.layoutScreen();
     const x = this.ctx, d = this.dpr;
     const show = this.wanted();
     if (!show) { if (this.drawn) { x.clearRect(0, 0, this.cv.width, this.cv.height); this.drawn = false; } return; }
