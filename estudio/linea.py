@@ -3,7 +3,8 @@ import sys, os, subprocess
 from PIL import Image, ImageDraw, ImageFont
 out_dir = sys.argv[1]; sps = sys.argv[2:]
 F = lambda s, b=False: ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans%s.ttf' % ('-Bold' if b else ''), s)
-NAMES = {'ignito': 'Ignito', 'fogarzo': 'Fogarzo', 'magmaurio': 'Magmaurio', 'solarix': 'Solarix'}
+NAMES = {k: k.capitalize() for k in sps}
+NAMES.update({'semillin': 'Semillín', 'crisalix': 'Crisálix', 'escarabron': 'Escarabrón', 'voltin': 'Voltín', 'dinamo': 'Dínamo', 'guijin': 'Guijín', 'umbrin': 'Umbrín', 'escamin': 'Escamín', 'aleton': 'Aletón', 'brisin': 'Brisín', 'murcin': 'Murcín', 'rabin': 'Rabín', 'pipio': 'Pipío', 'setalon': 'Setalón', 'micelion': 'Micelión', 'liebron': 'Liebrón'})
 FR = [(-0.07, 0, 0, 0.0, 0.0), (0, 0, 0, 0.8, 0.3), (0.07, 1, 0, 1.6, 0.6), (0, 1, 0, 2.4, 0.3),
       (-0.07, 0, 0, 3.2, 0.0), (0, 0, 1, 4.0, -0.3), (0.07, 1, 0, 4.8, -0.6), (0, 1, 0, 5.6, -0.3)]
 frames = {}
@@ -16,7 +17,7 @@ for sp in sps:
 card = (223, 233, 210); n = len(sps); cw = 400
 W = 40 + n * (cw + 20); H = 1120
 im = Image.new('RGB', (W, H), (243, 240, 247)); d = ImageDraw.Draw(im)
-d.text((40, 28), 'Línea de Ignito: hoy y propuesta', font=F(38, True), fill=(34, 25, 46))
+d.text((40, 28), 'Línea de ' + NAMES[sps[0]] + ': hoy y propuesta', font=F(38, True), fill=(34, 25, 46))
 d.text((40, 80), 'Arriba: como están hoy (40×40). Abajo: propuesta, mismo tamaño de cuadradito (80×80; formas finales 96×96).', font=F(19), fill=(108, 97, 120))
 for i, sp in enumerate(sps):
     x = 40 + i * (cw + 20)
