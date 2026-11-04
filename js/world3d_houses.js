@@ -110,11 +110,16 @@ const HouseKit = {
   },
 };
 
+// Opcionales (los usa el pueblo del título para que no haya dos casas iguales; sin ellos, la casa
+// es la de siempre): wall / roof (colores), tall (alto ×), pitch (inclinación del tejado),
+// timber (entramado de vigas), stone (planta baja de piedra), porch (porche con postes),
+// dormer (buhardilla), annex (cobertizo a un lado: -1 o 1), chim (chimenea: -1 izquierda, 1 derecha).
 World3D.buildBuilding = function (b) {
-  const S = Buildings.STYLES[b.style] || Buildings.STYLES.house;
+  const S0 = Buildings.STYLES[b.style] || Buildings.STYLES.house;
+  const S = b.wall || b.roof ? Object.assign({}, S0, b.wall ? { wall: b.wall } : null, b.roof ? { roof: b.roof } : null) : S0;
   const img = Buildings.get(b.style, b.w, b.h, b.door), Hp = img.height;
   const rh = Math.round(Hp * (b.h >= 5 ? 0.5 : 0.56));
-  const wd = b.w, depth = Math.max(2, b.h * 0.72), hgt = ((Hp - rh) / 16) * 1.22;
+  const wd = b.w, depth = Math.max(2, b.h * 0.72), hgt = ((Hp - rh) / 16) * 1.22 * (b.tall || 1);
   const front = b.y + b.h - 0.02, back = front - depth, cx = b.x + wd / 2, cz = front - depth / 2;
   const seed = (b.x * 31 + b.y * 17) | 0, house = b.style.startsWith('house'), shop = !!S.sign;
   const doorTx = b.door !== undefined ? b.door : Math.floor(b.w / 2), doorX = b.x + doorTx + 0.5;
@@ -197,9 +202,19 @@ World3D.buildBuilding = function (b) {
   box(trimM, dw + 0.14, 0.09, 0.12, doorX, dh + 0.06, front + 0.05);
   box(trimM, 0.08, dh, 0.12, doorX - dw / 2 - 0.03, dh / 2, front + 0.05); box(trimM, 0.08, dh, 0.12, doorX + dw / 2 + 0.03, dh / 2, front + 0.05);
   box(stoneM, dw + 0.4, 0.08, 0.34, doorX, 0.04, front + 0.17); // escalón
-  // alero sobre la puerta
-  box(roofM, dw + 0.5, 0.06, 0.46, doorX, dh + 0.24, front + 0.22, 0, 0.32);
-  box(beamM, 0.05, 0.3, 0.05, doorX - dw / 2 - 0.18, dh + 0.06, front + 0.32, 0, 0.6); box(beamM, 0.05, 0.3, 0.05, doorX + dw / 2 + 0.18, dh + 0.06, front + 0.32, 0, 0.6);
+  // alero sobre la puerta (o porche a lo ancho de la fachada)
+  if (b.porch) {
+    const pd = 0.9, py = Math.min(hgt - 0.12, dh + 0.35);
+    { const g = new THREE.BoxGeometry(wd - 0.2, 0.1, pd), uv = g.attributes.uv, p = g.attributes.position; for (let i = 0; i < uv.count; i++) uv.setXY(i, p.getX(i) * 1.5, p.getZ(i) * 1.5); add(stoneM, g, cx, 0.05, front + pd / 2); }
+    for (const px of [-1, -0.34, 0.34, 1]) box(beamM, 0.1, py, 0.1, cx + px * (wd / 2 - 0.2), py / 2, front + pd - 0.06);
+    box(beamM, wd - 0.2, 0.09, 0.1, cx, py, front + pd - 0.06);
+    box(roofM, wd - 0.04, 0.07, pd + 0.24, cx, py + 0.18, front + pd / 2 + 0.05, 0, 0.26);
+    // baranda baja entre postes (deja libre la entrada)
+    for (const [x0, x1] of [[-1, -0.34], [0.34, 1]]) { const a0 = cx + x0 * (wd / 2 - 0.2), a1 = cx + x1 * (wd / 2 - 0.2); box(beamM, a1 - a0, 0.06, 0.06, (a0 + a1) / 2, 0.45, front + pd - 0.06); for (let k = 1; k < 4; k++) box(beamM, 0.04, 0.35, 0.04, a0 + (a1 - a0) * k / 4, 0.27, front + pd - 0.06); }
+  } else {
+    box(roofM, dw + 0.5, 0.06, 0.46, doorX, dh + 0.24, front + 0.22, 0, 0.32);
+    box(beamM, 0.05, 0.3, 0.05, doorX - dw / 2 - 0.18, dh + 0.06, front + 0.32, 0, 0.6); box(beamM, 0.05, 0.3, 0.05, doorX + dw / 2 + 0.18, dh + 0.06, front + 0.32, 0, 0.6);
+  }
   // farol junto a la puerta (brilla de noche, con las ventanas)
   box(beamM, 0.05, 0.05, 0.14, doorX + dw / 2 + 0.3, dh * 0.85, front + 0.07);
   box(glassM, 0.12, 0.17, 0.12, doorX + dw / 2 + 0.3, dh * 0.85 - 0.08, front + 0.14);
@@ -210,7 +225,7 @@ World3D.buildBuilding = function (b) {
     box(trimM, 1.0, 0.6, 0.04, doorX, dh + 0.62, front + 0.01);
   }
   // ---------- tejado ----------
-  const ovh = 0.22, rise = depth * 0.36, y0 = hgt, y1 = hgt + rise, zm = cz, half = depth / 2 + ovh;
+  const ovh = 0.22, rise = depth * (b.pitch || 0.36), y0 = hgt, y1 = hgt + rise, zm = cz, half = depth / 2 + ovh;
   const ang = Math.atan2(rise, depth / 2), L = half / Math.cos(ang), rw = wd + 0.5;
   roofT.repeat.set(rw * 0.8, L * 0.8); // tejas de ~3 píxeles de pantalla: más finas «bailan» al moverse
   for (const s of [1, -1]) {
@@ -226,10 +241,53 @@ World3D.buildBuilding = function (b) {
   if (!house) for (const s of [-1, 1]) box(glassM, 0.06, 0.28, 0.28, cx + s * (wd / 2 + 0.02), hgt + rise * 0.4, cz);
   // ---------- chimenea ----------
   if (house) {
-    const chx = b.x + wd - 0.9, chz = zm - depth * 0.18, chM = M({ map: K.brickTex() });
+    const chx = b.chim === -1 ? b.x + 0.9 : b.x + wd - 0.9, chz = zm - depth * 0.18, chM = M({ map: K.brickTex() });
     const chH = 1.1; box(chM, 0.42, chH, 0.42, chx, y1 - 0.1, chz);
     box(beamM, 0.52, 0.08, 0.52, chx, y1 - 0.1 + chH / 2 + 0.04, chz);
     this.chimney = this.chimney || new Map(); this.chimney.set(b, [chx, y1 + chH / 2, chz]);
+  }
+  // ---------- variaciones (opcionales) ----------
+  // entramado: vigas a la vista (banda sobre las ventanas, retícula en los costados y cruz en los hastiales)
+  if (b.timber) {
+    const top = rows[rows.length - 1] + 0.36;
+    if (top < hgt - 0.12) box(beamM, wd, 0.08, 0.05, cx, top, front + 0.025);
+    if (rows.length > 1) box(beamM, wd, 0.08, 0.05, cx, (rows[0] + rows[1]) / 2, front + 0.025);
+    for (const sd of [-1, 1]) {
+      const sxp = cx + sd * (wd / 2 + 0.025);
+      box(beamM, 0.05, 0.08, depth, sxp, hgt * 0.5 + (rows.length > 1 ? 0 : 0.45), cz);
+      for (let k = 1; k < 6; k++) { const z = cz - depth / 2 + (depth * k) / 6; if (Math.abs(z - cz) < 0.45) continue; box(beamM, 0.05, hgt - 0.35, 0.07, sxp, hgt / 2 + 0.05, z); }
+      // hastial: poste central y dos tornapuntas
+      box(beamM, 0.05, rise - 0.1, 0.07, sxp, hgt + (rise - 0.1) / 2, cz);
+      for (const s2 of [-1, 1]) { const L2 = Math.hypot(depth * 0.26, rise * 0.5), g = new THREE.BoxGeometry(0.05, L2, 0.06); g.rotateX(-s2 * Math.atan2(depth * 0.26, rise * 0.5)); add(beamM, g, sxp, hgt + rise * 0.25, cz + s2 * depth * 0.13); }
+    }
+  }
+  // planta baja de piedra (paños de piedra delante del revoque, con su textura a escala)
+  if (b.stone) {
+    const sh = rows.length > 1 ? (rows[0] + rows[1]) / 2 - 0.05 : hgt * 0.32;
+    const slab = (w, x, z, ry) => { const g = new THREE.PlaneGeometry(w, sh), uv = g.attributes.uv; for (let i = 0; i < uv.count; i++) uv.setXY(i, uv.getX(i) * w * 1.2, uv.getY(i) * sh * 2.4); add(stoneM, g, x, sh / 2, z, ry); };
+    const segs = []; let x0 = b.x;
+    for (const [a1, a2] of [[doorX - dw / 2 - 0.1, doorX + dw / 2 + 0.1]]) { segs.push([x0, a1]); x0 = a2; }
+    segs.push([x0, b.x + wd]);
+    for (const [a1, a2] of segs) if (a2 - a1 > 0.05) slab(a2 - a1, (a1 + a2) / 2, front + 0.008, 0);
+    slab(depth, cx + wd / 2 + 0.008, cz, Math.PI / 2); slab(depth, cx - wd / 2 - 0.008, cz, -Math.PI / 2);
+  }
+  // buhardilla en el faldón delantero
+  if (b.dormer) {
+    const dx = b.dormer === true ? cx : cx + b.dormer, dzz = zm + depth * 0.22, dyb = y1 - rise * 0.9, dW = 0.86, dH = 0.62 + rise * 0.28, dD = depth * 0.42; // la base se hunde en el tejado: sin huecos
+    box(wallF, dW, dH, dD, dx, dyb + dH / 2, dzz);
+    windowAt(dx - cx, dyb + dH - 0.34, 0, cx, dzz + dD / 2, 0.38, 0.36);
+    const da = 0.62, dl = (dW / 2 + 0.12) / Math.cos(da);
+    for (const s of [-1, 1]) { const g = new THREE.BoxGeometry(dl, 0.07, dD + 0.16); g.rotateZ(-s * da); add(roofM, g, dx + s * (dl / 2) * Math.cos(da), dyb + dH + (dl / 2) * Math.sin(da) - 0.02, dzz + 0.04); }
+  }
+  // cobertizo a un lado: paredes de madera, techo de una sola agua y puerta pequeña
+  if (b.annex) {
+    const sx = b.annex, aw = 1.3, ah = Math.min(1.5, hgt * 0.62), ad = depth * 0.7, ax = cx + sx * (wd / 2 + aw / 2), az = front - ad / 2 - 0.15;
+    const plankM = M({ map: K.doorTex('wood', '#9a6a3c') });
+    box(plankM, aw, ah, ad, ax, ah / 2, az);
+    const ra = 0.36, rl = (aw + 0.3) / Math.cos(ra), g = new THREE.BoxGeometry(rl, 0.08, ad + 0.3); g.rotateZ(sx * ra);
+    add(roofM, g, ax + sx * 0.05, ah + 0.18, az);
+    add(doorM, new THREE.PlaneGeometry(0.5, 0.9), ax, 0.47, az + ad / 2 + 0.01);
+    box(beamM, 0.6, 0.06, 0.08, ax, 0.96, az + ad / 2 + 0.03);
   }
   // ---------- mallas (una por material) ----------
   for (const [mat, geos] of buckets) {
