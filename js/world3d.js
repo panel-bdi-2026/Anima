@@ -844,7 +844,9 @@ for (int i = 0; i < 6; i++) { vec2 d = base - uPush[i].xy; float l = length(d); 
     // en combate la cámara se acerca un poco
     const base = this.mode === 'in' ? (B ? 19.5 : 15.5) : this.mode === 'cave' ? 17 : W3.DIST;
     // en combate la cámara ya no se acerca (las ánimas se veían crecer al empezar la pelea)
-    const dist = U.lerp(base, base, this.zoomK = U.lerp(this.zoomK || 0, B ? 1 : 0, 0.06));
+    // en combate la cámara se acerca un poco al círculo de batalla (las ánimas miden lo mismo que en el
+    // mapa, así que se agranda todo por igual: ánimas, entrenador y arena)
+    const dist = U.lerp(base, base * 0.8, this.zoomK = U.lerp(this.zoomK || 0, B ? 1 : 0, 0.05));
     if (!this.camT || this.camMap !== m.id) { this.camT = [tx, tz]; this.camMap = m.id; }
     else { const k = B ? 0.16 : 0.12; this.camT[0] += (tx - this.camT[0]) * k; this.camT[1] += (tz - this.camT[1]) * k; }
     const [cx, cz] = this.camT;

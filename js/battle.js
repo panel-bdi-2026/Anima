@@ -1054,6 +1054,8 @@ class BattleScene {
       speed: Math.hypot(f.vx, f.vy), act: f.act, dash: !!f.dash, dodge: f.dodgeT > 0, stun: f.stun > 0,
       charging: f === this.ally && this.chg && this.chg.t > 0.15, faintT: f.fainted ? this.t - (f.faintT || (f.faintT = this.t)) : undefined,
       flash: f.flash > 0 && Math.floor(f.flash * 40) % 2 === 0, flashColor: f.flashColor,
+      // contorno para distinguirlas del pasto: blanco la tuya, rojo la rival
+      outline: f.fainted ? null : f.side === 'ally' ? '#ffffff' : '#ff4a4a', outlineW: 0.5,
     });
     ctx.globalAlpha = 1;
     if (f.c.shiny && Math.floor(this.t * 3) % 4 === 0) P(ctx, Math.round(f.x + U.rand(-10, 10)), Math.round(f.y - U.rand(5, S * 0.8)), 2, 2, '#fff8a0');
