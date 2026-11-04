@@ -72,9 +72,12 @@
       }
     },
     villa_musgo(world) {
-      for (const [tx, ty, sx, sz] of pick(world, (d) => d.canopy, 4, 6)) {
+      // solo en el borde del bosque que da hacia la cámara (casilla libre al sur), y del ancho de una
+      // casilla: antes alguna quedaba de costado entre árboles y el sombrero los atravesaba
+      const front = (d, x, y) => { if (!d.canopy) return false; const s2 = world.tileAt(x, y + 1); return !!s2 && !s2.solid && !s2.water; };
+      for (const [tx, ty] of pick(world, front, 4, 6)) {
         removeTree(this, tx, ty);
-        const g = new THREE.Group(); g.position.set(tx + 0.5 + sx, 0, ty + 0.75 + sz); const s = 1.1 + hash2(tx, ty) * 0.4;
+        const g = new THREE.Group(); g.position.set(tx + 0.5, 0, ty + 0.95); const s = 0.75 + hash2(tx, ty) * 0.15;
         const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.16 * s, 0.22 * s, 1.1 * s, 8), M('#f0e4c8')); stem.position.y = 0.55 * s; g.add(stem);
         const capM = M(['#d04848', '#9050d0', '#e0a030'][Math.floor(hash2(ty, tx) * 3)], { emissive: '#402010', emissiveIntensity: 0.4 });
         const cap = new THREE.Mesh(new THREE.SphereGeometry(0.62 * s, 12, 8, 0, Math.PI * 2, 0, Math.PI / 2), capM); cap.position.y = 1.05 * s; g.add(cap);
