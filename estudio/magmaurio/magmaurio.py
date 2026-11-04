@@ -88,36 +88,35 @@ def build(P):
     c.parte(c.caps([(32, 30), (29, 39.5), (23.5, 37)], [4.4, 3.4, 3.2]), 'fur', R=4)
     c.parte(c.caps([(29, 39.5), (24, 37.5)], [3.6, 3.6]) | c.ell(21.2, 35.8, 4.4, 4.2), seams(8, 0.9), R=3.5, outline='#120a0a')
     c.parte(c.poly([(27, 28.5), (30, 24.5), (36, 24.5), (38.5, 28), (37, 32.5), (30.5, 33.5)]), seams(10, 1.1), R=4, outline='#120a0a')
-    # ---------- cabeza ----------
-    c.local(dy=P['head'])
-    c.parte(c.poly([(30, 16), (34.5, 10.5), (37.5, 11), (36, 16.5), (33, 19)]), 'fur', R=3, bias=-0.3, far=True)   # oreja lejana
-    jaw = c.poly([(15, 24.5), (18, 28), (24, 29.2), (31, 27.5), (32, 23.5), (23, 24.5)])
-    head = c.ell(26.5, 19.5, 9.6, 8.4, -0.05) | c.poly([(20, 15.5), (13.5, 19), (13, 24), (21, 26)]) | jaw
-
-    def head_mat(X, Y):
+    # ---------- cabeza: la misma cabeza de zorro de Fogarzo, más madura (se mantiene el parentesco) ----------
+    HX, HY, HS = 6, -11, 0.8               # dónde va la cabeza de Fogarzo sobre este cuerpo, y a qué tamaño
+    c.local(dx=HX, dy=P['head'] + HY, sc=HS, piv=(22, 32))
+    c.parte(c.poly([(23.5, 25), (24.3, 19.5), (25.8, 14.8), (27.3, 12), (28.9, 13.5), (30.5, 18.6), (32, 25)]),
+            lambda X, Y: np.where(Y < 13.5, 'furd', 'fur').astype(object), R=3, bias=-0.3, far=True)   # oreja lejana
+    cheek = c.poly([(8, 37), (13, 42), (20, 43.5), (30, 42.5), (35, 39.5), (30, 38.5), (33, 35.5), (23, 34.5)])
+    head = c.ell(21, 30.5, 11.8, 9.8, -0.12) | c.poly([(13, 28), (1.5, 34.5), (2.5, 38), (14, 40.5)]) | cheek
+    c.parte(head, lambda X, Y: np.where((Y > 36.2 + (X - 2) * 0.03) | (cheek & (Y > 35.5)), 'cream', 'fur').astype(object), R=7, bias=0.03)
+    def ear_mat(X, Y):
         m = np.full(X.shape, 'fur', object)
-        m[(Y > 24.2) & (X < 31)] = 'cream'
+        cx = 18.4 + (Y - 8) * 0.1; half = (Y - 10.6) * 0.3
+        inner = (Y > 11) & (Y < 25) & (np.abs(X - cx) < half)
+        m[inner] = 'cream'
+        m[Y < 10.3] = 'furd'
         return m
-    c.parte(head, head_mat, R=6, bias=0.03)
-    # cresta-cuerno de roca: nace en la frente y se va hacia atrás, en dos puntas
-    horn = c.caps([(21, 15), (24.5, 10.5), (29.5, 7.5), (35, 6.5)], [2.6, 2.4, 1.6, 0.6]) | c.caps([(26, 11), (30, 9.5), (33.5, 10.5)], [1.4, 1.0, 0.5])
-    c.parte(horn, seams(7, 0.4, 0.35), R=2.5, outline='#120a0a')
-    c.parte(c.poly([(28, 15), (31.5, 10), (34.5, 10), (34, 13.5), (31, 17.5)]),
-            lambda X, Y: np.where((X > 30.5) & (X < 33.2) & (Y > 11.5) & (Y < 15), 'cream', 'fur').astype(object), R=3)
+    c.parte(c.poly([(14.2, 25.5), (14.4, 20), (15.4, 14.5), (16.9, 10.6), (18.2, 8.5), (19.6, 9.9), (21.4, 14.5), (23.2, 19.6), (24.5, 24.8)]),
+            ear_mat, R=4)
     c.local()
     c.render()
     # ---------- detalles ----------
-    c.local(dy=P['head'])
-    K = {'k': '#140a0c', 'y': '#ffb020', 'Y': '#fff0a0', 'o': '#e85a18'}
+    c.local(dx=HX, dy=P['head'] + HY, sc=HS, piv=(22, 32))
+    K = {'k': '#140a0c', 'a': '#a8461a', 'A': '#f0a030', 'W': '#ffffff'}
     if P['blink']:
-        ex, ey = c.patron(19.6, 17.6, ['', 'kkkkk'], K)
-    else:
-        ex, ey = c.patron(19.6, 17.6, ['kkkkk.', 'kYyok.', '.kkkk.'], K)
-    for i in range(7): c.put(ex - 1 + i, ey - 1 - (i > 3) + (i < 2), '#140a0c')    # ceño fruncido
-    c.patron(12.4, 19.2, ['nn', 'nnn'], {'n': '#140a0c'})
-    for x in range(15, 31, 2): c.putd(x, 25.4, '#3a1410')
-    for x, y in [(17, 26.4), (21.5, 26.5), (26, 26.4)]: c.putd(x, y, '#f4ecdc')
-    c.putd(17, 27.4, '#c8baa4')
+        ex, ey = c.patron(10.6, 28.6, ['', '', 'k...k', '.kkk.'], K)
+    else:   # ojo de zorro, decidido pero no feroz
+        ex, ey = c.patron(10.6, 28.6, ['.kkkk.', 'kWkkkk', 'kWkkak', '.kaAAk', '..kkk.'], K)
+    c.patron(1.2, 34.2, ['.nn', 'nnn'], {'n': '#140a0c'}); c.putd(2.4, 34.2, '#6a4a54')
+    for x, y in [(5, 38.8), (6.5, 39.2), (8, 39.8), (9.5, 40.2), (11, 40.5)]: c.putd(x, y, '#8a4a3a')
+    c.putd(7.5, 40.6, '#f4ecdc')                 # un colmillito asoma
     c.local()
     for x in (32, 34.5, 37, 42, 44.5): c.putd(x, 74.4, '#e8dcc8')     # garras de los pies
     for x, y in [(17.6, 33.6), (17.2, 36), (17.6, 38.4)]: c.putd(x, y, '#ff9a26')   # nudillos que brillan

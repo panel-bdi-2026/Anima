@@ -73,15 +73,17 @@ class Lienzo:
         self.lit = lit or {}                  # material -> material que toma cuando lo ilumina el fuego
         self.RAD = {'flame': (12, 49), 'lava': (0, 1.1)}
         self.RAD.update(glow_rad or {})
-        self.loc = dict(rot=0.0, piv=(0, 0), dx=0, dy=0)
+        self.loc = dict(rot=0.0, piv=(0, 0), dx=0, dy=0, sc=1.0)
         self.parts = []
 
     # ---------- transformaciones ----------
-    def local(self, rot=0.0, piv=(0, 0), dx=0, dy=0):
-        self.loc = dict(rot=rot, piv=piv, dx=dx, dy=dy)
+    def local(self, rot=0.0, piv=(0, 0), dx=0, dy=0, sc=1.0):
+        self.loc = dict(rot=rot, piv=piv, dx=dx, dy=dy, sc=sc)
 
     def tp(self, x, y):
-        L = self.loc; r = L['rot']
+        L = self.loc; r = L['rot']; k = L.get('sc', 1.0)
+        if k != 1.0:
+            px, py = L['piv']; x, y = px + (x - px) * k, py + (y - py) * k
         if r:
             px, py = L['piv']; c, s = math.cos(r), math.sin(r)
             x, y = px + (x - px) * c - (y - py) * s, py + (x - px) * s + (y - py) * c
@@ -96,6 +98,9 @@ class Lienzo:
         if r:
             px, py = L['piv']; c, s = math.cos(-r), math.sin(-r)
             X, Y = px + (X - px) * c - (Y - py) * s, py + (X - px) * s + (Y - py) * c
+        k = L.get('sc', 1.0)
+        if k != 1.0:
+            px, py = L['piv']; X, Y = px + (X - px) / k, py + (Y - py) / k
         return X, Y
 
     # ---------- formas ----------
@@ -105,7 +110,7 @@ class Lienzo:
         return np.array(im, bool)
 
     def ell(self, cx, cy, rx, ry, rot=0.0):
-        cx, cy = self.tp(cx, cy); rx *= self.S; ry *= self.S; rot += self.loc['rot']
+        cx, cy = self.tp(cx, cy); k = self.loc.get('sc', 1.0); rx *= self.S * k; ry *= self.S * k; rot += self.loc['rot']
         x = XX + 0.5 - cx; y = YY + 0.5 - cy
         c, s = math.cos(rot), math.sin(rot)
         u = x * c + y * s; v = -x * s + y * c
@@ -115,7 +120,7 @@ class Lienzo:
         """trazo grueso por varios puntos con radio variable"""
         m = np.zeros((N, N), bool)
         if not isinstance(r, (list, tuple)): r = [r] * len(pts)
-        pts = [self.tp(*p) for p in pts]; r = [max(0.5, v * self.S) for v in r]
+        pts = [self.tp(*p) for p in pts]; r = [max(0.5, v * self.S * self.loc.get('sc', 1.0)) for v in r]
         for (a, ra), (b, rb) in zip(zip(pts, r), zip(pts[1:], r[1:])):
             ax, ay = a; bx, by = b
             dx, dy = bx - ax, by - ay; L2 = dx * dx + dy * dy or 1
