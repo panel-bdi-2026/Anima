@@ -278,7 +278,7 @@ const Title3D = {
     // protagonista de espaldas y su ánima
     const [pc, px] = U.makeCanvas(32, 48); px.drawImage(HiChar.get(LOOKS.player), 0, 48, 32, 48, 0, 0, 32, 48);
     this.hero = bill(tex(pc), 1.0, 1.5, -2.4, 0, 3.4);
-    const lead = ['ignito', 'burbujo', 'semillin'][Math.floor(Math.random() * 3)];
+    const lead = ['tofu', 'buppa', 'parker'][Math.floor(Math.random() * 3)];
     const [sc] = U.makeCanvas(64, 64); this.petC = sc; this.petT = tex(sc); this.petSp = lead;
     this.pet = bill(this.petT, 2.1, 2.1, -1.2, -0.12, 3.2);
     // ---------- valle ----------

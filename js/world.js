@@ -530,7 +530,7 @@ const World = {
     }
     for (const s of (m.starters || [])) {
       if (Game.flag('starter_taken_' + s[2])) continue;
-      ctx.drawImage(Icons.sphere(['esfera', 'super', 'ultra'][['ignito', 'burbujo', 'semillin'].indexOf(s[2])] || 'esfera', 10), s[0] * 16 - cx + 3, s[1] * 16 - cy + 1);
+      ctx.drawImage(Icons.sphere(['esfera', 'super', 'ultra'][(this.map.starters || []).findIndex((q) => q[2] === s[2])] || 'esfera', 10), s[0] * 16 - cx + 3, s[1] * 16 - cy + 1);
     }
     Ambient.draw(ctx, cx, cy, 'ground');
     Critters.draw(ctx, cx, cy, this);

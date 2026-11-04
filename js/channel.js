@@ -152,8 +152,8 @@
       // la partida del escenario es de mentira: no se guarda
       if (!Game._canalSave) { const s = Game.save; Game._canalSave = s; Game.save = function () { return Canal.scenarioActive ? true : s.apply(this, arguments); }; }
       G = newGameState(); // eslint-disable-line no-global-assign
-      G.name = cfg.nombre || 'Prueba'; G.rival = 'Rival'; G.rivalStarter = 'semillin';
-      for (const f of ['met_prof', 'got_starter', 'got_dex', 'rival1_left', 'tut_battle', 'mom_talk', 'starter_taken_burbujo', 'starter_taken_semillin'].concat(cfg.flags || [])) G.flags[f] = true;
+      G.name = cfg.nombre || 'Prueba'; G.rival = 'Rival'; G.rivalStarter = 'parker';
+      for (const f of ['met_prof', 'got_starter', 'got_dex', 'rival1_left', 'tut_battle', 'mom_talk', 'starter_taken_buppa', 'starter_taken_parker'].concat(cfg.flags || [])) G.flags[f] = true;
       for (const [k, lv] of (cfg.equipo || [['ignito', 15]])) Game.addCreature(newCreature(k, lv));
       Object.assign(G.bag, { esfera: 10, pocion: 5 }, cfg.mochila || {});
       if (cfg.dinero !== undefined) G.money = cfg.dinero;

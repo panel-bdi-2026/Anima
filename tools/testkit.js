@@ -147,7 +147,7 @@ T.quick = async function (opts = {}) {
   G = newGameState();
   G.name = 'Test'; G.rival = 'Rival';
   for (const [k, lv] of (opts.party || [['burbujo', 5]])) Game.addCreature(newCreature(k, lv));
-  for (const f of (opts.flags || ['met_prof', 'got_starter', 'got_dex', 'rival1_left', 'tut_battle', 'mom_talk', 'starter_taken_burbujo', 'starter_taken_semillin'])) G.flags[f] = true;
+  for (const f of (opts.flags || ['met_prof', 'got_starter', 'got_dex', 'rival1_left', 'tut_battle', 'mom_talk', 'starter_taken_buppa', 'starter_taken_parker'])) G.flags[f] = true;
   G.rivalStarter = 'semillin';
   Object.assign(G.bag, opts.bag || { esfera: 10, pocion: 5 });
   G.map = opts.map || 'pueblo_alba'; G.x = opts.x !== undefined ? opts.x : 12; G.y = opts.y !== undefined ? opts.y : 10;
