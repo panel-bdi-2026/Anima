@@ -47,12 +47,16 @@ const CreatureAnim = {
     const P = { rx: 0, ry: 0, rot: 0, sx: 1, sy: 1, hx: 0, hy: 0, hrot: 0, trot: 0, flap: 1, legA: 0, legB: 0, eyes: 'open', alpha: 1, hover: 0, shake: 0 };
     const flyer = o.rig.flyer;
     // reposo
-    const br = Math.sin(t * 2.6 + (e.animSeed || 0));
-    P.sy = 1 + br * 0.035; P.sx = 1 - br * 0.02;
-    P.hy = Math.sin(t * 2.6 - 0.7 + (e.animSeed || 0)) * 0.7;
-    P.trot = Math.sin(t * 2.2 + (e.animSeed || 0)) * 0.16;
-    if (flyer) { P.hover = -4 + Math.sin(t * 4) * 2; P.flap = 0.6 + 0.4 * Math.cos(t * 14); }
-    else P.flap = 1 + Math.sin(t * 3) * 0.06;
+    // Pixel art: las deformaciones continuas (estirar, girar) hacen que en cada cuadro aparezcan y
+    // desaparezcan filas de píxeles distintas (titileo). En reposo todo avanza de a un píxel entero:
+    // el cuerpo crece o se encoge exactamente 1 píxel de alto, la cabeza sube o baja 1 píxel y la
+    // cola se mece en pasos fijos. Así respira con calma, como en los juegos de pixel art.
+    const br = Math.sin(t * 2.6 + (e.animSeed || 0)), px1 = 1 / Math.max(8, o.S * 0.6);
+    P.sy = 1 + Math.round(br * 1.2) * px1; P.sx = 1;
+    P.hy = Math.round(Math.sin(t * 2.6 - 0.7 + (e.animSeed || 0)) * 0.9);
+    P.trot = Math.round(Math.sin(t * 2.2 + (e.animSeed || 0)) * 2) * 0.08;
+    if (flyer) { P.hover = -4 + Math.round(Math.sin(t * 4) * 2); P.flap = 0.6 + 0.4 * Math.round(Math.cos(t * 14) * 2) / 2; }
+    else P.flap = 1;
     // parpadeo
     A.nextBlink -= dt;
     if (A.nextBlink <= 0) { A.blinkT = 0.13; A.nextBlink = 2 + Math.random() * 3.5; }
@@ -61,9 +65,9 @@ const CreatureAnim = {
     const sp = o.speed || 0;
     if (sp > 12) {
       const ph = t * (8 + sp / 12);
-      if (!flyer) { P.ry = -Math.abs(Math.sin(ph)) * 2.2; P.legA = Math.sin(ph) > 0 ? -1 : 0; P.legB = Math.sin(ph) > 0 ? 0 : -1; P.rot = Math.sin(ph) * 0.05; }
+      if (!flyer) { P.ry = -Math.round(Math.abs(Math.sin(ph)) * 2.2); P.legA = Math.sin(ph) > 0 ? -1 : 0; P.legB = Math.sin(ph) > 0 ? 0 : -1; P.rot = Math.round(Math.sin(ph)) * 0.05; }
       else { P.flap = 0.45 + 0.55 * Math.cos(t * 22); P.rot = -0.08; }
-      P.trot = Math.sin(ph * 0.5) * 0.3;
+      P.trot = Math.round(Math.sin(ph * 0.5) * 3) * 0.1;
     }
     // preparación de un ataque (la fase de carga)
     const act = o.act;

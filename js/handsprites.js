@@ -224,8 +224,12 @@ CreatureAnim.composeHand = function (e, o) {
   x.translate(Math.round(fx + P.rx), Math.round(fy + P.ry + P.hover));
   x.rotate(P.rot); x.scale(P.sx * sc, P.sy * sc);
   x.translate(-rig.feet[0], -rig.feet[1]);
+  // Pixel art estable: cada pieza gira en pasos fijos (~5°) y se mueve de a píxeles enteros. Con giros
+  // continuos muy pequeños, los píxeles de la pieza saltan de un cuadro a otro (titileo).
+  const QA = 0.08;
   const draw = (p, img, ang = 0, dx = 0, dy = 0) => {
     if (!img) return;
+    ang = Math.round(ang / QA) * QA; dx = Math.round(dx); dy = Math.round(dy);
     if (!ang) { x.drawImage(img, Math.round(p.ox + dx), Math.round(p.oy + dy)); return; }
     x.save(); x.translate(p.ox + p.piv[0] + dx, p.oy + p.piv[1] + dy); x.rotate(ang); x.drawImage(img, -p.piv[0], -p.piv[1]); x.restore();
   };
@@ -275,7 +279,8 @@ CreatureAnim.composeHand = function (e, o) {
     } else if (p.role === 'ear' || p.role === 'crest' || p.onHead) {
       // las orejas giran con la cabeza y además por su cuenta
       x.save();
-      if (head && P.hrot) { const hx = head.ox + head.piv[0] + P.hx, hy = head.oy + head.piv[1] + P.hy; x.translate(hx, hy); x.rotate(P.hrot); x.translate(-hx, -hy); }
+      const hr = Math.round(P.hrot / QA) * QA;
+      if (head && hr) { const hx = head.ox + head.piv[0] + Math.round(P.hx), hy = head.oy + head.piv[1] + Math.round(P.hy); x.translate(hx, hy); x.rotate(hr); x.translate(-hx, -hy); }
       const ea = (p.role === 'ear' ? earA * (p.far ? 0.8 : 1) : p.role === 'crest' ? earA * 0.9 + Math.sin(t * 3.1) * 0.05 : 0) * (p.mir ? -1 : 1);
       draw(p, p.canvas, ea, P.hx, P.hy); if (p.eyes) draw(p, eyesImg(p), ea, P.hx, P.hy); x.restore(); continue;
     }
