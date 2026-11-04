@@ -207,9 +207,70 @@ class PartyScreen {
 }
 
 // ---------- ficha de ánima ----------
+// potencia y recarga en dos columnas: el rótulo fijo y el número alineado a la derecha
+function moveCols(ctx, m, x0, y) {
+  const c = '#8a8098', v = '#5a5068';
+  Font.draw(ctx, 'Pot', x0 + 104, y, c); Font.drawRight(ctx, String(m.pow || '-'), x0 + 140, y, v);
+  Font.draw(ctx, 'Rec', x0 + 148, y, c); Font.drawRight(ctx, m.cd + 's', x0 + 188, y, v);
+}
 class SummaryScreen {
-  constructor(list, i) { this.list = list; this.i = i; this.page = 0; this.opaque = true; }
+  constructor(list, i) { this.list = list; this.i = i; this.page = 0; this.opaque = true; this.edit = null; }
+  // página Ataques: «edit» = { zone: 'act' (los 4 en uso) | 'sto' (guardados), i, slot, scroll }
+  updateMoves() {
+    const c = this.list[this.i], sto = storedMoves(c), E = this.edit;
+    const M = Input.mouse, tap = M && M.pressed && M.pressed[0] && typeof MouseUI !== 'undefined';
+    // toques: un ataque en uso o uno guardado
+    if (tap) {
+      for (let k = 0; k < 4; k++) if (MouseUI.inside(118, 26 + k * 25, 196, 24)) {
+        MouseUI.swallow();
+        if (!E || E.zone === 'act') { this.edit = { zone: 'act', i: k, scroll: 0 }; return this.pickSlot(); }
+        this.edit = { zone: 'act', i: k, scroll: 0 }; Sound.sfx('blip'); return;
+      }
+      const sc = E ? E.scroll : 0;
+      for (let k = 0; k < 5; k++) if (sc + k < sto.length && MouseUI.inside(118, 142 + k * 12, 196, 12)) {
+        MouseUI.swallow();
+        if (E && E.zone === 'sto') { E.i = sc + k; return this.swapIn(); }
+        this.edit = { zone: 'act', i: Math.min(3, c.moves.length), scroll: 0, want: sc + k };
+        Sound.sfx('blip'); return;
+      }
+    }
+    if (!E) {
+      if (Input.pressed('a')) { Sound.sfx('select'); this.edit = { zone: 'act', i: 0, scroll: 0 }; return; }
+      return 'pass';
+    }
+    if (E.zone === 'act') {
+      if (Input.repeat('up')) { E.i = (E.i + 3) % 4; Sound.sfx('blip'); }
+      if (Input.repeat('down')) { E.i = (E.i + 1) % 4; Sound.sfx('blip'); }
+      if (Input.pressed('a')) this.pickSlot();
+      else if (Input.pressed('b')) { this.edit = null; Sound.sfx('cancel'); }
+    } else {
+      if (Input.repeat('up') && sto.length) { E.i = (E.i + sto.length - 1) % sto.length; Sound.sfx('blip'); }
+      if (Input.repeat('down') && sto.length) { E.i = (E.i + 1) % sto.length; Sound.sfx('blip'); }
+      E.scroll = U.clamp(E.scroll, Math.max(0, E.i - 4), E.i);
+      if (Input.pressed('a')) this.swapIn();
+      else if (Input.pressed('b')) { E.zone = 'act'; E.i = E.slot; Sound.sfx('cancel'); }
+    }
+  }
+  // elegido un lugar (de los 4): se pasa a la lista de guardados
+  pickSlot() {
+    const c = this.list[this.i], sto = storedMoves(c), E = this.edit;
+    if (!sto.length) { Sound.sfx('bump'); E.empty = Engine.time; return; }
+    Sound.sfx('select');
+    const want = E.want !== undefined ? E.want : 0;
+    this.edit = { zone: 'sto', slot: E.i, i: U.clamp(want, 0, sto.length - 1), scroll: 0 };
+    this.edit.scroll = U.clamp(0, this.edit.i - 4, this.edit.i);
+    if (E.want !== undefined) this.swapIn(); // se tocó primero un guardado: va directo a ese lugar
+  }
+  swapIn() {
+    const c = this.list[this.i], sto = storedMoves(c), E = this.edit, mk = sto[E.i];
+    if (!mk) return;
+    if (E.slot < c.moves.length) c.moves[E.slot] = mk; else c.moves.push(mk);
+    Sound.sfx('super');
+    this.edit = { zone: 'act', i: Math.min(E.slot, c.moves.length - 1), scroll: 0, done: Engine.time };
+  }
   update() {
+    if (this.page !== 1) this.edit = null;
+    if (this.page === 1 && this.updateMoves() !== 'pass') return;
     if (Input.repeat('left')) { this.page = (this.page + 2) % 3; Sound.sfx('blip'); }
     if (Input.repeat('right')) { this.page = (this.page + 1) % 3; Sound.sfx('blip'); }
     if (Input.repeat('up') && this.list.length > 1) { this.i = (this.i + this.list.length - 1) % this.list.length; Sound.sfx('blip'); }
@@ -226,7 +287,9 @@ class SummaryScreen {
       P(ctx, x, 3, 64, 14, k === this.page ? '#f8d048' : '#4a4060');
       Font.drawCenter(ctx, t, x + 32, 6, k === this.page ? '#2a2236' : '#c8c0d8');
     });
-    Font.drawRight(ctx, '←→ página  ↑↓ ánima', 314, 6, '#8a8098');
+    // ayuda a la derecha de las pestañas (en el celular las pestañas se tocan: solo cabe «↑↓ ánima»)
+    const hint = fmt('←→ página  ↑↓ ánima');
+    Font.drawRight(ctx, Font.width(hint) <= 96 ? hint : '↑↓ ánima', 314, 6, '#8a8098');
     // retrato
     P(ctx, 8, 26, 100, 100, '#1c1824'); P(ctx, 9, 27, 98, 98, '#fdfaf2');
     const tcol = TYPES[sp.types[0]].color;
@@ -265,16 +328,46 @@ class SummaryScreen {
       Font.draw(ctx, 'Ímpetu: cuerpo a cuerpo y cargas.', x0 + 10, 206, '#8a8098');
       Font.draw(ctx, 'Temple: distancia y esquivas.', x0 + 10, 217, '#8a8098');
     } else if (this.page === 1) {
-      c.moves.forEach((mk, k) => {
-        const m = MOVES[mk], y = 26 + k * 51;
-        UI.box(ctx, x0, y, 196, 48, 'panel');
-        P(ctx, x0 + 1, y + 1, 4, 46, TYPES[m.type].color);
-        Font.draw(ctx, `${k + 1}. ${m.name}`, x0 + 10, y + 5, '#2a2236');
-        UI.typeBadge(ctx, m.type, x0 + 158, y + 4);
-        Font.draw(ctx, `${KIND_LABEL[m.kind]} · ${m.cat === 'fis' ? 'Físico' : 'Especial'}`, x0 + 10, y + 18, '#5a5068');
-        Font.draw(ctx, `Pot ${m.pow || '-'}  Rec ${m.cd}s`, x0 + 120, y + 18, '#5a5068');
-        Font.draw(ctx, m.desc, x0 + 10, y + 32, '#8a8098');
-      });
+      const E = this.edit, sto = storedMoves(c);
+      // los 4 en uso
+      for (let k = 0; k < 4; k++) {
+        const mk = c.moves[k], m = MOVES[mk], y = 26 + k * 25;
+        const on = E && ((E.zone === 'act' && E.i === k) || (E.zone === 'sto' && E.slot === k));
+        UI.box(ctx, x0, y, 196, 24, 'panel');
+        if (on) { P(ctx, x0 + 2, y + 2, 192, 20, E.zone === 'sto' ? '#c8e8ff' : '#fff4c8'); }
+        if (!m) { Font.draw(ctx, `${k + 1}. (libre)`, x0 + 10, y + 8, '#a098a8'); continue; }
+        P(ctx, x0 + 1, y + 1, 4, 22, TYPES[m.type].color);
+        Font.draw(ctx, `${k + 1}. ${m.name}`, x0 + 10, y + 3, '#2a2236');
+        UI.typeBadge(ctx, m.type, x0 + 158, y + 3);
+        // dos columnas fijas: potencia y recarga (alineadas en todas las filas)
+        Font.draw(ctx, KIND_LABEL[m.kind], x0 + 10, y + 13, '#5a5068');
+        moveCols(ctx, m, x0, y + 13);
+        if (on && E.zone === 'act') UI.cursor(ctx, x0 - 2, y + 8);
+      }
+      // guardados
+      const y0 = 128;
+      UI.box(ctx, x0, y0, 196, 104, 'panel');
+      Font.draw(ctx, `Guardados (${sto.length})`, x0 + 8, y0 + 4, '#2a2236');
+      if (!sto.length) Font.draw(ctx, 'Aún no tiene ataques guardados.', x0 + 8, y0 + 18, '#8a8098');
+      const sc = E && E.zone === 'sto' ? E.scroll : 0;
+      for (let k = 0; k < 5 && sc + k < sto.length; k++) {
+        const m = MOVES[sto[sc + k]], y = y0 + 14 + k * 12, on = E && E.zone === 'sto' && E.i === sc + k;
+        if (on) { P(ctx, x0 + 2, y - 1, 192, 12, '#fff4c8'); UI.cursor(ctx, x0 - 2, y + 2); }
+        P(ctx, x0 + 8, y + 2, 4, 6, TYPES[m.type].color);
+        Font.draw(ctx, m.name, x0 + 16, y, '#2a2236');
+        moveCols(ctx, m, x0, y);
+      }
+      if (sto.length > 5) Font.drawRight(ctx, `${sc + 1}-${Math.min(sto.length, sc + 5)}`, x0 + 188, y0 + 4, '#8a8098');
+      // abajo: qué hacer, o qué hace el ataque marcado
+      const focus = E ? (E.zone === 'sto' ? sto[E.i] : c.moves[E.i]) : null;
+      let help;
+      if (!E) help = sto.length ? 'A: cambiar ataques (o toca uno)' : 'Usa hasta 4. Los demás que aprenda quedan aquí.';
+      else if (E.empty && Engine.time - E.empty < 2) help = 'No hay ataques guardados para cambiar.';
+      else if (E.done && Engine.time - E.done < 2) help = '¡Listo! El otro quedó guardado.';
+      else if (E.zone === 'act' && E.want !== undefined && sto[E.want]) help = `¿En qué lugar usar ${MOVES[sto[E.want]].name}? (A: elegir)`;
+      else if (E.zone === 'act') help = focus ? MOVES[focus].desc : 'Elige un ataque guardado para este lugar.';
+      else help = (focus ? MOVES[focus].desc + ' ' : '') + '(A: usar · B: volver)';
+      Font.wrap(help, 180).slice(0, 2).forEach((ln, k) => Font.draw(ctx, ln, x0 + 8, y0 + 78 + k * 11, '#8a8098'));
     } else {
       UI.box(ctx, x0, 26, 196, 206, 'panel');
       Font.draw(ctx, 'Etapa ' + sp.stage, x0 + 10, 34, '#2a2236');
@@ -437,22 +530,22 @@ async function processLevelEvents(c, evs) {
 async function learnMoveFlow(c, mk) {
   const m = MOVES[mk];
   if (c.moves.includes(mk)) return;
+  const had = (c.learned || []).includes(mk);
+  addLearned(c, mk);
   if (c.moves.length < 4) { c.moves.push(mk); Sound.sfx('super'); await say(`¡${cName(c)} aprendió ${m.name}!`); return; }
-  while (true) {
-    const r = await ask([`${cName(c)} quiere aprender ${m.name}.`, `Pero ya conoce cuatro ataques. ¿Olvidar uno para aprender ${m.name}?`]);
-    if (r !== 0) {
-      const r2 = await ask(`¿Dejar de aprender ${m.name}?`);
-      if (r2 === 0) { await say(`${cName(c)} no aprendió ${m.name}.`); return; }
-      continue;
+  if (!had) Sound.sfx('super');
+  // ya usa cuatro: el nuevo queda guardado; se puede usar ya en lugar de otro (que también queda guardado)
+  const r = await ask([had ? `${cName(c)} ya conoce ${m.name}.` : `¡${cName(c)} aprendió ${m.name}!`, `Ya usa cuatro ataques. ¿Usar ${m.name} en lugar de otro?`]);
+  if (r === 0) {
+    const k = await choose(c.moves.map((x) => MOVES[x].name).concat(['Cancelar']), { x: 150, y: 70 });
+    if (k >= 0 && k < 4) {
+      const old = MOVES[c.moves[k]].name;
+      c.moves[k] = mk;
+      await say([`${cName(c)} ahora usa ${m.name}.`, `${old} queda guardado: puedes volver a elegirlo en su ficha.`]);
+      return;
     }
-    const opts = c.moves.map((x) => MOVES[x].name).concat([m.name + ' (nuevo)']);
-    const k = await choose(opts, { x: 150, y: 70 });
-    if (k < 0 || k === 4) continue;
-    const old = MOVES[c.moves[k]].name;
-    c.moves[k] = mk;
-    await say([`1, 2 y... ¡puf! ${cName(c)} olvidó ${old}.`, `¡Y aprendió ${m.name}!`]);
-    return;
   }
+  await say(`${m.name} queda guardado. Puedes elegirlo cuando quieras en su ficha (Datos → Ataques).`);
 }
 
 // ---------- amuletos ----------
