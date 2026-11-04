@@ -55,7 +55,8 @@ const TitleArt = {
       // crestas y quebradas: dos escalas (grandes espolones y aristas finas)
       const crag = this.ridged(x * 0.05 + seed, zl * 0.08 + seed, 5) * 0.65 + this.ridged(x * 0.16 + seed * 2, zl * 0.22, 4) * 0.35;
       crags[i] = crag;
-      const h = P * Math.pow(env, 0.9) * (0.5 + 0.5 * crag) + crag * hmax * 0.1 - 4 * (1 - env);  // bordes bajo el suelo: sin huecos
+      const ends = U.clamp((x1 - x) / 28, 0, 1) * U.clamp((x - x0) / 28, 0, 1); // la cordillera baja suave en sus extremos
+      const h = (P * Math.pow(env, 0.9) * (0.5 + 0.5 * crag) + crag * hmax * 0.1) * Math.sqrt(ends) - 4 * (1 - env * ends);  // bordes bajo el suelo: sin huecos
       p.setXYZ(i, x, h, zl + zc);
     }
     g.computeVertexNormals();
@@ -330,8 +331,38 @@ const Title3D = {
     const [sc] = U.makeCanvas(64, 64); this.petC = sc; this.petT = tex(sc); this.petSp = lead;
     this.pet = bill(this.petT, 2.1, 2.1, -1.2, -0.12, 3.2);
     // ---------- valle ----------
-    const vT = tex(gc, true); vT.repeat.set(63, 32);
-    const valley = new THREE.Mesh(new THREE.PlaneGeometry(420, 220), M('#d8c8c0', { map: vT })); valley.rotation.x = -Math.PI / 2; valley.position.set(0, -7, -100); valley.receiveShadow = true; S.add(valley);
+    // textura clara de hierba (el color lo ponen las manchas del valle): briznas y matas pixeladas
+    const [mc, mx] = U.makeCanvas(32, 32); mx.fillStyle = '#e4ecd4'; mx.fillRect(0, 0, 32, 32);
+    for (let i = 0; i < 160; i++) { const a = Math.floor(hash2(i, 1) * 32), b = Math.floor(hash2(i, 2) * 32), k = hash2(i, 3); mx.fillStyle = k < 0.45 ? '#b8c8a8' : k < 0.8 ? '#ccd8bc' : '#ffffff'; mx.fillRect(a, b, 1, k < 0.45 ? 2 : 1); }
+    const vT = tex(mc, true); vT.repeat.set(160, 84);
+    // valle con vida: lomas suaves lejos del pueblo, manchas de distintos verdes, campos de flores,
+    // parcelas de cultivo y la costa a la derecha (donde el terreno baja y aparece el mar)
+    const coastX = (z) => 30 + 6 * Math.sin(z * 0.07) + Math.max(0, z + 40) * 2.5; // a la derecha de esto, mar
+    this.coastX = coastX;
+    { const g = new THREE.PlaneGeometry(420, 220, 210, 110); g.rotateX(-Math.PI / 2); g.translate(0, -7, -100);
+      const p = g.attributes.position, col = new Float32Array(p.count * 3), c = new THREE.Color();
+      const greens = [new THREE.Color('#7ab84e'), new THREE.Color('#4e9a3c'), new THREE.Color('#a8c858'), new THREE.Color('#3e8a46')];
+      const soil = new THREE.Color('#a87850'), soil2 = new THREE.Color('#c8a048'), sand = new THREE.Color('#f0d8a8'), pink = new THREE.Color('#f080b0'), gold = new THREE.Color('#f8d048');
+      for (let i = 0; i < p.count; i++) {
+        const x = p.getX(i), z = p.getZ(i), cx = coastX(z);
+        const away = U.clamp((Math.hypot(x - 5, (z + 30) * 1.2) - 26) / 30, 0, 1);
+        let y = -7 + Math.max(0, TitleArt.fbm(x * 0.03, z * 0.03, 4) - 0.38) * 7 * away; // lomas (nunca bajo el nivel del mar)
+        if (x > cx) y = -7 - Math.min(3, (x - cx) * 0.6); // la costa baja hacia el mar
+        p.setY(i, y);
+        // color: manchas grandes de verde, más una textura menor
+        const n = TitleArt.fbm(x * 0.05 + 3, z * 0.05, 4), m = TitleArt.fbm(x * 0.2, z * 0.2, 2);
+        c.copy(greens[Math.floor(n * 3.99)]).lerp(greens[(Math.floor(n * 3.99) + 1) % 4], m * 0.5);
+        // campos de flores
+        const fl = TitleArt.fbm(x * 0.08 + 9, z * 0.08 + 9, 3);
+        if (fl > 0.58) c.lerp(hash2(Math.floor(x * 2), Math.floor(z * 2)) < 0.5 ? pink : gold, U.clamp((fl - 0.58) * 8, 0, 0.9));
+        // parcelas de cultivo a la izquierda del río, en franjas
+        if (x > -58 && x < -22 && z > -60 && z < -20) { const row = Math.floor((x + z * 0.3) * 1.2) % 2; c.lerp(row ? soil : soil2, 0.65); }
+        // arena junto al mar
+        if (x > cx - 2.5) c.lerp(sand, U.clamp((x - (cx - 2.5)) / 2.5, 0, 1));
+        c.convertSRGBToLinear(); col.set([c.r, c.g, c.b], i * 3);
+      }
+      g.setAttribute('color', new THREE.BufferAttribute(col, 3)); g.computeVertexNormals();
+      const valley = new THREE.Mesh(g, M('#ffffff', { map: vT, vertexColors: true })); valley.receiveShadow = true; S.add(valley); }
     // río que serpentea hasta el mar, reflejando el sol
     const rp = [];
     for (let i = 0; i <= 40; i++) { const z = -4 - i * 2.2, x = -6 + Math.sin(i * 0.28) * 6 + i * 0.55; rp.push(new THREE.Vector3(x, -6.95, z)); }
@@ -343,9 +374,22 @@ const Title3D = {
     this.river = new THREE.Mesh(rg, new THREE.MeshBasicMaterial({ map: this.riverT, side: THREE.DoubleSide, transparent: true, opacity: 0.9 })); S.add(this.river);
     // mar al fondo a la derecha
     this.seaT = TitleArt.waveTex('#c86a70', '#f0a888'); this.seaT.repeat.set(40, 24);
-    const sea = new THREE.Mesh(new THREE.PlaneGeometry(200, 120), new THREE.MeshBasicMaterial({ map: this.seaT })); sea.rotation.x = -Math.PI / 2; sea.position.set(70, -7.2, -95); S.add(sea);
+    this.seaT.repeat.set(90, 70);
+    const sea = new THREE.Mesh(new THREE.PlaneGeometry(420, 330), new THREE.MeshBasicMaterial({ map: this.seaT })); sea.rotation.x = -Math.PI / 2; sea.position.set(170, -7.6, -170); S.add(sea);
+    // islas: rocas bajas con árboles, en el mar
+    for (const [ix, iz, ir] of [[62, -120, 6], [96, -86, 4], [54, -170, 9], [120, -150, 7]]) {
+      const ig = new THREE.SphereGeometry(ir, 18, 8, 0, Math.PI * 2, 0, Math.PI / 2); const ip = ig.attributes.position;
+      for (let k = 0; k < ip.count; k++) { const yy = ip.getY(k); ip.setY(k, yy * (0.35 + TitleArt.fbm(ip.getX(k) * 0.4 + ix, ip.getZ(k) * 0.4, 3) * 0.4)); }
+      ig.computeVertexNormals();
+      const isl = new THREE.Mesh(ig, M('#8a7a68', { flatShading: true, map: TitleArt.rockTex(ix) })); isl.position.set(ix, -7.7, iz); S.add(isl);
+      const top = new THREE.Mesh(new THREE.SphereGeometry(ir * 0.7, 14, 6, 0, Math.PI * 2, 0, Math.PI / 2), M('#4a7a3a', { flatShading: true })); top.scale.y = 0.35; top.position.set(ix, -7.7 + ir * 0.3, iz); S.add(top);
+      for (let k = 0; k < 4; k++) { const a = k * 1.7 + ix, r = ir * 0.4 * hash2(k, ix); const tb = new THREE.Mesh(new THREE.PlaneGeometry(1.6, 2.1), new THREE.MeshLambertMaterial({ map: W3D.treeTex(k % 7), alphaTest: 0.5, side: THREE.DoubleSide, color: '#c8b0c0' })); tb.geometry.translate(0, 0.9, 0); tb.position.set(ix + Math.cos(a) * r, -7.7 + ir * 0.38, iz + Math.sin(a) * r); tb.scale.setScalar(ir * 0.32); (this.bills = this.bills || []).push(tb); S.add(tb); }
+    }
+    // velero que navega despacio
+    { const [bc, bx] = U.makeCanvas(12, 12); bx.fillStyle = '#fff4e8'; for (let y = 0; y < 8; y++) bx.fillRect(6 - Math.floor(y * 0.6), y, Math.floor(y * 0.6) + 1, 1); bx.fillStyle = '#f0d8c8'; for (let y = 1; y < 7; y++) bx.fillRect(7, y + 1, Math.floor(y * 0.5) + 1, 1); bx.fillStyle = '#6a3a2a'; bx.fillRect(2, 9, 9, 2); bx.fillStyle = '#4a2a1a'; bx.fillRect(6, 0, 1, 9);
+      this.boat = new THREE.Mesh(new THREE.PlaneGeometry(3, 3), new THREE.MeshBasicMaterial({ map: W3D.tex(bc), alphaTest: 0.5, side: THREE.DoubleSide, fog: false })); this.boat.geometry.translate(0, 1.3, 0); S.add(this.boat); }
     const glint = new THREE.Mesh(new THREE.PlaneGeometry(6, 60), new THREE.MeshBasicMaterial({ color: '#ffe0a0', transparent: true, opacity: 0.5, blending: THREE.AdditiveBlending, depthWrite: false }));
-    glint.rotation.x = -Math.PI / 2; glint.position.set(14, -7.1, -75); S.add(glint); this.glint = glint;
+    glint.rotation.x = -Math.PI / 2; glint.position.set(78, -7.5, -150); S.add(glint); this.glint = glint;
     // pueblo con las casas del juego
     const village = new THREE.Group(); village.position.set(2, -7, -24); S.add(village);
     const proxy = Object.assign(Object.create(W3D), { root: village, buildings: [], chimney: new Map() });
@@ -392,7 +436,7 @@ const Title3D = {
       const x = -60 + Math.random() * 100, z = -6 - Math.random() * 70;
       if (x > -10 && x < 22 && z < -14 && z > -44) continue; // pueblo
       const p = curve.getPoint(U.clamp((-4 - z) / 88, 0, 1)); if (Math.abs(p.x - x) < 4) continue; // río
-      if (x > 18 && z < -40) continue; // costa
+      if (x > this.coastX(z) - 3) continue; // costa y mar
       trees.push([x, z, Math.floor(Math.random() * 7), 1.6 + Math.random() * 1.4]);
     }
     const byV = {};
@@ -405,15 +449,15 @@ const Title3D = {
     }
     // ---------- montañas, volcán y torre ----------
     // tres cordilleras con relieve: la más lejana alta y nevada; la cercana, colinas boscosas
-    S.add(TitleArt.range({ x0: -220, x1: 220, zc: -170, depth: 70, hmax: 80, gap: 40, seed: 3, haze: '#e8a0a8', hazeK: 0.28, rock: '#6a4a78', rockDark: '#3a2848', snow: '#fff0f6', rim: '#ffc8a0', rimK: 0.5 }).translateY(-7));
-    S.add(TitleArt.range({ x0: -170, x1: 170, zc: -112, depth: 40, hmax: 38, gap: 24, seed: 7, haze: '#d890a0', hazeK: 0.14, rock: '#5a3e62', rockDark: '#2e2238', snow: '#f4e4f0', rim: '#ffb890', low: '#3a3048', rimK: 0.4 }).translateY(-7));
-    S.add(TitleArt.range({ x0: -140, x1: 140, zc: -74, depth: 24, hmax: 12, gap: 16, seed: 11, rock: '#3e5a40', rockDark: '#24382c', low: '#2a4430', rim: '#d8b080', rimK: 0.25 }).translateY(-7));
+    S.add(TitleArt.range({ x0: -220, x1: 40, zc: -170, depth: 70, hmax: 80, gap: 40, seed: 3, haze: '#e8a0a8', hazeK: 0.28, rock: '#6a4a78', rockDark: '#3a2848', snow: '#fff0f6', rim: '#ffc8a0', rimK: 0.5 }).translateY(-7));
+    S.add(TitleArt.range({ x0: -170, x1: 36, zc: -112, depth: 40, hmax: 38, gap: 24, seed: 7, haze: '#d890a0', hazeK: 0.14, rock: '#5a3e62', rockDark: '#2e2238', snow: '#f4e4f0', rim: '#ffb890', low: '#3a3048', rimK: 0.4 }).translateY(-7));
+    S.add(TitleArt.range({ x0: -140, x1: 30, zc: -74, depth: 24, hmax: 12, gap: 16, seed: 11, rock: '#3e5a40', rockDark: '#24382c', low: '#2a4430', rim: '#d8b080', rimK: 0.25 }).translateY(-7));
     TitleArt.volcano(S, new THREE.Vector3(-52, -7, -100));
     // bosque lejano al pie de las montañas: rompe la línea recta entre el valle y la roca
     { const fg = new THREE.PlaneGeometry(26 / 16, 34 / 16); fg.translate(0, 15 / 16, 0);
       for (const [z0, z1, n, sc, col] of [[-84, -100, 260, 1.5, '#6a6a88'], [-100, -122, 260, 2.1, '#8a7a98']]) {
         const inst = new THREE.InstancedMesh(fg, new THREE.MeshBasicMaterial({ map: W3D.treeTex(3), alphaTest: 0.5, side: THREE.DoubleSide, color: col }), n);
-        for (let i = 0; i < n; i++) { const x = -150 + hash2(i, z0) * 300, z = z0 + hash2(z0, i) * (z1 - z0); if (x > -62 && x < -42 && z < -92) { o.scale.setScalar(0); } else { o.position.set(x, -7, z); o.rotation.set(0, Math.atan2(-x, 12 - z), 0); o.scale.setScalar(sc * (0.8 + hash2(i * 3, z0) * 0.5)); } o.updateMatrix(); inst.setMatrixAt(i, o.matrix); }
+        for (let i = 0; i < n; i++) { const x = -150 + hash2(i, z0) * 300, z = z0 + hash2(z0, i) * (z1 - z0); if ((x > -62 && x < -42 && z < -92) || x > this.coastX(z) - 2) { o.scale.setScalar(0); } else { o.position.set(x, -7, z); o.rotation.set(0, Math.atan2(-x, 12 - z), 0); o.scale.setScalar(sc * (0.8 + hash2(i * 3, z0) * 0.5)); } o.updateMatrix(); inst.setMatrixAt(i, o.matrix); }
         S.add(inst); } }
     // humo del volcán: bocanadas suaves que suben y se abren
     this.smoke = [];
@@ -489,6 +533,7 @@ const Title3D = {
     this.beamM.uniforms.t.value = t;
     // el resplandor del faro crece cuando el haz apunta hacia la cámara
     { const bd = new THREE.Vector3(1, 0, 0).applyQuaternion(this.beam.getWorldQuaternion(new THREE.Quaternion())), tc = this.cam.position.clone().sub(this.lh.getWorldPosition(new THREE.Vector3())).normalize(); const k = Math.max(0, bd.dot(tc)); this.lampGlow.material.opacity = 0.3 + Math.pow(k, 8) * 0.8; this.lampGlow.scale.setScalar(2.6 + Math.pow(k, 8) * 6); }
+    if (this.boat) { const q = (t * 0.004) % 1; this.boat.position.set(140 - q * 80, -7.5 + Math.sin(t * 1.3) * 0.08, -110 - Math.sin(q * 3) * 10); this.boat.rotation.z = Math.sin(t * 1.1) * 0.05; this.boat.lookAt(this.cam.position.x, this.boat.position.y, this.cam.position.z); }
     this.seaT.offset.x = (t * 0.02) % 1; this.seaT.offset.y = Math.sin(t * 0.3) * 0.03; this.riverT.offset.y = (-t * 0.25) % 1;
     for (const c of this.clouds) { c.position.x += 0.012; if (c.position.x > 130) c.position.x = -130; c.lookAt(this.cam.position); }
     this.rays.lookAt(this.cam.position); this.rays.children.forEach((r, i) => { r.material.opacity = 0.03 + 0.025 * Math.sin(t * 0.7 + i * 1.3); });
