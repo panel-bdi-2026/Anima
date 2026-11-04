@@ -172,8 +172,19 @@ const World3D = {
     for (const p of this.dust) { p.y += p.vy / 60; p.vy -= 1.6 / 60; p.life -= 1 / 60; }
     this.dust = this.dust.filter((p) => p.life > 0 && p.y > 0);
   },
+  // ¿un punto del mundo queda tapado por un edificio, visto desde la cámara? (las partículas se pintan
+  // en 2D encima del 3D y no tienen profundidad: sin esto, el polvo se veía sobre los techos)
+  hiddenBehind(x, y, z) {
+    for (const B of this.buildings || []) {
+      if (B.op < 0.6 || x < B.x0 - 0.1 || x > B.x1 + 0.1 || z > B.z1 - 0.05) continue;
+      // la cámara mira desde el sur y desde arriba: el edificio tapa lo que está detrás hasta cierta distancia
+      if (z > B.z0 - (B.top - y) * 1.1) return true;
+    }
+    return false;
+  },
   drawDust(ctx) {
     for (const p of this.dust || []) {
+      if (this.hiddenBehind(p.x, p.y, p.z)) continue;
       const [x, y] = this.project(p.x, p.y, p.z);
       ctx.globalAlpha = Math.min(1, p.life * 2) * (p.leaf ? 0.9 : 0.55);
       P(ctx, Math.round(x), Math.round(y), p.leaf ? 1 : 2, p.leaf ? 2 : 2, p.col);
@@ -191,6 +202,7 @@ const World3D = {
       }
       if (p.k === 'hoja') wy = Math.max(0.05, 2.6 - (p.ph * 0.9) % 2.6);
       if (p.k === 'mariposa') wy += Math.sin(p.ph * 3) * 0.15;
+      if (p.k !== 'humo' && p.k !== 'pajaro' && this.hiddenBehind(wx, wy, wz)) continue;
       const [x0, y0, z] = this.project(wx, wy, wz); if (z > 1 || x0 < -10 || x0 > WIDE + 10 || y0 < -10 || y0 > H + 10) continue;
       const x = Math.round(x0), y = Math.round(y0), fade = Math.min(1, p.life);
       ctx.globalAlpha = fade;
