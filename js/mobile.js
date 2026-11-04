@@ -229,11 +229,9 @@ const Mobile = {
           const [gx, gy] = this.toGame(x, y), M = Input.mouse;
           if (phase === 'move') {
             const dy = y - T.sy; T.drag = Math.max(T.drag, Math.hypot(x - T.sx, dy));
-            if (T.ctxName === 'menu' || T.ctxName === 'title' || T.ctxName === 'talk') {
-              // arrastrar en vertical desplaza las listas
-              const step = Math.max(12, this.u * 0.35), n = Math.trunc(dy / step);
-              if (n) { M.wheel -= n; T.sy += n * step; M.last = performance.now(); }
-            } else this.mouseAt(gx, gy);
+            // en menús, diálogos y título, arrastrar el dedo no mueve la selección (se sentía al revés):
+            // se elige tocando la opción, o con el joystick o la cruceta
+            if (T.ctxName !== 'menu' && T.ctxName !== 'title' && T.ctxName !== 'talk') this.mouseAt(gx, gy);
           } else {
             if (T.ctxName === 'battle' || T.ctxName === 'capture') { if (M.down[0]) M.released[0] = true; M.down[0] = false; this.aimT = 0.3; }
             else if (T.ctxName === 'throw') { this.mouseAt(gx, gy); M.pressed[0] = true; this.aimT = 0.3; }
