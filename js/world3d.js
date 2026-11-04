@@ -424,62 +424,7 @@ const World3D = {
     this.root.add(mesh); this.clouds = { t, mesh };
   },
   // ---------- edificios ----------
-  buildBuilding(b) {
-    const img = Buildings.get(b.style, b.w, b.h, b.door), Wp = img.width, Hp = img.height;
-    const rh = Math.round(Hp * (b.h >= 5 ? 0.5 : 0.56));
-    const wd = Wp / 16, depth = Math.max(2, b.h * 0.72), hgt = ((Hp - rh) / 16) * 1.22;
-    const front = b.y + b.h - 0.02, cx = b.x + wd / 2, cz = front - depth / 2;
-    const grp = new THREE.Group(), mats = [];
-    const wallRGB = img.getContext('2d').getImageData(3, Math.min(Hp - 4, rh + 5), 1, 1).data;
-    const wallCol = "#" + [wallRGB[0], wallRGB[1], wallRGB[2]].map((q) => q.toString(16).padStart(2, "0")).join("");
-    // muro lateral con hiladas
-    const [sw, sx] = U.makeCanvas(16, 16);
-    sx.fillStyle = wallCol; sx.fillRect(0, 0, 16, 16);
-    sx.fillStyle = U.shade(wallCol, -0.12); for (let y = 3; y < 16; y += 4) sx.fillRect(0, y, 16, 1);
-    for (let y = 0; y < 16; y += 4) sx.fillRect(((y / 4) % 2) * 8, y, 1, 3);
-    const sideT = this.tex(sw, true); sideT.repeat.set(depth, hgt);
-    const sideM = new THREE.MeshLambertMaterial({ map: sideT, transparent: true }); mats.push(sideM);
-    // fachada (con ventanas que brillan de noche)
-    const facade = this.crop(img, 0, rh, Wp, Hp - rh);
-    const [em, ex] = U.makeCanvas(Wp, Hp - rh);
-    ex.fillStyle = '#ffd070';
-    for (const w of img.windows || []) { const y = w.y - rh; if (y + w.h > 0) ex.fillRect(w.x, Math.max(0, y), w.w, w.h); }
-    const faceM = new THREE.MeshLambertMaterial({ map: this.tex(facade), emissive: '#ffffff', emissiveMap: this.tex(em), emissiveIntensity: 0, transparent: true }); mats.push(faceM);
-    const box = new THREE.Mesh(new THREE.BoxGeometry(wd, hgt, depth), [sideM, sideM, sideM, sideM, faceM, sideM]);
-    box.position.set(cx, hgt / 2, cz); box.castShadow = box.receiveShadow = true; grp.add(box);
-    // zócalo de piedra
-    const baseM = new THREE.MeshLambertMaterial({ color: '#6a6470', transparent: true }); mats.push(baseM);
-    const base = new THREE.Mesh(new THREE.BoxGeometry(wd + 0.12, 0.16, depth + 0.12), baseM);
-    base.position.set(cx, 0.08, cz); base.castShadow = base.receiveShadow = true; grp.add(base);
-    // tejado a dos aguas con alero; la mitad inferior de la imagen en la vertiente delantera
-    const roofT = this.tex(this.crop(img, 0, 0, Wp, rh));
-    const rise = depth * 0.42, x0 = cx - wd / 2 - 0.18, x1 = cx + wd / 2 + 0.18, zf = front + 0.22, zb = front - depth - 0.22, zm = (zf + zb) / 2, y0 = hgt - 0.06, y1 = hgt + rise;
-    const rg = new THREE.BufferGeometry();
-    rg.setAttribute('position', new THREE.Float32BufferAttribute([x0, y0, zf, x1, y0, zf, x1, y1, zm, x0, y1, zm, x0, y1, zm, x1, y1, zm, x1, y0, zb, x0, y0, zb], 3));
-    rg.setAttribute('uv', new THREE.Float32BufferAttribute([0, 0, 1, 0, 1, 0.5, 0, 0.5, 0, 0.5, 1, 0.5, 1, 1, 0, 1], 2));
-    rg.setIndex([0, 1, 2, 0, 2, 3, 4, 5, 6, 4, 6, 7]); rg.computeVertexNormals();
-    const roofM = new THREE.MeshLambertMaterial({ map: roofT, side: THREE.DoubleSide, transparent: true }); mats.push(roofM);
-    const roof = new THREE.Mesh(rg, roofM); roof.castShadow = roof.receiveShadow = true; grp.add(roof);
-    // cumbrera
-    const ridgeM = new THREE.MeshLambertMaterial({ color: U.shade(wallCol, -0.55), transparent: true }); mats.push(ridgeM);
-    const ridge = new THREE.Mesh(new THREE.BoxGeometry(x1 - x0 + 0.04, 0.1, 0.16), ridgeM); ridge.position.set(cx, y1 + 0.02, zm); ridge.castShadow = true; grp.add(ridge);
-    // hastiales
-    const tri = new THREE.Shape(); tri.moveTo(-depth / 2, 0); tri.lineTo(depth / 2, 0); tri.lineTo(0, rise); tri.lineTo(-depth / 2, 0);
-    for (const s of [-1, 1]) { const gm = new THREE.Mesh(new THREE.ShapeGeometry(tri), sideM); gm.rotation.y = s * Math.PI / 2; gm.position.set(cx + s * wd / 2, hgt - 0.01, cz); gm.castShadow = true; grp.add(gm); }
-    // farolillo junto a la puerta
-    this.root.add(grp);
-    const doorX = b.x + (b.door !== undefined ? b.door : Math.floor(b.w / 2)) + 0.5;
-    // sombra de contacto alrededor de la base (oclusión ambiental)
-    this.root.add(this.aoPatch(cx, cz, wd + 0.9, depth + 0.9));
-    if (b.style.startsWith('house')) {
-      const chx = b.x + wd - 0.9, chz = zm + depth * 0.2, chM = new THREE.MeshLambertMaterial({ color: '#9a5a48', transparent: true }); mats.push(chM);
-      const ch = new THREE.Mesh(new THREE.BoxGeometry(0.36, 0.95, 0.36), chM); ch.position.set(chx, y1 - 0.1, chz); ch.castShadow = true; grp.add(ch);
-      const capM2 = new THREE.MeshLambertMaterial({ color: '#5a3a30', transparent: true }); mats.push(capM2);
-      const cap = new THREE.Mesh(new THREE.BoxGeometry(0.42, 0.08, 0.42), capM2); cap.position.set(chx, y1 + 0.39, chz); grp.add(cap);
-      this.chimney = this.chimney || new Map(); this.chimney.set(b, [chx, y1 + 0.45, chz]);
-    }
-    this.buildings.push({ b, grp, mats, faceM, op: 1, x0: cx - wd / 2, x1: cx + wd / 2, z0: front - depth, z1: front, top: y1, wallH: hgt, door: [doorX, front + 0.4] });
-  },
+  // buildBuilding: ver world3d_houses.js
   // ---------- árboles ----------
   treeTex(v) {
     this.treeT = this.treeT || {};
