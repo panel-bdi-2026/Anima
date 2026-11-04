@@ -16,9 +16,10 @@ RAMP = {
     'flame': ['#9a1c0e', '#d8361a', '#f65e1c', '#ff8e24', '#ffc038', '#ffe680', '#fffbe0'],
     'fur2':  ['#6a2014', '#a03418', '#d24c1c', '#f06c24', '#ff9034', '#ffb848', '#ffd670'],
     'furd':  ['#2a0c0a', '#42160e', '#5c2012', '#782c18', '#943a20'],
+    'claw':  ['#3a2e2c', '#6a5a52', '#9c8a7a', '#cfc0aa', '#efe6d6'],
 }
-MID = {'fur': 3.6, 'cream': 3.4, 'rock': 3.6, 'fur2': 4, 'furd': 3}
-SPAN = {'rock': 5, 'cream': 3}
+MID = {'claw': 2.2, 'fur': 3.6, 'cream': 3.4, 'rock': 3.6, 'fur2': 4, 'furd': 3}
+SPAN = {'rock': 5, 'cream': 3, 'claw': 3}
 Z = np.zeros((80, 80), bool)
 
 
@@ -42,6 +43,15 @@ def cracks(scale=1.0, ph=0.0, base='rock'):
     return f
 
 
+def hand(c, x, y, far=False):
+    """mano-garra: pata oscura con tres garras largas, finas y curvas como ganchos, abiertas hacia adelante"""
+    b = -0.3 if far else 0.0
+    c.parte(c.ell(x, y, 2.6, 3.0), 'furd', R=2.5, bias=b, far=far)
+    for i, (dy, L) in enumerate(((-2.8, 6.0), (0.2, 7.2), (3.0, 5.6))):
+        pts = [(x - 1.4, y + dy), (x - 1.4 - L * 0.45, y + dy - 1.3), (x - 1.4 - L * 0.85, y + dy - 0.4), (x - 1.4 - L, y + dy + 1.4)]
+        c.parte(c.caps(pts, [1.05, 0.85, 0.6, 0.35]), 'claw', R=1.2, bias=b, outline='#2a1410', far=far)
+
+
 def build(P):
     c = Lienzo(RAMP, P, S=0.96, OX=34, OY=75, outline='#1a0a0a', mid=MID, span=SPAN,
                lit={'fur': 'fur2', 'fur2': 'fur2', 'furd': 'furd'})
@@ -58,8 +68,8 @@ def build(P):
     c.parte(legF, greave(60.5), R=3.5, bias=-0.3, far=True)
     # ---------- brazo lejano ----------
     c.parte(c.caps([(42, 30), (41.5, 38.5)], [4.0, 3.2]), 'fur', R=3, bias=-0.3, far=True)
-    c.parte(c.caps([(41.5, 39), (35, 34)], [3.6, 2.8]) | c.ell(41, 39.5, 3.4, 2.8), cracks(0.6, 4.0), R=3, bias=-0.3, far=True, outline='#120a0a')
-    c.parte(c.ell(31.8, 32.6, 3.4, 3.1), cracks(0.75, 1.0), R=2.5, bias=-0.3, far=True, outline='#120a0a')
+    c.parte(c.caps([(41.5, 39), (34, 35.5)], [3.6, 2.8]) | c.ell(41, 39.5, 3.4, 2.8), cracks(0.6, 4.0), R=3, bias=-0.3, far=True, outline='#120a0a')
+    hand(c, 31.6, 35.2, far=True)
     # ---------- cola: como la de Ignito, el pelo se va encendiendo; placas de roca solo en la base ----------
     c.local(rot=P['tail'], piv=(49, 50))
     SPINE = [(49, 50), (56, 51), (62, 48.5), (66.5, 43), (68.5, 36), (68, 28)]
@@ -101,10 +111,9 @@ def build(P):
     c.local()
     # ---------- brazo cercano: brazo de pelo, codera, antebrazo de roca y puño cerrado ----------
     c.parte(c.caps([(32, 29.5), (31, 38.5)], [4.3, 3.4]), 'fur', R=4)
-    gaunt = c.caps([(31, 40), (24.5, 37)], [3.7, 2.9]) | c.ell(31.2, 40.2, 3.8, 3.1)          # antebrazo con codera ancha
+    gaunt = c.caps([(31, 40), (23.5, 43.5)], [3.7, 2.8]) | c.ell(31.2, 40.2, 3.8, 3.1)          # antebrazo con codera ancha
     c.parte(gaunt, cracks(0.6, 0.5), R=3.5, outline='#120a0a')
-    fist = c.ell(21.2, 35.6, 3.9, 3.6)
-    c.parte(fist, cracks(0.75, 3.0), R=3, bias=0.04, outline='#120a0a')
+    hand(c, 21, 44.2)
     # ---------- hombrera-volcán: un cono de roca con cráter de lava que echa fuego ----------
     cone = c.poly([(30.5, 35), (32.5, 30.5), (35.2, 27.2), (40.2, 27.2), (42.6, 30.5), (44, 35), (37.5, 36.6)])
     c.parte(cone, cracks(0.6, 6.0), R=4, outline='#120a0a')
@@ -147,8 +156,6 @@ def build(P):
     c.putd(7.6, 40.9, '#f4ecdc')                 # un colmillito asoma
     c.local()
     for x in (32, 34.5, 37, 42, 44.5): c.putd(x, 74.4, '#e8dcc8')     # garras de los pies
-    for x, y in [(17.6, 33.4), (17.3, 35.6), (17.6, 37.8)]: c.putd(x, y, '#ffb030')   # nudillos que brillan
-    for x, y in [(19.6, 33.2), (19.4, 35.4), (19.6, 37.6)]: c.putd(x, y, '#120a0a')   # separación entre dedos
     f = P['fl']
     for i, (x, y) in enumerate([(36, 18), (41, 16), (38.5, 13)]):                   # chispas del volcán
         c.putd(x + math.sin(f + i * 2) * 1.2, y - (f * 2 + i * 1.6) % 4, ['#ffe680', '#ffc038', '#ff8e24'][i])
