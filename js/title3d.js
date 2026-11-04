@@ -40,9 +40,9 @@ const TitleArt = {
   },
   // cordillera: una franja de terreno con relieve, nieve donde es plano y alto, y color por altura
   range(o) {
-    const { x0, x1, zc, depth, hmax, seed } = o, nx = o.nx || 150, nz = o.nz || 26;
+    const { x0, x1, zc, depth, hmax, seed } = o, nx = o.nx || 260, nz = o.nz || 44;
     const g = new THREE.PlaneGeometry(x1 - x0, depth, nx, nz); g.rotateX(-Math.PI / 2);
-    const p = g.attributes.position, half = depth / 2;
+    const p = g.attributes.position, half = depth / 2, crags = new Float32Array(p.count);
     // picos con nombre propio: cada uno con su altura y su ancho; entre ellos, collados
     const peaks = [];
     for (let x = x0; x < x1; x += o.gap || 24) peaks.push([x + (hash2(Math.round(x), seed) - 0.5) * (o.gap || 24) * 0.7, hmax * (0.45 + 0.55 * hash2(seed, Math.round(x))), (o.gap || 24) * (0.55 + hash2(Math.round(x) * 3, seed) * 0.5)]);
@@ -52,8 +52,10 @@ const TitleArt = {
       const xw = x + (this.fbm(x * 0.02 + seed, zl * 0.03, 3) - 0.5) * (o.gap || 24) * 0.9;
       let P = 0; for (const [px, ph, pw] of peaks) { const d = Math.abs(xw - px) / pw; P = Math.max(P, ph * (Math.exp(-d * 2.4) * 0.7 + Math.max(0, 1 - d * 0.75) * 0.3)); }
       const env = Math.max(0, 1 - Math.pow(Math.abs(zl + half * 0.1) / half, 1.4));          // la cresta corre por el centro
-      const crag = this.ridged(x * 0.05 + seed, zl * 0.08 + seed, 5);                        // crestas y quebradas
-      const h = P * Math.pow(env, 0.9) * (0.55 + 0.45 * crag) + crag * hmax * 0.06 - 4 * (1 - env);  // bordes bajo el suelo: sin huecos
+      // crestas y quebradas: dos escalas (grandes espolones y aristas finas)
+      const crag = this.ridged(x * 0.05 + seed, zl * 0.08 + seed, 5) * 0.65 + this.ridged(x * 0.16 + seed * 2, zl * 0.22, 4) * 0.35;
+      crags[i] = crag;
+      const h = P * Math.pow(env, 0.9) * (0.5 + 0.5 * crag) + crag * hmax * 0.1 - 4 * (1 - env);  // bordes bajo el suelo: sin huecos
       p.setXYZ(i, x, h, zl + zc);
     }
     g.computeVertexNormals();
@@ -63,14 +65,16 @@ const TitleArt = {
       const x = p.getX(i), y = p.getY(i), z = p.getZ(i), ny = n.getY(i), hk = y / top;
       c.copy(rockD).lerp(rock, U.clamp(ny * 1.2 - 0.1 + (this.fbm(x * 0.15, y * 0.15, 3) - 0.5) * 0.6, 0, 1)); // laderas empinadas más oscuras, con manchas
       c.lerp(low, U.clamp(1 - hk * 2.2, 0, 1) * 0.8);                                       // pie de la montaña (bosque o sombra)
+      c.multiplyScalar(0.78 + 0.32 * crags[i]);                                              // quebradas y canaletas más oscuras
       // luz pintada: desde arriba a la izquierda (forma y volumen)
       const lit = U.clamp(n.getX(i) * -0.45 + ny * 0.7 + n.getZ(i) * 0.45, 0, 1);
-      c.multiplyScalar(0.48 + 0.55 * lit);
+      c.multiplyScalar(0.36 + 0.75 * lit);
       let kSnow = 0;
       if (o.snow) {
         const line = 0.42 + (this.fbm(x * 0.08, z * 0.08, 3) - 0.5) * 0.3;
-        const k = U.clamp((hk - line) * 5, 0, 1) * U.clamp((ny + 0.15) * 1.6, 0, 1);       // nieve en lo alto (menos en paredes verticales)
-        sn.copy(snow).multiplyScalar(0.82 + 0.3 * lit);                                      // la nieve siempre clara, con su propia luz
+        // nieve en lo alto y en las canaletas; en las paredes empinadas y las aristas asoma la roca
+        const k = U.clamp((hk - line) * 5, 0, 1) * U.clamp((ny - 0.42) * 4, 0, 1) * U.clamp(1.25 - crags[i] * 0.8, 0, 1);
+        sn.copy(snow).multiplyScalar(0.7 + 0.42 * lit);                                      // la nieve siempre clara, con su propia luz
         c.lerp(sn, k); kSnow = k;
       }
       // luz de borde: el sol está detrás, así que las crestas brillan
@@ -80,7 +84,9 @@ const TitleArt = {
       uv.setXY(i, x * 0.22, y * 0.22 + z * 0.05); // textura «de frente»: no se estira en las laderas
     }
     g.setAttribute('color', new THREE.BufferAttribute(col, 3));
-    const m = new THREE.Mesh(g, new THREE.MeshBasicMaterial({ vertexColors: true, map: this.rockTex(seed) })); // luz ya pintada en los colores
+    // luz ya pintada en los colores; bruma propia y suave (la de la escena borraba el detalle)
+    const m = new THREE.Mesh(g, new THREE.MeshBasicMaterial({ vertexColors: true, map: this.rockTex(seed), fog: false }));
+    if (o.haze) { const hz = new THREE.Color(o.haze); for (let i = 0; i < p.count; i++) { const k = o.hazeK || 0.2; col[i * 3] += (hz.r - col[i * 3]) * k; col[i * 3 + 1] += (hz.g - col[i * 3 + 1]) * k; col[i * 3 + 2] += (hz.b - col[i * 3 + 2]) * k; } }
     return m;
   },
   // volcán: perfil cóncavo con relieve, cráter encendido y ríos de lava
@@ -297,7 +303,7 @@ const Title3D = {
     const proxy = Object.assign(Object.create(W3D), { root: village, buildings: [], chimney: new Map() });
     const houses = [{ x: 0, y: 0, w: 5, h: 4, style: 'house', door: 2 }, { x: 7, y: -2, w: 5, h: 4, style: 'house2', door: 2 }, { x: -6, y: -5, w: 5, h: 4, style: 'house3', door: 2 }, { x: 3, y: -9, w: 7, h: 5, style: 'center', door: 3 }, { x: 12, y: -8, w: 5, h: 4, style: 'mart', door: 2 }, { x: -3, y: -14, w: 5, h: 4, style: 'house', door: 2 }, { x: 9, y: -15, w: 5, h: 4, style: 'house2', door: 2 }];
     for (const b of houses) proxy.buildBuilding(b);
-    for (const B of proxy.buildings) B.faceM.emissiveIntensity = 1.3;
+    for (const B of proxy.buildings) B.faceM.emissiveIntensity = 0.75;
     this.chim = [...proxy.chimney.values()].map(([x, y, z]) => [x + 2, y - 7, z - 24]);
     // faroles del pueblo
     for (let i = 0; i < 6; i++) { const l = new THREE.PointLight('#ffb060', 3, 7, 1.6); l.position.set(-4 + i * 4, -5.6, -26 + (i % 2) * 6); S.add(l); }
@@ -339,10 +345,16 @@ const Title3D = {
     }
     // ---------- montañas, volcán y torre ----------
     // tres cordilleras con relieve: la más lejana alta y nevada; la cercana, colinas boscosas
-    S.add(TitleArt.range({ x0: -220, x1: 220, zc: -170, depth: 70, hmax: 80, gap: 40, seed: 3, rock: '#6a4a78', rockDark: '#3a2848', snow: '#fff0f6', rim: '#ffc8a0', rimK: 0.5 }).translateY(-7));
-    S.add(TitleArt.range({ x0: -170, x1: 170, zc: -112, depth: 40, hmax: 38, gap: 24, seed: 7, rock: '#5a3e62', rockDark: '#2e2238', snow: '#f4e4f0', rim: '#ffb890', low: '#3a3048', rimK: 0.4 }).translateY(-7));
+    S.add(TitleArt.range({ x0: -220, x1: 220, zc: -170, depth: 70, hmax: 80, gap: 40, seed: 3, haze: '#e8a0a8', hazeK: 0.28, rock: '#6a4a78', rockDark: '#3a2848', snow: '#fff0f6', rim: '#ffc8a0', rimK: 0.5 }).translateY(-7));
+    S.add(TitleArt.range({ x0: -170, x1: 170, zc: -112, depth: 40, hmax: 38, gap: 24, seed: 7, haze: '#d890a0', hazeK: 0.14, rock: '#5a3e62', rockDark: '#2e2238', snow: '#f4e4f0', rim: '#ffb890', low: '#3a3048', rimK: 0.4 }).translateY(-7));
     S.add(TitleArt.range({ x0: -140, x1: 140, zc: -74, depth: 24, hmax: 12, gap: 16, seed: 11, rock: '#3e5a40', rockDark: '#24382c', low: '#2a4430', rim: '#d8b080', rimK: 0.25 }).translateY(-7));
     TitleArt.volcano(S, new THREE.Vector3(-52, -7, -100));
+    // bosque lejano al pie de las montañas: rompe la línea recta entre el valle y la roca
+    { const fg = new THREE.PlaneGeometry(26 / 16, 34 / 16); fg.translate(0, 15 / 16, 0);
+      for (const [z0, z1, n, sc, col] of [[-84, -100, 260, 1.5, '#6a6a88'], [-100, -122, 260, 2.1, '#8a7a98']]) {
+        const inst = new THREE.InstancedMesh(fg, new THREE.MeshBasicMaterial({ map: W3D.treeTex(3), alphaTest: 0.5, side: THREE.DoubleSide, color: col }), n);
+        for (let i = 0; i < n; i++) { const x = -150 + hash2(i, z0) * 300, z = z0 + hash2(z0, i) * (z1 - z0); if (x > -62 && x < -42 && z < -92) { o.scale.setScalar(0); } else { o.position.set(x, -7, z); o.rotation.set(0, Math.atan2(-x, 12 - z), 0); o.scale.setScalar(sc * (0.8 + hash2(i * 3, z0) * 0.5)); } o.updateMatrix(); inst.setMatrixAt(i, o.matrix); }
+        S.add(inst); } }
     // humo del volcán: bocanadas suaves que suben y se abren
     this.smoke = [];
     for (let i = 0; i < 12; i++) { const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: TitleArt.smokeTex(), color: '#8a7080', transparent: true, depthWrite: false })); S.add(s); this.smoke.push({ s, ph: i / 12 }); }
@@ -374,7 +386,15 @@ const Title3D = {
     this.legend = new THREE.Mesh(new THREE.PlaneGeometry(9, 9), new THREE.MeshBasicMaterial({ map: lt, alphaTest: 0.5, side: THREE.DoubleSide, color: '#ffc8d8', fog: false })); S.add(this.legend);
     // pájaros
     this.birds = [];
-    for (let i = 0; i < 7; i++) { const b = new THREE.Mesh(new THREE.PlaneGeometry(0.8, 0.25), new THREE.MeshBasicMaterial({ color: '#2a1428', side: THREE.DoubleSide, fog: false })); S.add(b); this.birds.push(b); }
+    // silueta de pájaro en dos poses (alas arriba / abajo), pixelada
+    const birdT = ['..........', 'X........X', '.XX....XX.', '...XXXX...'].length && [0, 1].map((f) => {
+      const rows = f ? ['..........', '..........', 'XXX.XX.XXX', '...X..X...', '..........'] : ['X........X', '.X......X.', '..XX..XX..', '....XX....', '..........'];
+      const [c, x] = U.makeCanvas(10, 5); x.fillStyle = '#2a1428';
+      rows.forEach((r, y) => { for (let i = 0; i < 10; i++) if (r[i] === 'X') x.fillRect(i, y, 1, 1); });
+      return World3D.tex(c);
+    });
+    this.birdT = birdT;
+    for (let i = 0; i < 7; i++) { const b = new THREE.Mesh(new THREE.PlaneGeometry(1.0, 0.5), new THREE.MeshBasicMaterial({ map: birdT[0], alphaTest: 0.5, side: THREE.DoubleSide, fog: false })); S.add(b); this.birds.push(b); }
     // ---------- pétalos y luciérnagas delante de la cámara ----------
     const n = 90, ppos = new Float32Array(n * 3), pcol = new Float32Array(n * 3);
     for (let i = 0; i < n; i++) { ppos[i * 3] = -12 + Math.random() * 24; ppos[i * 3 + 1] = Math.random() * 6; ppos[i * 3 + 2] = Math.random() * 8 - 2; const c = new THREE.Color(i % 3 ? '#ffd0e0' : '#fff4a0'); pcol.set([c.r, c.g, c.b], i * 3); }
@@ -418,7 +438,7 @@ const Title3D = {
     this.legend.position.set(-70 + L * 150, 22 + Math.sin(L * Math.PI) * 10 + Math.sin(t * 2) * 0.6, -70); this.legend.lookAt(this.cam.position);
     this.legend.scale.x = 1;
     // bandada de pájaros
-    this.birds.forEach((b, i) => { const q = ((t * 0.04 + i * 0.012) % 1); b.position.set(30 - q * 90 + (i % 3) * 1.5, 10 + Math.sin(q * 6 + i) * 1.5 + (i % 2), -40 + (i % 4)); b.lookAt(this.cam.position); b.scale.y = 0.3 + 0.7 * Math.abs(Math.sin(t * 8 + i)); });
+    this.birds.forEach((b, i) => { const q = ((t * 0.04 + i * 0.012) % 1); b.position.set(30 - q * 90 + (i % 3) * 1.5, 10 + Math.sin(q * 6 + i) * 1.5 + (i % 2), -40 + (i % 4)); b.lookAt(this.cam.position); b.material.map = this.birdT[Math.floor(t * 6 + i * 1.7) % 2]; });
     const p = this.motes.geometry.attributes.position, mb = this.moteBase;
     for (let i = 0; i < p.count; i++) { p.array[i * 3] = mb[i * 3] + Math.sin(t * 0.4 + i) * 0.8 - ((t * 0.3 + i) % 6) + 3; p.array[i * 3 + 1] = mb[i * 3 + 1] + Math.sin(t * 0.7 + i * 1.7) * 0.3; }
     p.needsUpdate = true;

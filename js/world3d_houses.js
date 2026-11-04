@@ -61,6 +61,14 @@ const HouseKit = {
     for (let r = 0; r < 4; r++) for (let k = -1; k < 3; k++) { const x0 = k * 8 + (r % 2) * 4; this.px(x, ['#a85a40', '#985038', '#b86a48'][(k + r + 3) % 3], x0 + 1, r * 4 + 1, 7, 3); }
     return (this._brick = World3D.tex(c, true));
   },
+  // luz de una ventana encendida: cálida al centro, más tenue en los bordes; el marco en cruz no brilla
+  windowLightTex() {
+    if (this._wl) return this._wl;
+    const [c, x] = U.makeCanvas(8, 8);
+    this.px(x, '#3a2008', 0, 0, 8, 8); this.px(x, '#a86420', 1, 1, 6, 6); this.px(x, '#e8a040', 2, 2, 4, 4);
+    this.px(x, '#1a0c04', 0, 3, 8, 1); this.px(x, '#1a0c04', 3, 0, 1, 8);
+    return (this._wl = World3D.tex(c));
+  },
   // vidrio: azul oscuro con un reflejo en diagonal (de noche brilla con la luz de dentro)
   glassTex() {
     if (this._glass) return this._glass;
@@ -131,7 +139,7 @@ World3D.buildBuilding = function (b) {
   const trimM = M({ color: trim }), beamM = M({ color: U.shade(S.trim, -0.35) });
   const shutM = M({ color: U.shade(S.roof, -0.12) });
   const stoneT = K.stoneTex(), stoneM = M({ map: stoneT });
-  const glassM = M({ map: K.glassTex(), emissive: '#ffd070', emissiveIntensity: 0 });
+  const glassM = M({ map: K.glassTex(), emissive: '#ffffff', emissiveMap: K.windowLightTex(), emissiveIntensity: 0 });
   const doorM = M({ map: K.doorTex(shop ? 'glass' : 'wood', '#8a5a34') });
   const roofT = K.roofTex(S.roof), roofM = M({ map: roofT });
   const ridgeM = M({ color: U.shade(S.roof, -0.38) });
