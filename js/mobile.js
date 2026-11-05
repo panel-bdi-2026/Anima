@@ -158,26 +158,14 @@ const Mobile = {
     }
     if (ctxName === 'capture') return [B('back', 'Volver', ['KeyE'], ax, ay, u * 0.56, { col: '#f0c040' }), B('cyc', 'Esfera', ['KeyR'], ax - u * 1.35, ay + u * 0.3, u * 0.44, { col: '#c0c0d0' }), corner('pause', 'Pausa', ['Enter'], 0)];
     if (ctxName === 'throw') return [B('back', 'Salir', ['KeyX'], ax, ay, u * 0.54, { col: '#e06060' }), B('cyc', 'Cambiar', ['KeyR'], ax - u * 1.35, ay + u * 0.3, u * 0.44, { col: '#c0c0d0' })];
-    // menús, diálogos y título: cruceta fija + A + B, siempre en el mismo sitio
-    // (en los márgenes laterales si caben; si no, debajo del juego o en las esquinas, más tenues)
-    const ml = gr.left - this.ins.l, side = Math.min(ml, mr) >= u * 1.25, bot = this.vh - this.ins.b;
-    if (side) {
-      const pr = Math.min(u * 0.95, ml / 2 - 6), br = Math.min(u * 0.5, mr / 2 - 6), cx = gr.right + mr / 2;
-      return [
-        B('dpad', '', [], this.ins.l + ml / 2, bot - pr - u * 0.55, pr, { dpad: true }),
-        // A y B en diagonal, como en el mundo y el combate (A arriba a la derecha, B abajo a la izquierda)
-        B('a', 'A', ['KeyZ'], Math.min(cx + br * 0.45, this.vw - this.ins.r - br * 0.9 - 4), bot - br - u * 1.05, br * 0.9, { col: '#58c060' }),
-        B('b', 'B', ['KeyX'], cx - br * 0.55, bot - br * 0.85 - u * 0.15, br * 0.8, { col: '#e06060' }),
-      ];
-    }
-    const faint = !this.band, pr = u * (this.band ? 0.95 : 0.8), py = this.band ? Math.max(gr.bottom + pr + 8, bot - pr - u * 0.4) : bot - pr - u * 0.25;
+    // menús y título: igual que al caminar y al hablar (sin cruceta): el joystick aparece donde apoyas
+    // el dedo, y A y B quedan siempre en el mismo lugar
     return [
-      B('dpad', '', [], this.ins.l + pr + u * 0.35, py, pr, { dpad: true, faint }),
-      B('a', 'A', ['KeyZ'], ax, this.band ? py - u * 0.3 : ay, u * 0.55, { col: '#58c060', faint }),
-      B('b', 'B', ['KeyX'], ax - u * 1.35, (this.band ? py - u * 0.3 : ay) + u * 0.45, u * 0.45, { col: '#e06060', faint }),
+      B('a', 'A', ['KeyZ'], ax, ay, u * 0.62, { col: '#58c060' }),
+      B('b', 'B', ['KeyX'], ax - u * 1.45, ay + u * 0.45, u * 0.5, { col: '#e06060' }),
     ];
   },
-  usesJoy(c) { return c === 'world' || c === 'talk' || c === 'battle' || c === 'capture'; },
+  usesJoy(c) { return c === 'world' || c === 'talk' || c === 'menu' || c === 'title' || c === 'battle' || c === 'capture'; },
   // ---------- toques ----------
   gameRect() { return Engine.canvas.getBoundingClientRect(); },
   toGame(cx, cy) { const r = this.gameRect(); return [((cx - r.left) * WIDE) / r.width, ((cy - r.top) * H) / r.height, cx >= r.left && cy >= r.top && cx < r.right && cy < r.bottom]; },
@@ -214,8 +202,9 @@ const Mobile = {
           const J = this.joy;
           if (phase === 'move') { J.x = x; J.y = y; J.drag = Math.max(J.drag, Math.hypot(x - J.sx, y - J.sy)); }
           else {
-            // hablando, tocar sin arrastrar (también del lado del joystick) pasa el texto o elige la opción tocada
-            if (J.ctxName === 'talk' && J.drag < 14) { const [gx, gy, inside] = this.toGame(x, y); if (inside) { this.mouseAt(gx, gy); Input.mouse.pressed[0] = true; } }
+            // en menús, título y diálogos, tocar sin arrastrar (también del lado del joystick) toca el juego:
+            // pasa el texto o elige la opción tocada
+            if ((J.ctxName === 'talk' || J.ctxName === 'menu' || J.ctxName === 'title') && J.drag < 14) { const [gx, gy, inside] = this.toGame(x, y); if (inside) { this.mouseAt(gx, gy); Input.mouse.pressed[0] = true; } }
             this.joy = null;
           }
         }
@@ -280,7 +269,9 @@ const Mobile = {
     const J = this.joy; let ux = 0, uy = 0;
     if (J) {
       const R = this.u * 0.85; let dx = J.x - J.ox, dy = J.y - J.oy; const l = Math.hypot(dx, dy);
-      if (l > R) { J.ox += (dx / l) * (l - R); J.oy += (dy / l) * (l - R); dx = J.x - J.ox; dy = J.y - J.oy; } // la base sigue al dedo
+      // la base queda fija donde se apoyó el dedo; si el dedo se aleja, la perilla se queda en el borde
+      if (l > R) { dx *= R / l; dy *= R / l; }
+      J.kx = J.ox + dx; J.ky = J.oy + dy;
       ux = dx / R; uy = dy / R;
     }
     let up = false, down = false, left = false, right = false;
@@ -333,7 +324,7 @@ const Mobile = {
       x.globalAlpha = J ? 0.5 : 0.28;
       x.fillStyle = '#0c0818'; x.beginPath(); x.arc(bx, by, R, 0, Math.PI * 2); x.fill();
       x.strokeStyle = '#ffffff'; x.lineWidth = 2; x.beginPath(); x.arc(bx, by, R, 0, Math.PI * 2); x.stroke();
-      const kx = J ? J.x : bx, ky = J ? J.y : by;
+      const kx = J && J.kx !== undefined ? J.kx : bx, ky = J && J.ky !== undefined ? J.ky : by;
       x.globalAlpha = J ? 0.85 : 0.45; x.fillStyle = '#e8e0ff'; x.beginPath(); x.arc(kx, ky, R * 0.42, 0, Math.PI * 2); x.fill();
       x.globalAlpha = 1;
     }
