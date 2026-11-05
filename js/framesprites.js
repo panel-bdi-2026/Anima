@@ -37,9 +37,9 @@ const FrameSprites = {
       const p = U.clamp(o.act.t / Math.max(0.05, o.act.windup), 0, 1);
       return [a, Math.floor(p * (n(a) / 2))];
     }
-    const v = o.speed || 0;
-    // rápido (en combate, o al embestir): corre; más despacio (siguiendo al jugador en el mapa): camina
-    if (n('correr') && (o.dash || v > 70)) return ['correr', 1 + Math.floor(t * 16) % (n('correr') - 1)];
+    const v = o.speed || 0, enCombate = 'dodge' in o;      // el combate pasa estos datos; el mapa no
+    // en combate, si se mueve, corre; en el mapa (siguiendo al jugador), camina
+    if (n('correr') && (o.dash || (enCombate && v > 8))) return ['correr', 1 + Math.floor(t * 16) % (n('correr') - 1)];
     if (v > 12) return ['caminar', 1 + Math.floor(t * 12) % (n('caminar') - 1)];
     return ['reposo', Math.floor(t * 5) % n('reposo')];
   },
