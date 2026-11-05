@@ -78,14 +78,14 @@ def build(P):
     c.local()
     # ---- pierna y brazo lejanos ----
     tronco_pierna(45.5, 51, 47, 5.2, 5.0, True)
-    c.parte(c.caps([(47, 29), (50, 39), (50.5, 48)], [4.6, 4.0, 3.8]), lambda X, Y: np.where(Y > 40, 'bark', 'skin').astype(object), R=3.5, bias=-0.3, far=True)
-    puno(51, 53, True)
+    c.parte(c.caps([(44.5, 31), (47.5, 40), (48, 48)], [4.4, 3.9, 3.7]), lambda X, Y: np.where(Y > 40, 'bark', 'skin').astype(object), R=3.5, bias=-0.3, far=True)
+    puno(48.5, 53, True)
     # ---- torso alto, erguido ----
-    torso = c.ell(40, 37.5, 11, 13) | c.ell(40.5, 49, 10, 6.5)
+    torso = c.ell(39, 39, 9.5, 12.5) | c.ell(40, 49, 9.5, 6.5)
 
     def torso_mat(X, Y):
         m = np.full(X.shape, 'skin', object)
-        chest = (X < 41 + (Y - 38) * 0.1) & (Y > 28) & (Y < 48)
+        chest = (X < 40 + (Y - 38) * 0.1) & (Y > 29) & (Y < 48)
         m[chest] = 'bark'
         m[chest & (((X * 0.25 + Y) % 3.2) < 0.6)] = 'barkd'
         m[(Y >= 48) & (X < 40)] = 'belly'
@@ -94,13 +94,15 @@ def build(P):
     # ---- pierna cercana ----
     tronco_pierna(36, 52, 34.5, 5.8, 5.6, False)
     # ---- hombreras de piedra con musgo y florcitas ----
-    for (x, y, rx, ry, far) in [(46.5, 26.5, 5.5, 3.6, True), (32, 27, 6.5, 4.2, False)]:
+    for (x, y, rx, ry, far) in [(44, 29, 5, 3.4, True), (33.5, 30, 6, 4, False)]:
         c.parte(c.ell(x, y, rx, ry), stone(moss_top=y - ry * 0.2), R=3.5, bias=-0.3 if far else 0.0, outline='#0e0e10', far=far)
     # ---- brazo cercano que cuelga, con puño-maza ----
-    c.parte(c.caps([(31.5, 30), (28.5, 40), (28, 48)], [5.0, 4.2, 4.0]), lambda X, Y: np.where(Y > 40.5 + np.sin(X * 1.6) * 0.8, 'bark', 'skin').astype(object), R=4)
-    puno(27.5, 53, False)
+    c.parte(c.caps([(33, 32.5), (30, 41), (29.5, 48)], [4.8, 4.2, 4.0]), lambda X, Y: np.where(Y > 40.5 + np.sin(X * 1.6) * 0.8, 'bark', 'skin').astype(object), R=4)
+    puno(29, 53, False)
+    # ---- cuello: la cabeza ya no arranca donde termina el brazo ----
+    c.parte(c.caps([(37.5, 31), (33.5, 24)], [4.8, 4.0]), 'skin', R=4)
     # ---- cabeza de geco, erguida, con ramas como astas ----
-    c.local(dx=12.5, dy=P['head'] - 25, sc=0.82, piv=(19.5, 47.5))
+    c.local(dx=8, dy=P['head'] - 25.5, sc=0.76, piv=(19.5, 47.5))
     for (pts, rr) in [([(23, 41.5), (26, 35), (25.5, 30), (22.5, 27)], [1.5, 1.2, 0.9, 0.6]), ([(26, 35), (30.5, 32)], [1.0, 0.6]),
                       ([(25.5, 42), (31, 38), (35, 33.5), (39.5, 31.5)], [1.4, 1.1, 0.8, 0.5]), ([(33, 35.5), (36.5, 37)], [0.8, 0.5])]:
         c.parte(c.caps(pts, rr), bark(0.4, 2.2), R=1.5, bias=0.1, outline='#140a06')
@@ -111,7 +113,7 @@ def build(P):
     c.local()
     c.render()
     # ---- detalles ----
-    c.local(dx=12.5, dy=P['head'] - 25, sc=0.82, piv=(19.5, 47.5))
+    c.local(dx=8, dy=P['head'] - 25.5, sc=0.76, piv=(19.5, 47.5))
     K = {'k': '#081a0a', 'W': '#fff8d0', 'g': '#6a4a10', 'G': '#d8b040'}
     if P['blink']:
         c.patron(12.4, 46.6, ['', 'kkkkkk'], K)
@@ -122,7 +124,7 @@ def build(P):
     for (x, y) in [(22, 28.2), (35.5, 32.8)]:                     # bellotas en las ramas
         c.patron(x, y, ['.c.', 'aaa', 'aaa', '.a.'], {'c': '#5a3a1a', 'a': '#b0782c'})
     c.local()
-    for (x, y) in [(43.2, 23.6), (47, 23.4)]:                     # florcitas en el musgo de la hombrera
+    for (x, y) in [(41.5, 26.2), (45, 26.3)]:                     # florcitas en el musgo de la hombrera
         c.patron(x, y, ['.p.', 'pyp', '.p.'], {'p': '#f4f0ff', 'y': '#ffd040'})
     return c
 
