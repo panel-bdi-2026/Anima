@@ -69,12 +69,12 @@ def build(P):
         c.parte(c.ell(x, y, 5.2, 5.6) | c.ell(x - 1.5, y + 2.5, 4, 3.6), bark(0.6, 2.6), R=4, bias=b + 0.1, far=far)
         for k in range(3):
             c.parte(c.ell(x - 3.6, y - 2 + k * 2.4, 1.3, 1.0), stone(), R=1, bias=b, outline='#0e0e10', far=far)
-    # ---- cola gruesa apoyada en el suelo ----
-    c.local(rot=P['tail'] * 0.4, piv=(47, 56))
-    c.parte(c.caps([(46, 56), (54, 62), (62, 66), (70, 67.5)], [5.5, 4.6, 3.4, 2.0]), 'skin', R=4)
-    for (x, y, r) in [(52.5, 57.5, 2.8), (59, 61.5, 2.5), (65, 64.3, 2.0)]:
+    # ---- cola gruesa: nace de la cadera y baja hasta apoyarse en el suelo ----
+    c.local(rot=P['tail'] * 0.4, piv=(45, 50))
+    c.parte(c.caps([(43, 48), (50, 53), (57, 59.5), (64, 64.5), (71, 66.5)], [6.5, 5.6, 4.4, 3.2, 1.8]), 'skin', R=4)
+    for (x, y, r) in [(49.5, 49.6, 2.8), (56, 55.2, 2.5), (62.5, 60.4, 2.1)]:
         c.parte(c.poly([(x - r, y + 1.6), (x - r * 0.4, y - r * 0.8), (x + r * 0.7, y - r * 0.5), (x + r, y + 1.4)]), bark(0.3, 2.4), R=2, outline='#140a06')
-    hoja(c, (68.5, 67.5), (78, 64 + sw * 0.4), 3.6)
+    hoja(c, (69.5, 66.5), (78.5, 62.5 + sw * 0.4), 3.6)
     c.local()
     # ---- pierna y brazo lejanos ----
     tronco_pierna(45.5, 51, 47, 5.2, 5.0, True)
