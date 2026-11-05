@@ -607,5 +607,27 @@
    ]
   ],
   "desc": "giant flying storm fish, final evolution of a copper river fish, water and wind type, big powerful fish body in copper orange scales flying in the air, huge wing-like pectoral fins with white wind streaks, a long flowing red tail fin, the same strong jaw and face of the river fish, small swirls of wind under its fins, calm serious eyes, imposing, clean silhouette"
+ },
+ "tifonarC": {
+  "size": 96,
+  "ref": "elegidos/aleton.png",
+  "refs": [
+   [
+    "elegidos/aleton.png",
+    "this is its pre-evolution (a copper river fish): keep the family resemblance (its face, strong jaw and copper scales somewhere on the body), but make it a much bigger, very different and more evolved creature"
+   ]
+  ],
+  "desc": "huge storm manta ray creature, final evolution of a copper river fish, water and wind type, wide flat body gliding through the air like a manta ray, copper orange back with a pale blue and white belly, enormous wing-like fins with white wind streaks at the tips, a long thin whip tail, the same strong jaw and serious face of the river fish at the front, a few swirls of wind beneath its wings, calm and imposing, clean simple silhouette"
+ },
+ "tifonarD": {
+  "size": 96,
+  "ref": "elegidos/aleton.png",
+  "refs": [
+   [
+    "elegidos/aleton.png",
+    "this is its pre-evolution (a copper river fish): keep the family resemblance (its face, strong jaw and copper scales somewhere on the body), but make it a much bigger, very different and more evolved creature"
+   ]
+  ],
+  "desc": "powerful storm sail fish creature, final evolution of a copper river fish, water and wind type, big strong fish body swimming in the air, a giant tall sail-like dorsal fin like a ship sail catching the wind, deep teal blue body with copper orange fins and face, long pointed sword-like snout, swirls of wind and sea spray along its sail, calm serious eyes, imposing, clean simple silhouette"
  }
 }

@@ -13,7 +13,7 @@ CUERPO = {'ignito': 'cuadrupedo', 'fogarzo': 'cuadrupedo', 'magmaurio': 'bipedo'
           'voltin': 'cuadrupedo', 'dinamo': 'bipedo', 'guijin': 'cuadrupedo', 'pedrusco': 'cuadrupedo', 'monolito': 'flotante',
           'tesloria': 'levita', 'ferrovolt': 'cuadrupedo', 'basaltor': 'cuadrupedo',
           'umbrin': 'fantasma', 'penumbro': 'fantasma', 'eclipsor': 'fantasma', 'lunargo': 'volador',
-          'escamin': 'pez', 'aleton': 'pez', 'arrecifor': 'pez', 'psiqui': 'cuadrupedo', 'kinesio': 'bipedo', 'oniria': 'volador'}
+          'escamin': 'pez', 'aleton': 'pez', 'arrecifor': 'pez', 'psiqui': 'cuadrupedo', 'kinesio': 'bipedo', 'oniria': 'volador', 'mentalis': 'cuadrupedo'}
 ELEMENTO = {'fogarzo': 'a burst of fire', 'magmaurio': 'a ball of magma', 'solarix': 'a fiery feather blast',
             'burbujo': 'a stream of bubbles', 'marolo': 'a jet of water', 'abismar': 'a dark water orb', 'coralis': 'a psychic wave from its coral crown',
             'semillin': 'a volley of seeds', 'hojardo': 'sharp spinning leaves', 'robledor': 'a rock thrown from the ground', 'floraxia': 'a swirl of petals and glowing pollen',
@@ -24,7 +24,7 @@ ELEMENTO = {'fogarzo': 'a burst of fire', 'magmaurio': 'a ball of magma', 'solar
             'tesloria': 'a psychic lightning ring', 'ferrovolt': 'a heavy bolt of electricity', 'basaltor': 'a burst of lava rocks',
             'umbrin': 'a small ball of shadow', 'penumbro': 'a ball of shadow', 'eclipsor': 'a ball of black fire', 'lunargo': 'a beam of pale moonlight',
             'escamin': 'a jet of water', 'aleton': 'a strong jet of water', 'arrecifor': 'a burst of water and coral shards', 'psiqui': 'a small psychic wave from its gem',
-            'kinesio': 'a rock hurled with telekinesis', 'oniria': 'a wave of dreamy purple mist'}
+            'kinesio': 'a rock hurled with telekinesis', 'oniria': 'a wave of dreamy purple mist', 'mentalis': 'a pebble hurled with telekinesis'}
 MOV = {
     'cuadrupedo': {'caminar': 'walking, natural four-legged walk cycle', 'correr': 'running fast, four-legged gallop cycle',
                    'atacar': 'lunging forward with a quick bite or claw attack, then returning to stance'},
