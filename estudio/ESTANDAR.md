@@ -37,3 +37,11 @@ Aprobado por Alejandro con la línea de Ignito (Ignito, Fogarzo, Magmaurio, Sola
 - Las formas finales llevan **detalle temático** para no verse planas: elementos del tipo repetidos en el cuerpo (ramitas de coral en el lomo, brazaletes, perlas, radios en las aletas, crin-aleta…).
 - Texturas: líneas continuas y formas redondas; evitar patrones de puntitos sueltos (se ven como ruido).
 - Si una postura se ve rara dos veces, cambiar de concepto (Coralis pasó de dos patas a cuatro, como un ciervo de coral). Evitar objetos sueltos como esferas en las manos.
+
+## Nuevo proceso con PixelLab (desde la prueba de Robledor)
+- PixelLab genera el dibujo base (mejor anatomía y silueta); Claude limpia, ajusta paleta/tamaño, separa en piezas y revisa.
+- Ignito elegido por Alejandro: variante 5 de la prueba (`pixellab_pruebas/ignito_4.png`), en versión de pie de perfil.
+- Por ahora 4 direcciones (perfil izquierda, frente, espalda; la derecha es el espejo). Más adelante, 8.
+- Costos observados: 96×96 → 4 variantes por 10 generaciones; 80×80 → 9 variantes por 15; rotar a 4/8 direcciones con
+  `create-character-v3` cuesta `ceil(ancho*alto*8/65536)` (≈1 generación a 80×80).
+- Programa: `estudio/pixellab.py` (la clave la pone el entorno como secreto Bearer de api.pixellab.ai).

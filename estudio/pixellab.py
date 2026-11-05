@@ -49,7 +49,7 @@ def con_referencia(name, desc, out, ref, size, style=None):
         return r
     print('saldo antes:', call('GET', '/balance')['subscription'])
     body = {'description': desc, 'image_size': {'width': size, 'height': size}, 'no_background': True,
-            'reference_images': [img(ref, 'this is the exact creature design to keep: same shape, colors, flame tail and features')]}
+            'reference_images': [img(ref, 'keep this exact character design: same face, eyes, ears, colors, proportions and flaming tail; only change the pose')]}
     if style:
         body['style_image'] = img(style)
         body['style_options'] = {'color_palette': False, 'outline': True, 'detail': True, 'shading': True}
