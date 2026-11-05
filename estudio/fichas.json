@@ -1091,5 +1091,161 @@
    ]
   ],
   "desc": "legendary sky courser, normal and flying type, majestic hare-like creature running on the air, sleek white and pale jade fur with flowing ribbon-like ears, golden anklets with small wings, a long flowing tail like a comet of wind, wind currents trailing behind it, sharp noble eyes, LEGENDARY: much more majestic and grand than a normal creature, ornate details, elegant golden or silver ornaments and glowing sacred markings, a radiant aura, regal pose, divine and awe-inspiring but not demonic, clean readable silhouette, fits inside the canvas with margin"
+ },
+ "tofu": {
+  "size": 80,
+  "ref": "variantes/tofu_viejo80.png",
+  "refs": [
+   [
+    "variantes/tofu_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality creature"
+   ]
+  ],
+  "desc": "cute small white kitten, psychic type, fluffy pure white fur with soft lilac shading, a small pink diamond mark on its forehead, big curious eyes, thin tail with a slight curl, tiny sparkles of light around it, standing on four legs, adorable"
+ },
+ "mistofa": {
+  "size": 80,
+  "ref": "variantes/mistofa_viejo80.png",
+  "refs": [
+   [
+    "variantes/mistofa_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality creature"
+   ]
+  ],
+  "desc": "elegant young white cat, psychic type, slender white fur with lilac shading, a glowing pink gem on its forehead, long tail ending in a small lilac tuft, calm knowing eyes, standing on four legs, young and graceful"
+ },
+ "arcanya": {
+  "size": 96,
+  "ref": "variantes/arcanya_viejo80.png",
+  "refs": [
+   [
+    "variantes/arcanya_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality creature"
+   ]
+  ],
+  "desc": "noble majestic white cat, final evolution, psychic type, long silky white fur with lilac shading, a glowing pink gem on its forehead, TWO long elegant tails ending in glowing violet tufts, a soft fluffy ruff on its chest, calm regal half-closed eyes, standing on four legs, imposing and elegant"
+ },
+ "buppa": {
+  "size": 80,
+  "ref": "variantes/buppa_viejo80.png",
+  "refs": [
+   [
+    "variantes/buppa_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality creature"
+   ]
+  ],
+  "desc": "cute small puppy, rock type, curly fluffy white fur with chocolate brown patches and floppy chocolate ears, a few small pebbles stuck in its curls, a curly pom-pom tail, big friendly eyes, standing on four legs, adorable"
+ },
+ "buclon": {
+  "size": 80,
+  "ref": "variantes/buclon_viejo80.png",
+  "refs": [
+   [
+    "variantes/buclon_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality creature"
+   ]
+  ],
+  "desc": "loyal young dog, rock type, bigger body with curly white and chocolate fur, its curls hardened like grey pumice stone on its back and legs, floppy chocolate ears, a fluffy pom-pom tail with a stone tip, determined friendly eyes, standing on four legs, young and bold"
+ },
+ "monteriz": {
+  "size": 96,
+  "ref": "variantes/monteriz_viejo80.png",
+  "refs": [
+   [
+    "variantes/monteriz_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality creature"
+   ]
+  ],
+  "desc": "big strong mountain dog, final evolution, rock and normal type, large sturdy body with curly white and chocolate fur, heavy grey rock plates along its back like a mountain ridge, floppy chocolate ears, a big pom-pom tail with a stone tip, loyal calm serious eyes, standing on four legs, imposing protector"
+ },
+ "parker": {
+  "size": 80,
+  "ref": "variantes/parker_viejo80.png",
+  "refs": [
+   [
+    "variantes/parker_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality creature"
+   ]
+  ],
+  "desc": "cute small dark grey kitten, ghost type, short dark charcoal fur, pointed ears with a faint pink inner, bright yellow defiant eyes, thin tail, a faint wisp of shadow at its feet, standing on four legs, adorable but cheeky"
+ },
+ "gatumbra": {
+  "size": 80,
+  "ref": "variantes/gatumbra_viejo80.png",
+  "refs": [
+   [
+    "variantes/gatumbra_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality creature"
+   ]
+  ],
+  "desc": "agile young shadow cat, ghost type, sleek dark charcoal fur, sharp yellow eyes, pointed ears, long tail ending in a violet flame-like wisp of shadow, wisps of shadow trailing from its tail, standing on four legs, confident and bold"
+ },
+ "umbrapanter": {
+  "size": 96,
+  "ref": "variantes/umbrapanter_viejo80.png",
+  "refs": [
+   [
+    "variantes/umbrapanter_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality creature"
+   ]
+  ],
+  "desc": "majestic night panther, final evolution, ghost type, large powerful dark charcoal black panther body, a flowing mane of black shadow that moves like dark fire, glowing yellow eyes, long tail ending in a violet shadow flame, faint violet markings on its flanks, standing on four legs, imposing hunter, not demonic"
+ },
+ "aurelina": {
+  "size": 96,
+  "ref": "variantes/aurelina_viejo80.png",
+  "refs": [
+   [
+    "variantes/aurelina_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality creature"
+   ]
+  ],
+  "desc": "special winged cat, psychic and flying type, elegant pale icy blue and white fur, a pink gem on its forehead, large soft feathered wings like clouds, long tail ending in a violet tuft, floating lightly above the ground, serene eyes, graceful and imposing"
+ },
+ "florizo": {
+  "size": 96,
+  "ref": "variantes/florizo_viejo80.png",
+  "refs": [
+   [
+    "variantes/florizo_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality creature"
+   ]
+  ],
+  "desc": "special flowering mountain dog, rock and grass type, big sturdy body with curly green moss fur and brown patches, floppy brown ears, pink flowers and small plants growing among its stone curls, a stone and moss ridge on its back with blossoms, a pom-pom tail made of moss, kind calm eyes, standing on four legs, imposing"
+ },
+ "trueno_umbrio": {
+  "size": 96,
+  "ref": "variantes/trueno_umbrio_viejo80.png",
+  "refs": [
+   [
+    "variantes/trueno_umbrio_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality creature"
+   ]
+  ],
+  "desc": "special storm panther, ghost and electric type, large sleek black panther body, bright yellow lightning streaks running along its back and legs, cyan glowing eyes, a long tail ending in a yellow lightning bolt, small sparks crackling around it, standing on four legs, imposing and fierce but not demonic"
+ },
+ "tempestronZ": {
+  "size": 112,
+  "ref": "elegidos/tempestron.png",
+  "refs": [
+   [
+    "elegidos/tempestron.png",
+    "keep this exact character design (same pose, colors, ornaments, feathers, face): only make the whole creature smaller inside the canvas so it is complete and fully visible with a clear empty margin on every side, nothing cut off"
+   ]
+  ],
+  "desc": "legendary thunder eagle, the exact same creature as the reference, complete and fully visible, wings fully inside the canvas, small storm cloud under its talons, clear empty margin around it",
+  "tandas": 1
+ },
+ "galernoZ": {
+  "size": 112,
+  "ref": "elegidos/galerno.png",
+  "refs": [
+   [
+    "elegidos/galerno.png",
+    "keep this exact character design (same pose, colors, ornaments, feathers, face): only make the whole creature smaller inside the canvas so it is complete and fully visible with a clear empty margin on every side, nothing cut off"
+   ]
+  ],
+  "desc": "legendary sky courser hare, the exact same creature as the reference, complete and fully visible, its flowing tail of wind fully inside the canvas, clear empty margin around it",
+  "tandas": 1
  }
 }
