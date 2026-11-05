@@ -10,14 +10,16 @@ CUERPO = {'ignito': 'cuadrupedo', 'fogarzo': 'cuadrupedo', 'magmaurio': 'bipedo'
           'rabin': 'cuadrupedo', 'conejal': 'cuadrupedo', 'liebron': 'cuadrupedo', 'nocturo': 'cuadrupedo',
           'pipio': 'ave', 'alondro': 'ave', 'tormentor': 'ave', 'cefireo': 'ave',
           'larvita': 'oruga', 'crisalix': 'capullo', 'polillux': 'volador', 'escarabron': 'insecto',
-          'voltin': 'cuadrupedo', 'dinamo': 'bipedo', 'guijin': 'cuadrupedo', 'pedrusco': 'cuadrupedo', 'monolito': 'flotante'}
+          'voltin': 'cuadrupedo', 'dinamo': 'bipedo', 'guijin': 'cuadrupedo', 'pedrusco': 'cuadrupedo', 'monolito': 'flotante',
+          'tesloria': 'levita', 'ferrovolt': 'cuadrupedo', 'basaltor': 'cuadrupedo'}
 ELEMENTO = {'fogarzo': 'a burst of fire', 'magmaurio': 'a ball of magma', 'solarix': 'a fiery feather blast',
             'burbujo': 'a stream of bubbles', 'marolo': 'a jet of water', 'abismar': 'a dark water orb', 'coralis': 'a psychic wave from its coral crown',
             'semillin': 'a volley of seeds', 'hojardo': 'sharp spinning leaves', 'robledor': 'a rock thrown from the ground', 'floraxia': 'a swirl of petals and glowing pollen',
             'rabin': 'a shockwave by stomping the ground', 'conejal': 'a shockwave by stomping the ground', 'liebron': 'a gust of wind', 'nocturo': 'a ball of shadow',
             'pipio': 'a sound wave by singing loudly', 'alondro': 'a gust of wind from its wings', 'tormentor': 'a bolt of lightning', 'cefireo': 'a blade of wind',
             'larvita': 'a string of sticky silk', 'crisalix': 'a string of sticky silk', 'polillux': 'a cloud of glowing scales', 'escarabron': 'a rock thrown with its horn',
-            'voltin': 'a small spark of electricity', 'dinamo': 'a bolt of electricity', 'guijin': 'a small rock', 'pedrusco': 'a boulder thrown from the ground', 'monolito': 'a psychic wave of crystal light'}
+            'voltin': 'a small spark of electricity', 'dinamo': 'a bolt of electricity', 'guijin': 'a small rock', 'pedrusco': 'a boulder thrown from the ground', 'monolito': 'a psychic wave of crystal light',
+            'tesloria': 'a psychic lightning ring', 'ferrovolt': 'a heavy bolt of electricity', 'basaltor': 'a burst of lava rocks'}
 MOV = {
     'cuadrupedo': {'caminar': 'walking, natural four-legged walk cycle', 'correr': 'running fast, four-legged gallop cycle',
                    'atacar': 'lunging forward with a quick bite or claw attack, then returning to stance'},
@@ -35,6 +37,8 @@ MOV = {
                 'atacar': 'diving forward with a wing strike, then returning to hovering'},
     'insecto': {'caminar': 'walking forward on six legs, natural insect walk cycle', 'correr': 'running fast on six legs',
                 'atacar': 'charging forward with its horn, then returning to stance'},
+    'levita': {'caminar': 'floating forward slowly while meditating, gently bobbing in the air', 'correr': 'gliding forward fast through the air',
+               'atacar': 'darting forward with a crackling electric tail strike, then returning to its meditating pose'},
     'flotante': {'caminar': 'floating forward slowly, gently bobbing in the air', 'correr': 'gliding forward fast through the air',
                  'atacar': 'lunging forward with a strong stone arm strike, then returning to stance'},
 }
