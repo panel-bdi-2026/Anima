@@ -335,5 +335,71 @@
    ]
   ],
   "desc": "tall meditating monolith creature, final evolution of a pebble critter, rock and psychic type, tall smooth grey standing stone body with a calm face, light blue glowing crystals growing from its back and shoulders, small stone arms, faint psychic glow and runes, serene wise eyes, imposing"
+ },
+ "tesloriaA": {
+  "size": 96,
+  "ref": "elegidos/dinamo.png",
+  "refs": [
+   [
+    "elegidos/dinamo.png",
+    "this is its pre-evolution: keep the family resemblance (round face, small eyes, yellow fur and blue lightning shaped ears and tail), but make it clearly a more evolved and bigger creature"
+   ]
+  ],
+  "desc": "serene floating electric psychic creature, final evolution of a chubby yellow electric critter, electric and psychic type, slimmer golden yellow body floating cross-legged in the air as if meditating, long blue lightning shaped ears flowing upward, a glowing purple psychic ring of electricity orbiting around its waist, purple tips on its ears and tail, calm half-closed wise eyes, elegant and imposing"
+ },
+ "tesloriaB": {
+  "size": 96,
+  "ref": "elegidos/dinamo.png",
+  "refs": [
+   [
+    "elegidos/dinamo.png",
+    "this is its pre-evolution: keep the family resemblance (round face, small eyes, yellow fur and blue lightning shaped ears and tail), but make it clearly a more evolved and bigger creature"
+   ]
+  ],
+  "desc": "mystic electric psychic creature, final evolution of a chubby yellow electric critter, electric and psychic type, slender upright golden body levitating above the ground, its lower body tapering into a long purple and blue lightning tail instead of legs, arms crossed calmly, tall lightning shaped ears like a crown glowing purple, small sparks orbiting its head, calm intelligent eyes, elegant and imposing"
+ },
+ "ferrovoltA": {
+  "size": 96,
+  "ref": "elegidos/dinamo.png",
+  "refs": [
+   [
+    "elegidos/dinamo.png",
+    "this is its pre-evolution: keep the family resemblance (round face, small eyes, yellow fur and blue lightning shaped ears and tail), but make it clearly a more evolved and bigger creature"
+   ]
+  ],
+  "desc": "heavy armored electric beast, final evolution of a chubby yellow electric critter, electric and rock type, big sturdy body on four thick legs covered in dark steel armor plates over yellow fur, steel lightning shaped ears and a big steel lightning tail, glowing yellow electric lines between the plates, sparks at its feet, serious calm face that still resembles the chubby critter, imposing"
+ },
+ "ferrovoltB": {
+  "size": 96,
+  "ref": "elegidos/dinamo.png",
+  "refs": [
+   [
+    "elegidos/dinamo.png",
+    "this is its pre-evolution: keep the family resemblance (round face, small eyes, yellow fur and blue lightning shaped ears and tail), but make it clearly a more evolved and bigger creature"
+   ]
+  ],
+  "desc": "armored electric giant, final evolution of a chubby yellow electric critter, electric and rock type, massive upright body standing on two thick legs, wearing dark iron armor plates on its shoulders arms and chest while its round yellow face stays visible, huge iron fists, steel lightning shaped ears and tail crackling with yellow electricity, serious calm eyes, imposing"
+ },
+ "basaltorA": {
+  "size": 96,
+  "ref": "elegidos/pedrusco.png",
+  "refs": [
+   [
+    "elegidos/pedrusco.png",
+    "this is its pre-evolution: keep the family resemblance (stone gorilla body, heavy rock arms, brow and face shape), but make it clearly a more evolved and bigger creature"
+   ]
+  ],
+  "desc": "massive basalt golem, final evolution of a stone gorilla creature, rock and fire type, huge dark basalt rock body with heavy rock arms resting on the ground like a gorilla, glowing orange lava cracks along its arms and chest, two small volcanic vents on its shoulders with gentle flames and smoke, calm serious eyes under a heavy stone brow, imposing"
+ },
+ "basaltorB": {
+  "size": 96,
+  "ref": "elegidos/pedrusco.png",
+  "refs": [
+   [
+    "elegidos/pedrusco.png",
+    "this is its pre-evolution: keep the family resemblance (stone gorilla body, heavy rock arms, brow and face shape), but make it clearly a more evolved and bigger creature"
+   ]
+  ],
+  "desc": "volcanic rock titan, final evolution of a stone gorilla creature, rock and fire type, big dark basalt body walking on its knuckles and back legs, a ridge of dark rock spikes along its back with flames rising between them like a small volcano range, molten lava glowing in the cracks of its fists, calm serious face with a heavy stone brow, imposing"
  }
 }
