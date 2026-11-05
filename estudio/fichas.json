@@ -871,5 +871,159 @@
    ]
   ],
   "desc": "armored vampire bat creature, final evolution of a purple bat, ghost and bug type, standing on two feet, dark crimson fur, a shiny dark beetle carapace on its back and shoulders, wings with insect veins, small fangs, the same big ears and bat face, sharp serious eyes, cool and intimidating but not demonic, imposing"
+ },
+ "silvaneo": {
+  "size": 96,
+  "ref": "variantes/silvaneo_viejo80.png",
+  "refs": [
+   [
+    "variantes/silvaneo_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality legendary creature"
+   ]
+  ],
+  "desc": "legendary forest guardian stag, grass and rock type, deep green body with moss and stone plates on its shoulders, huge antlers made of living branches with small leaves and blossoms, small saplings sprouting where it steps, calm wise glowing green eyes, standing on four legs, majestic legendary creature, high quality, imposing and noble, not demonic"
+ },
+ "auroros": {
+  "size": 96,
+  "ref": "variantes/auroros_viejo80.png",
+  "refs": [
+   [
+    "variantes/auroros_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality legendary creature"
+   ]
+  ],
+  "desc": "legendary sunrise lion-deer guardian, fire and psychic type, warm golden orange body, a flowing mane of soft sunrise fire in gold orange and pink, a small golden crown of light on its head, a flaming tail, calm wise eyes, standing on four legs, majestic legendary creature, high quality, imposing and noble, not demonic"
+ },
+ "marealis": {
+  "size": 96,
+  "ref": "variantes/marealis_viejo80.png",
+  "refs": [
+   [
+    "variantes/marealis_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality legendary creature"
+   ]
+  ],
+  "desc": "legendary tide guardian sea dragon, water and wind type, long graceful light blue and white serpent body floating in the air, flowing fin-like ears and fins like ocean waves, swirls of water and wind around its body, calm deep eyes, majestic legendary creature, high quality, imposing and noble, not demonic"
+ },
+ "albora": {
+  "size": 96,
+  "ref": "variantes/albora_viejo80.png",
+  "refs": [
+   [
+    "variantes/albora_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality legendary creature"
+   ]
+  ],
+  "desc": "legendary spirit of the dawn, normal and psychic type, elegant slender creature standing upright, soft white and pale pink fur, long flowing fox-like tails, delicate pink feathered wings, a small golden crown, gentle glowing eyes, soft dawn light around it, majestic legendary creature, high quality, imposing and noble, not demonic"
+ },
+ "geiseron": {
+  "size": 96,
+  "ref": "variantes/geiseron_viejo80.png",
+  "refs": [
+   [
+    "variantes/geiseron_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality legendary creature"
+   ]
+  ],
+  "desc": "legendary steam beast, fire and water type, powerful dark blue armored body on four legs with glowing orange magma cracks, a volcanic vent on its back shooting a column of white steam, a strong jaw with a calm serious face, a tail ending in a puff of steam, majestic legendary creature, high quality, imposing and noble, not demonic"
+ },
+ "tempestron": {
+  "size": 96,
+  "ref": "variantes/tempestron_viejo80.png",
+  "refs": [
+   [
+    "variantes/tempestron_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality legendary creature"
+   ]
+  ],
+  "desc": "legendary storm bird, electric and flying type, large dark teal and slate feathers with glowing yellow lightning patterns, wide powerful wings crackling with electricity, a golden beak and talons, a jagged lightning crest, calm fierce eyes, majestic legendary creature, high quality, imposing and noble, not demonic"
+ },
+ "umbrarbol": {
+  "size": 96,
+  "ref": "variantes/umbrarbol_viejo80.png",
+  "refs": [
+   [
+    "variantes/umbrarbol_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality legendary creature"
+   ]
+  ],
+  "desc": "legendary dark tree creature, grass and ghost type, walking tree with a thick dark purple and black bark body, glowing violet runes on its trunk, a crown of dark twisted branches with violet leaves, root legs, calm glowing eyes in the bark, mysterious, majestic legendary creature, high quality, imposing and noble, not demonic"
+ },
+ "lunafalena": {
+  "size": 96,
+  "ref": "variantes/lunafalena_viejo80.png",
+  "refs": [
+   [
+    "variantes/lunafalena_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality legendary creature"
+   ]
+  ],
+  "desc": "legendary moon moth, bug and psychic type, large wings in deep navy blue with pale silver crescent moon patterns and glowing edges, soft white furry body, feathery antennae, a sprinkle of shimmering dust falling from its wings, calm dreamy eyes, flying, majestic legendary creature, high quality, imposing and noble, not demonic"
+ },
+ "forjador": {
+  "size": 96,
+  "ref": "variantes/forjador_viejo80.png",
+  "refs": [
+   [
+    "variantes/forjador_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality legendary creature"
+   ]
+  ],
+  "desc": "legendary iron colossus, rock and electric type, massive dark iron body standing on two legs, glowing red-hot orange seams like a forge, huge hammer-like fists, small sparks and yellow electricity crackling around its shoulders, a smokestack-like crest with flames, calm serious eyes, majestic legendary creature, high quality, imposing and noble, not demonic"
+ },
+ "leviaton": {
+  "size": 96,
+  "ref": "variantes/leviaton_viejo80.png",
+  "refs": [
+   [
+    "variantes/leviaton_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality legendary creature"
+   ]
+  ],
+  "desc": "legendary deep sea serpent, water and ghost type, long dark navy and violet serpent body, glowing cyan eyes and glowing cyan spots along its body like a deep sea creature, dark purple fins, wisps of shadow around it, floating in the air as if underwater, majestic legendary creature, high quality, imposing and noble, not demonic"
+ },
+ "celestia": {
+  "size": 96,
+  "ref": "variantes/celestia_viejo80.png",
+  "refs": [
+   [
+    "variantes/celestia_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality legendary creature"
+   ]
+  ],
+  "desc": "legendary floating garden fairy, grass and flying type, small elegant green humanoid body standing upright, a crown of blue and white flowers, translucent pale blue wings like leaves, flowing green dress-like leaves, little plants and flowers growing around its feet, gentle kind eyes, majestic legendary creature, high quality, imposing and noble, not demonic"
+ },
+ "galerno": {
+  "size": 96,
+  "ref": "variantes/galerno_viejo80.png",
+  "refs": [
+   [
+    "variantes/galerno_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality legendary creature"
+   ]
+  ],
+  "desc": "legendary wind hare, normal and flying type, sleek white and pale mint fur, very long ears, small feathered wings on its ankles, a fluffy cloud-like tail, wind swirls under its paws as if running on air, sharp determined eyes, standing on four legs, majestic legendary creature, high quality, imposing and noble, not demonic"
+ },
+ "vampiraxC": {
+  "size": 96,
+  "ref": "elegidos/noctalar.png",
+  "refs": [
+   [
+    "elegidos/noctalar.png",
+    "this is its pre-evolution: keep the family resemblance (its bat face, big ears and wing shape), but make it clearly a more evolved and bigger creature"
+   ]
+  ],
+  "desc": "venomous bat creature, final evolution of a purple bat, ghost and bug type, standing on two feet, BRIGHT colors: vivid crimson red and magenta fur with a light pink chest, wings with bright pink membranes and insect-like veins, a small insect stinger tail with a yellow tip, small fangs, clear bright eyes, well lit, readable, cool but not demonic, imposing"
+ },
+ "vampiraxD": {
+  "size": 96,
+  "ref": "elegidos/noctalar.png",
+  "refs": [
+   [
+    "elegidos/noctalar.png",
+    "this is its pre-evolution: keep the family resemblance (its bat face, big ears and wing shape), but make it clearly a more evolved and bigger creature"
+   ]
+  ],
+  "desc": "vampire beetle bat creature, final evolution of a purple bat, ghost and bug type, standing on two feet, BRIGHT colors: rich red and plum purple fur with a cream chest, a shiny glossy red beetle carapace with light highlights on its back, wings with light lilac membranes, small fangs, clear bright eyes, well lit, readable, cool but not demonic, imposing"
  }
 }

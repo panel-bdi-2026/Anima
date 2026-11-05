@@ -14,7 +14,8 @@ CUERPO = {'ignito': 'cuadrupedo', 'fogarzo': 'cuadrupedo', 'magmaurio': 'bipedo'
           'tesloria': 'levita', 'ferrovolt': 'cuadrupedo', 'basaltor': 'cuadrupedo',
           'umbrin': 'fantasma', 'penumbro': 'fantasma', 'eclipsor': 'fantasma', 'lunargo': 'volador',
           'escamin': 'pez', 'aleton': 'pez', 'arrecifor': 'pez', 'psiqui': 'cuadrupedo', 'kinesio': 'bipedo', 'oniria': 'volador', 'mentalis': 'cuadrupedo', 'tifonar': 'pez',
-          'hongui': 'bipedo', 'setalon': 'bipedo', 'esporal': 'bipedo', 'brisin': 'flotante', 'nimbo': 'flotante', 'murcin': 'bipedo', 'noctalar': 'ave'}
+          'hongui': 'bipedo', 'setalon': 'bipedo', 'esporal': 'bipedo', 'brisin': 'nube', 'nimbo': 'nube', 'murcin': 'bipedo', 'noctalar': 'ave',
+          'micelion': 'bipedo', 'granizor': 'flotante', 'nubaria': 'nube', 'lunavela': 'bipedo'}
 ELEMENTO = {'fogarzo': 'a burst of fire', 'magmaurio': 'a ball of magma', 'solarix': 'a fiery feather blast',
             'burbujo': 'a stream of bubbles', 'marolo': 'a jet of water', 'abismar': 'a dark water orb', 'coralis': 'a psychic wave from its coral crown',
             'semillin': 'a volley of seeds', 'hojardo': 'sharp spinning leaves', 'robledor': 'a rock thrown from the ground', 'floraxia': 'a swirl of petals and glowing pollen',
@@ -27,7 +28,8 @@ ELEMENTO = {'fogarzo': 'a burst of fire', 'magmaurio': 'a ball of magma', 'solar
             'escamin': 'a jet of water', 'aleton': 'a strong jet of water', 'arrecifor': 'a burst of water and coral shards', 'psiqui': 'a small psychic wave from its gem',
             'kinesio': 'a rock hurled with telekinesis', 'oniria': 'a wave of dreamy purple mist', 'mentalis': 'a pebble hurled with telekinesis', 'tifonar': 'a whirling blast of wind and sea spray',
             'hongui': 'a puff of sleepy spores', 'setalon': 'a cloud of spores', 'esporal': 'a swarm of tiny glowing insects', 'brisin': 'a light gust of wind and drizzle', 'nimbo': 'a gust of wind and rain',
-            'murcin': 'a sound wave by screeching', 'noctalar': 'a silent sound wave'}
+            'murcin': 'a sound wave by screeching', 'noctalar': 'a silent sound wave',
+            'micelion': 'a wave of glowing green spores', 'granizor': 'a volley of hailstones', 'nubaria': 'a soft beam of sunrise light', 'lunavela': 'a beam of moonlight'}
 MOV = {
     'cuadrupedo': {'caminar': 'walking, natural four-legged walk cycle', 'correr': 'running fast, four-legged gallop cycle',
                    'atacar': 'lunging forward with a quick bite or claw attack, then returning to stance'},
@@ -51,6 +53,8 @@ MOV = {
                  'atacar': 'lunging forward with a quick claw swipe, then floating back'},
     'pez': {'caminar': 'swimming forward slowly in the air, gently waving its tail and fins', 'correr': 'swimming forward fast, beating its tail strongly',
             'atacar': 'lunging forward with a quick bite, then returning to stance'},
+    'nube': {'caminar': 'floating forward slowly, its fluffy cloud body gently puffing', 'correr': 'drifting forward fast like a cloud in strong wind',
+             'atacar': 'puffing up and ramming forward with its cloud body, then floating back'},
     'flotante': {'caminar': 'floating forward slowly, gently bobbing in the air', 'correr': 'gliding forward fast through the air',
                  'atacar': 'lunging forward with a strong stone arm strike, then returning to stance'},
 }
