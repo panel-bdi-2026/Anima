@@ -401,5 +401,137 @@
    ]
   ],
   "desc": "volcanic rock titan, final evolution of a stone gorilla creature, rock and fire type, big dark basalt body walking on its knuckles and back legs, a ridge of dark rock spikes along its back with flames rising between them like a small volcano range, molten lava glowing in the cracks of its fists, calm serious face with a heavy stone brow, imposing"
+ },
+ "umbrin": {
+  "size": 80,
+  "ref": "variantes/umbrin_viejo80.png",
+  "refs": [
+   [
+    "variantes/umbrin_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality creature"
+   ]
+  ],
+  "desc": "cute small shadow imp creature, ghost type, round purple body floating in the air, tail tapering into a wisp of shadow instead of legs, two small pointed ears, big glowing yellow eyes with a playful mischievous look, small stubby arms, soft dark purple shading, adorable"
+ },
+ "penumbro": {
+  "size": 80,
+  "ref": "variantes/penumbro_viejo80.png",
+  "refs": [
+   [
+    "variantes/penumbro_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality creature"
+   ]
+  ],
+  "desc": "shadow creature, ghost type, bigger round dark purple body floating in the air, tail tapering into a long wisp of shadow, pointed ears and a small spiky crest, glowing yellow eyes with a determined look, small clawed arms, its outline fading into shadow at the edges, young and bold"
+ },
+ "eclipsor": {
+  "size": 96,
+  "ref": "variantes/eclipsor_viejo80.png",
+  "refs": [
+   [
+    "variantes/eclipsor_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality creature"
+   ]
+  ],
+  "desc": "imposing eclipse shadow creature, final evolution of a floating purple shadow imp, ghost and fire type, large round very dark indigo body floating in the air, a crown of black fire with orange and gold edges around its head like a solar eclipse, a few black flames along its back, tail tapering into a shadow wisp, glowing amber eyes, serious and calm, imposing"
+ },
+ "lunargo": {
+  "size": 96,
+  "ref": "variantes/lunargo_viejo80.png",
+  "refs": [
+   [
+    "variantes/lunargo_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality creature"
+   ]
+  ],
+  "desc": "majestic night moon shadow creature, final evolution of a floating purple shadow imp, ghost and psychic type, sleek dark navy blue body floating in the air, large night wings like a bat made of starry dark sky with small stars inside, a crescent moon mark on its forehead, pale glowing blue eyes, tail tapering into a shadow wisp, serene and mysterious, imposing"
+ },
+ "escamin": {
+  "size": 80,
+  "ref": "variantes/escamin_viejo80.png",
+  "refs": [
+   [
+    "variantes/escamin_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality creature"
+   ]
+  ],
+  "desc": "cute small fish creature, water type, orange and gold body with shiny mirror-like scales, big friendly eyes, small orange dorsal fin and red-orange fins, forked tail, swimming in the air as if underwater, adorable"
+ },
+ "aleton": {
+  "size": 80,
+  "ref": "variantes/aleton_viejo80.png",
+  "refs": [
+   [
+    "variantes/aleton_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality creature"
+   ]
+  ],
+  "desc": "strong river fish creature, water type, bigger dark orange and copper body with shiny scales, tall pointed dorsal fin, strong red fins and forked tail, a determined face with a slight underbite, built to swim up waterfalls, swimming in the air as if underwater, young and bold"
+ },
+ "tifonar": {
+  "size": 96,
+  "ref": "variantes/tifonar_viejo80.png",
+  "refs": [
+   [
+    "variantes/tifonar_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality creature"
+   ]
+  ],
+  "desc": "majestic sea serpent dragon, final evolution of an orange river fish, water and wind type, long light blue and white serpent body coiling in the air, large translucent fin-wings along its body that stir up wind, a small crest of fins on its head, swirls of wind and water around it, calm serious eyes, elegant and imposing"
+ },
+ "arrecifor": {
+  "size": 96,
+  "ref": "variantes/arrecifor_viejo80.png",
+  "refs": [
+   [
+    "variantes/arrecifor_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality creature"
+   ]
+  ],
+  "desc": "massive armored reef fish, final evolution of an orange river fish, water and rock type, big heavy deep blue body covered in stone armor plates like a rocky shell, living pink and orange coral growing on its back, strong fins and tail, calm serious eyes, ancient and imposing, swimming in the air as if underwater"
+ },
+ "psiqui": {
+  "size": 80,
+  "ref": "variantes/psiqui_viejo80.png",
+  "refs": [
+   [
+    "variantes/psiqui_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality creature"
+   ]
+  ],
+  "desc": "cute small psychic cat creature, psychic type, round pink fluffy body floating slightly above the ground, big pointed ears, a glowing violet gem on its forehead, curly little tail, big gentle purple eyes, small paws tucked under, adorable"
+ },
+ "mentalis": {
+  "size": 80,
+  "ref": "variantes/mentalis_viejo80.png",
+  "refs": [
+   [
+    "variantes/mentalis_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality creature"
+   ]
+  ],
+  "desc": "psychic cat creature, psychic type, standing upright on two legs, slender pink body, tall pointed ears, a glowing violet gem on its forehead, long curled tail, calm focused purple eyes, small hands raised as if concentrating, young and confident"
+ },
+ "kinesio": {
+  "size": 96,
+  "ref": "variantes/kinesio_viejo80.png",
+  "refs": [
+   [
+    "variantes/kinesio_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality creature"
+   ]
+  ],
+  "desc": "psychic warrior cat creature, final evolution of a pink psychic cat, psychic and rock type, standing upright on two legs, pink body wearing a heavy armor of grey stone plates on its shoulders chest and fists, held together by a violet psychic glow, a glowing violet gem on its forehead, tall pointed ears, serious calm eyes, strong martial stance, imposing"
+ },
+ "oniria": {
+  "size": 96,
+  "ref": "variantes/oniria_viejo80.png",
+  "refs": [
+   [
+    "variantes/oniria_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality creature"
+   ]
+  ],
+  "desc": "dreamlike psychic shadow creature, final evolution of a pink psychic cat, psychic and ghost type, lilac and violet body floating in the air, large soft dark purple wings like veils of night mist, a pink crown-like tuft on its head, tail fading into dreamy mist with small stars, half-closed sleepy mysterious eyes, elegant and imposing"
  }
 }
