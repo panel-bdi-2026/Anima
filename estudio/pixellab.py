@@ -20,6 +20,47 @@ def b64(path):
     return 'data:image/png;base64,' + base64.b64encode(open(path, 'rb').read()).decode()
 
 
+def esperar(jid):
+    for _ in range(80):
+        time.sleep(6)
+        st = call('GET', f'/background-jobs/{jid}')
+        if st.get('status') in ('completed', 'failed'):
+            return st
+    return st
+
+
+def guardar(st, out, name):
+    res = st.get('last_response') or {}
+    images = res.get('images') or []
+    for i, im in enumerate(images):
+        data = im.get('base64', '')
+        if ',' in data: data = data.split(',', 1)[1]
+        open(f'{out}/{name}_{i}.png', 'wb').write(base64.b64decode(data))
+    return len(images)
+
+
+def con_referencia(name, desc, out, ref, size, style=None):
+    """genera a partir de un dibujo de referencia (sujeto) y opcionalmente una imagen de estilo"""
+    from PIL import Image
+    def img(p, uso=None):
+        w, h = Image.open(p).size
+        r = {'image': {'type': 'base64', 'base64': b64(p), 'format': 'png'}, 'size': {'width': w, 'height': h}}
+        if uso: r['usage_description'] = uso
+        return r
+    print('saldo antes:', call('GET', '/balance')['subscription'])
+    body = {'description': desc, 'image_size': {'width': size, 'height': size}, 'no_background': True,
+            'reference_images': [img(ref, 'this is the exact creature design to keep: same shape, colors, flame tail and features')]}
+    if style:
+        body['style_image'] = img(style)
+        body['style_options'] = {'color_palette': False, 'outline': True, 'detail': True, 'shading': True}
+    job = call('POST', '/generate-image-v2', body)
+    st = esperar(job.get('background_job_id') or job.get('id'))
+    if st.get('status') != 'completed':
+        print('no terminó:', json.dumps(st)[:800]); return
+    print('imágenes guardadas:', guardar(st, out, name))
+    print('saldo después:', call('GET', '/balance')['subscription'])
+
+
 def main():
     from PIL import Image
     name, desc, out = sys.argv[1], sys.argv[2], sys.argv[3]
@@ -52,4 +93,8 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    if sys.argv[1] == '--ref':          # pixellab.py --ref nombre "desc" salida ref.png tamaño [estilo.png]
+        a = sys.argv[2:]
+        con_referencia(a[0], a[1], a[2], a[3], int(a[4]), a[5] if len(a) > 5 else None)
+    else:
+        main()
