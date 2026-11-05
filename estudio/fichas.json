@@ -203,5 +203,137 @@
   "ref": "elegidos/pipio.png",
   "tandas": 2,
   "desc": "aggressive dive bomber falcon, final evolution of a brown lark, wind and electric type, dark slate and brown feathers with bright yellow electric patterns, wings swept back as if about to dive, feathers sparking with electricity, the lark crest turned into a jagged lightning crest, fierce eyes, standing on two legs"
+ },
+ "larvita": {
+  "size": 80,
+  "ref": "variantes/larvita_viejo80.png",
+  "refs": [
+   [
+    "variantes/larvita_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality creature"
+   ]
+  ],
+  "desc": "cute small caterpillar creature, bug type, bright lime green segmented body with soft orange spots, chubby round head with big friendly eyes, small red leaf-like sprout on its head, many tiny stubby legs on the ground, a few strands of silk, tender and adorable"
+ },
+ "crisalix": {
+  "size": 80,
+  "ref": "variantes/crisalix_viejo80.png",
+  "refs": [
+   [
+    "variantes/crisalix_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality creature"
+   ]
+  ],
+  "desc": "chrysalis creature, bug type, cocoon hanging upright with pale green silk wrapping and soft orange bands, a curved hook on top, a calm face with sleepy eyes peeking from the cocoon, delicate leaf vein patterns, still and mysterious, standing upright"
+ },
+ "polillux": {
+  "size": 96,
+  "ref": "variantes/polillux_viejo80.png",
+  "refs": [
+   [
+    "variantes/polillux_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality creature"
+   ]
+  ],
+  "desc": "elegant glowing moth creature, final evolution of a green caterpillar, bug and psychic type, large soft blue and pink wings with luminous eye spots, fluffy white and lilac body, feathery antennae, sparkling scales giving off soft light, kind wise eyes, hovering gracefully"
+ },
+ "escarabron": {
+  "size": 96,
+  "ref": "variantes/escarabron_viejo80.png",
+  "refs": [
+   [
+    "variantes/escarabron_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality creature"
+   ]
+  ],
+  "desc": "mighty rhinoceros beetle creature, final evolution of a green caterpillar, bug and rock type, dark green carapace armored like granite with stone plates and cracks, one large golden horn, six strong legs firmly on the ground, serious calm eyes, imposing"
+ },
+ "voltin": {
+  "size": 80,
+  "ref": "variantes/voltin_viejo80.png",
+  "refs": [
+   [
+    "variantes/voltin_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality creature"
+   ]
+  ],
+  "desc": "cute small electric creature, electric type, round chubby yellow body, two little antennae with blue sparking tips, small blue lightning shaped tail, short legs on the ground, big friendly eyes, tiny static sparks around it, adorable"
+ },
+ "dinamo": {
+  "size": 80,
+  "ref": "variantes/dinamo_viejo80.png",
+  "refs": [
+   [
+    "variantes/dinamo_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality creature"
+   ]
+  ],
+  "desc": "energetic electric creature, electric type, sturdy round yellow body bigger than its pre-evolution, blue lightning shaped crest of antennae and a larger blue lightning tail, strong short legs on four feet on the ground, determined eyes, crackling sparks, young and bold"
+ },
+ "tesloria": {
+  "size": 96,
+  "ref": "variantes/tesloria_viejo80.png",
+  "refs": [
+   [
+    "variantes/tesloria_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality creature"
+   ]
+  ],
+  "desc": "floating electric psychic creature, final evolution of a yellow electric critter, electric and psychic type, smooth teardrop shaped golden yellow body floating in the air, purple glowing crown-like antennae, purple lightning tail, an electric field with orbiting sparks, calm intelligent eyes, elegant and imposing"
+ },
+ "ferrovolt": {
+  "size": 96,
+  "ref": "variantes/ferrovolt_viejo80.png",
+  "refs": [
+   [
+    "variantes/ferrovolt_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality creature"
+   ]
+  ],
+  "desc": "heavy iron golem creature, final evolution of a yellow electric critter, electric and rock type, massive dark steel armored body standing on two thick legs, yellow electric conduits glowing in its armor plates, yellow lightning crest on its head and back, sparks at its feet, serious calm face, imposing"
+ },
+ "guijin": {
+  "size": 80,
+  "ref": "variantes/guijin_viejo80.png",
+  "refs": [
+   [
+    "variantes/guijin_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality creature"
+   ]
+  ],
+  "desc": "cute tiny pebble creature, rock type, small round grey-beige stone body with little cracks and moss specks, small stubby feet on the ground, big shy friendly eyes, blends with stones of the path, adorable"
+ },
+ "pedrusco": {
+  "size": 80,
+  "ref": "variantes/pedrusco_viejo80.png",
+  "refs": [
+   [
+    "variantes/pedrusco_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality creature"
+   ]
+  ],
+  "desc": "sturdy boulder creature, rock type, big round grey-beige stone body with strong rocky arms touching the ground, short thick legs, cracks and stone texture, determined eyes, young and bold"
+ },
+ "basaltor": {
+  "size": 96,
+  "ref": "variantes/basaltor_viejo80.png",
+  "refs": [
+   [
+    "variantes/basaltor_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality creature"
+   ]
+  ],
+  "desc": "powerful basalt bear-like creature, final evolution of a pebble critter, rock and fire type, massive dark basalt rock armor body on four thick legs, glowing orange lava cracks across its body, small flames rising from its back, calm serious eyes, imposing"
+ },
+ "monolito": {
+  "size": 96,
+  "ref": "variantes/monolito_viejo80.png",
+  "refs": [
+   [
+    "variantes/monolito_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality creature"
+   ]
+  ],
+  "desc": "tall meditating monolith creature, final evolution of a pebble critter, rock and psychic type, tall smooth grey standing stone body with a calm face, light blue glowing crystals growing from its back and shoulders, small stone arms, faint psychic glow and runes, serene wise eyes, imposing"
  }
 }
