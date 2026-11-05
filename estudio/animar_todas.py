@@ -15,7 +15,9 @@ CUERPO = {'ignito': 'cuadrupedo', 'fogarzo': 'cuadrupedo', 'magmaurio': 'bipedo'
           'umbrin': 'fantasma', 'penumbro': 'fantasma', 'eclipsor': 'fantasma', 'lunargo': 'volador',
           'escamin': 'pez', 'aleton': 'pez', 'arrecifor': 'pez', 'psiqui': 'cuadrupedo', 'kinesio': 'bipedo', 'oniria': 'volador', 'mentalis': 'cuadrupedo', 'tifonar': 'pez',
           'hongui': 'bipedo', 'setalon': 'bipedo', 'esporal': 'bipedo', 'brisin': 'nube', 'nimbo': 'nube', 'murcin': 'bipedo', 'noctalar': 'ave',
-          'micelion': 'bipedo', 'granizor': 'flotante', 'nubaria': 'nube', 'lunavela': 'bipedo'}
+          'micelion': 'bipedo', 'granizor': 'flotante', 'nubaria': 'nube', 'lunavela': 'bipedo',
+          'vampirax': 'bipedo', 'silvaneo': 'cuadrupedo', 'auroros': 'cuadrupedo', 'albora': 'bipedo', 'geiseron': 'cuadrupedo', 'umbrarbol': 'bipedo',
+          'lunafalena': 'volador', 'forjador': 'bipedo', 'leviaton': 'serpiente', 'celestia': 'volador'}
 ELEMENTO = {'fogarzo': 'a burst of fire', 'magmaurio': 'a ball of magma', 'solarix': 'a fiery feather blast',
             'burbujo': 'a stream of bubbles', 'marolo': 'a jet of water', 'abismar': 'a dark water orb', 'coralis': 'a psychic wave from its coral crown',
             'semillin': 'a volley of seeds', 'hojardo': 'sharp spinning leaves', 'robledor': 'a rock thrown from the ground', 'floraxia': 'a swirl of petals and glowing pollen',
@@ -29,7 +31,10 @@ ELEMENTO = {'fogarzo': 'a burst of fire', 'magmaurio': 'a ball of magma', 'solar
             'kinesio': 'a rock hurled with telekinesis', 'oniria': 'a wave of dreamy purple mist', 'mentalis': 'a pebble hurled with telekinesis', 'tifonar': 'a whirling blast of wind and sea spray',
             'hongui': 'a puff of sleepy spores', 'setalon': 'a cloud of spores', 'esporal': 'a swarm of tiny glowing insects', 'brisin': 'a light gust of wind and drizzle', 'nimbo': 'a gust of wind and rain',
             'murcin': 'a sound wave by screeching', 'noctalar': 'a silent sound wave',
-            'micelion': 'a wave of glowing green spores', 'granizor': 'a volley of hailstones', 'nubaria': 'a soft beam of sunrise light', 'lunavela': 'a beam of moonlight'}
+            'micelion': 'a wave of glowing green spores', 'granizor': 'a volley of hailstones', 'nubaria': 'a soft beam of sunrise light', 'lunavela': 'a beam of moonlight',
+            'vampirax': 'a dart of venom from its stinger', 'silvaneo': 'a wave of growing roots and leaves', 'auroros': 'a blast of sunrise fire', 'albora': 'a beam of soft dawn light',
+            'geiseron': 'a jet of boiling steam', 'umbrarbol': 'dark roots bursting from the ground', 'lunafalena': 'a cloud of glowing moon dust', 'forjador': 'a shockwave of sparks by slamming its fists',
+            'leviaton': 'a dark water orb', 'celestia': 'a swirl of petals and wind'}
 MOV = {
     'cuadrupedo': {'caminar': 'walking, natural four-legged walk cycle', 'correr': 'running fast, four-legged gallop cycle',
                    'atacar': 'lunging forward with a quick bite or claw attack, then returning to stance'},

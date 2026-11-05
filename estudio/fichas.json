@@ -1025,5 +1025,71 @@
    ]
   ],
   "desc": "vampire beetle bat creature, final evolution of a purple bat, ghost and bug type, standing on two feet, BRIGHT colors: rich red and plum purple fur with a cream chest, a shiny glossy red beetle carapace with light highlights on its back, wings with light lilac membranes, small fangs, clear bright eyes, well lit, readable, cool but not demonic, imposing"
+ },
+ "marealisA": {
+  "size": 96,
+  "ref": "variantes/marealis_viejo80.png",
+  "refs": [
+   [
+    "variantes/marealis_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality legendary creature"
+   ]
+  ],
+  "desc": "legendary tide guardian sea dragon, water and wind type, long majestic serpent body in deep ocean blue fading to pearl white, flowing translucent fins like crashing waves, a crown of pearl and coral horns, golden ornaments along its spine, a glowing tide symbol on its forehead, a ring of swirling water around it, LEGENDARY: much more majestic and grand than a normal creature, ornate details, elegant golden or silver ornaments and glowing sacred markings, a radiant aura, regal pose, divine and awe-inspiring but not demonic, clean readable silhouette, fits inside the canvas with margin"
+ },
+ "marealisB": {
+  "size": 96,
+  "ref": "variantes/marealis_viejo80.png",
+  "refs": [
+   [
+    "variantes/marealis_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality legendary creature"
+   ]
+  ],
+  "desc": "legendary ocean whale-dragon, water and wind type, large graceful body of a sky whale with a dragon head, deep blue and white with glowing aqua markings like ocean currents, huge fin-wings, a trailing tail of mist, pearl crown, small waves and clouds swirling around it, LEGENDARY: much more majestic and grand than a normal creature, ornate details, elegant golden or silver ornaments and glowing sacred markings, a radiant aura, regal pose, divine and awe-inspiring but not demonic, clean readable silhouette, fits inside the canvas with margin"
+ },
+ "tempestronA": {
+  "size": 96,
+  "ref": "variantes/tempestron_viejo80.png",
+  "refs": [
+   [
+    "variantes/tempestron_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality legendary creature"
+   ]
+  ],
+  "desc": "legendary thunder bird, electric and flying type, huge majestic eagle with wings spread wide, dark storm blue and slate feathers with glowing golden lightning veins, a long flowing tail of storm clouds, a crest of golden lightning like a crown, glowing golden eyes, small lightning bolts around it, LEGENDARY: much more majestic and grand than a normal creature, ornate details, elegant golden or silver ornaments and glowing sacred markings, a radiant aura, regal pose, divine and awe-inspiring but not demonic, clean readable silhouette, fits inside the canvas with margin"
+ },
+ "tempestronB": {
+  "size": 96,
+  "ref": "variantes/tempestron_viejo80.png",
+  "refs": [
+   [
+    "variantes/tempestron_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality legendary creature"
+   ]
+  ],
+  "desc": "legendary storm phoenix, electric and flying type, majestic bird with long elegant neck, feathers of storm cloud grey and electric cyan with bright golden edges, wings made partly of crackling lightning, three long tail feathers ending in lightning, a halo of electricity behind its head, LEGENDARY: much more majestic and grand than a normal creature, ornate details, elegant golden or silver ornaments and glowing sacred markings, a radiant aura, regal pose, divine and awe-inspiring but not demonic, clean readable silhouette, fits inside the canvas with margin"
+ },
+ "galernoA": {
+  "size": 96,
+  "ref": "variantes/galerno_viejo80.png",
+  "refs": [
+   [
+    "variantes/galerno_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality legendary creature"
+   ]
+  ],
+  "desc": "legendary wind hare guardian, normal and flying type, large majestic hare with flowing silver white and mint fur, very long ears with golden rings, a flowing mane of wind, large feathered wings of wind on its back, swirling wind ribbons around its legs, a glowing wind symbol on its forehead, LEGENDARY: much more majestic and grand than a normal creature, ornate details, elegant golden or silver ornaments and glowing sacred markings, a radiant aura, regal pose, divine and awe-inspiring but not demonic, clean readable silhouette, fits inside the canvas with margin"
+ },
+ "galernoB": {
+  "size": 96,
+  "ref": "variantes/galerno_viejo80.png",
+  "refs": [
+   [
+    "variantes/galerno_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality legendary creature"
+   ]
+  ],
+  "desc": "legendary sky courser, normal and flying type, majestic hare-like creature running on the air, sleek white and pale jade fur with flowing ribbon-like ears, golden anklets with small wings, a long flowing tail like a comet of wind, wind currents trailing behind it, sharp noble eyes, LEGENDARY: much more majestic and grand than a normal creature, ornate details, elegant golden or silver ornaments and glowing sacred markings, a radiant aura, regal pose, divine and awe-inspiring but not demonic, clean readable silhouette, fits inside the canvas with margin"
  }
 }
