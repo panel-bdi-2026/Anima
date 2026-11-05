@@ -11,7 +11,9 @@ CUERPO = {'ignito': 'cuadrupedo', 'fogarzo': 'cuadrupedo', 'magmaurio': 'bipedo'
           'pipio': 'ave', 'alondro': 'ave', 'tormentor': 'ave', 'cefireo': 'ave',
           'larvita': 'oruga', 'crisalix': 'capullo', 'polillux': 'volador', 'escarabron': 'insecto',
           'voltin': 'cuadrupedo', 'dinamo': 'bipedo', 'guijin': 'cuadrupedo', 'pedrusco': 'cuadrupedo', 'monolito': 'flotante',
-          'tesloria': 'levita', 'ferrovolt': 'cuadrupedo', 'basaltor': 'cuadrupedo'}
+          'tesloria': 'levita', 'ferrovolt': 'cuadrupedo', 'basaltor': 'cuadrupedo',
+          'umbrin': 'fantasma', 'penumbro': 'fantasma', 'eclipsor': 'fantasma', 'lunargo': 'volador',
+          'escamin': 'pez', 'aleton': 'pez', 'arrecifor': 'pez', 'psiqui': 'cuadrupedo', 'kinesio': 'bipedo', 'oniria': 'volador'}
 ELEMENTO = {'fogarzo': 'a burst of fire', 'magmaurio': 'a ball of magma', 'solarix': 'a fiery feather blast',
             'burbujo': 'a stream of bubbles', 'marolo': 'a jet of water', 'abismar': 'a dark water orb', 'coralis': 'a psychic wave from its coral crown',
             'semillin': 'a volley of seeds', 'hojardo': 'sharp spinning leaves', 'robledor': 'a rock thrown from the ground', 'floraxia': 'a swirl of petals and glowing pollen',
@@ -19,7 +21,10 @@ ELEMENTO = {'fogarzo': 'a burst of fire', 'magmaurio': 'a ball of magma', 'solar
             'pipio': 'a sound wave by singing loudly', 'alondro': 'a gust of wind from its wings', 'tormentor': 'a bolt of lightning', 'cefireo': 'a blade of wind',
             'larvita': 'a string of sticky silk', 'crisalix': 'a string of sticky silk', 'polillux': 'a cloud of glowing scales', 'escarabron': 'a rock thrown with its horn',
             'voltin': 'a small spark of electricity', 'dinamo': 'a bolt of electricity', 'guijin': 'a small rock', 'pedrusco': 'a boulder thrown from the ground', 'monolito': 'a psychic wave of crystal light',
-            'tesloria': 'a psychic lightning ring', 'ferrovolt': 'a heavy bolt of electricity', 'basaltor': 'a burst of lava rocks'}
+            'tesloria': 'a psychic lightning ring', 'ferrovolt': 'a heavy bolt of electricity', 'basaltor': 'a burst of lava rocks',
+            'umbrin': 'a small ball of shadow', 'penumbro': 'a ball of shadow', 'eclipsor': 'a ball of black fire', 'lunargo': 'a beam of pale moonlight',
+            'escamin': 'a jet of water', 'aleton': 'a strong jet of water', 'arrecifor': 'a burst of water and coral shards', 'psiqui': 'a small psychic wave from its gem',
+            'kinesio': 'a rock hurled with telekinesis', 'oniria': 'a wave of dreamy purple mist'}
 MOV = {
     'cuadrupedo': {'caminar': 'walking, natural four-legged walk cycle', 'correr': 'running fast, four-legged gallop cycle',
                    'atacar': 'lunging forward with a quick bite or claw attack, then returning to stance'},
@@ -39,6 +44,10 @@ MOV = {
                 'atacar': 'charging forward with its horn, then returning to stance'},
     'levita': {'caminar': 'floating forward slowly while meditating, gently bobbing in the air', 'correr': 'gliding forward fast through the air',
                'atacar': 'darting forward with a crackling electric tail strike, then returning to its meditating pose'},
+    'fantasma': {'caminar': 'floating forward slowly, its wispy tail swaying', 'correr': 'floating forward fast, its wispy tail streaming behind',
+                 'atacar': 'lunging forward with a quick claw swipe, then floating back'},
+    'pez': {'caminar': 'swimming forward slowly in the air, gently waving its tail and fins', 'correr': 'swimming forward fast, beating its tail strongly',
+            'atacar': 'lunging forward with a quick bite, then returning to stance'},
     'flotante': {'caminar': 'floating forward slowly, gently bobbing in the air', 'correr': 'gliding forward fast through the air',
                  'atacar': 'lunging forward with a strong stone arm strike, then returning to stance'},
 }

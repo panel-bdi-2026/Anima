@@ -555,5 +555,57 @@
    ]
   ],
   "desc": "psychic fox-owl creature, psychic type, round fluffy pink body standing on four short sturdy legs, a big fluffy lilac ruff of fur on its chest, large rounded ears with teal tufts, big round owl-like eyes, a violet gem on its forehead, a large fluffy curled tail with a teal tip, small teal markings on its cheeks, calm attentive look"
+ },
+ "mentalisC": {
+  "size": 80,
+  "ref": "elegidos/psiqui.png",
+  "refs": [
+   [
+    "elegidos/psiqui.png",
+    "this is its pre-evolution (a round pink psychic kitten): keep the family resemblance (pink fur, pointed ears, violet gem on the forehead, curly tail)"
+   ],
+   [
+    "elegidos/kinesio.png",
+    "this is its future final evolution: the new creature must look like a younger, smaller, less powerful step between the kitten and this warrior"
+   ]
+  ],
+  "desc": "young psychic cat creature, psychic type, standing upright on two short sturdy legs, stocky chubby body (not slender), big paws, short arms, a fluffy lilac ruff of fur around its neck, large pointed ears, a violet gem on its forehead, a thick curly tail, two small pebbles floating near its raised paw moved by telekinesis, focused determined eyes, young and bold"
+ },
+ "mentalisD": {
+  "size": 80,
+  "ref": "elegidos/psiqui.png",
+  "refs": [
+   [
+    "elegidos/psiqui.png",
+    "this is its pre-evolution (a round pink psychic kitten): keep the family resemblance (pink fur, pointed ears, violet gem on the forehead, curly tail)"
+   ],
+   [
+    "elegidos/kinesio.png",
+    "this is its future final evolution: the new creature must look like a younger, smaller, less powerful step between the kitten and this warrior"
+   ]
+  ],
+  "desc": "young psychic lynx cat creature, psychic type, standing on four legs, sturdy compact body, big pointed ears with long dark tufts like a lynx, fluffy cheeks, a violet gem on its forehead, a curly tail, its front paws glowing faintly violet, a few small pebbles floating above its back moved by telekinesis, focused determined eyes, young and bold"
+ },
+ "tifonarA": {
+  "size": 96,
+  "ref": "elegidos/aleton.png",
+  "refs": [
+   [
+    "elegidos/aleton.png",
+    "this is its pre-evolution (a copper river fish): keep the family resemblance (copper orange scales, red fins, strong jaw and face), but make it clearly a much more evolved and bigger creature"
+   ]
+  ],
+  "desc": "majestic sea serpent, final evolution of a copper river fish, water and wind type, long serpent body in copper orange scales with a cream belly, large red and white fin-wings along its body, a fish-like head with the same strong jaw, long whisker barbels, a few swirls of wind around it, calm serious eyes, elegant and imposing, clean silhouette"
+ },
+ "tifonarB": {
+  "size": 96,
+  "ref": "elegidos/aleton.png",
+  "refs": [
+   [
+    "elegidos/aleton.png",
+    "this is its pre-evolution (a copper river fish): keep the family resemblance (copper orange scales, red fins, strong jaw and face), but make it clearly a much more evolved and bigger creature"
+   ]
+  ],
+  "desc": "giant flying storm fish, final evolution of a copper river fish, water and wind type, big powerful fish body in copper orange scales flying in the air, huge wing-like pectoral fins with white wind streaks, a long flowing red tail fin, the same strong jaw and face of the river fish, small swirls of wind under its fins, calm serious eyes, imposing, clean silhouette"
  }
 }
