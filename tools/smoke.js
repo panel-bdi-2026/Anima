@@ -48,13 +48,13 @@ const CHECKS = [
     await p2.addScriptTag({ url: 'tools/testkit.js' });
     await p2.waitForFunction(() => typeof T !== 'undefined' && Scenes.top());
     const ids = await p2.evaluate(async () => {
-      const menu = Mobile.buttons('title').map((b) => b.id);
+      const menu = Mobile.buttons('title').map((b) => b.id).concat(Mobile.usesJoy('title') ? ['joy'] : []);
       await T.quick({ party: [['ignito', 12]], map: 'ruta1', x: 10, y: 8 });
       World.runScript(async () => { await Battle.trainer({ title: 'P', cls: 'P', name: 'P', party: [['burbujo', 10]], skill: 0 }); });
       await T.until(() => Battle.active && Battle.active.state === 'fight', 900);
       return { menu, battle: Mobile.buttons('battle').map((b) => b.id) };
     });
-    const touchOk = ['dpad', 'a', 'b'].every((k) => ids.menu.includes(k)) && ids.battle.includes('m0') && ids.battle.includes('dodge') && !errors.length;
+    const touchOk = ['joy', 'a', 'b'].every((k) => ids.menu.includes(k)) && !ids.menu.includes('dpad') && ids.battle.includes('m0') && ids.battle.includes('dodge') && !errors.length;
     console.log(`${touchOk ? 'ok   ' : 'FALLA'}  Controles táctiles${touchOk ? '' : ' — ' + JSON.stringify(ids) + ' ' + errors[0]}`);
     if (!touchOk) failed++;
     // versión de prueba (/prueba/): partidas aparte, aviso visible y copia sin tocar las publicadas
