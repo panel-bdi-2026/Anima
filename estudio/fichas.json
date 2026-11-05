@@ -761,5 +761,115 @@
    ]
   ],
   "desc": "fierce vampire bat creature, final evolution of a dark purple bat critter, ghost and bug type, dark crimson and black fur, large tattered bat wings with insect-like veins, long venomous fangs, a small insect stinger tail, chitin plates on its shoulders, glowing red eyes, serious and dangerous but not demonic, imposing"
+ },
+ "micelionA": {
+  "size": 96,
+  "ref": "elegidos/setalon.png",
+  "refs": [
+   [
+    "elegidos/setalon.png",
+    "this is its pre-evolution: keep the family resemblance (its face, cream body and mushroom cap shape), but make it clearly a more evolved and bigger creature"
+   ]
+  ],
+  "desc": "night mushroom creature, final evolution of a mushroom critter, grass and ghost type, standing upright on two legs, same friendly face and pale body but tinted lavender, wide deep purple mushroom cap with softly glowing green spots, thin glowing green mycelium threads trailing from its feet into the ground, a few floating green spores, calm mysterious eyes, imposing but not scary"
+ },
+ "micelionB": {
+  "size": 96,
+  "ref": "elegidos/setalon.png",
+  "refs": [
+   [
+    "elegidos/setalon.png",
+    "this is its pre-evolution: keep the family resemblance (its face, cream body and mushroom cap shape), but make it clearly a more evolved and bigger creature"
+   ]
+  ],
+  "desc": "mushroom forest spirit, final evolution of a mushroom critter, grass and ghost type, tall sturdy body with a cloak of dark moss and roots, a large dark violet mushroom cap that glows softly from underneath like a lamp, glowing green veins running down its arms into root-like feet, calm wise glowing eyes, imposing guardian, not scary"
+ },
+ "granizorA": {
+  "size": 96,
+  "ref": "elegidos/nimbo.png",
+  "refs": [
+   [
+    "elegidos/nimbo.png",
+    "this is its pre-evolution: keep the family resemblance (its bear-like cloud face with round ears and fluffy cloud body), but make it clearly a more evolved and bigger creature"
+   ]
+  ],
+  "desc": "heavy hail storm cloud creature, final evolution of a fluffy cloud bear, flying and rock type, big dark grey storm cloud body floating, the same bear-like face with round ears but serious, armor of sharp blue ice crystals on its back and shoulders, small hailstones falling beneath, imposing"
+ },
+ "granizorB": {
+  "size": 96,
+  "ref": "elegidos/nimbo.png",
+  "refs": [
+   [
+    "elegidos/nimbo.png",
+    "this is its pre-evolution: keep the family resemblance (its bear-like cloud face with round ears and fluffy cloud body), but make it clearly a more evolved and bigger creature"
+   ]
+  ],
+  "desc": "powerful hail cloud brute, final evolution of a fluffy cloud bear, flying and rock type, large dark grey stormy cloud body with two big strong arms ending in fists of packed ice and stone, the same bear-like face with round ears, a crown of ice crystals, hailstones swirling around, serious calm eyes, imposing"
+ },
+ "nubariaA": {
+  "size": 96,
+  "ref": "elegidos/nimbo.png",
+  "refs": [
+   [
+    "elegidos/nimbo.png",
+    "this is its pre-evolution: keep the family resemblance (its bear-like cloud face with round ears and fluffy cloud body), but make it clearly a more evolved and bigger creature"
+   ]
+  ],
+  "desc": "serene sunrise cloud creature, final evolution of a fluffy cloud bear, flying and psychic type, large soft fluffy cloud body in pink lilac and gold sunrise colors, the same bear-like face with round ears, peaceful closed eyes and gentle smile, a small golden sunrise halo above its head, long wispy cloud tail, soft glow, elegant and imposing"
+ },
+ "nubariaB": {
+  "size": 96,
+  "ref": "elegidos/nimbo.png",
+  "refs": [
+   [
+    "elegidos/nimbo.png",
+    "this is its pre-evolution: keep the family resemblance (its bear-like cloud face with round ears and fluffy cloud body), but make it clearly a more evolved and bigger creature"
+   ]
+  ],
+  "desc": "angelic sunrise cloud creature, final evolution of a fluffy cloud bear, flying and psychic type, fluffy cloud body with a gradient from pale pink to warm gold, two soft wings made of clouds, the same bear-like face with round ears, gentle kind eyes, small floating sparkles of light, elegant and imposing"
+ },
+ "lunavelaA": {
+  "size": 96,
+  "ref": "elegidos/noctalar.png",
+  "refs": [
+   [
+    "elegidos/noctalar.png",
+    "this is its pre-evolution: keep the family resemblance (its bat face, big ears and wing shape), but make it clearly a more evolved and bigger creature"
+   ]
+  ],
+  "desc": "moon guardian bat creature, final evolution of a purple bat, ghost and psychic type, standing on two feet, bigger body with soft silver and pale lavender fur, large wings with translucent glowing moonlight membranes, a crescent moon mark on its chest, the same big ears and bat face, kind calm glowing eyes, gentle protector, imposing"
+ },
+ "lunavelaB": {
+  "size": 96,
+  "ref": "elegidos/noctalar.png",
+  "refs": [
+   [
+    "elegidos/noctalar.png",
+    "this is its pre-evolution: keep the family resemblance (its bat face, big ears and wing shape), but make it clearly a more evolved and bigger creature"
+   ]
+  ],
+  "desc": "night guide bat creature, final evolution of a purple bat, ghost and psychic type, elegant body with deep indigo fur fading to silver at the chest, large wings showing the phases of the moon as glowing silver circles, a fluffy silver mane, the same big ears and bat face, calm wise eyes, gentle and imposing"
+ },
+ "vampiraxA": {
+  "size": 96,
+  "ref": "elegidos/noctalar.png",
+  "refs": [
+   [
+    "elegidos/noctalar.png",
+    "this is its pre-evolution: keep the family resemblance (its bat face, big ears and wing shape), but make it clearly a more evolved and bigger creature"
+   ]
+  ],
+  "desc": "fierce venomous bat creature, final evolution of a purple bat, ghost and bug type, standing on two feet, dark crimson and black fur, wings with insect-like veins and small hooked claws, a segmented insect abdomen with a small stinger, two small fangs, sharp serious red eyes, dangerous but not demonic, imposing"
+ },
+ "vampiraxB": {
+  "size": 96,
+  "ref": "elegidos/noctalar.png",
+  "refs": [
+   [
+    "elegidos/noctalar.png",
+    "this is its pre-evolution: keep the family resemblance (its bat face, big ears and wing shape), but make it clearly a more evolved and bigger creature"
+   ]
+  ],
+  "desc": "armored vampire bat creature, final evolution of a purple bat, ghost and bug type, standing on two feet, dark crimson fur, a shiny dark beetle carapace on its back and shoulders, wings with insect veins, small fangs, the same big ears and bat face, sharp serious eyes, cool and intimidating but not demonic, imposing"
  }
 }
