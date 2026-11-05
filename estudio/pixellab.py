@@ -61,6 +61,21 @@ def con_referencia(name, desc, out, ref, size, style=None):
     print('saldo después:', call('GET', '/balance')['subscription'])
 
 
+def rotaciones(name, ref, out, desc=None):
+    """8 direcciones a partir de un cuadro de referencia (cualquier dirección)"""
+    print('saldo antes:', call('GET', '/balance')['subscription']['generations'])
+    body = {'first_frame': {'type': 'base64', 'base64': b64(ref), 'format': 'png'}, 'no_background': True}
+    if desc: body['description'] = desc
+    job = call('POST', '/generate-8-rotations-v3', body)
+    st = esperar(job.get('background_job_id') or job.get('id'))
+    if st.get('status') != 'completed':
+        print('no terminó:', json.dumps(st)[:800]); return
+    lr = st.get('last_response') or {}
+    print('claves de la respuesta:', list(lr.keys())[:10])
+    print('imágenes guardadas:', guardar(st, out, name))
+    print('saldo después:', call('GET', '/balance')['subscription']['generations'])
+
+
 def main():
     from PIL import Image
     name, desc, out = sys.argv[1], sys.argv[2], sys.argv[3]
@@ -93,7 +108,10 @@ def main():
 
 
 if __name__ == '__main__':
-    if sys.argv[1] == '--ref':          # pixellab.py --ref nombre "desc" salida ref.png tamaño [estilo.png]
+    if sys.argv[1] == '--rot':          # pixellab.py --rot nombre ref.png salida ["descripción"]
+        a = sys.argv[2:]
+        rotaciones(a[0], a[1], a[2], a[3] if len(a) > 3 else None)
+    elif sys.argv[1] == '--ref':          # pixellab.py --ref nombre "desc" salida ref.png tamaño [estilo.png]
         a = sys.argv[2:]
         con_referencia(a[0], a[1], a[2], a[3], int(a[4]), a[5] if len(a) > 5 else None)
     else:
