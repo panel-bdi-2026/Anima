@@ -21,7 +21,7 @@ def img(p, uso=None):
 def pedido(sp, tanda):
     f = FICHAS[sp]
     body = {'description': f['desc'] + COLA, 'image_size': {'width': f['size'], 'height': f['size']}, 'no_background': True,
-            'reference_images': [img(f['ref'], 'concept reference for this creature: keep its idea, body plan, colors and key features, but redraw it with better anatomy and detail')],
+            'reference_images': [img(r, u) for r, u in f.get('refs', [[f['ref'], 'concept reference for this creature: keep its idea, body plan, colors and key features, but redraw it with better anatomy and detail']])],
             'style_image': img(ESTILO), 'style_options': {'color_palette': False, 'outline': True, 'detail': True, 'shading': True}}
     for intento in range(3):
         try:
@@ -40,7 +40,7 @@ def main():
     antes = pl.call('GET', '/balance')['subscription']['generations']
     tareas = []
     for sp in sps:
-        tareas += [(sp, t) for t in range(1 if FICHAS[sp]['size'] <= 84 else 2)]
+        tareas += [(sp, t) for t in range(FICHAS[sp].get('tandas', 1 if FICHAS[sp]['size'] <= 84 else 2))]
     with cf.ThreadPoolExecutor(8) as ex:
         for r in ex.map(lambda t: pedido(*t), tareas):
             print(r, flush=True)

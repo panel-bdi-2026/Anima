@@ -38,5 +38,134 @@
   "size": 96,
   "ref": "floraxia/nuevo.png",
   "desc": "graceful flower lion gecko, final evolution, plant and mind type, standing on four legs, large mane of pink petals around the head with green leaves behind, cascade of petals along the back turning into leaves at the hips, small flowers on its back, kind friendly eyes, long tail ending in a pink flower, glowing golden pollen floating around, green skin"
+ },
+ "coralis2": {
+  "size": 96,
+  "ref": "variantes/coralis_1_1.png",
+  "refs": [
+   [
+    "variantes/coralis_1_1.png",
+    "keep this exact character design, colors and details; apply only the requested changes"
+   ],
+   [
+    "elegidos/marolo.png",
+    "use this axolotl head and face (rounded axolotl face, wide gentle mouth, small eyes) for the head"
+   ]
+  ],
+  "desc": "elegant coral axolotl creature, final evolution, water and mind type, standing tall on four slender legs with translucent fin veils, long flowing veil tail, pearls along the side, big crown of pink coral branches growing where axolotl gills would be, the head is a rounded axolotl head like its pre-evolution, not a deer head, violet gem on the forehead, blue skin, serene eyes"
+ },
+ "robledor2": {
+  "size": 96,
+  "ref": "variantes/robledor_0_0.png",
+  "refs": [
+   [
+    "variantes/robledor_0_0.png",
+    "keep this exact character design, colors and details; apply only the requested changes"
+   ]
+  ],
+  "desc": "forest guardian gecko made of bark and stone, final evolution, plant and rock type, standing upright on two thick trunk-like legs with roots, same design but much greener: vivid green gecko skin, thick green moss covering the shoulders, arms and back, small leaves and ferns sprouting from the bark, branch antlers full of green leaves, bark chest armor, mossy stone shoulder pads, wooden fists, thick tail with leaves"
+ },
+ "floraxia2": {
+  "size": 96,
+  "ref": "variantes/floraxia_0_1.png",
+  "refs": [
+   [
+    "variantes/floraxia_0_1.png",
+    "keep this exact character design, colors and details; apply only the requested changes"
+   ],
+   [
+    "variantes/floraxia_1_2.png",
+    "use only the tail from this image: a long curling vine tail with leaves ending in a pink flower"
+   ]
+  ],
+  "desc": "graceful flower lion gecko, final evolution, plant and mind type, standing on four legs, large mane of pink petals around the head with green leaves behind, small flowers on its back, golden sparkles, long curling vine tail with small leaves ending in a pink flower bud, kind eyes, green skin"
+ },
+ "rabin": {
+  "size": 80,
+  "ref": "variantes/rabin_viejo80.png",
+  "refs": [
+   [
+    "variantes/rabin_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality creature"
+   ]
+  ],
+  "desc": "cute small brown bunny creature, very long upright ears with pink inside, fluffy white cotton tail, cream chest, big alert eyes, standing on all four paws"
+ },
+ "conejal": {
+  "size": 80,
+  "ref": "variantes/conejal_viejo80.png",
+  "refs": [
+   [
+    "variantes/conejal_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality creature"
+   ]
+  ],
+  "desc": "young fast hare, evolution of a small bunny, lean athletic body built for speed, long legs with strong hind feet, very long ears swept back, light brown fur with a cream belly, fluffy white tail, determined eyes, standing on all four legs"
+ },
+ "liebron": {
+  "size": 96,
+  "ref": "variantes/liebron_viejo80.png",
+  "refs": [
+   [
+    "variantes/liebron_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality creature"
+   ]
+  ],
+  "desc": "majestic sky hare, final evolution, normal and wind type, evolves under the sun, golden cream fur, very long ears, fluffy cloud-like puffs on its tail and ankles, wind swirls around its feet, powerful hind legs, sun-kissed warm colors, standing on four legs"
+ },
+ "nocturo": {
+  "size": 96,
+  "ref": "variantes/nocturo_viejo80.png",
+  "refs": [
+   [
+    "variantes/nocturo_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality creature"
+   ]
+  ],
+  "desc": "silent night hunter hare, final evolution, normal and shadow type, evolves under the moon, dark indigo purple fur, long sharp ears, glowing yellow eyes, crescent moon mark on the forehead, wisps of shadow trailing from its tail and ankles, sleek predator, standing on four legs"
+ },
+ "pipio": {
+  "size": 80,
+  "ref": "variantes/pipio_viejo80.png",
+  "refs": [
+   [
+    "variantes/pipio_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality creature"
+   ]
+  ],
+  "desc": "cute tiny round sparrow chick, brown and cream feathers, small orange beak, little wings, singing happily, standing on two small orange feet"
+ },
+ "alondro": {
+  "size": 80,
+  "ref": "variantes/alondro_viejo80.png",
+  "refs": [
+   [
+    "variantes/alondro_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality creature"
+   ]
+  ],
+  "desc": "young lark bird, evolution of a sparrow chick, sleek brown feathers with a cream chest, feather crest on the head, wings folded, sharp eyes, long tail feathers, standing on two orange legs"
+ },
+ "tormentor": {
+  "size": 96,
+  "ref": "variantes/tormentor_viejo80.png",
+  "refs": [
+   [
+    "variantes/tormentor_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality creature"
+   ]
+  ],
+  "desc": "fierce storm bird of prey, final evolution, wind and electric type, dark navy and black feathers with glowing yellow lightning stripes, spiky crest crackling with electricity, sharp golden beak and talons, wings half open with sparks, standing on two legs"
+ },
+ "cefireo": {
+  "size": 96,
+  "ref": "variantes/cefireo_viejo80.png",
+  "refs": [
+   [
+    "variantes/cefireo_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality creature"
+   ]
+  ],
+  "desc": "elegant wind bird, final evolution, wind type, sky blue and white feathers, long flowing tail plumes and crest feathers like ribbons in the wind, slender graceful body, wind swirls around it, standing on two legs"
  }
 }
