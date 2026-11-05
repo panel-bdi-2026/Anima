@@ -1,0 +1,42 @@
+{
+ "burbujo": {
+  "size": 80,
+  "ref": "burbujo/nuevo.png",
+  "desc": "cute baby axolotl creature, round chubby body, big round head with a gentle smile, small shiny eyes, three feathery pink gills on each side of the head, translucent fin along the back to the tail, short legs with tiny fingers, blue skin with a lighter belly, a few bubbles, all four legs on the ground"
+ },
+ "marolo": {
+  "size": 80,
+  "ref": "marolo/nuevo.png",
+  "desc": "young newt creature, evolution of a baby axolotl, long sleek low body built for swimming fast, longer pink feathery gills swept back, light speed stripe along the side, low back fin ridge, short splayed legs with webbed fingers, long tail with a fin, blue skin, alert eyes"
+ },
+ "abismar": {
+  "size": 96,
+  "ref": "abismar/nuevo.png",
+  "desc": "deep sea serpent axolotl, final evolution, water and shadow type, long legless body in an S curve resting on the ground with the head raised, deep blue skin with a lighter belly, glowing pink bioluminescent spots along the side, long glowing pink frond-like gills, blue-violet dorsal fin with spines, glowing serious eyes, small fangs, mysterious"
+ },
+ "coralis": {
+  "size": 96,
+  "ref": "coralis/nuevo.png",
+  "desc": "elegant coral deer axolotl, final evolution, water and mind type, standing tall on four slender legs with translucent fin veils hanging behind the legs like a betta fish, arched neck with a translucent fin mane, big crown of pink coral branches like antlers, violet gem on the forehead, coral bracelets on the ankles, pearls along the side, long tail with a flowing veil fin, blue skin, serene violet eyes"
+ },
+ "semillin": {
+  "size": 80,
+  "ref": "semillin/nuevo.png",
+  "desc": "cute tiny forest gecko creature standing on two legs, big round head with big shiny eyes and a smile, a sprout with two small leaves growing on top of its head, cream yellow belly, short arms, tail shaped like a leaf, green skin"
+ },
+ "hojardo": {
+  "size": 80,
+  "ref": "hojardo/nuevo.png",
+  "desc": "agile young gecko on four splayed legs with sticky toe pads, low body, a row of big lime green leaves along its back like solar panels, crest of leaves swept back on the head, long tail ending in a big leaf, teal green skin, determined eyes"
+ },
+ "robledor": {
+  "size": 96,
+  "ref": "pixellab_pruebas/robledor_1.png",
+  "desc": "forest guardian gecko made of bark and stone, final evolution, plant and rock type, standing upright on two thick trunk-like legs with roots, green gecko head with small branch antlers with leaves, bark chest armor, mossy stone shoulder pads, strong arms with wooden fists, thick tail with a leaf at the tip, imposing but calm"
+ },
+ "floraxia": {
+  "size": 96,
+  "ref": "floraxia/nuevo.png",
+  "desc": "graceful flower lion gecko, final evolution, plant and mind type, standing on four legs, large mane of pink petals around the head with green leaves behind, cascade of petals along the back turning into leaves at the hips, small flowers on its back, kind friendly eyes, long tail ending in a pink flower, glowing golden pollen floating around, green skin"
+ }
+}
