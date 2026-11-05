@@ -629,5 +629,137 @@
    ]
   ],
   "desc": "powerful storm sail fish creature, final evolution of a copper river fish, water and wind type, big strong fish body swimming in the air, a giant tall sail-like dorsal fin like a ship sail catching the wind, deep teal blue body with copper orange fins and face, long pointed sword-like snout, swirls of wind and sea spray along its sail, calm serious eyes, imposing, clean simple silhouette"
+ },
+ "hongui": {
+  "size": 80,
+  "ref": "variantes/hongui_viejo80.png",
+  "refs": [
+   [
+    "variantes/hongui_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality creature"
+   ]
+  ],
+  "desc": "cute small mushroom creature, grass type, big round red mushroom cap with white spots, small chubby cream body under the cap, tiny stubby feet on the ground, big sleepy friendly eyes peeking from under the cap, a few floating spores, adorable"
+ },
+ "setalon": {
+  "size": 80,
+  "ref": "variantes/setalon_viejo80.png",
+  "refs": [
+   [
+    "variantes/setalon_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality creature"
+   ]
+  ],
+  "desc": "mushroom creature, grass type, standing upright on two short legs, taller cream body with small arms, larger red mushroom cap with white spots like a wide hat, little root-like toes, determined eyes under the cap, small spores drifting, young and bold"
+ },
+ "esporal": {
+  "size": 96,
+  "ref": "variantes/esporal_viejo80.png",
+  "refs": [
+   [
+    "variantes/esporal_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality creature"
+   ]
+  ],
+  "desc": "mushroom guardian creature, final evolution of a red mushroom critter, grass and bug type, standing upright on two sturdy legs, broad golden orange mushroom cap with pale spots, tan body, translucent insect wings on its back, a few tiny friendly beetles and fireflies living on its cap, calm wise eyes, imposing protector"
+ },
+ "micelion": {
+  "size": 96,
+  "ref": "variantes/micelion_viejo80.png",
+  "refs": [
+   [
+    "variantes/micelion_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality creature"
+   ]
+  ],
+  "desc": "dark mushroom creature, final evolution of a red mushroom critter, grass and ghost type, tall dark violet body standing upright, wide deep purple mushroom cap with glowing green spots, glowing green root-like mycelium veins spreading from its feet into the ground, long root fingers, calm mysterious glowing green eyes, imposing"
+ },
+ "brisin": {
+  "size": 80,
+  "ref": "variantes/brisin_viejo80.png",
+  "refs": [
+   [
+    "variantes/brisin_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality creature"
+   ]
+  ],
+  "desc": "cute small living cloud creature, flying type, soft round white and pale blue fluffy cloud body, small curl of wind on its head, rosy cheeks, big gentle eyes, tiny puffy cloud paws, floating in the air, adorable"
+ },
+ "nimbo": {
+  "size": 80,
+  "ref": "variantes/nimbo_viejo80.png",
+  "refs": [
+   [
+    "variantes/nimbo_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality creature"
+   ]
+  ],
+  "desc": "living cloud creature, flying type, bigger fluffy white and grey cloud body with a puffy cloud tail, small wind curls around it, a few light raindrops beneath it, determined friendly eyes, floating in the air, young and bold"
+ },
+ "granizor": {
+  "size": 96,
+  "ref": "variantes/granizor_viejo80.png",
+  "refs": [
+   [
+    "variantes/granizor_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality creature"
+   ]
+  ],
+  "desc": "heavy storm cloud creature, final evolution of a living cloud critter, flying and rock type, large dark grey stormy cloud body floating in the air, sharp ice crystals and hailstones embedded on its back like a crown, small hailstones falling beneath it, a strong jaw, serious calm eyes, imposing"
+ },
+ "nubaria": {
+  "size": 96,
+  "ref": "variantes/nubaria_viejo80.png",
+  "refs": [
+   [
+    "variantes/nubaria_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality creature"
+   ]
+  ],
+  "desc": "serene sunrise cloud creature, final evolution of a living cloud critter, flying and psychic type, large soft pink and lilac fluffy cloud body floating high, a small golden sunrise halo crown on its head, long wispy cloud tail, soft glowing light, peaceful closed eyes with a gentle smile, elegant and imposing"
+ },
+ "murcin": {
+  "size": 80,
+  "ref": "variantes/murcin_viejo80.png",
+  "refs": [
+   [
+    "variantes/murcin_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality creature"
+   ]
+  ],
+  "desc": "cute small bat creature, ghost and flying type, round dark purple furry body, big ears, small wings folded, tiny fangs, big curious eyes, standing on two small feet, adorable"
+ },
+ "noctalar": {
+  "size": 80,
+  "ref": "variantes/noctalar_viejo80.png",
+  "refs": [
+   [
+    "variantes/noctalar_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality creature"
+   ]
+  ],
+  "desc": "bat creature, ghost and flying type, bigger dark indigo furry body, large pointed ears, wide bat wings partially spread, small fangs, sharp determined eyes, standing on two feet, silent and agile, young and bold"
+ },
+ "lunavela": {
+  "size": 96,
+  "ref": "variantes/lunavela_viejo80.png",
+  "refs": [
+   [
+    "variantes/lunavela_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality creature"
+   ]
+  ],
+  "desc": "majestic moon guardian bat, final evolution of a dark purple bat critter, ghost and psychic type, elegant silver and pale lavender fur, huge luminous wing membranes that reflect moonlight like stained glass, a small crescent moon mark on its chest, soft glowing light, kind calm eyes, gentle protector, imposing"
+ },
+ "vampirax": {
+  "size": 96,
+  "ref": "variantes/vampirax_viejo80.png",
+  "refs": [
+   [
+    "variantes/vampirax_viejo80.png",
+    "concept reference (old low resolution sprite): keep its idea and colors, redraw it as a detailed high quality creature"
+   ]
+  ],
+  "desc": "fierce vampire bat creature, final evolution of a dark purple bat critter, ghost and bug type, dark crimson and black fur, large tattered bat wings with insect-like veins, long venomous fangs, a small insect stinger tail, chitin plates on its shoulders, glowing red eyes, serious and dangerous but not demonic, imposing"
  }
 }
