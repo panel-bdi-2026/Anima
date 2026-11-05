@@ -533,5 +533,27 @@
    ]
   ],
   "desc": "dreamlike psychic shadow creature, final evolution of a pink psychic cat, psychic and ghost type, lilac and violet body floating in the air, large soft dark purple wings like veils of night mist, a pink crown-like tuft on its head, tail fading into dreamy mist with small stars, half-closed sleepy mysterious eyes, elegant and imposing"
+ },
+ "mentalisA": {
+  "size": 80,
+  "ref": "variantes/psiqui_0_1.png",
+  "refs": [
+   [
+    "variantes/psiqui_0_1.png",
+    "this is its pre-evolution (a round pink psychic kitten): keep the family resemblance (pink fur, pointed ears, violet gem on the forehead, curly tail), but make it clearly a more evolved and bigger creature with a different silhouette"
+   ]
+  ],
+  "desc": "psychic sage creature, psychic type, chubby round pink body floating cross-legged above the ground like a little monk, a thick fluffy lilac mane around its neck like a hood, very large wide ears with teal inner fur, long whiskers, three small violet gems in a triangle on its forehead, a short fluffy tail ending in a teal ring, calm wise half-closed eyes, small paws together"
+ },
+ "mentalisB": {
+  "size": 80,
+  "ref": "variantes/psiqui_0_1.png",
+  "refs": [
+   [
+    "variantes/psiqui_0_1.png",
+    "this is its pre-evolution (a round pink psychic kitten): keep the family resemblance (pink fur, pointed ears, violet gem on the forehead, curly tail), but make it clearly a more evolved and bigger creature with a different silhouette"
+   ]
+  ],
+  "desc": "psychic fox-owl creature, psychic type, round fluffy pink body standing on four short sturdy legs, a big fluffy lilac ruff of fur on its chest, large rounded ears with teal tufts, big round owl-like eyes, a violet gem on its forehead, a large fluffy curled tail with a teal tip, small teal markings on its cheeks, calm attentive look"
  }
 }
