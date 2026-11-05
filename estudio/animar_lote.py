@@ -8,6 +8,7 @@ import pixellab as pl
 ACCIONES = {
     'reposo':  ('standing idle, calm breathing, tail swaying gently, small natural movement', 4),
     'caminar': ('walking, natural four-legged walk cycle, tail swaying', 8),
+    'correr':  ('sprinting at full speed, fast gallop with legs fully extended forward and back, leaping, body stretched low, ears back, tail streaming behind', 8),
     'atacar':  ('lunging forward with a quick bite attack, then returning to stance', 8),
     'disparar': ('rearing back and spitting a fireball forward from the mouth, then returning to stance', 8),
     'golpe':   ('flinching backwards after being hit, recoiling, then recovering', 4),
@@ -36,7 +37,8 @@ def main():
     out = f'animaciones/{sp}'; os.makedirs(out, exist_ok=True)
     refs = {'lado': f'elegidos/{sp}.png', 'frente': f'elegidos/{sp}_dir1.png', 'espalda': f'elegidos/{sp}_dir5.png'}
     antes = pl.call('GET', '/balance')['subscription']['generations']
-    tareas = [(a, d) for a in ACCIONES for d in refs]
+    solo = sys.argv[2].split(',') if len(sys.argv) > 2 else list(ACCIONES)
+    tareas = [(a, d) for a in solo for d in refs]
     with cf.ThreadPoolExecutor(6) as ex:
         for r in ex.map(lambda t: una(sp, t[0], t[1], refs[t[1]], out), tareas):
             print(r, flush=True)

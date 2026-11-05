@@ -2,7 +2,7 @@
 // ============================================================
 //  ÁNIMAS ANIMADAS CUADRO POR CUADRO (prueba con Ignito)
 //  Para las especies que tienen animaciones hechas con PixelLab,
-//  en vez de mover piezas se reproducen cuadros: reposo, caminar,
+//  en vez de mover piezas se reproducen cuadros: reposo, caminar, correr,
 //  atacar (de cerca), disparar (a distancia), golpe y caer.
 //  Cada animación es una tira PNG en assets/animas/<especie>/<acción>_<vista>.png,
 //  con cuadros de 80×80 (el doble de detalle que el sprite de 40) que miran a la izquierda.
@@ -11,7 +11,7 @@
 const FrameSprites = {
   // especie -> cuántos cuadros tiene cada acción
   SPECIES: {
-    ignito: { size: 80, feet: 71, acciones: { reposo: 5, caminar: 9, atacar: 9, disparar: 9, golpe: 5, caer: 9 } },
+    ignito: { size: 80, feet: 71, acciones: { reposo: 5, caminar: 9, correr: 9, atacar: 9, disparar: 9, golpe: 5, caer: 9 } },
   },
   img: {},
   has(sp) { return !!this.SPECIES[sp]; },
@@ -37,7 +37,10 @@ const FrameSprites = {
       const p = U.clamp(o.act.t / Math.max(0.05, o.act.windup), 0, 1);
       return [a, Math.floor(p * (n(a) / 2))];
     }
-    if ((o.speed || 0) > 12) return ['caminar', 1 + Math.floor(t * 12) % (n('caminar') - 1)];
+    const v = o.speed || 0;
+    // rápido (en combate, o al embestir): corre; más despacio (siguiendo al jugador en el mapa): camina
+    if (n('correr') && (o.dash || v > 70)) return ['correr', 1 + Math.floor(t * 16) % (n('correr') - 1)];
+    if (v > 12) return ['caminar', 1 + Math.floor(t * 12) % (n('caminar') - 1)];
     return ['reposo', Math.floor(t * 5) % n('reposo')];
   },
   draw(ctx, e, o) {
