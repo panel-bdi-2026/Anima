@@ -167,5 +167,41 @@
    ]
   ],
   "desc": "elegant wind bird, final evolution, wind type, sky blue and white feathers, long flowing tail plumes and crest feathers like ribbons in the wind, slender graceful body, wind swirls around it, standing on two legs"
+ },
+ "alondro2": {
+  "size": 80,
+  "refs": [
+   [
+    "elegidos/pipio.png",
+    "this is its pre-evolution: keep the family resemblance (lark head, crest, beak shape and plumage colors), but make it clearly a more evolved and bigger creature"
+   ]
+  ],
+  "ref": "elegidos/pipio.png",
+  "tandas": 1,
+  "desc": "adult lark bird, evolution of a small brown lark: bigger and more athletic, longer wings slightly open, prominent feather crest, long tail feathers, sharp confident eyes, brown and cream plumage with darker markings, a bird that patrols the sky, standing on two legs"
+ },
+ "tormentorA": {
+  "size": 96,
+  "refs": [
+   [
+    "elegidos/pipio.png",
+    "this is its pre-evolution: keep the family resemblance (lark head, crest, beak shape and plumage colors), but make it clearly a more evolved and bigger creature"
+   ]
+  ],
+  "ref": "elegidos/pipio.png",
+  "tandas": 2,
+  "desc": "thunderbird, final evolution of a brown lark, wind and electric type, large storm eagle with storm grey and brown plumage, wings spread crackling with blue-white lightning, crest shaped like lightning bolts, glowing electric blue eyes, storm cloud wisps around the wings, powerful talons, standing on two legs"
+ },
+ "tormentorB": {
+  "size": 96,
+  "refs": [
+   [
+    "elegidos/pipio.png",
+    "this is its pre-evolution: keep the family resemblance (lark head, crest, beak shape and plumage colors), but make it clearly a more evolved and bigger creature"
+   ]
+  ],
+  "ref": "elegidos/pipio.png",
+  "tandas": 2,
+  "desc": "aggressive dive bomber falcon, final evolution of a brown lark, wind and electric type, dark slate and brown feathers with bright yellow electric patterns, wings swept back as if about to dive, feathers sparking with electricity, the lark crest turned into a jagged lightning crest, fierce eyes, standing on two legs"
  }
 }

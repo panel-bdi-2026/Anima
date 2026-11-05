@@ -31,6 +31,7 @@ def pedido(sp, tanda):
                 return sp, tanda, pl.guardar(st, 'variantes', f'{sp}_{tanda}')
         except Exception as e:
             print('reintento', sp, tanda, e, flush=True)
+            import time; time.sleep(20 * (intento + 1))
     return sp, tanda, 0
 
 
