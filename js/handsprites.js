@@ -140,7 +140,48 @@ const HandSprites = {
     };
     const head = src.find((p) => p.role === 'head' && !p.far), body = src.find((p) => p.role === 'body');
     const B = body && turnBlock(body, hasEyes(body) ? 0.5 : 0.42, true);
-    const Hd = head && turnBlock(head, 0.55);
+    // cabeza de frente/espalda: redonda (no el perfil reflejado, que con el hocico en punta quedaba
+    // como dos triángulos unidos), con los colores de la especie; de frente, dos ojos con brillo,
+    // hocico y nariz al centro; de espaldas, la nuca sin cara
+    const roundHead = (p) => {
+      const w = W0(p), h = p.rows.length, txt = p.rows.join('');
+      const has = (k) => txt.includes(k);
+      const shade = (want) => { for (const k of want) if (has(k)) return k; return ['4', '3', '5', '2'].find(has) || txt.replace(/[^0-9]/g, '')[0] || '3'; };
+      const base = shade(['4', '3']), hi = shade(['5', '4']), mid = shade(['3', '2']), lo = shade(['2', '1', '3']);
+      const Wh = Math.max(8, 2 * Math.round(w * 0.42)), cx = Wh / 2, cy = h / 2;
+      const g = [];
+      for (let y = 0; y < h; y++) {
+        let r = '';
+        for (let x = 0; x < Wh; x++) {
+          const dx = (x + 0.5 - cx) / cx, dy = (y + 0.5 - cy) / cy, d = dx * dx + dy * dy;
+          if (d > 1.04) { r += '.'; continue; }
+          r += dy < -0.45 && Math.abs(dx) < 0.6 ? hi : dy > 0.72 ? lo : Math.abs(dx) > 0.74 || dy > 0.45 ? mid : base;
+        }
+        g.push(r.split(''));
+      }
+      const put = (x, y, k) => { if (y >= 0 && y < h && x >= 0 && x < Wh && g[y][x] !== '.') g[y][x] = k; };
+      if (front) {
+        // hocico y nariz
+        if (has('c')) {
+          const mr = Math.max(2, Math.round(Wh * 0.24)), my = Math.round(h * 0.74), mry = Math.max(1.4, h * 0.2);
+          for (let y = 0; y < h; y++) for (let x = 0; x < Wh; x++) { const dx = (x + 0.5 - cx) / mr, dy = (y + 0.5 - my) / mry; if (dx * dx + dy * dy <= 1) put(x, y, has('C') && y > my ? 'C' : 'c'); }
+        }
+        const ny = Math.round(h * (has('c') ? 0.6 : 0.62));
+        if (has('n')) { put(cx - 1, ny, 'n'); put(cx, ny, 'n'); }
+        // ojos: dos, simétricos, con brillo hacia el centro
+        const ey = Math.max(1, Math.round(h * 0.4)), ex = Math.max(2, Math.round(Wh * 0.24));
+        const lowEye = has('i') ? 'i' : 'e';
+        for (const sgn of [-1, 1]) {
+          const x0 = sgn < 0 ? cx - ex - 1 : cx + ex - 1;
+          put(x0, ey, sgn < 0 ? 'e' : 'w'); put(x0 + 1, ey, sgn < 0 ? 'w' : 'e');
+          put(x0, ey + 1, lowEye); put(x0 + 1, ey + 1, lowEye);
+        }
+        if (has('p')) { put(cx - ex - 2, ey + 2, 'p'); put(cx + ex + 1, ey + 2, 'p'); } // mejillas
+      }
+      const half = Wh / 2;
+      return { rows: g.map((r) => r.join('')), half, map: () => Math.max(1, Math.round(half * 0.4)) };
+    };
+    const Hd = head && roundHead(head);
     const hw = B ? B.half : 6;
     const anchor = head ? { p: head, T: Hd } : { p: body, T: B };
     const pairs = (list, place, extra = {}) => {
