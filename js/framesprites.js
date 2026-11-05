@@ -38,8 +38,10 @@ const FrameSprites = {
       return [a, Math.floor(p * (n(a) / 2))];
     }
     const v = o.speed || 0, enCombate = 'dodge' in o;      // el combate pasa estos datos; el mapa no
-    // en combate, si se mueve, corre; en el mapa (siguiendo al jugador), camina
-    if (n('correr') && (o.dash || (enCombate && v > 8))) return ['correr', 1 + Math.floor(t * 16) % (n('correr') - 1)];
+    // en el mapa, el acompañante corre si el jugador corre (botón B / Mayúsculas)
+    const jugadorCorre = !enCombate && typeof World !== 'undefined' && e === World.follower && World.player && World.player.speed >= 2;
+    // en combate, si se mueve, corre; en el mapa camina, salvo que el jugador corra
+    if (n('correr') && (o.dash || (enCombate && v > 8) || (jugadorCorre && v > 12))) return ['correr', 1 + Math.floor(t * 16) % (n('correr') - 1)];
     if (v > 12) return ['caminar', 1 + Math.floor(t * 12) % (n('caminar') - 1)];
     return ['reposo', Math.floor(t * 5) % n('reposo')];
   },
