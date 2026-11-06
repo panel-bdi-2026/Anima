@@ -127,7 +127,7 @@
       P(ctx, 12, 158, 40, 40, '#1c1420'); P(ctx, 13, 159, 38, 38, sh(P0.col, 0.6)); P(ctx, 13, 159, 38, 1, '#ffffff');
       if (id) {
         const it = ITEMS[id];
-        ctx.imageSmoothingEnabled = false; ctx.drawImage(Icons.item(id), 16, 162, 32, 32);
+        ctx.imageSmoothingEnabled = false; { const big = Icons.itemBig && Icons.itemBig(id); if (big) ctx.drawImage(big, 16, 162); else ctx.drawImage(Icons.item(id), 16, 162, 32, 32); }
         Font.draw(ctx, it.name, 60, 158, sh(P0.col, -0.4));
         const tag = it.key ? 'Objeto clave' : it.held ? 'Amuleto · equípalo desde ÁNIMAS' : it.sphere ? 'Esfera · E en el mapa o en combate' : it.bait ? 'Cebo · lánzalo con E' : it.price ? `Valor: $${it.price}` : '';
         if (tag) Font.draw(ctx, tag, 60, 170, '#8a7a6a');
