@@ -84,8 +84,28 @@ const FrameSprites = {
     if (v > 12) return ['caminar', 1 + Math.floor(t * 12) % (n('caminar') - 1)];
     return ['reposo', Math.floor((t + (e.animSeed || 0)) * 5) % n('reposo')];
   },
+  // ícono propio de 32 px (simplificado, para que se distinga en tamaños chicos)
+  icon(sp) {
+    const k = sp + '/icono';
+    if (!this.img[k]) { const im = new Image(); im.src = 'assets/animas/' + k + '.png'; this.img[k] = im; }
+    const im = this.img[k];
+    return im.complete && im.naturalWidth ? im : null;
+  },
+  iconShiny(sp) { const k = sp + '/icono:s', im = this.icon(sp); return im && (this.img[k] || (this.img[k] = this.shinyCanvas(im))); },
   draw(ctx, e, o) {
     const [size, feet] = this.DATA[o.sp];
+    // retrato chico de menú: el ícono, con un saltito suave
+    if (o.portrait && (o.S || 40) <= 32) {
+      const ic = o.shiny ? this.iconShiny(o.sp) : this.icon(o.sp);
+      if (ic) {
+        // de 20 a 32 se dibuja a su tamaño real (nítido, sin achicar); más chico, se achica suavizado
+        const S0 = Math.round((o.S || 40) * (o.scale || 1)), S = S0 >= 20 ? 32 : S0, bob = Math.floor(((o.t || 0) + (e.animSeed || 0)) * 2) % 2;
+        ctx.save(); ctx.imageSmoothingEnabled = S < 32; if (S < 32) ctx.imageSmoothingQuality = 'high';
+        ctx.drawImage(ic, Math.round(o.px - S / 2 - (S - S0) / 3), Math.round(o.py - S + (S - S0) / 2) - bob, S, S);
+        ctx.restore();
+        return { icon: true };
+      }
+    }
     const vista = o.view === 'front' ? 'frente' : o.view === 'back' ? 'espalda' : 'lado';
     const A = CreatureAnim.state(e), dt = o.dt || 1 / 60;
     A.nextBlink = 99;                                      // el parpadeo ya viene dibujado
@@ -102,7 +122,8 @@ const FrameSprites = {
     if (kk === 'blink') alpha *= A.atk ? 0.3 + 0.7 * (A.atk.t / A.atk.dur) : 1 - 0.7 * U.clamp(o.act.t / Math.max(0.05, o.act.windup), 0, 1);
     if (A.hurtT > 0.2) shake = 1;
     if (o.faintT !== undefined) alpha = Math.max(0, 1 - Math.max(0, o.faintT - 0.9) * 2);   // termina de caer y se desvanece
-    const sc = (o.scale || 1) * (o.S || 40) / 80, Wd = size * sc;
+    // fuera de los menús, cada etapa de evolución se ve más grande que la anterior
+    const sc = (o.scale || 1) * (o.S || 40) / 80 * (o.portrait ? 1 : this.stageScale(o.sp)), Wd = size * sc;
     let x0 = Math.round(o.px - Wd / 2), y0 = Math.round(o.py - (feet + 1) * sc);
     if (shake) { x0 += Math.round((Math.random() - 0.5) * 2); y0 += Math.round((Math.random() - 0.5)); }
     const flip = vista === 'lado' && o.flip;
@@ -137,11 +158,33 @@ const FrameSprites = {
     ctx.globalAlpha = a0;
     return { alpha, accion, k };
   },
+  // etapa de evolución (1, 2 o 3) a partir de SPECIES_LIST: segunda etapa algo más grande y la final bastante más
+  stageScale(sp) {
+    if (!this.stage) {
+      const pre = {};
+      for (const s of SPECIES_LIST) {
+        const ev = s.evo; if (!ev) continue;
+        for (const to of ev.to ? [ev.to] : ev.branch ? [ev.branch.a, ev.branch.b] : []) pre[to] = s.key;
+      }
+      this.stage = {};
+      for (const s of SPECIES_LIST) { let n = 1, k = s.key; while (pre[k]) { n++; k = pre[k]; } this.stage[s.key] = n; }
+    }
+    const n = this.stage[sp] || 1, sz = (this.DATA[sp] || [80])[0], leg = SPECIES[sp] && SPECIES[sp].legendary;
+    if (leg) return 1;                                     // las legendarias ya tienen su propio tamaño de combate
+    return n >= 3 || (n === 1 && sz >= 96) ? 1.3 : n === 2 ? 1.12 : 1;
+  },
   // imagen fija (cuadro base de reposo, de lado) encajada en un cuadro de S×S, para menús e íconos
   still(sp, S, shiny) {
     const key = sp + ':' + S + (shiny ? ':s' : '');
     this.stills = this.stills || {};
     if (this.stills[key]) return this.stills[key];
+    if (S <= 32) {
+      const ic = shiny ? this.iconShiny(sp) : this.icon(sp);
+      if (!ic) return null;
+      const [c, x] = U.makeCanvas(S, S); x.imageSmoothingEnabled = S < 32; if (S < 32) x.imageSmoothingQuality = 'high';
+      x.drawImage(ic, 0, 0, S, S);
+      return (this.stills[key] = c);
+    }
     const im = this.strip(sp, 'reposo', 'lado', shiny);
     if (!im) return null;
     const size = this.DATA[sp][0], [f0, fx] = U.makeCanvas(size, size);
@@ -188,6 +231,9 @@ const FrameSprites = {
     if (FrameSprites.has(o.sp)) { const r = FrameSprites.draw(ctx, e, o); if (r) return r; }
     return _draw.call(this, ctx, e, o);
   };
+  // los retratos de menú no se agrandan por etapa (tienen que caber en su recuadro)
+  const _portrait = CreatureAnim.portrait;
+  CreatureAnim.portrait = function (ctx, sp, S, shiny, x, y, key, o = {}) { return _portrait.call(this, ctx, sp, S, shiny, x, y, key, Object.assign({ portrait: true }, o)); };
   const _get = CreatureGfx.get;
   CreatureGfx.get = function (sp, S, shiny) {
     if (FrameSprites.has(sp)) { const c = FrameSprites.still(sp, S, shiny); if (c) return c; }
