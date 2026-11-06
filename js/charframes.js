@@ -76,6 +76,18 @@ const CharFrames = {
     ctx.restore();
     return true;
   },
+  // lienzo con el personaje quieto (para texturas 3D); llama a cb cuando la imagen está lista
+  canvasWhenReady(k, vista, cb) {
+    const go = () => {
+      const im = this.strip(k, 'reposo', vista);
+      if (!im) return setTimeout(go, 100);
+      // 40×60 (proporción 2:3, como el sprite clásico de 32×48), con los pies abajo
+      const [c, x] = U.makeCanvas(40, 60), def = this.SET[k];
+      x.drawImage(im, 0, 0, 64, 64, -12, 60 - (def.feet + 1), 64, 64);
+      cb(c);
+    };
+    if (this.SET[k]) go();
+  },
   vista(dir) { return dir === 'down' ? 'frente' : dir === 'up' ? 'espalda' : 'lado'; },
   // dibuja el personaje con los pies en (fx, fy) (coordenadas del mundo, 1 unidad = 2 píxeles del cuadro)
   draw(ctx, k, dir, accion, t, fx, fy) {
