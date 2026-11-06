@@ -1,7 +1,7 @@
 # Concepto visual de cada ataque: (vista, descripción del efecto, animación)
 # vista: lado = de perfil hacia la izquierda; arriba = visto desde arriba (efectos en el suelo); frente = de frente
 C = {
- 'embestida': ('lado', "a burst of white and beige speed lines and a small dust cloud in the shape of a forward charge, motion streaks pointing left", "speed lines streaking to the left and fading"),
+ 'embestida': ('lado', "a burst of white and beige speed lines and a small dust cloud in the shape of a forward charge, motion streaks pointing left", "the same beige and white speed lines streaking to the left and fading out, keeping the same colors, no red"),
  'zarpazo': ('lado', "three curved white claw slash marks in a quick arc, sharp bright edges with a soft glow", "the three claw slashes swiping down in an arc and fading"),
  'rugido': ('frente', "concentric jagged sound shockwave rings in pale yellow and white bursting outward from a center, angry roar symbols", "the roar shockwaves pulsing outward"),
  'acometida': ('lado', "a powerful white comet-like rush aura with long trailing speed streaks and swirling dust, pointing left", "the rush aura surging forward with streaks"),
@@ -37,7 +37,7 @@ C = {
  'relampago': ('lado', "a streak of yellow lightning aura with sparks in the shape of a fast forward rush pointing left", "the lightning rush crackling forward"),
  'lanzarrocas': ('lado', "a chunky grey-brown boulder with cracks and small pebbles trailing, flying left", "the rock tumbling"),
  'golpe_roca': ('lado', "a heavy stone fist impact with shattering rock fragments and dust", "the rock impact shattering"),
- 'avalancha': ('frente', "a cascade of large and small brown boulders falling from above with dust clouds", "the boulders tumbling down"),
+ 'avalancha': ('frente', "a cascade of large and small brown boulders falling from above with dust clouds", "the same boulders tumbling down, transparent background around them, no ground and no square background"),
  'coraza': ('frente', "a hexagonal armor shield of grey stone plates forming around an empty center with a golden glint", "the stone plates assembling and shining"),
  'terremoto': ('arriba', "top-down view of the ground cracking in a radial pattern with brown shockwave ring and rising dust", "the cracks spreading and shaking"),
  'pedrisco': ('lado', "three sharp grey stones in a fan spread, flying left", "the stones spinning"),
@@ -61,7 +61,7 @@ C = {
  'garra_umbria': ('lado', "three dark purple shadow claw slashes with black wisps", "the shadow claws slashing and dissolving"),
  'confusion': ('lado', "a wobbling pink and purple psychic wave ring with spirals, flying left", "the psychic wave wobbling"),
  'psicorrayo': ('lado', "a horizontal beam of rippling pink and violet psychic energy rings flowing from right to left", "the psychic beam rippling"),
- 'barrera': ('frente', "a translucent pink hexagonal force field dome with shimmering lines, empty center", "the barrier shimmering"),
+ 'barrera': ('frente', "a translucent pink hexagonal force field dome with shimmering lines, empty center", "the same pink dome barrier gently shimmering with a light ripple, keeping its shape and colors in every frame"),
  'onda_mental': ('arriba', "top-down view of a pulsing ring of pink psychic energy with spirals", "the psychic ring pulsing outward"),
  'teletransporte': ('frente', "a sparkling pink and white teleport flash with vertical light streaks and stars", "the teleport flash sparkling and vanishing"),
  'psiquico': ('frente', "a distortion burst of pink and violet psychic force with warped rings around a bright center", "the psychic force warping and pulsing"),
