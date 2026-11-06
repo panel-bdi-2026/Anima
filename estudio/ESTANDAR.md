@@ -55,3 +55,5 @@ Aprobado por Alejandro con la línea de Ignito (Ignito, Fogarzo, Magmaurio, Sola
 - **Ataques:** Alejandro sí participa y elige.
 - Personajes: lienzo de 64 × 64, unos 4 cabezas de alto. Animaciones: reposo y caminar en 3 vistas (lado, frente, espalda);
   el jugador además correr; jugador, rival y líderes además «lanzar» (de lado). Programa: `estudio/animar_pj.py`.
+- Prueba de personajes aprobada por Alejandro (PR de prueba #46: jugador, rival, profesora y Hiedra): «esto es lo que vamos a hacer».
+  Se puede pulir más adelante. Integración en el juego: `js/charframes.js` (cuadros de 64 × 64, pies en `feet`).
