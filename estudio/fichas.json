@@ -1323,5 +1323,53 @@
   ],
   "desc": "big fierce mountain guard dog, final evolution of a curly puppy, rock and normal type, large muscular body in a strong forward guarding stance, same face and floppy chocolate ears but with a fierce frown and slightly bared fangs, curly white and chocolate fur, sharp jagged rock spikes along its back like a mountain ridge, heavy stone bracers on its legs, a big spiked stone ball at the tip of its tail, intense determined eyes, intimidating but not demonic, standing on four legs, fully inside the canvas with margin",
   "tandas": 1
+ },
+ "pj_player": {
+  "size": 64,
+  "ref": "personajes/player_viejo64.png",
+  "refs": [
+   [
+    "personajes/player_viejo64.png",
+    "concept reference (old low resolution sprite of this human character): keep the outfit, colors, hairstyle and accessories, redraw it as a detailed high quality pixel art character"
+   ]
+  ],
+  "desc": "young trainer boy around 12 years old, human character for a creature-collecting RPG, cute but not chibi, proportions about 4 heads tall, clear readable face, detailed clothing folds, standing upright on two feet, full body, white baseball cap, short dark brown hair, teal jacket over a white shirt, dark navy pants, red sneakers, a yellow backpack on his back, determined friendly expression",
+  "tandas": 1
+ },
+ "pj_rival": {
+  "size": 64,
+  "ref": "personajes/rival_viejo64.png",
+  "refs": [
+   [
+    "personajes/rival_viejo64.png",
+    "concept reference (old low resolution sprite of this human character): keep the outfit, colors, hairstyle and accessories, redraw it as a detailed high quality pixel art character"
+   ]
+  ],
+  "desc": "rival trainer boy around 13 years old, human character for a creature-collecting RPG, cute but not chibi, proportions about 4 heads tall, clear readable face, detailed clothing folds, standing upright on two feet, full body, spiky orange-red hair, purple jacket with dark accents over a dark shirt, dark grey pants, dark shoes, confident cocky smirk",
+  "tandas": 1
+ },
+ "pj_prof": {
+  "size": 64,
+  "ref": "personajes/prof_viejo64.png",
+  "refs": [
+   [
+    "personajes/prof_viejo64.png",
+    "concept reference (old low resolution sprite of this human character): keep the outfit, colors, hairstyle and accessories, redraw it as a detailed high quality pixel art character"
+   ]
+  ],
+  "desc": "creature professor, an older woman scientist, human character for a creature-collecting RPG, cute but not chibi, proportions about 4 heads tall, clear readable face, detailed clothing folds, standing upright on two feet, full body, silver-white hair in a bun, round glasses, long white lab coat with teal trim and collar, grey slacks, dark shoes, kind wise smile",
+  "tandas": 1
+ },
+ "pj_hiedra": {
+  "size": 64,
+  "ref": "personajes/hiedra_viejo64.png",
+  "refs": [
+   [
+    "personajes/hiedra_viejo64.png",
+    "concept reference (old low resolution sprite of this human character): keep the outfit, colors, hairstyle and accessories, redraw it as a detailed high quality pixel art character"
+   ]
+  ],
+  "desc": "grass-type gym leader, a young woman gardener, human character for a creature-collecting RPG, cute but not chibi, proportions about 4 heads tall, clear readable face, detailed clothing folds, standing upright on two feet, full body, long green hair, wide straw sun hat with a pink ribbon, light green sundress with leaf patterns, a few leaves and vines as accessories, brown sandals, calm gentle smile",
+  "tandas": 1
  }
 }
