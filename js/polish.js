@@ -47,8 +47,11 @@ StartMenu.prototype.draw = function (ctx) {
     if (sel) { P(ctx, R.x + 3, y - 1, R.w - 6, 16, '#e4ecff'); P(ctx, R.x + 3, y - 1, 2, 16, '#6c8cd8'); }
     const ic = MENU_ICONS[k] || MENU_ICONS.card, col = MENU_COL[k] || '#8080a0';
     const bx = R.x + 9, by = y + 3 + (sel ? Math.round(Math.sin(t * 8)) : 0);
-    ctx.fillStyle = '#2a2236'; ic.forEach((r, j) => { for (let q = 0; q < r.length; q++) if (r[q] === 'o') ctx.fillRect(bx + q + 1, by + j + 1, 1, 1); });
-    ctx.fillStyle = sel ? col : U.mix(col, '#fbf7ee', 0.35); ic.forEach((r, j) => { for (let q = 0; q < r.length; q++) if (r[q] === 'o') ctx.fillRect(bx + q, by + j, 1, 1); });
+    const nu = typeof Iconos !== 'undefined' && Iconos.menu(k);
+    if (nu) { if (!sel) ctx.globalAlpha = 0.75; ctx.drawImage(nu, bx - 3, by - 4); ctx.globalAlpha = 1; } else {
+      ctx.fillStyle = '#2a2236'; ic.forEach((r, j) => { for (let q = 0; q < r.length; q++) if (r[q] === 'o') ctx.fillRect(bx + q + 1, by + j + 1, 1, 1); });
+      ctx.fillStyle = sel ? col : U.mix(col, '#fbf7ee', 0.35); ic.forEach((r, j) => { for (let q = 0; q < r.length; q++) if (r[q] === 'o') ctx.fillRect(bx + q, by + j, 1, 1); });
+    }
     Font.draw(ctx, n, R.x + 24, y + 3, sel ? '#2a2236' : '#5a5070');
   });
   // objetivo actual (abajo a la izquierda)
@@ -229,11 +232,21 @@ TrainerCard.prototype.draw = function (ctx) {
   const n = BADGES.length;
   for (let i = 0; i < n; i++) {
     const x = 30 + i * 44, y = 154, got = G.badges[i];
-    P(ctx, x - 2, y - 2, 28, 28, '#1c1824'); P(ctx, x - 1, y - 1, 26, 26, got ? '#fff4d0' : '#e0d8c8');
-    if (got) ctx.drawImage(Icons.badge(i), x + 5, y + 5);
-    else { ctx.globalAlpha = 0.25; ctx.drawImage(Icons.badge(i), x + 5, y + 5); ctx.globalAlpha = 1; }
+    const big = typeof Iconos !== 'undefined' && (got ? Iconos.medal(i) : Iconos.medalShadow(i));
+    if (big) {
+      // medalla grande (32×32): las ganadas sobre un disco con un destello que pasa cada tanto
+      const cx = x + 12, cy = y + 13, [ox, oy] = Iconos.center(big);
+      if (got) { pixCircle(ctx, cx, cy, 17, '#fff0c0'); pixCircle(ctx, cx, cy, 15, '#fff8e0'); }
+      ctx.drawImage(big, Math.round(cx - ox), Math.round(cy - oy));
+      const ph = (Engine.time * 0.6 + i * 0.37) % 3;
+      if (got && ph < 0.5) { ctx.save(); ctx.globalAlpha = 0.6 * (1 - Math.abs(ph - 0.25) * 4); P(ctx, Math.round(cx - 14 + ph * 56), cy - 13, 2, 26, '#ffffff'); ctx.restore(); }
+    } else {
+      P(ctx, x - 2, y - 2, 28, 28, '#1c1824'); P(ctx, x - 1, y - 1, 26, 26, got ? '#fff4d0' : '#e0d8c8');
+      if (got) ctx.drawImage(Icons.badge(i), x + 5, y + 5);
+      else { ctx.globalAlpha = 0.25; ctx.drawImage(Icons.badge(i), x + 5, y + 5); ctx.globalAlpha = 1; }
+    }
     let nm = BADGES[i].name.replace('Medalla ', ''); while (Font.width(nm) > 40) nm = nm.slice(0, -1);
-    Font.drawCenter(ctx, nm, x + 12, y + 30, got ? '#5a4030' : '#a098a8');
+    Font.drawCenter(ctx, nm, x + 12, y + (typeof Iconos !== 'undefined' && Iconos.medal(i) ? 33 : 30), got ? '#5a4030' : '#a098a8');
   }
   Font.drawCenter(ctx, 'Z / X: cerrar', 160, 207, '#8a8098');
 };
@@ -319,7 +332,7 @@ ShopScreen.prototype.draw = function (ctx) {
     const it = ITEMS[id], t = Engine.time;
     pixCircle(ctx, 70, 78, 30, '#dce8f4'); pixCircle(ctx, 70, 78, 24, '#eef4fa');
     drawShadow(ctx, 70, 104, 18, 4, 0.25);
-    const ic = Icons.item(id); ctx.drawImage(ic, 0, 0, 16, 16, 54, 58 + Math.round(Math.sin(t * 2) * 2), 32, 32);
+    const big = Icons.itemBig && Icons.itemBig(id); if (big) ctx.drawImage(big, 54, 58 + Math.round(Math.sin(t * 2) * 2)); else { const ic = Icons.item(id); ctx.drawImage(ic, 0, 0, 16, 16, 54, 58 + Math.round(Math.sin(t * 2) * 2), 32, 32); }
     Font.drawCenter(ctx, it.name, 70, 114, '#2a2236');
     Font.drawCenter(ctx, `Tienes: ${G.bag[id] || 0}`, 70, 128, '#5a5070');
     const price = buy ? Events.buyPrice(it) : (it.sell || Math.floor(it.price / 2));
