@@ -47,7 +47,7 @@ MouseUI.wrap(TitleScreen, function () {
 });
 MouseUI.wrap(PartyScreen, function () {
   if (this.busy) return;
-  const over = MouseUI.list(this, 'i', G.party.length, 8, 8, 30, 304);
+  const over = MouseUI.list(this, 'i', G.party.length, 186, 26, 36, 232);
   if (!over && Input.mouse.pressed[0]) MouseUI.swallow();
 });
 MouseUI.wrap(BagScreen, function () {
@@ -70,7 +70,7 @@ MouseUI.wrap(BoxScreen, function () {
 MouseUI.wrap(DexScreen, function () {
   if (this.detail) return;
   const n = Math.min(14, SPECIES_LIST.length - this.scroll);
-  const over = MouseUI.list(this, 'i', n, 160, 28, 14.5, 154, this.scroll);
+  const over = MouseUI.list(this, 'i', n, 168, 32, 14.5, W - 176, this.scroll);
   if (!over && Input.mouse.pressed[0]) MouseUI.swallow();
 });
 MouseUI.wrap(OptionsScreen, function () {

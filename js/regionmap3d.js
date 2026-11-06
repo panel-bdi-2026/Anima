@@ -118,6 +118,10 @@ const RegionMap3D = {
     const pt = new THREE.CanvasTexture(pcv); pt.magFilter = THREE.NearestFilter; pt.minFilter = THREE.NearestFilter; pt.encoding = THREE.sRGBEncoding;
     const pg = new THREE.PlaneGeometry(0.8, 1.2); pg.translate(0, 0.6, 0);
     this.player = new THREE.Mesh(pg, new THREE.MeshBasicMaterial({ map: pt, alphaTest: 0.5, side: THREE.DoubleSide })); S.add(this.player);
+    if (typeof CharFrames !== 'undefined') CharFrames.canvasWhenReady('player', 'frente', (c) => {
+      const t = new THREE.CanvasTexture(c); t.magFilter = t.minFilter = THREE.NearestFilter; t.encoding = THREE.sRGBEncoding;
+      this.player.material.map = t; this.player.material.needsUpdate = true;
+    });
     this.ring = new THREE.Mesh(new THREE.RingGeometry(0.75, 0.95, 32), new THREE.MeshBasicMaterial({ color: '#ffffff', transparent: true, opacity: 0.9, side: THREE.DoubleSide, depthWrite: false }));
     this.ring.rotation.x = -Math.PI / 2; S.add(this.ring);
     this.pin = new THREE.Mesh(new THREE.OctahedronGeometry(0.2, 0), new THREE.MeshLambertMaterial({ color: '#ffd048', emissive: '#a06010', emissiveIntensity: 0.6 })); S.add(this.pin);

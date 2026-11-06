@@ -145,7 +145,7 @@ if (typeof World3D !== 'undefined') {
         if (q.g.parent !== this.root) this.root.add(q.g); // el mapa se volvió a armar
         seen.add(e);
         const b = Math.sin(t * 2.6 + q.ph);
-        q.g.position.set((e.px + 8) / 16, 2.55 + b * 0.07, (e.py + 14) / 16);
+        q.g.position.set((e.px + 8) / 16, (typeof CharFrames !== 'undefined' && CharFrames.SET[e.look] ? 3.15 : 2.55) + b * 0.07, (e.py + 14) / 16);
         q.icon.scale.set(0.72 * (1 + Math.max(0, b) * 0.04), 0.72 * (QuestMark.H / QuestMark.W), 1);
         q.glow.material.opacity = 0.38 + 0.14 * (b * 0.5 + 0.5);
         q.g.visible = true;
