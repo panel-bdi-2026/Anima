@@ -1,0 +1,303 @@
+{
+"artist": {
+"feet": 62,
+"acciones": {
+"reposo": 5,
+"caminar": 9,
+"lanzar": 9
+}
+},
+"ascua": {
+"feet": 62,
+"acciones": {
+"reposo": 5,
+"caminar": 9,
+"lanzar": 9
+}
+},
+"baker": {
+"feet": 61,
+"acciones": {
+"reposo": 5,
+"caminar": 9
+}
+},
+"boy": {
+"feet": 63,
+"acciones": {
+"reposo": 5,
+"caminar": 9,
+"lanzar": 9
+}
+},
+"brisa": {
+"feet": 62,
+"acciones": {
+"reposo": 5,
+"caminar": 9,
+"lanzar": 9
+}
+},
+"bruna": {
+"feet": 62,
+"acciones": {
+"reposo": 5,
+"caminar": 9,
+"lanzar": 9
+}
+},
+"bug": {
+"feet": 63,
+"acciones": {
+"reposo": 5,
+"caminar": 9,
+"lanzar": 9
+}
+},
+"clerk": {
+"feet": 61,
+"acciones": {
+"reposo": 5,
+"caminar": 9
+}
+},
+"farmer": {
+"feet": 62,
+"acciones": {
+"reposo": 5,
+"caminar": 9
+}
+},
+"fisher": {
+"feet": 61,
+"acciones": {
+"reposo": 5,
+"caminar": 9,
+"lanzar": 9
+}
+},
+"girl": {
+"feet": 62,
+"acciones": {
+"reposo": 5,
+"caminar": 9,
+"lanzar": 9
+}
+},
+"grunt": {
+"feet": 63,
+"acciones": {
+"reposo": 5,
+"caminar": 9,
+"lanzar": 9
+}
+},
+"guard": {
+"feet": 61,
+"acciones": {
+"reposo": 5,
+"caminar": 9
+}
+},
+"guide": {
+"feet": 62,
+"acciones": {
+"reposo": 5,
+"caminar": 9
+}
+},
+"hiedra": {
+"feet": 61,
+"acciones": {
+"reposo": 5,
+"caminar": 9,
+"lanzar": 9
+}
+},
+"hiker": {
+"feet": 62,
+"acciones": {
+"reposo": 5,
+"caminar": 9,
+"lanzar": 9
+}
+},
+"jogger": {
+"feet": 62,
+"acciones": {
+"reposo": 5,
+"caminar": 9,
+"lanzar": 9
+}
+},
+"kid2": {
+"feet": 61,
+"acciones": {
+"reposo": 5,
+"caminar": 9,
+"lanzar": 9
+}
+},
+"lass": {
+"feet": 61,
+"acciones": {
+"reposo": 5,
+"caminar": 9,
+"lanzar": 9
+}
+},
+"mailman": {
+"feet": 62,
+"acciones": {
+"reposo": 5,
+"caminar": 9
+}
+},
+"mom": {
+"feet": 62,
+"acciones": {
+"reposo": 5,
+"caminar": 9
+}
+},
+"monk": {
+"feet": 61,
+"acciones": {
+"reposo": 5,
+"caminar": 9,
+"lanzar": 9
+}
+},
+"neron": {
+"feet": 61,
+"acciones": {
+"reposo": 5,
+"caminar": 9,
+"lanzar": 9
+}
+},
+"nurse": {
+"feet": 62,
+"acciones": {
+"reposo": 5,
+"caminar": 9
+}
+},
+"nyx": {
+"feet": 61,
+"acciones": {
+"reposo": 5,
+"caminar": 9,
+"lanzar": 9
+}
+},
+"oldman": {
+"feet": 61,
+"acciones": {
+"reposo": 5,
+"caminar": 9
+}
+},
+"oldwoman": {
+"feet": 61,
+"acciones": {
+"reposo": 5,
+"caminar": 9
+}
+},
+"player": {
+"feet": 62,
+"acciones": {
+"correr": 9,
+"reposo": 5,
+"caminar": 9,
+"lanzar": 9
+}
+},
+"prof": {
+"feet": 62,
+"acciones": {
+"reposo": 5,
+"caminar": 9
+}
+},
+"rival": {
+"feet": 61,
+"acciones": {
+"reposo": 5,
+"caminar": 9,
+"lanzar": 9
+}
+},
+"sailor": {
+"feet": 61,
+"acciones": {
+"reposo": 5,
+"caminar": 9,
+"lanzar": 9
+}
+},
+"scientist": {
+"feet": 61,
+"acciones": {
+"reposo": 5,
+"caminar": 9,
+"lanzar": 9
+}
+},
+"selene": {
+"feet": 62,
+"acciones": {
+"reposo": 5,
+"caminar": 9,
+"lanzar": 9
+}
+},
+"sister": {
+"feet": 62,
+"acciones": {
+"reposo": 5,
+"caminar": 9
+}
+},
+"smith": {
+"feet": 62,
+"acciones": {
+"reposo": 5,
+"caminar": 9,
+"lanzar": 9
+}
+},
+"swimmer": {
+"feet": 61,
+"acciones": {
+"reposo": 5,
+"caminar": 9,
+"lanzar": 9
+}
+},
+"vesper": {
+"feet": 61,
+"acciones": {
+"reposo": 5,
+"caminar": 9,
+"lanzar": 9
+}
+},
+"worker": {
+"feet": 63,
+"acciones": {
+"reposo": 5,
+"caminar": 9,
+"lanzar": 9
+}
+},
+"youngster": {
+"feet": 60,
+"acciones": {
+"reposo": 5,
+"caminar": 9,
+"lanzar": 9
+}
+}
+}

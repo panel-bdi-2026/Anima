@@ -20,7 +20,7 @@ def img(p, uso=None):
 
 def pedido(sp, tanda):
     f = FICHAS[sp]
-    body = {'description': f['desc'] + f.get('cola', COLA), 'image_size': {'width': f['size'], 'height': f['size']}, 'no_background': True,
+    body = {'description': f['desc'] + f.get('cola', COLA), 'image_size': {'width': f['size'], 'height': f['size']}, 'no_background': f.get('no_bg', True),
             'reference_images': [img(r, u) for r, u in f.get('refs', [[f['ref'], 'concept reference for this creature: keep its idea, body plan, colors and key features, but redraw it with better anatomy and detail']])],
             'style_image': img(f.get('estilo', ESTILO)), 'style_options': {'color_palette': False, 'outline': True, 'detail': True, 'shading': True}}
     for intento in range(3):

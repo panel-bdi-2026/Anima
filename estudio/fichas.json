@@ -3961,5 +3961,95 @@
   ],
   "desc": "ONLY ONE single person, alone, no other characters, shop clerk man, short dark hair, blue apron over a white shirt, dark pants, friendly smile, human character for a creature-collecting RPG, cute but not chibi, proportions about 4 heads tall, clear readable face, detailed clothing, standing upright on two feet in a neutral pose with arms relaxed at the sides, empty hands, full body, ",
   "tandas": 1
+ },
+ "hab_bosque": {
+  "size": 144,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art background scene for a creature encyclopedia page, square, side view, no creatures, no characters, no text, soft light from the top-left, calm and detailed, gentle depth with a clear empty ground area in the lower middle where a creature will stand, a lush green forest clearing with tall trees, ferns and dappled sunlight",
+  "cola": ", high quality detailed pixel art background, fills the whole square, no transparency",
+  "tandas": 1,
+  "no_bg": false
+ },
+ "hab_pradera": {
+  "size": 144,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art background scene for a creature encyclopedia page, square, side view, no creatures, no characters, no text, soft light from the top-left, calm and detailed, gentle depth with a clear empty ground area in the lower middle where a creature will stand, a sunny grassy meadow with wildflowers, distant hills and blue sky",
+  "cola": ", high quality detailed pixel art background, fills the whole square, no transparency",
+  "tandas": 1,
+  "no_bg": false
+ },
+ "hab_agua": {
+  "size": 144,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art background scene for a creature encyclopedia page, square, side view, no creatures, no characters, no text, soft light from the top-left, calm and detailed, gentle depth with a clear empty ground area in the lower middle where a creature will stand, a calm lakeshore with clear blue water, sandy bank, reeds and a few rocks",
+  "cola": ", high quality detailed pixel art background, fills the whole square, no transparency",
+  "tandas": 1,
+  "no_bg": false
+ },
+ "hab_cueva": {
+  "size": 144,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art background scene for a creature encyclopedia page, square, side view, no creatures, no characters, no text, soft light from the top-left, calm and detailed, gentle depth with a clear empty ground area in the lower middle where a creature will stand, a cave interior with grey rock walls, a few glowing crystals and a stone floor",
+  "cola": ", high quality detailed pixel art background, fills the whole square, no transparency",
+  "tandas": 1,
+  "no_bg": false
+ },
+ "hab_volcan": {
+  "size": 144,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art background scene for a creature encyclopedia page, square, side view, no creatures, no characters, no text, soft light from the top-left, calm and detailed, gentle depth with a clear empty ground area in the lower middle where a creature will stand, a volcanic slope with dark basalt rocks, warm glow of lava in the distance and smoke",
+  "cola": ", high quality detailed pixel art background, fills the whole square, no transparency",
+  "tandas": 1,
+  "no_bg": false
+ },
+ "hab_cielo": {
+  "size": 144,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art background scene for a creature encyclopedia page, square, side view, no creatures, no characters, no text, soft light from the top-left, calm and detailed, gentle depth with a clear empty ground area in the lower middle where a creature will stand, high above the clouds at sunset, soft pink and gold clouds, a floating cloud platform as ground",
+  "cola": ", high quality detailed pixel art background, fills the whole square, no transparency",
+  "tandas": 1,
+  "no_bg": false
+ },
+ "hab_noche": {
+  "size": 144,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art background scene for a creature encyclopedia page, square, side view, no creatures, no characters, no text, soft light from the top-left, calm and detailed, gentle depth with a clear empty ground area in the lower middle where a creature will stand, a moonlit night clearing with dark purple trees, fireflies and a big full moon",
+  "cola": ", high quality detailed pixel art background, fills the whole square, no transparency",
+  "tandas": 1,
+  "no_bg": false
+ },
+ "hab_mistico": {
+  "size": 144,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art background scene for a creature encyclopedia page, square, side view, no creatures, no characters, no text, soft light from the top-left, calm and detailed, gentle depth with a clear empty ground area in the lower middle where a creature will stand, a mystic shrine with ancient stone pillars, soft violet light and floating sparkles",
+  "cola": ", high quality detailed pixel art background, fills the whole square, no transparency",
+  "tandas": 1,
+  "no_bg": false
+ },
+ "hab_pantano": {
+  "size": 144,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art background scene for a creature encyclopedia page, square, side view, no creatures, no characters, no text, soft light from the top-left, calm and detailed, gentle depth with a clear empty ground area in the lower middle where a creature will stand, a misty swamp with mossy roots, mushrooms and shallow murky water",
+  "cola": ", high quality detailed pixel art background, fills the whole square, no transparency",
+  "tandas": 1,
+  "no_bg": false
+ },
+ "hab_tormenta": {
+  "size": 144,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art background scene for a creature encyclopedia page, square, side view, no creatures, no characters, no text, soft light from the top-left, calm and detailed, gentle depth with a clear empty ground area in the lower middle where a creature will stand, a rocky plateau under a stormy sky with distant lightning",
+  "cola": ", high quality detailed pixel art background, fills the whole square, no transparency",
+  "tandas": 1,
+  "no_bg": false
  }
 }
