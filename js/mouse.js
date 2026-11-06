@@ -47,7 +47,7 @@ MouseUI.wrap(TitleScreen, function () {
 });
 MouseUI.wrap(PartyScreen, function () {
   if (this.busy) return;
-  const over = MouseUI.list(this, 'i', G.party.length, 8, 8, 30, 304);
+  const over = MouseUI.list(this, 'i', G.party.length, 186, 26, 36, 232);
   if (!over && Input.mouse.pressed[0]) MouseUI.swallow();
 });
 MouseUI.wrap(BagScreen, function () {
