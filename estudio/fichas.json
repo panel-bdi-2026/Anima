@@ -4395,5 +4395,41 @@
   "desc": "pixel art inventory item icon for a creature-collecting RPG, single object centered, bold dark outline, soft shading lit from the top-left, vivid colors, transparent background, readable at small size, a simple bold UI menu icon, flat colors, thick outline, a green diary journal with a quill pen (save), the whole object fully inside the canvas with a clear empty margin on every side, centered",
   "cola": ", high quality pixel art icon",
   "tandas": 1
+ },
+ "tx_fuego": {
+  "size": 64,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "seamless tileable pixel art texture, fills the whole square edge to edge, no objects, no border, no background color outside the pattern, top-down flat view, vivid, for use on 3D effects in a game, swirling bright fire flames, yellow white hot streaks, orange and deep red tongues of flame flowing upward",
+  "cola": ", high quality pixel art texture",
+  "tandas": 1,
+  "no_bg": false
+ },
+ "tx_rayo": {
+  "size": 64,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "seamless tileable pixel art texture, fills the whole square edge to edge, no objects, no border, no background color outside the pattern, top-down flat view, vivid, for use on 3D effects in a game, crackling electric energy, bright white and yellow lightning arcs branching over a pale blue glow",
+  "cola": ", high quality pixel art texture",
+  "tandas": 1,
+  "no_bg": false
+ },
+ "tx_roca": {
+  "size": 64,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "seamless tileable pixel art texture, fills the whole square edge to edge, no objects, no border, no background color outside the pattern, top-down flat view, vivid, for use on 3D effects in a game, cracked brown and grey rock ground with deep dark fissures and small pebbles",
+  "cola": ", high quality pixel art texture",
+  "tandas": 1,
+  "no_bg": false
+ },
+ "tx_sombra": {
+  "size": 64,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "seamless tileable pixel art texture, fills the whole square edge to edge, no objects, no border, no background color outside the pattern, top-down flat view, vivid, for use on 3D effects in a game, swirling dark purple and black shadow smoke with violet wisps and tiny glowing specks",
+  "cola": ", high quality pixel art texture",
+  "tandas": 1,
+  "no_bg": false
  }
 }
