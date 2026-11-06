@@ -17,7 +17,10 @@ CUERPO = {'ignito': 'cuadrupedo', 'fogarzo': 'cuadrupedo', 'magmaurio': 'bipedo'
           'hongui': 'bipedo', 'setalon': 'bipedo', 'esporal': 'bipedo', 'brisin': 'nube', 'nimbo': 'nube', 'murcin': 'bipedo', 'noctalar': 'ave',
           'micelion': 'bipedo', 'granizor': 'flotante', 'nubaria': 'nube', 'lunavela': 'bipedo',
           'vampirax': 'bipedo', 'silvaneo': 'cuadrupedo', 'auroros': 'cuadrupedo', 'albora': 'bipedo', 'geiseron': 'cuadrupedo', 'umbrarbol': 'bipedo',
-          'lunafalena': 'volador', 'forjador': 'bipedo', 'leviaton': 'serpiente', 'celestia': 'volador'}
+          'lunafalena': 'volador', 'forjador': 'bipedo', 'leviaton': 'serpiente', 'celestia': 'volador',
+          'marealis': 'serpiente', 'tempestron': 'ave', 'galerno': 'cuadrupedo', 'tofu': 'cuadrupedo', 'mistofa': 'cuadrupedo', 'arcanya': 'cuadrupedo',
+          'buppa': 'cuadrupedo', 'buclon': 'cuadrupedo', 'monteriz': 'cuadrupedo', 'parker': 'cuadrupedo', 'gatumbra': 'cuadrupedo', 'umbrapanter': 'cuadrupedo',
+          'aurelina': 'cuadrupedo', 'florizo': 'cuadrupedo', 'trueno_umbrio': 'cuadrupedo'}
 ELEMENTO = {'fogarzo': 'a burst of fire', 'magmaurio': 'a ball of magma', 'solarix': 'a fiery feather blast',
             'burbujo': 'a stream of bubbles', 'marolo': 'a jet of water', 'abismar': 'a dark water orb', 'coralis': 'a psychic wave from its coral crown',
             'semillin': 'a volley of seeds', 'hojardo': 'sharp spinning leaves', 'robledor': 'a rock thrown from the ground', 'floraxia': 'a swirl of petals and glowing pollen',
@@ -34,7 +37,10 @@ ELEMENTO = {'fogarzo': 'a burst of fire', 'magmaurio': 'a ball of magma', 'solar
             'micelion': 'a wave of glowing green spores', 'granizor': 'a volley of hailstones', 'nubaria': 'a soft beam of sunrise light', 'lunavela': 'a beam of moonlight',
             'vampirax': 'a dart of venom from its stinger', 'silvaneo': 'a wave of growing roots and leaves', 'auroros': 'a blast of sunrise fire', 'albora': 'a beam of soft dawn light',
             'geiseron': 'a jet of boiling steam', 'umbrarbol': 'dark roots bursting from the ground', 'lunafalena': 'a cloud of glowing moon dust', 'forjador': 'a shockwave of sparks by slamming its fists',
-            'leviaton': 'a dark water orb', 'celestia': 'a swirl of petals and wind'}
+            'leviaton': 'a dark water orb', 'celestia': 'a swirl of petals and wind',
+            'marealis': 'a huge wave of water', 'tempestron': 'a bolt of lightning from its wings', 'galerno': 'a blade of wind', 'tofu': 'a few sparkles of light', 'mistofa': 'a psychic wave from its gem',
+            'arcanya': 'a psychic wave from its gem', 'buppa': 'a small pebble', 'buclon': 'a pumice stone', 'monteriz': 'a boulder', 'parker': 'a small ball of shadow', 'gatumbra': 'a ball of shadow from its tail',
+            'umbrapanter': 'a wave of black shadow fire', 'aurelina': 'a gust of wind from its wings', 'florizo': 'a burst of petals and pebbles', 'trueno_umbrio': 'a bolt of lightning'}
 MOV = {
     'cuadrupedo': {'caminar': 'walking, natural four-legged walk cycle', 'correr': 'running fast, four-legged gallop cycle',
                    'atacar': 'lunging forward with a quick bite or claw attack, then returning to stance'},

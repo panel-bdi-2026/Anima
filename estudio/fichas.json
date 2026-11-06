@@ -1247,5 +1247,49 @@
   ],
   "desc": "legendary sky courser hare, the exact same creature as the reference, complete and fully visible, its flowing tail of wind fully inside the canvas, clear empty margin around it",
   "tandas": 1
+ },
+ "mistofaB": {
+  "size": 80,
+  "ref": "variantes/mistofa_0_2.png",
+  "refs": [
+   [
+    "variantes/mistofa_0_2.png",
+    "keep this exact character design, pose, size, proportions and colors; only add the small extra details described"
+   ],
+   [
+    "elegidos/arcanya.png",
+    "this is its final evolution: borrow only a few small details from it, nothing drastic"
+   ]
+  ],
+  "desc": "elegant young white cat, psychic type, the same cat as the reference with a few small extra details from its final evolution: a slightly fluffier chest ruff, a small glowing lilac flame-like tuft at the tip of its tail, faint lilac tips on its ears, the pink gem on its forehead, standing on four legs",
+  "tandas": 1
+ },
+ "parkerB": {
+  "size": 80,
+  "ref": "variantes/parker_0_0.png",
+  "refs": [
+   [
+    "variantes/parker_0_0.png",
+    "keep this exact character design, pose, size, proportions and colors; only add the small extra details described"
+   ],
+   [
+    "elegidos/gatumbra.png",
+    "this is its evolution: borrow only a few small details from it, nothing drastic"
+   ]
+  ],
+  "desc": "cute small dark grey kitten, ghost type, the same kitten as the reference with a few small extra details from its evolution: a tiny violet wisp of shadow at the tip of its tail, a faint dark marking on its forehead, yellow defiant eyes, standing on four legs",
+  "tandas": 1
+ },
+ "monterizB": {
+  "size": 96,
+  "ref": "elegidos/buclon.png",
+  "refs": [
+   [
+    "elegidos/buclon.png",
+    "this is its pre-evolution: keep the family resemblance (its face, floppy chocolate ears, curly white and chocolate fur, grey stone curls and the round stone ball at the tip of its tail), but make it clearly a bigger and more evolved creature"
+   ]
+  ],
+  "desc": "big strong mountain dog, final evolution of a curly puppy, rock and normal type, large sturdy body clearly grown from the reference: same face and floppy chocolate ears, curly white and chocolate fur, the grey stone curls grown into solid rock plates along its back like a small mountain ridge, stone bracers on its legs, a big round stone ball at the tip of its tail, loyal calm serious eyes, standing on four legs, imposing protector, fully inside the canvas with margin",
+  "tandas": 2
  }
 }
