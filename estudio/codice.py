@@ -13,7 +13,7 @@ os.chdir(AQUI)
 
 DATOS = json.load(open('codice_datos.json'))
 TIPOS = dict(DATOS['types'])
-FI = json.load(open('/tmp/claude-0/-home-user-Anima/cbeafa3a-7356-5591-b7a7-8c34a6e80109/scratchpad/frames_info.json'))
+FI = json.load(open('frames_info.json'))
 
 
 def cuadros(carpeta, accion, vista):
