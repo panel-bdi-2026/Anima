@@ -1291,5 +1291,37 @@
   ],
   "desc": "big strong mountain dog, final evolution of a curly puppy, rock and normal type, large sturdy body clearly grown from the reference: same face and floppy chocolate ears, curly white and chocolate fur, the grey stone curls grown into solid rock plates along its back like a small mountain ridge, stone bracers on its legs, a big round stone ball at the tip of its tail, loyal calm serious eyes, standing on four legs, imposing protector, fully inside the canvas with margin",
   "tandas": 2
+ },
+ "gatumbraB": {
+  "size": 80,
+  "ref": "elegidos/gatumbra.png",
+  "refs": [
+   [
+    "elegidos/gatumbra.png",
+    "keep this exact character design, pose, size, proportions and colors; only add the small extra details described"
+   ],
+   [
+    "elegidos/umbrapanter.png",
+    "this is its final evolution: borrow only a few small details from it, nothing drastic"
+   ]
+  ],
+  "desc": "agile young shadow cat, ghost type, the same cat as the reference with a few small extra details from its final evolution: a short wispy mane of dark shadow starting on its neck, a few faint violet markings on its flanks, its violet flame tail, yellow eyes, standing on four legs",
+  "tandas": 1
+ },
+ "monterizC": {
+  "size": 96,
+  "ref": "elegidos/buclon.png",
+  "refs": [
+   [
+    "elegidos/buclon.png",
+    "this is its pre-evolution: keep the family resemblance (its face, floppy chocolate ears, curly white and chocolate fur, grey stone curls and the round stone ball at the tip of its tail), but make it clearly a bigger and more evolved creature"
+   ],
+   [
+    "variantes/monterizB_0_0.png",
+    "previous approved direction for this creature: keep this general look but make it fiercer"
+   ]
+  ],
+  "desc": "big fierce mountain guard dog, final evolution of a curly puppy, rock and normal type, large muscular body in a strong forward guarding stance, same face and floppy chocolate ears but with a fierce frown and slightly bared fangs, curly white and chocolate fur, sharp jagged rock spikes along its back like a mountain ridge, heavy stone bracers on its legs, a big spiked stone ball at the tip of its tail, intense determined eyes, intimidating but not demonic, standing on four legs, fully inside the canvas with margin",
+  "tandas": 1
  }
 }
