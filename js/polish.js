@@ -61,45 +61,54 @@ StartMenu.prototype.draw = function (ctx) {
   }
 };
 
-// ---------- lista de ánimas: tarjetas con color de tipo, PS y experiencia ----------
+// ---------- equipo: vitrina con la ánima elegida a tamaño real y la lista a la derecha ----------
+PartyScreen.prototype.wide = true;
 PartyScreen.prototype.draw = function (ctx) {
-  P(ctx, 0, 0, W, H, '#2c5490');
-  const o = (Engine.time * 6) % 20;
-  ctx.fillStyle = '#305a98';
-  for (let y = -20; y < H + 20; y += 20) for (let x = -20; x < W + 20; x += 20) ctx.fillRect(Math.round(x + o), Math.round(y + o), 10, 10);
-  G.party.forEach((c, i) => {
-    const sel = i === this.i, y = 5 + i * 30, x = 8 + (sel ? 3 : 0), w = 304;
-    const st = calcStats(c), sp = SPECIES[c.sp], tc = TYPES[sp.types[0]].color, dead = c.hp <= 0;
-    // sombra y marco
-    ctx.globalAlpha = 0.3; P(ctx, x + 2, y + 2, w, 28, '#0a1430'); ctx.globalAlpha = 1;
-    P(ctx, x, y, w, 28, sel ? '#ffe060' : '#1c1824');
-    P(ctx, x + 1, y + 1, w - 2, 26, dead ? '#e8d0d0' : sel ? '#fff8e0' : '#f4f0f8');
-    if (this.swap === i) P(ctx, x + 1, y + 1, w - 2, 26, '#c8e8ff');
-    P(ctx, x + 1, y + 1, 4, 26, dead ? '#a08080' : tc); P(ctx, x + 5, y + 1, 1, 26, U.shade(tc, -0.3));
-    // retrato sobre disco del tipo
-    pixCircle(ctx, x + 20, y + 15, 11, dead ? '#d8c0c0' : U.mix(tc, '#ffffff', sel ? 0.55 : 0.7));
-    const bob = sel && !dead ? Math.round(Math.sin(Engine.time * 8)) : 0;
-    drawCreatureIcon(ctx, c.sp, x + 8, y + 2 + bob, 24, 0, c.shiny);
-    if (c.shiny) Font.draw(ctx, '★', x + 30, y + 1, '#e8a020');
-    Font.draw(ctx, cName(c), x + 38, y + 4, '#2a2236');
-    Font.draw(ctx, 'Nv' + c.lv, x + 38, y + 15, '#5a5068');
-    sp.types.forEach((t, k) => UI.typeBadge(ctx, t, x + 98 + k * 33, y + 15));
-    if (c.held) ctx.drawImage(Icons.item(c.held), x + 164, y + 2);
-    // PS
-    const r = Math.max(0, c.hp) / st.hp;
-    Font.draw(ctx, 'PS', x + 184, y + 3, '#e0a030');
-    UI.bar(ctx, x + 198, y + 5, 84, 4, r, UI.hpColor(r));
-    Font.drawRight(ctx, dead ? 'DEBILITADO' : `${c.hp}/${st.hp}`, x + 282, y + 12, dead ? '#c03030' : '#2a2236');
-    // experiencia
-    const e0 = expFor(c.lv), e1 = expFor(c.lv + 1), ek = c.lv >= 100 ? 1 : U.clamp((c.exp - e0) / Math.max(1, e1 - e0), 0, 1);
-    P(ctx, x + 198, y + 23, 84, 2, '#d8d0e8'); P(ctx, x + 198, y + 23, Math.round(84 * ek), 2, '#58a8f0');
-    if (talentPoints(c) > 0) Font.draw(ctx, '★', x + 288, y + 3, Math.floor(Engine.time * 2) % 2 ? '#e8a020' : '#ffd060');
-    if (sel) UI.cursor(ctx, x + 292, y + 14);
+  const party = G.party, cur = party[this.i] || party[0], sp = SPECIES[cur.sp], tc = TYPES[sp.types[0]].color, st = calcStats(cur);
+  P(ctx, 0, 0, W, H, '#231d33');
+  ctx.fillStyle = '#2e2742';
+  for (let y = 0; y < H; y += 8) for (let x = (y / 8) % 2 ? 4 : 0; x < W; x += 8) ctx.fillRect(x, y, 1, 1);
+  // vitrina
+  const dead = cur.hp <= 0;
+  P(ctx, 8, 8, 170, 224, '#14101e'); P(ctx, 9, 9, 168, 222, U.mix(dead ? '#806868' : tc, '#231d33', 0.72));
+  ctx.globalAlpha = 0.3; pixCircle(ctx, 93, 108, 50, U.mix(tc, '#ffffff', 0.3)); ctx.globalAlpha = 1;
+  ctx.globalAlpha = 0.4; P(ctx, 52, 146, 82, 3, '#0a0812'); ctx.globalAlpha = 1;
+  ctx.save(); ctx.beginPath(); ctx.rect(9, 40, 168, 108); ctx.clip();
+  if (dead) ctx.globalAlpha = 0.55;
+  // a tamaño real: cada píxel del dibujo es un píxel de la pantalla
+  CreatureAnim.portrait(ctx, cur.sp, 80, cur.shiny, 93 - 40, 148 - 80, 'vitrina', { scale: 1 });
+  ctx.restore(); ctx.globalAlpha = 1;
+  Font.draw(ctx, cName(cur), 16, 14, '#ffffff');
+  if (cur.shiny) Font.draw(ctx, '★', 16 + Font.width(cName(cur)) + 4, 14, '#ffd060');
+  Font.drawRight(ctx, 'Nv ' + cur.lv, 170, 14, '#e0d8f0');
+  sp.types.forEach((t, k) => UI.typeBadge(ctx, t, 16 + k * 33, 28));
+  const r = Math.max(0, cur.hp) / st.hp;
+  Font.draw(ctx, 'PS', 16, 158, '#ffd060');
+  P(ctx, 34, 160, 136, 5, '#14101e'); P(ctx, 35, 161, Math.round(134 * r), 3, UI.hpColor(r));
+  Font.drawRight(ctx, dead ? 'DEBILITADA' : `${cur.hp}/${st.hp}`, 170, 169, dead ? '#ff8080' : '#ffffff');
+  const e0 = expFor(cur.lv), e1 = expFor(cur.lv + 1), ek = cur.lv >= 100 ? 1 : U.clamp((cur.exp - e0) / Math.max(1, e1 - e0), 0, 1);
+  P(ctx, 34, 180, 136, 2, '#14101e'); P(ctx, 34, 180, Math.round(136 * ek), 2, '#58a8f0'); Font.draw(ctx, 'EXP', 14, 177, '#8ac0f0');
+  Font.draw(ctx, `ATQ ${st.atk}   DEF ${st.def}`, 16, 188, '#c8c0dc');
+  Font.draw(ctx, `ESP ${st.esp}   VEL ${st.vel}`, 16, 200, '#c8c0dc');
+  if (cur.held) { ctx.drawImage(Icons.item(cur.held), 14, 211); Font.draw(ctx, ITEMS[cur.held].name, 32, 215, '#e0d8f0'); }
+  else if (talentPoints(cur) > 0) Font.draw(ctx, '★ Esencia por gastar', 16, 215, '#ffd060');
+  // lista
+  Font.draw(ctx, this.swap >= 0 ? '¿Con cuál intercambiar?' : fmt(this.msg), 188, 10, '#ffd060');
+  Font.drawRight(ctx, 'Z: elegir  X: volver', 418, 10, '#8a8098');
+  party.forEach((c, i) => {
+    const y = 24 + i * 36, sel = i === this.i, d = c.hp <= 0, s2 = calcStats(c), q = Math.max(0, c.hp) / s2.hp;
+    P(ctx, 186, y, 232, 34, sel ? '#ffd060' : '#14101e');
+    P(ctx, 187, y + 1, 230, 32, this.swap === i ? '#3a5a80' : d ? '#4a2c34' : sel ? '#3d3356' : '#2b2440');
+    const ic = typeof FrameSprites !== 'undefined' && FrameSprites.has(c.sp) ? (c.shiny ? FrameSprites.iconShiny(c.sp) : FrameSprites.icon(c.sp)) : null;
+    if (ic) ctx.drawImage(ic, 190, y + 1 - (sel && !d ? Math.floor(Engine.time * 4) % 2 : 0));
+    else drawCreatureIcon(ctx, c.sp, 190, y + 3, 28, 0, c.shiny);
+    Font.draw(ctx, cName(c), 228, y + 5, '#ffffff');
+    Font.draw(ctx, 'Nv' + c.lv, 228, y + 18, '#b8b0cc');
+    if (c.held) ctx.drawImage(Icons.item(c.held), 272, y + 15);
+    P(ctx, 300, y + 9, 108, 4, '#14101e'); P(ctx, 301, y + 10, Math.round(106 * q), 2, UI.hpColor(q));
+    Font.drawRight(ctx, d ? 'DEB' : `${c.hp}/${s2.hp}`, 408, y + 18, d ? '#ff8080' : '#e0d8f0');
+    if (talentPoints(c) > 0 && Math.floor(Engine.time * 2) % 2) Font.draw(ctx, '★', 290, y + 3, '#ffd060');
   });
-  UI.box(ctx, 4, 190, 312, 46);
-  Font.draw(ctx, this.swap >= 0 ? '¿Con cuál intercambiar?' : fmt(this.msg), 14, 200, '#2a2236');
-  Font.draw(ctx, 'Z: elegir   X: volver', 14, 216, '#8a8098');
-  if (G.party.some((c) => talentPoints(c) > 0)) Font.drawRight(ctx, '★ = Esencia por gastar', 306, 216, '#c08020');
 };
 
 // ---------- Códice: fondo por tipo, siluetas y filas con icono ----------
