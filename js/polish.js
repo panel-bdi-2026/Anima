@@ -231,7 +231,7 @@ TrainerCard.prototype.draw = function (ctx) {
   // retrato sobre un disco
   P(ctx, 222, 50, 74, 84, '#e8eef8'); P(ctx, 222, 50, 74, 1, '#c8d4e8');
   pixCircle(ctx, 259, 104, 26, '#d0dcf0');
-  ctx.drawImage(HiChar.get(LOOKS.player), 0, 0, 32, 48, 235, 58, 48, 72);
+  if (!(typeof CharFrames !== 'undefined' && CharFrames.portrait(ctx, 'player', 223, 58, 72, 72))) ctx.drawImage(HiChar.get(LOOKS.player), 0, 0, 32, 48, 235, 58, 48, 72);
   const rows = [['Nombre', G.name, '#2a2236'], ['Dinero', '$' + G.money, '#2a2236'], ['Códice', Object.keys(G.caught).length + ' capturados', '#2a2236'], ['Tiempo', Game.timeStr(G.playTime), '#2a2236'], ['Estilo', typeof Style !== 'undefined' ? Style.title() : '-', '#7a3aa0']];
   rows.forEach(([a, b, c], k) => { const y = 52 + k * 16; if (k % 2) P(ctx, 22, y - 3, 196, 15, '#f2ecdf'); Font.draw(ctx, a, 30, y, '#5a5068'); Font.draw(ctx, b, 94, y, c); });
   Font.draw(ctx, 'MEDALLAS', 30, 140, '#5a5068');

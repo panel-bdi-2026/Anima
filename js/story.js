@@ -14,15 +14,15 @@ class IntroScene {
     for (let i = 0; i < 30; i++) P(ctx, (i * 73) % W, (i * 41) % 170, 1, 1, i % 3 ? '#ffffff' : '#a0c0ff');
     drawShadow(ctx, 160, 160, 40, 6, 0.35);
     if (this.show === 'prof' || this.show === 'both') {
-      const spr = HiChar.get(LOOKS.prof);
-      ctx.drawImage(spr, 0, 0, 32, 48, this.show === 'both' ? 80 : 128, 66, 64, 96);
+      const px = this.show === 'both' ? 80 : 128;
+      if (!(typeof CharFrames !== 'undefined' && CharFrames.portrait(ctx, 'prof', px, 66, 64, 96))) ctx.drawImage(HiChar.get(LOOKS.prof), 0, 0, 32, 48, px, 66, 64, 96);
     }
     if (this.show === 'creature' || this.show === 'both') {
       const bob = Math.sin(this.t * 3) * 2;
       ctx.drawImage(CreatureGfx.get('voltin', 64), this.show === 'both' ? 170 : 128, 98 + bob);
     }
-    if (this.show === 'player') { const spr = HiChar.get(LOOKS.player); ctx.drawImage(spr, 0, 0, 32, 48, 128, 66, 64, 96); }
-    if (this.show === 'rival') { const spr = HiChar.get(LOOKS.rival); ctx.drawImage(spr, 0, 0, 32, 48, 128, 66, 64, 96); }
+    if (this.show === 'player' && !(typeof CharFrames !== 'undefined' && CharFrames.portrait(ctx, 'player', 128, 66, 64, 96))) { const spr = HiChar.get(LOOKS.player); ctx.drawImage(spr, 0, 0, 32, 48, 128, 66, 64, 96); }
+    if (this.show === 'rival' && !(typeof CharFrames !== 'undefined' && CharFrames.portrait(ctx, 'rival', 128, 66, 64, 96))) { const spr = HiChar.get(LOOKS.rival); ctx.drawImage(spr, 0, 0, 32, 48, 128, 66, 64, 96); }
   }
 }
 

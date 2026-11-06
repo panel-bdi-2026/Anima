@@ -932,7 +932,7 @@ class BattleScene {
       const p = this.portrait; p.t += 1 / 60;
       const x = Math.round(330 - Math.min(1, p.t * 4) * 90);
       ctx.globalAlpha = 0.35; P(ctx, x - 6, 64, 96, 104, '#14101e'); ctx.globalAlpha = 1;
-      ctx.drawImage(HiChar.get(LOOKS[p.look] || LOOKS.boy), 0, 0, 32, 48, x + 8, 62, 64, 96);
+      if (!(typeof CharFrames !== 'undefined' && CharFrames.portrait(ctx, LOOKS[p.look] || LOOKS.boy, x + 8, 62, 64, 96))) ctx.drawImage(HiChar.get(LOOKS[p.look] || LOOKS.boy), 0, 0, 32, 48, x + 8, 62, 64, 96);
     }
     if (this.showTut) this.drawTutorial(ctx);
     } finally { W = WIDE; ctx.restore(); }
