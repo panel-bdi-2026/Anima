@@ -292,7 +292,7 @@ class GearScreen {
     if (best >= 2) { ctx.globalAlpha = 0.12 + 0.06 * Math.sin(t * 2); pixCircle(ctx, 74, 98, 30, RARITY[best].color); ctx.globalAlpha = 1; }
     const spr = HiChar.get(LOOKS.player), bob = Math.round(Math.sin(t * 2) * 1);
     drawShadow(ctx, 74, 131, 12, 3, 0.4);
-    ctx.drawImage(spr, 0, 0, 32, 48, 58, 82 + bob, 32, 48);
+    if (!(typeof CharFrames !== 'undefined' && CharFrames.portrait(ctx, 'player', 50, 82 + bob, 48, 48))) ctx.drawImage(spr, 0, 0, 32, 48, 58, 82 + bob, 32, 48);
     // casillas
     GEAR_SOCKETS.forEach(([x, y], k) => {
       const sl = GEAR_SLOTS[k], it = S.eq[sl.k], sel = k === this.si;
