@@ -2793,5 +2793,1125 @@
   "desc": "pixel art inventory item icon for a creature-collecting RPG, single object centered, bold dark outline, soft shading lit from the top-left, vivid colors, transparent background, readable at small size, a simple bold UI menu icon, flat colors, thick outline, a red X mark (close)",
   "cola": ", high quality pixel art icon",
   "tandas": 1
+ },
+ "ic_ignito": {
+  "size": 32,
+  "ref": "elegidos/ignito.png",
+  "refs": [
+   [
+    "elegidos/ignito.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/ignito.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_fogarzo": {
+  "size": 32,
+  "ref": "elegidos/fogarzo.png",
+  "refs": [
+   [
+    "elegidos/fogarzo.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/fogarzo.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_magmaurio": {
+  "size": 32,
+  "ref": "elegidos/magmaurio.png",
+  "refs": [
+   [
+    "elegidos/magmaurio.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/magmaurio.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_solarix": {
+  "size": 32,
+  "ref": "elegidos/solarix.png",
+  "refs": [
+   [
+    "elegidos/solarix.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/solarix.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_burbujo": {
+  "size": 32,
+  "ref": "elegidos/burbujo.png",
+  "refs": [
+   [
+    "elegidos/burbujo.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/burbujo.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_marolo": {
+  "size": 32,
+  "ref": "elegidos/marolo.png",
+  "refs": [
+   [
+    "elegidos/marolo.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/marolo.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_abismar": {
+  "size": 32,
+  "ref": "elegidos/abismar.png",
+  "refs": [
+   [
+    "elegidos/abismar.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/abismar.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_coralis": {
+  "size": 32,
+  "ref": "elegidos/coralis.png",
+  "refs": [
+   [
+    "elegidos/coralis.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/coralis.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_semillin": {
+  "size": 32,
+  "ref": "elegidos/semillin.png",
+  "refs": [
+   [
+    "elegidos/semillin.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/semillin.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_hojardo": {
+  "size": 32,
+  "ref": "elegidos/hojardo.png",
+  "refs": [
+   [
+    "elegidos/hojardo.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/hojardo.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_robledor": {
+  "size": 32,
+  "ref": "elegidos/robledor.png",
+  "refs": [
+   [
+    "elegidos/robledor.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/robledor.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_floraxia": {
+  "size": 32,
+  "ref": "elegidos/floraxia.png",
+  "refs": [
+   [
+    "elegidos/floraxia.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/floraxia.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_rabin": {
+  "size": 32,
+  "ref": "elegidos/rabin.png",
+  "refs": [
+   [
+    "elegidos/rabin.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/rabin.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_conejal": {
+  "size": 32,
+  "ref": "elegidos/conejal.png",
+  "refs": [
+   [
+    "elegidos/conejal.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/conejal.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_liebron": {
+  "size": 32,
+  "ref": "elegidos/liebron.png",
+  "refs": [
+   [
+    "elegidos/liebron.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/liebron.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_nocturo": {
+  "size": 32,
+  "ref": "elegidos/nocturo.png",
+  "refs": [
+   [
+    "elegidos/nocturo.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/nocturo.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_pipio": {
+  "size": 32,
+  "ref": "elegidos/pipio.png",
+  "refs": [
+   [
+    "elegidos/pipio.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/pipio.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_alondro": {
+  "size": 32,
+  "ref": "elegidos/alondro.png",
+  "refs": [
+   [
+    "elegidos/alondro.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/alondro.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_tormentor": {
+  "size": 32,
+  "ref": "elegidos/tormentor.png",
+  "refs": [
+   [
+    "elegidos/tormentor.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/tormentor.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_cefireo": {
+  "size": 32,
+  "ref": "elegidos/cefireo.png",
+  "refs": [
+   [
+    "elegidos/cefireo.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/cefireo.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_larvita": {
+  "size": 32,
+  "ref": "elegidos/larvita.png",
+  "refs": [
+   [
+    "elegidos/larvita.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/larvita.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_crisalix": {
+  "size": 32,
+  "ref": "elegidos/crisalix.png",
+  "refs": [
+   [
+    "elegidos/crisalix.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/crisalix.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_polillux": {
+  "size": 32,
+  "ref": "elegidos/polillux.png",
+  "refs": [
+   [
+    "elegidos/polillux.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/polillux.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_escarabron": {
+  "size": 32,
+  "ref": "elegidos/escarabron.png",
+  "refs": [
+   [
+    "elegidos/escarabron.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/escarabron.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_voltin": {
+  "size": 32,
+  "ref": "elegidos/voltin.png",
+  "refs": [
+   [
+    "elegidos/voltin.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/voltin.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_dinamo": {
+  "size": 32,
+  "ref": "elegidos/dinamo.png",
+  "refs": [
+   [
+    "elegidos/dinamo.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/dinamo.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_tesloria": {
+  "size": 32,
+  "ref": "elegidos/tesloria.png",
+  "refs": [
+   [
+    "elegidos/tesloria.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/tesloria.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_ferrovolt": {
+  "size": 32,
+  "ref": "elegidos/ferrovolt.png",
+  "refs": [
+   [
+    "elegidos/ferrovolt.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/ferrovolt.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_guijin": {
+  "size": 32,
+  "ref": "elegidos/guijin.png",
+  "refs": [
+   [
+    "elegidos/guijin.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/guijin.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_pedrusco": {
+  "size": 32,
+  "ref": "elegidos/pedrusco.png",
+  "refs": [
+   [
+    "elegidos/pedrusco.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/pedrusco.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_basaltor": {
+  "size": 32,
+  "ref": "elegidos/basaltor.png",
+  "refs": [
+   [
+    "elegidos/basaltor.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/basaltor.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_monolito": {
+  "size": 32,
+  "ref": "elegidos/monolito.png",
+  "refs": [
+   [
+    "elegidos/monolito.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/monolito.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_umbrin": {
+  "size": 32,
+  "ref": "elegidos/umbrin.png",
+  "refs": [
+   [
+    "elegidos/umbrin.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/umbrin.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_penumbro": {
+  "size": 32,
+  "ref": "elegidos/penumbro.png",
+  "refs": [
+   [
+    "elegidos/penumbro.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/penumbro.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_eclipsor": {
+  "size": 32,
+  "ref": "elegidos/eclipsor.png",
+  "refs": [
+   [
+    "elegidos/eclipsor.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/eclipsor.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_lunargo": {
+  "size": 32,
+  "ref": "elegidos/lunargo.png",
+  "refs": [
+   [
+    "elegidos/lunargo.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/lunargo.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_escamin": {
+  "size": 32,
+  "ref": "elegidos/escamin.png",
+  "refs": [
+   [
+    "elegidos/escamin.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/escamin.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_aleton": {
+  "size": 32,
+  "ref": "elegidos/aleton.png",
+  "refs": [
+   [
+    "elegidos/aleton.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/aleton.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_tifonar": {
+  "size": 32,
+  "ref": "elegidos/tifonar.png",
+  "refs": [
+   [
+    "elegidos/tifonar.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/tifonar.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_arrecifor": {
+  "size": 32,
+  "ref": "elegidos/arrecifor.png",
+  "refs": [
+   [
+    "elegidos/arrecifor.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/arrecifor.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_psiqui": {
+  "size": 32,
+  "ref": "elegidos/psiqui.png",
+  "refs": [
+   [
+    "elegidos/psiqui.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/psiqui.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_mentalis": {
+  "size": 32,
+  "ref": "elegidos/mentalis.png",
+  "refs": [
+   [
+    "elegidos/mentalis.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/mentalis.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_kinesio": {
+  "size": 32,
+  "ref": "elegidos/kinesio.png",
+  "refs": [
+   [
+    "elegidos/kinesio.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/kinesio.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_oniria": {
+  "size": 32,
+  "ref": "elegidos/oniria.png",
+  "refs": [
+   [
+    "elegidos/oniria.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/oniria.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_hongui": {
+  "size": 32,
+  "ref": "elegidos/hongui.png",
+  "refs": [
+   [
+    "elegidos/hongui.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/hongui.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_setalon": {
+  "size": 32,
+  "ref": "elegidos/setalon.png",
+  "refs": [
+   [
+    "elegidos/setalon.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/setalon.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_esporal": {
+  "size": 32,
+  "ref": "elegidos/esporal.png",
+  "refs": [
+   [
+    "elegidos/esporal.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/esporal.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_micelion": {
+  "size": 32,
+  "ref": "elegidos/micelion.png",
+  "refs": [
+   [
+    "elegidos/micelion.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/micelion.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_brisin": {
+  "size": 32,
+  "ref": "elegidos/brisin.png",
+  "refs": [
+   [
+    "elegidos/brisin.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/brisin.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_nimbo": {
+  "size": 32,
+  "ref": "elegidos/nimbo.png",
+  "refs": [
+   [
+    "elegidos/nimbo.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/nimbo.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_granizor": {
+  "size": 32,
+  "ref": "elegidos/granizor.png",
+  "refs": [
+   [
+    "elegidos/granizor.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/granizor.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_nubaria": {
+  "size": 32,
+  "ref": "elegidos/nubaria.png",
+  "refs": [
+   [
+    "elegidos/nubaria.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/nubaria.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_murcin": {
+  "size": 32,
+  "ref": "elegidos/murcin.png",
+  "refs": [
+   [
+    "elegidos/murcin.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/murcin.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_noctalar": {
+  "size": 32,
+  "ref": "elegidos/noctalar.png",
+  "refs": [
+   [
+    "elegidos/noctalar.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/noctalar.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_lunavela": {
+  "size": 32,
+  "ref": "elegidos/lunavela.png",
+  "refs": [
+   [
+    "elegidos/lunavela.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/lunavela.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_vampirax": {
+  "size": 32,
+  "ref": "elegidos/vampirax.png",
+  "refs": [
+   [
+    "elegidos/vampirax.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/vampirax.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_silvaneo": {
+  "size": 32,
+  "ref": "elegidos/silvaneo.png",
+  "refs": [
+   [
+    "elegidos/silvaneo.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/silvaneo.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_auroros": {
+  "size": 32,
+  "ref": "elegidos/auroros.png",
+  "refs": [
+   [
+    "elegidos/auroros.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/auroros.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_marealis": {
+  "size": 32,
+  "ref": "elegidos/marealis.png",
+  "refs": [
+   [
+    "elegidos/marealis.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/marealis.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_albora": {
+  "size": 32,
+  "ref": "elegidos/albora.png",
+  "refs": [
+   [
+    "elegidos/albora.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/albora.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_geiseron": {
+  "size": 32,
+  "ref": "elegidos/geiseron.png",
+  "refs": [
+   [
+    "elegidos/geiseron.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/geiseron.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_tempestron": {
+  "size": 32,
+  "ref": "elegidos/tempestron.png",
+  "refs": [
+   [
+    "elegidos/tempestron.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/tempestron.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_umbrarbol": {
+  "size": 32,
+  "ref": "elegidos/umbrarbol.png",
+  "refs": [
+   [
+    "elegidos/umbrarbol.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/umbrarbol.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_lunafalena": {
+  "size": 32,
+  "ref": "elegidos/lunafalena.png",
+  "refs": [
+   [
+    "elegidos/lunafalena.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/lunafalena.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_forjador": {
+  "size": 32,
+  "ref": "elegidos/forjador.png",
+  "refs": [
+   [
+    "elegidos/forjador.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/forjador.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_leviaton": {
+  "size": 32,
+  "ref": "elegidos/leviaton.png",
+  "refs": [
+   [
+    "elegidos/leviaton.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/leviaton.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_celestia": {
+  "size": 32,
+  "ref": "elegidos/celestia.png",
+  "refs": [
+   [
+    "elegidos/celestia.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/celestia.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_galerno": {
+  "size": 32,
+  "ref": "elegidos/galerno.png",
+  "refs": [
+   [
+    "elegidos/galerno.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/galerno.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_tofu": {
+  "size": 32,
+  "ref": "elegidos/tofu.png",
+  "refs": [
+   [
+    "elegidos/tofu.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/tofu.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_mistofa": {
+  "size": 32,
+  "ref": "elegidos/mistofa.png",
+  "refs": [
+   [
+    "elegidos/mistofa.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/mistofa.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_arcanya": {
+  "size": 32,
+  "ref": "elegidos/arcanya.png",
+  "refs": [
+   [
+    "elegidos/arcanya.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/arcanya.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_buppa": {
+  "size": 32,
+  "ref": "elegidos/buppa.png",
+  "refs": [
+   [
+    "elegidos/buppa.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/buppa.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_buclon": {
+  "size": 32,
+  "ref": "elegidos/buclon.png",
+  "refs": [
+   [
+    "elegidos/buclon.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/buclon.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_monteriz": {
+  "size": 32,
+  "ref": "elegidos/monteriz.png",
+  "refs": [
+   [
+    "elegidos/monteriz.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/monteriz.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_parker": {
+  "size": 32,
+  "ref": "elegidos/parker.png",
+  "refs": [
+   [
+    "elegidos/parker.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/parker.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_gatumbra": {
+  "size": 32,
+  "ref": "elegidos/gatumbra.png",
+  "refs": [
+   [
+    "elegidos/gatumbra.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/gatumbra.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_umbrapanter": {
+  "size": 32,
+  "ref": "elegidos/umbrapanter.png",
+  "refs": [
+   [
+    "elegidos/umbrapanter.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/umbrapanter.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_aurelina": {
+  "size": 32,
+  "ref": "elegidos/aurelina.png",
+  "refs": [
+   [
+    "elegidos/aurelina.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/aurelina.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_florizo": {
+  "size": 32,
+  "ref": "elegidos/florizo.png",
+  "refs": [
+   [
+    "elegidos/florizo.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/florizo.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "ic_trueno_umbrio": {
+  "size": 32,
+  "ref": "elegidos/trueno_umbrio.png",
+  "refs": [
+   [
+    "elegidos/trueno_umbrio.png",
+    "this exact creature: keep its face, colors, markings and main shapes, only simplify it"
+   ]
+  ],
+  "estilo": "elegidos/trueno_umbrio.png",
+  "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
  }
 }
