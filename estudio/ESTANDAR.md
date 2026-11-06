@@ -45,3 +45,13 @@ Aprobado por Alejandro con la línea de Ignito (Ignito, Fogarzo, Magmaurio, Sola
 - Costos observados: 96×96 → 4 variantes por 10 generaciones; 80×80 → 9 variantes por 15; rotar a 4/8 direcciones con
   `create-character-v3` cuesta `ceil(ancho*alto*8/65536)` (≈1 generación a 80×80).
 - Programa: `estudio/pixellab.py` (la clave la pone el entorno como secreto Bearer de api.pixellab.ai).
+
+## Cómo decide Alejandro (desde los personajes)
+- **Ánimas:** Alejandro elige entre las variantes (ya están las 80).
+- **Personajes, objetos del mundo, íconos y similares:** se piden **4 variantes** y **Claude elige** la que mejor cumpla el estándar,
+  sin preguntar. Criterios: pose neutra (parado, brazos abajo, sin objetos en la mano, porque la imagen es la base de todas
+  las animaciones), fiel a colores y ropa actuales, nada que toque el borde, nada parecido a objetos de otros juegos
+  (por ejemplo, esferas rojas y blancas).
+- **Ataques:** Alejandro sí participa y elige.
+- Personajes: lienzo de 64 × 64, unos 4 cabezas de alto. Animaciones: reposo y caminar en 3 vistas (lado, frente, espalda);
+  el jugador además correr; jugador, rival y líderes además «lanzar» (de lado). Programa: `estudio/animar_pj.py`.
