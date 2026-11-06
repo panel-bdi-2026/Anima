@@ -89,7 +89,7 @@
       ctx.drawImage(leatherBg(), 0, 0);
       const pks = this.pockets(), pk = this.pocket || 0, P0 = POCKETS[pk];
       // mochila ilustrada y dinero
-      ctx.drawImage(backpack(pk), 6, 8 + Math.round(Math.sin(Engine.time * 2) * 1));
+      { const nu = typeof Menus2 !== 'undefined' && Menus2.get('mochila'), bob = Math.round(Math.sin(Engine.time * 2) * 1); if (nu) ctx.drawImage(nu, 4, 6 + bob, 96, 96); else ctx.drawImage(backpack(pk), 6, 8 + bob); }
       UI.box(ctx, 6, 112, 92, 18, 'dark');
       P(ctx, 12, 117, 8, 8, '#a87810'); P(ctx, 13, 118, 6, 6, '#f8d048'); P(ctx, 14, 119, 2, 2, '#fff8c0');
       Font.drawRight(ctx, '$' + G.money, 92, 117, '#ffe8a0');
