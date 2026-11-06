@@ -1,0 +1,310 @@
+{
+ "grunt": {
+  "hair": "#202020",
+  "hairStyle": "short",
+  "shirt": "#2a2438",
+  "c2": "#7a40c0",
+  "outfit": "jacket",
+  "pants": "#2a2438",
+  "hat": "#7a40c0",
+  "hatStyle": "beanie"
+ },
+ "lass": {
+  "hair": "#f0d070",
+  "hairStyle": "long",
+  "shirt": "#f080b0",
+  "outfit": "dress",
+  "pants": "#6070c0"
+ },
+ "boy": {
+  "hair": "#302820",
+  "hairStyle": "short",
+  "shirt": "#4a88e0",
+  "pants": "#4a4060"
+ },
+ "hiker": {
+  "hair": "#4a3020",
+  "hairStyle": "curly",
+  "shirt": "#a06030",
+  "c2": "#d8c098",
+  "outfit": "jacket",
+  "pants": "#6a5a40",
+  "hat": "#806040",
+  "hatStyle": "beanie",
+  "acc": "backpack",
+  "accC": "#c06030"
+ },
+ "scientist": {
+  "hair": "#504838",
+  "hairStyle": "curly",
+  "shirt": "#f0f0f0",
+  "c2": "#5a7aa0",
+  "outfit": "coat",
+  "pants": "#4a5a6a",
+  "acc": "glasses"
+ },
+ "guide": {
+  "hair": "#202020",
+  "hairStyle": "short",
+  "shirt": "#e8e8e8",
+  "c2": "#c04040",
+  "outfit": "jacket",
+  "pants": "#3a3a4a",
+  "acc": "glasses"
+ },
+ "worker": {
+  "hair": "#5a4030",
+  "hairStyle": "short",
+  "shirt": "#e8a030",
+  "c2": "#3a5a90",
+  "outfit": "overalls",
+  "pants": "#4a5a80",
+  "hat": "#f0d040",
+  "hatStyle": "hardhat"
+ },
+ "sailor": {
+  "hair": "#302820",
+  "hairStyle": "short",
+  "shirt": "#f0f0f8",
+  "c2": "#304080",
+  "outfit": "jacket",
+  "pants": "#304080",
+  "hat": "#304080",
+  "hatStyle": "sailor"
+ },
+ "oldwoman": {
+  "hair": "#e0e0e8",
+  "hairStyle": "bun",
+  "shirt": "#9070a8",
+  "outfit": "dress",
+  "pants": "#504860"
+ },
+ "oldman": {
+  "hair": "#c8c8c8",
+  "hairStyle": "bald",
+  "shirt": "#8a7050",
+  "c2": "#e8d8b8",
+  "outfit": "jacket",
+  "pants": "#504840",
+  "acc": "glasses"
+ },
+ "kid2": {
+  "hair": "#e0a040",
+  "hairStyle": "spiky",
+  "shirt": "#60b0f0",
+  "pants": "#304060"
+ },
+ "youngster": {
+  "hair": "#2a2020",
+  "hairStyle": "short",
+  "shirt": "#e85050",
+  "pants": "#405090",
+  "hat": "#4060c0",
+  "hatStyle": "cap"
+ },
+ "smith": {
+  "hair": "#3a2a20",
+  "hairStyle": "bald",
+  "shirt": "#8a4a30",
+  "c2": "#e0c090",
+  "outfit": "apron",
+  "pants": "#3a3030"
+ },
+ "monk": {
+  "hair": "#202020",
+  "hairStyle": "bald",
+  "shirt": "#e0a040",
+  "c2": "#a05020",
+  "outfit": "coat",
+  "pants": "#a05020"
+ },
+ "jogger": {
+  "hair": "#202838",
+  "hairStyle": "pony",
+  "shirt": "#40c0a0",
+  "pants": "#303848",
+  "hat": "#f0f0f0",
+  "hatStyle": "bandana"
+ },
+ "girl": {
+  "hair": "#a04040",
+  "hairStyle": "pony",
+  "shirt": "#f0b040",
+  "outfit": "dress",
+  "pants": "#5068a0"
+ },
+ "vesper": {
+  "hair": "#c0c8f0",
+  "hairStyle": "long",
+  "shirt": "#382858",
+  "c2": "#a070e0",
+  "outfit": "coat",
+  "pants": "#201a30"
+ },
+ "swimmer": {
+  "hair": "#202020",
+  "hairStyle": "short",
+  "shirt": "#f8c8a0",
+  "pants": "#3070d0"
+ },
+ "guard": {
+  "hair": "#302820",
+  "hairStyle": "short",
+  "shirt": "#3a5a8a",
+  "c2": "#e0c060",
+  "outfit": "jacket",
+  "pants": "#2a3a5a",
+  "hat": "#2a3a5a",
+  "hatStyle": "cap"
+ },
+ "fisher": {
+  "hair": "#6a5040",
+  "hairStyle": "short",
+  "shirt": "#609060",
+  "c2": "#d8c090",
+  "outfit": "overalls",
+  "pants": "#5a5040",
+  "hat": "#d0b060",
+  "hatStyle": "sun"
+ },
+ "bug": {
+  "hair": "#5a4020",
+  "hairStyle": "short",
+  "shirt": "#90c040",
+  "pants": "#c8b080",
+  "hat": "#d8c060",
+  "hatStyle": "sun",
+  "acc": "backpack",
+  "accC": "#6a9a40"
+ },
+ "baker": {
+  "hair": "#e0c080",
+  "hairStyle": "bun",
+  "shirt": "#f8f0e0",
+  "c2": "#f8f8f8",
+  "outfit": "apron",
+  "pants": "#8a7060"
+ },
+ "artist": {
+  "hair": "#5a3a6a",
+  "hairStyle": "curly",
+  "shirt": "#e8d040",
+  "c2": "#6a4aa0",
+  "outfit": "jacket",
+  "pants": "#3a3050",
+  "hat": "#c04050",
+  "hatStyle": "beanie"
+ },
+ "nyx": {
+  "hair": "#f0f0ff",
+  "hairStyle": "long",
+  "shirt": "#1a1028",
+  "c2": "#c040ff",
+  "outfit": "coat",
+  "pants": "#100818",
+  "hat": "#3a1a58",
+  "hatStyle": "beanie"
+ },
+ "mailman": {
+  "hair": "#3a2a20",
+  "hairStyle": "short",
+  "shirt": "#4060a0",
+  "c2": "#f0d040",
+  "outfit": "jacket",
+  "pants": "#2a3050",
+  "hat": "#4060a0",
+  "hatStyle": "cap",
+  "acc": "backpack",
+  "accC": "#a06030"
+ },
+ "farmer": {
+  "hair": "#7a5030",
+  "hairStyle": "short",
+  "shirt": "#d05040",
+  "c2": "#5878b0",
+  "outfit": "overalls",
+  "pants": "#5878b0",
+  "hat": "#e8c870",
+  "hatStyle": "sun"
+ },
+ "sister": {
+  "hair": "#e8a040",
+  "hairStyle": "pony",
+  "shirt": "#80c060",
+  "outfit": "dress",
+  "pants": "#4a5070"
+ },
+ "selene": {
+  "hair": "#c080f0",
+  "hairStyle": "bun",
+  "shirt": "#4a3a80",
+  "c2": "#e0c0ff",
+  "outfit": "dress",
+  "pants": "#2a2050",
+  "acc": "glasses"
+ },
+ "nurse": {
+  "hair": "#f090a8",
+  "hairStyle": "long",
+  "shirt": "#ffffff",
+  "c2": "#f490b0",
+  "outfit": "apron",
+  "pants": "#f0b0c0",
+  "hat": "#ffffff",
+  "hatStyle": "sailor"
+ },
+ "neron": {
+  "hair": "#f0f0f0",
+  "hairStyle": "short",
+  "shirt": "#2a5aa8",
+  "c2": "#f0f0f0",
+  "outfit": "coat",
+  "pants": "#1a2a50",
+  "hat": "#203060",
+  "hatStyle": "sailor"
+ },
+ "mom": {
+  "hair": "#6a3a28",
+  "hairStyle": "long",
+  "shirt": "#e88080",
+  "c2": "#fff4e8",
+  "outfit": "apron",
+  "pants": "#5a4a70"
+ },
+ "clerk": {
+  "hair": "#383028",
+  "hairStyle": "short",
+  "shirt": "#4a78d8",
+  "c2": "#e8eef8",
+  "outfit": "apron",
+  "pants": "#404050"
+ },
+ "bruna": {
+  "hair": "#8a5030",
+  "hairStyle": "pony",
+  "shirt": "#c08850",
+  "c2": "#6a4a30",
+  "outfit": "overalls",
+  "pants": "#5a4a3a",
+  "hat": "#e8a030",
+  "hatStyle": "bandana"
+ },
+ "brisa": {
+  "hair": "#a0e0f0",
+  "hairStyle": "long",
+  "shirt": "#f0f8ff",
+  "c2": "#60a0d0",
+  "outfit": "coat",
+  "pants": "#4a6a90"
+ },
+ "ascua": {
+  "hair": "#e84020",
+  "hairStyle": "spiky",
+  "shirt": "#f0a020",
+  "c2": "#802010",
+  "outfit": "jacket",
+  "pants": "#402020",
+  "hat": "#f0d040",
+  "hatStyle": "bandana"
+ }
+}

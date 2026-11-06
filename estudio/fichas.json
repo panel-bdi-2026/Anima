@@ -1373,29 +1373,1425 @@
   "tandas": 1
  },
  "fx_ascua": {
-  "size": 48,
+  "size": 64,
   "ref": "elegidos/ignito.png",
-  "refs": [
-   [
-    "elegidos/ignito.png",
-    "only use this as a reference for the pixel art style, colors of fire and outline; do NOT draw this creature"
-   ]
-  ],
-  "desc": "pixel art game visual effect for a creature battle, single object centered, transparent background, no character, readable at small size, a small glowing ember fireball projectile flying to the left, bright yellow core, orange and red flames trailing to the right, a few sparks",
+  "refs": [],
+  "desc": "pixel art visual effect for a real-time creature battle game, bold readable silhouette, vivid saturated colors with a bright core and darker edges, dark outline where useful, transparent background, no creature, no character, no text, a small glowing ember fireball with a yellow core and short flame trail to the right, flying left, side view, the effect moves to the left",
+  "cola": ", impactful, high quality detailed pixel art",
   "tandas": 1,
-  "cola": ", high quality detailed pixel art"
+  "anim": "the ember flickering while flying",
+  "vista": "lado"
  },
  "fx_burbuja": {
-  "size": 48,
-  "ref": "elegidos/burbujo.png",
+  "size": 64,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art visual effect for a real-time creature battle game, bold readable silhouette, vivid saturated colors with a bright core and darker edges, dark outline where useful, transparent background, no creature, no character, no text, a shiny translucent water bubble with a white highlight and two tiny bubbles trailing, flying left, side view, the effect moves to the left",
+  "cola": ", impactful, high quality detailed pixel art",
+  "tandas": 1,
+  "anim": "the bubble wobbling while flying",
+  "vista": "lado"
+ },
+ "pj_grunt": {
+  "size": 64,
+  "ref": "personajes/grunt_viejo64.png",
   "refs": [
    [
-    "elegidos/burbujo.png",
-    "only use this as a reference for the pixel art style and blue water colors; do NOT draw this creature"
+    "personajes/grunt_viejo64.png",
+    "concept reference (old low resolution sprite of this human character): keep the outfit, colors, hairstyle and accessories, redraw it as a detailed high quality pixel art character"
    ]
   ],
-  "desc": "pixel art game visual effect for a creature battle, single object centered, transparent background, no character, readable at small size, a shiny water bubble projectile flying to the left, translucent light blue sphere with a white highlight, a couple of tiny bubbles trailing to the right",
+  "desc": "young villain recruit of the Eclipse team, short black hair, purple beanie, dark charcoal jacket with purple trim and a crescent eclipse emblem, dark pants, black boots, smug expression, human character for a creature-collecting RPG, cute but not chibi, proportions about 4 heads tall, clear readable face, detailed clothing, standing upright on two feet in a neutral pose with arms relaxed at the sides, empty hands, full body, ",
+  "tandas": 1
+ },
+ "pj_lass": {
+  "size": 64,
+  "ref": "personajes/lass_viejo64.png",
+  "refs": [
+   [
+    "personajes/lass_viejo64.png",
+    "concept reference (old low resolution sprite of this human character): keep the outfit, colors, hairstyle and accessories, redraw it as a detailed high quality pixel art character"
+   ]
+  ],
+  "desc": "young girl trainer, long blonde hair, pink dress with white details, white socks, pink shoes, cheerful smile, human character for a creature-collecting RPG, cute but not chibi, proportions about 4 heads tall, clear readable face, detailed clothing, standing upright on two feet in a neutral pose with arms relaxed at the sides, empty hands, full body, ",
+  "tandas": 1
+ },
+ "pj_boy": {
+  "size": 64,
+  "ref": "personajes/boy_viejo64.png",
+  "refs": [
+   [
+    "personajes/boy_viejo64.png",
+    "concept reference (old low resolution sprite of this human character): keep the outfit, colors, hairstyle and accessories, redraw it as a detailed high quality pixel art character"
+   ]
+  ],
+  "desc": "young boy, short dark brown hair, blue t-shirt, dark grey shorts, sneakers, friendly expression, human character for a creature-collecting RPG, cute but not chibi, proportions about 4 heads tall, clear readable face, detailed clothing, standing upright on two feet in a neutral pose with arms relaxed at the sides, empty hands, full body, ",
+  "tandas": 1
+ },
+ "pj_hiker": {
+  "size": 64,
+  "ref": "personajes/hiker_viejo64.png",
+  "refs": [
+   [
+    "personajes/hiker_viejo64.png",
+    "concept reference (old low resolution sprite of this human character): keep the outfit, colors, hairstyle and accessories, redraw it as a detailed high quality pixel art character"
+   ]
+  ],
+  "desc": "mountaineer hiker man, curly brown hair and beard, brown knit beanie, brown jacket over a cream sweater, khaki pants, heavy hiking boots, big friendly smile, human character for a creature-collecting RPG, cute but not chibi, proportions about 4 heads tall, clear readable face, detailed clothing, standing upright on two feet in a neutral pose with arms relaxed at the sides, empty hands, full body, ",
+  "tandas": 1
+ },
+ "pj_scientist": {
+  "size": 64,
+  "ref": "personajes/scientist_viejo64.png",
+  "refs": [
+   [
+    "personajes/scientist_viejo64.png",
+    "concept reference (old low resolution sprite of this human character): keep the outfit, colors, hairstyle and accessories, redraw it as a detailed high quality pixel art character"
+   ]
+  ],
+  "desc": "young lab scientist man, messy dark hair, round glasses, white lab coat, dark pants, curious expression, human character for a creature-collecting RPG, cute but not chibi, proportions about 4 heads tall, clear readable face, detailed clothing, standing upright on two feet in a neutral pose with arms relaxed at the sides, empty hands, full body, ",
+  "tandas": 1
+ },
+ "pj_guide": {
+  "size": 64,
+  "ref": "personajes/guide_viejo64.png",
+  "refs": [
+   [
+    "personajes/guide_viejo64.png",
+    "concept reference (old low resolution sprite of this human character): keep the outfit, colors, hairstyle and accessories, redraw it as a detailed high quality pixel art character"
+   ]
+  ],
+  "desc": "town guide woman, short black bob hair, white shirt with a red tie, dark skirt, polite smile, human character for a creature-collecting RPG, cute but not chibi, proportions about 4 heads tall, clear readable face, detailed clothing, standing upright on two feet in a neutral pose with arms relaxed at the sides, empty hands, full body, ",
+  "tandas": 1
+ },
+ "pj_worker": {
+  "size": 64,
+  "ref": "personajes/worker_viejo64.png",
+  "refs": [
+   [
+    "personajes/worker_viejo64.png",
+    "concept reference (old low resolution sprite of this human character): keep the outfit, colors, hairstyle and accessories, redraw it as a detailed high quality pixel art character"
+   ]
+  ],
+  "desc": "construction worker man, yellow hard hat, navy blue overalls with an orange vest, work boots, sturdy build, human character for a creature-collecting RPG, cute but not chibi, proportions about 4 heads tall, clear readable face, detailed clothing, standing upright on two feet in a neutral pose with arms relaxed at the sides, empty hands, full body, ",
+  "tandas": 1
+ },
+ "pj_sailor": {
+  "size": 64,
+  "ref": "personajes/sailor_viejo64.png",
+  "refs": [
+   [
+    "personajes/sailor_viejo64.png",
+    "concept reference (old low resolution sprite of this human character): keep the outfit, colors, hairstyle and accessories, redraw it as a detailed high quality pixel art character"
+   ]
+  ],
+  "desc": "sailor man, white sailor cap, white sailor shirt with navy collar, navy pants, muscular arms, cheerful, human character for a creature-collecting RPG, cute but not chibi, proportions about 4 heads tall, clear readable face, detailed clothing, standing upright on two feet in a neutral pose with arms relaxed at the sides, empty hands, full body, ",
+  "tandas": 1
+ },
+ "pj_oldwoman": {
+  "size": 64,
+  "ref": "personajes/oldwoman_viejo64.png",
+  "refs": [
+   [
+    "personajes/oldwoman_viejo64.png",
+    "concept reference (old low resolution sprite of this human character): keep the outfit, colors, hairstyle and accessories, redraw it as a detailed high quality pixel art character"
+   ]
+  ],
+  "desc": "kind grandmother, white hair in a bun, lilac dress with a shawl, small glasses, gentle smile, human character for a creature-collecting RPG, cute but not chibi, proportions about 4 heads tall, clear readable face, detailed clothing, standing upright on two feet in a neutral pose with arms relaxed at the sides, empty hands, full body, ",
+  "tandas": 1
+ },
+ "pj_oldman": {
+  "size": 64,
+  "ref": "personajes/oldman_viejo64.png",
+  "refs": [
+   [
+    "personajes/oldman_viejo64.png",
+    "concept reference (old low resolution sprite of this human character): keep the outfit, colors, hairstyle and accessories, redraw it as a detailed high quality pixel art character"
+   ]
+  ],
+  "desc": "old grandfather, bald with white sideburns, round dark glasses, brown cardigan jacket, beige pants, walking with good posture, human character for a creature-collecting RPG, cute but not chibi, proportions about 4 heads tall, clear readable face, detailed clothing, standing upright on two feet in a neutral pose with arms relaxed at the sides, empty hands, full body, ",
+  "tandas": 1
+ },
+ "pj_kid2": {
+  "size": 64,
+  "ref": "personajes/kid2_viejo64.png",
+  "refs": [
+   [
+    "personajes/kid2_viejo64.png",
+    "concept reference (old low resolution sprite of this human character): keep the outfit, colors, hairstyle and accessories, redraw it as a detailed high quality pixel art character"
+   ]
+  ],
+  "desc": "small kid, spiky blonde hair, light blue t-shirt, navy shorts, energetic grin, human character for a creature-collecting RPG, cute but not chibi, proportions about 4 heads tall, clear readable face, detailed clothing, standing upright on two feet in a neutral pose with arms relaxed at the sides, empty hands, full body, ",
+  "tandas": 1
+ },
+ "pj_youngster": {
+  "size": 64,
+  "ref": "personajes/youngster_viejo64.png",
+  "refs": [
+   [
+    "personajes/youngster_viejo64.png",
+    "concept reference (old low resolution sprite of this human character): keep the outfit, colors, hairstyle and accessories, redraw it as a detailed high quality pixel art character"
+   ]
+  ],
+  "desc": "youngster boy trainer, blue baseball cap, red t-shirt, navy shorts, confident grin, human character for a creature-collecting RPG, cute but not chibi, proportions about 4 heads tall, clear readable face, detailed clothing, standing upright on two feet in a neutral pose with arms relaxed at the sides, empty hands, full body, ",
+  "tandas": 1
+ },
+ "pj_smith": {
+  "size": 64,
+  "ref": "personajes/smith_viejo64.png",
+  "refs": [
+   [
+    "personajes/smith_viejo64.png",
+    "concept reference (old low resolution sprite of this human character): keep the outfit, colors, hairstyle and accessories, redraw it as a detailed high quality pixel art character"
+   ]
+  ],
+  "desc": "burly blacksmith man, bald head, thick dark beard, brown shirt with rolled sleeves, leather apron, dark pants, strong arms, human character for a creature-collecting RPG, cute but not chibi, proportions about 4 heads tall, clear readable face, detailed clothing, standing upright on two feet in a neutral pose with arms relaxed at the sides, empty hands, full body, ",
+  "tandas": 1
+ },
+ "pj_monk": {
+  "size": 64,
+  "ref": "personajes/monk_viejo64.png",
+  "refs": [
+   [
+    "personajes/monk_viejo64.png",
+    "concept reference (old low resolution sprite of this human character): keep the outfit, colors, hairstyle and accessories, redraw it as a detailed high quality pixel art character"
+   ]
+  ],
+  "desc": "calm monk man, bald head, orange and saffron robes, wooden prayer beads necklace, sandals, serene expression, human character for a creature-collecting RPG, cute but not chibi, proportions about 4 heads tall, clear readable face, detailed clothing, standing upright on two feet in a neutral pose with arms relaxed at the sides, empty hands, full body, ",
+  "tandas": 1
+ },
+ "pj_jogger": {
+  "size": 64,
+  "ref": "personajes/jogger_viejo64.png",
+  "refs": [
+   [
+    "personajes/jogger_viejo64.png",
+    "concept reference (old low resolution sprite of this human character): keep the outfit, colors, hairstyle and accessories, redraw it as a detailed high quality pixel art character"
+   ]
+  ],
+  "desc": "jogger woman, black hair in a ponytail with a white headband, teal sports tracksuit, running shoes, energetic, human character for a creature-collecting RPG, cute but not chibi, proportions about 4 heads tall, clear readable face, detailed clothing, standing upright on two feet in a neutral pose with arms relaxed at the sides, empty hands, full body, ",
+  "tandas": 1
+ },
+ "pj_girl": {
+  "size": 64,
+  "ref": "personajes/girl_viejo64.png",
+  "refs": [
+   [
+    "personajes/girl_viejo64.png",
+    "concept reference (old low resolution sprite of this human character): keep the outfit, colors, hairstyle and accessories, redraw it as a detailed high quality pixel art character"
+   ]
+  ],
+  "desc": "girl, red hair, yellow sundress, white shoes, sweet smile, human character for a creature-collecting RPG, cute but not chibi, proportions about 4 heads tall, clear readable face, detailed clothing, standing upright on two feet in a neutral pose with arms relaxed at the sides, empty hands, full body, ",
+  "tandas": 1
+ },
+ "pj_vesper": {
+  "size": 64,
+  "ref": "personajes/vesper_viejo64.png",
+  "refs": [
+   [
+    "personajes/vesper_viejo64.png",
+    "concept reference (old low resolution sprite of this human character): keep the outfit, colors, hairstyle and accessories, redraw it as a detailed high quality pixel art character"
+   ]
+  ],
+  "desc": "villain leader of the Eclipse team, elegant woman, long silver-lavender hair, long black coat with purple accents and an eclipse emblem, dark gloves, cold confident expression, not monstrous, human character for a creature-collecting RPG, cute but not chibi, proportions about 4 heads tall, clear readable face, detailed clothing, standing upright on two feet in a neutral pose with arms relaxed at the sides, empty hands, full body, ",
+  "tandas": 1
+ },
+ "pj_swimmer": {
+  "size": 64,
+  "ref": "personajes/swimmer_viejo64.png",
+  "refs": [
+   [
+    "personajes/swimmer_viejo64.png",
+    "concept reference (old low resolution sprite of this human character): keep the outfit, colors, hairstyle and accessories, redraw it as a detailed high quality pixel art character"
+   ]
+  ],
+  "desc": "swimmer boy, short black hair, light blue swim rash guard shirt, navy swim shorts, barefoot, sporty, human character for a creature-collecting RPG, cute but not chibi, proportions about 4 heads tall, clear readable face, detailed clothing, standing upright on two feet in a neutral pose with arms relaxed at the sides, empty hands, full body, ",
+  "tandas": 1
+ },
+ "pj_guard": {
+  "size": 64,
+  "ref": "personajes/guard_viejo64.png",
+  "refs": [
+   [
+    "personajes/guard_viejo64.png",
+    "concept reference (old low resolution sprite of this human character): keep the outfit, colors, hairstyle and accessories, redraw it as a detailed high quality pixel art character"
+   ]
+  ],
+  "desc": "town guard man, navy blue peaked cap, navy uniform with gold buttons, dark boots, serious but friendly, human character for a creature-collecting RPG, cute but not chibi, proportions about 4 heads tall, clear readable face, detailed clothing, standing upright on two feet in a neutral pose with arms relaxed at the sides, empty hands, full body, ",
+  "tandas": 1
+ },
+ "pj_fisher": {
+  "size": 64,
+  "ref": "personajes/fisher_viejo64.png",
+  "refs": [
+   [
+    "personajes/fisher_viejo64.png",
+    "concept reference (old low resolution sprite of this human character): keep the outfit, colors, hairstyle and accessories, redraw it as a detailed high quality pixel art character"
+   ]
+  ],
+  "desc": "fisherman, straw hat, olive green fishing vest over a white shirt, rolled-up pants, rubber boots, relaxed, human character for a creature-collecting RPG, cute but not chibi, proportions about 4 heads tall, clear readable face, detailed clothing, standing upright on two feet in a neutral pose with arms relaxed at the sides, empty hands, full body, ",
+  "tandas": 1
+ },
+ "pj_bug": {
+  "size": 64,
+  "ref": "personajes/bug_viejo64.png",
+  "refs": [
+   [
+    "personajes/bug_viejo64.png",
+    "concept reference (old low resolution sprite of this human character): keep the outfit, colors, hairstyle and accessories, redraw it as a detailed high quality pixel art character"
+   ]
+  ],
+  "desc": "bug catcher kid, straw hat, green t-shirt, khaki shorts, sneakers, excited expression, human character for a creature-collecting RPG, cute but not chibi, proportions about 4 heads tall, clear readable face, detailed clothing, standing upright on two feet in a neutral pose with arms relaxed at the sides, empty hands, full body, ",
+  "tandas": 1
+ },
+ "pj_baker": {
+  "size": 64,
+  "ref": "personajes/baker_viejo64.png",
+  "refs": [
+   [
+    "personajes/baker_viejo64.png",
+    "concept reference (old low resolution sprite of this human character): keep the outfit, colors, hairstyle and accessories, redraw it as a detailed high quality pixel art character"
+   ]
+  ],
+  "desc": "baker woman, blonde hair tied back, white baker hat, white apron over a cream dress, warm smile, human character for a creature-collecting RPG, cute but not chibi, proportions about 4 heads tall, clear readable face, detailed clothing, standing upright on two feet in a neutral pose with arms relaxed at the sides, empty hands, full body, ",
+  "tandas": 1
+ },
+ "pj_artist": {
+  "size": 64,
+  "ref": "personajes/artist_viejo64.png",
+  "refs": [
+   [
+    "personajes/artist_viejo64.png",
+    "concept reference (old low resolution sprite of this human character): keep the outfit, colors, hairstyle and accessories, redraw it as a detailed high quality pixel art character"
+   ]
+  ],
+  "desc": "artist woman, wavy pink-red hair, red beret, yellow jacket with paint stains, dark pants, creative look, human character for a creature-collecting RPG, cute but not chibi, proportions about 4 heads tall, clear readable face, detailed clothing, standing upright on two feet in a neutral pose with arms relaxed at the sides, empty hands, full body, ",
+  "tandas": 1
+ },
+ "pj_nyx": {
+  "size": 64,
+  "ref": "personajes/nyx_viejo64.png",
+  "refs": [
+   [
+    "personajes/nyx_viejo64.png",
+    "concept reference (old low resolution sprite of this human character): keep the outfit, colors, hairstyle and accessories, redraw it as a detailed high quality pixel art character"
+   ]
+  ],
+  "desc": "villain admin of the Eclipse team, young woman, long white hair, dark purple beanie, black long coat with neon violet trim, cool aloof expression, human character for a creature-collecting RPG, cute but not chibi, proportions about 4 heads tall, clear readable face, detailed clothing, standing upright on two feet in a neutral pose with arms relaxed at the sides, empty hands, full body, ",
+  "tandas": 1
+ },
+ "pj_mailman": {
+  "size": 64,
+  "ref": "personajes/mailman_viejo64.png",
+  "refs": [
+   [
+    "personajes/mailman_viejo64.png",
+    "concept reference (old low resolution sprite of this human character): keep the outfit, colors, hairstyle and accessories, redraw it as a detailed high quality pixel art character"
+   ]
+  ],
+  "desc": "mail carrier man, navy blue cap, navy uniform shirt, a brown mailbag across the body, dark pants, human character for a creature-collecting RPG, cute but not chibi, proportions about 4 heads tall, clear readable face, detailed clothing, standing upright on two feet in a neutral pose with arms relaxed at the sides, empty hands, full body, ",
+  "tandas": 1
+ },
+ "pj_farmer": {
+  "size": 64,
+  "ref": "personajes/farmer_viejo64.png",
+  "refs": [
+   [
+    "personajes/farmer_viejo64.png",
+    "concept reference (old low resolution sprite of this human character): keep the outfit, colors, hairstyle and accessories, redraw it as a detailed high quality pixel art character"
+   ]
+  ],
+  "desc": "farmer man, straw hat, red overalls over a white shirt, rubber boots, sunburnt friendly face, human character for a creature-collecting RPG, cute but not chibi, proportions about 4 heads tall, clear readable face, detailed clothing, standing upright on two feet in a neutral pose with arms relaxed at the sides, empty hands, full body, ",
+  "tandas": 1
+ },
+ "pj_sister": {
+  "size": 64,
+  "ref": "personajes/sister_viejo64.png",
+  "refs": [
+   [
+    "personajes/sister_viejo64.png",
+    "concept reference (old low resolution sprite of this human character): keep the outfit, colors, hairstyle and accessories, redraw it as a detailed high quality pixel art character"
+   ]
+  ],
+  "desc": "teenage girl, orange-auburn hair in a ponytail, green dress with white collar, kind smile, human character for a creature-collecting RPG, cute but not chibi, proportions about 4 heads tall, clear readable face, detailed clothing, standing upright on two feet in a neutral pose with arms relaxed at the sides, empty hands, full body, ",
+  "tandas": 1
+ },
+ "pj_selene": {
+  "size": 64,
+  "ref": "personajes/selene_viejo64.png",
+  "refs": [
+   [
+    "personajes/selene_viejo64.png",
+    "concept reference (old low resolution sprite of this human character): keep the outfit, colors, hairstyle and accessories, redraw it as a detailed high quality pixel art character"
+   ]
+  ],
+  "desc": "psychic gym leader, young woman, purple hair in a high bun, glasses, dark violet dress with pale lilac details, mysterious calm smile, human character for a creature-collecting RPG, cute but not chibi, proportions about 4 heads tall, clear readable face, detailed clothing, standing upright on two feet in a neutral pose with arms relaxed at the sides, empty hands, full body, ",
+  "tandas": 1
+ },
+ "pj_nurse": {
+  "size": 64,
+  "ref": "personajes/nurse_viejo64.png",
+  "refs": [
+   [
+    "personajes/nurse_viejo64.png",
+    "concept reference (old low resolution sprite of this human character): keep the outfit, colors, hairstyle and accessories, redraw it as a detailed high quality pixel art character"
+   ]
+  ],
+  "desc": "creature center nurse, pink hair, white nurse cap with a red cross, pink dress with white apron, warm smile, human character for a creature-collecting RPG, cute but not chibi, proportions about 4 heads tall, clear readable face, detailed clothing, standing upright on two feet in a neutral pose with arms relaxed at the sides, empty hands, full body, ",
+  "tandas": 1
+ },
+ "pj_neron": {
+  "size": 64,
+  "ref": "personajes/neron_viejo64.png",
+  "refs": [
+   [
+    "personajes/neron_viejo64.png",
+    "concept reference (old low resolution sprite of this human character): keep the outfit, colors, hairstyle and accessories, redraw it as a detailed high quality pixel art character"
+   ]
+  ],
+  "desc": "water gym leader, young man, white captain's cap, navy blue coat with gold buttons, white pants, confident sailor look, human character for a creature-collecting RPG, cute but not chibi, proportions about 4 heads tall, clear readable face, detailed clothing, standing upright on two feet in a neutral pose with arms relaxed at the sides, empty hands, full body, ",
+  "tandas": 1
+ },
+ "pj_mom": {
+  "size": 64,
+  "ref": "personajes/mom_viejo64.png",
+  "refs": [
+   [
+    "personajes/mom_viejo64.png",
+    "concept reference (old low resolution sprite of this human character): keep the outfit, colors, hairstyle and accessories, redraw it as a detailed high quality pixel art character"
+   ]
+  ],
+  "desc": "kind mother, long brown hair, peach apron over a cream dress, gentle smile, human character for a creature-collecting RPG, cute but not chibi, proportions about 4 heads tall, clear readable face, detailed clothing, standing upright on two feet in a neutral pose with arms relaxed at the sides, empty hands, full body, ",
+  "tandas": 1
+ },
+ "pj_clerk": {
+  "size": 64,
+  "ref": "personajes/clerk_viejo64.png",
+  "refs": [
+   [
+    "personajes/clerk_viejo64.png",
+    "concept reference (old low resolution sprite of this human character): keep the outfit, colors, hairstyle and accessories, redraw it as a detailed high quality pixel art character"
+   ]
+  ],
+  "desc": "shop clerk man, short dark hair, blue apron over a white shirt, dark pants, friendly smile, human character for a creature-collecting RPG, cute but not chibi, proportions about 4 heads tall, clear readable face, detailed clothing, standing upright on two feet in a neutral pose with arms relaxed at the sides, empty hands, full body, ",
+  "tandas": 1
+ },
+ "pj_bruna": {
+  "size": 64,
+  "ref": "personajes/bruna_viejo64.png",
+  "refs": [
+   [
+    "personajes/bruna_viejo64.png",
+    "concept reference (old low resolution sprite of this human character): keep the outfit, colors, hairstyle and accessories, redraw it as a detailed high quality pixel art character"
+   ]
+  ],
+  "desc": "rock gym leader, strong young woman, short brown hair with an orange headband, brown leather vest over a beige shirt, work pants, boots, determined grin, human character for a creature-collecting RPG, cute but not chibi, proportions about 4 heads tall, clear readable face, detailed clothing, standing upright on two feet in a neutral pose with arms relaxed at the sides, empty hands, full body, ",
+  "tandas": 1
+ },
+ "pj_brisa": {
+  "size": 64,
+  "ref": "personajes/brisa_viejo64.png",
+  "refs": [
+   [
+    "personajes/brisa_viejo64.png",
+    "concept reference (old low resolution sprite of this human character): keep the outfit, colors, hairstyle and accessories, redraw it as a detailed high quality pixel art character"
+   ]
+  ],
+  "desc": "wind gym leader, young woman, long flowing light blue hair, white long coat with sky blue trim, light pants, airy graceful pose, human character for a creature-collecting RPG, cute but not chibi, proportions about 4 heads tall, clear readable face, detailed clothing, standing upright on two feet in a neutral pose with arms relaxed at the sides, empty hands, full body, ",
+  "tandas": 1
+ },
+ "pj_ascua": {
+  "size": 64,
+  "ref": "personajes/ascua_viejo64.png",
+  "refs": [
+   [
+    "personajes/ascua_viejo64.png",
+    "concept reference (old low resolution sprite of this human character): keep the outfit, colors, hairstyle and accessories, redraw it as a detailed high quality pixel art character"
+   ]
+  ],
+  "desc": "fire gym leader, young man, spiky red hair with a yellow bandana, orange jacket with dark red trim, dark pants, fiery confident grin, human character for a creature-collecting RPG, cute but not chibi, proportions about 4 heads tall, clear readable face, detailed clothing, standing upright on two feet in a neutral pose with arms relaxed at the sides, empty hands, full body, ",
+  "tandas": 1
+ },
+ "fx_embestida": {
+  "size": 64,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art visual effect for a real-time creature battle game, bold readable silhouette, vivid saturated colors with a bright core and darker edges, dark outline where useful, transparent background, no creature, no character, no text, a burst of white and beige speed lines and a small dust cloud in the shape of a forward charge, motion streaks pointing left, side view, the effect moves to the left",
+  "cola": ", impactful, high quality detailed pixel art",
   "tandas": 1,
-  "cola": ", high quality detailed pixel art"
+  "anim": "speed lines streaking to the left and fading",
+  "vista": "lado"
+ },
+ "fx_zarpazo": {
+  "size": 64,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art visual effect for a real-time creature battle game, bold readable silhouette, vivid saturated colors with a bright core and darker edges, dark outline where useful, transparent background, no creature, no character, no text, three curved white claw slash marks in a quick arc, sharp bright edges with a soft glow, side view, the effect moves to the left",
+  "cola": ", impactful, high quality detailed pixel art",
+  "tandas": 1,
+  "anim": "the three claw slashes swiping down in an arc and fading",
+  "vista": "lado"
+ },
+ "fx_rugido": {
+  "size": 64,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art visual effect for a real-time creature battle game, bold readable silhouette, vivid saturated colors with a bright core and darker edges, dark outline where useful, transparent background, no creature, no character, no text, concentric jagged sound shockwave rings in pale yellow and white bursting outward from a center, angry roar symbols, front view",
+  "cola": ", impactful, high quality detailed pixel art",
+  "tandas": 1,
+  "anim": "the roar shockwaves pulsing outward",
+  "vista": "frente"
+ },
+ "fx_acometida": {
+  "size": 64,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art visual effect for a real-time creature battle game, bold readable silhouette, vivid saturated colors with a bright core and darker edges, dark outline where useful, transparent background, no creature, no character, no text, a powerful white comet-like rush aura with long trailing speed streaks and swirling dust, pointing left, side view, the effect moves to the left",
+  "cola": ", impactful, high quality detailed pixel art",
+  "tandas": 1,
+  "anim": "the rush aura surging forward with streaks",
+  "vista": "lado"
+ },
+ "fx_carga_brutal": {
+  "size": 96,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art visual effect for a real-time creature battle game, bold readable silhouette, vivid saturated colors with a bright core and darker edges, dark outline where useful, transparent background, no creature, no character, no text, a huge heavy impact star burst in white and orange with cracked shockwave lines and flying debris, side view, the effect moves to the left",
+  "cola": ", impactful, high quality detailed pixel art",
+  "tandas": 1,
+  "anim": "the impact star exploding outward with debris",
+  "vista": "lado"
+ },
+ "fx_grito": {
+  "size": 96,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art visual effect for a real-time creature battle game, bold readable silhouette, vivid saturated colors with a bright core and darker edges, dark outline where useful, transparent background, no creature, no character, no text, top-down view of a ring of white and lavender sonic waves with visible sound ripple bands, centered, seen from above, top-down view, flat on the ground",
+  "cola": ", impactful, high quality detailed pixel art",
+  "tandas": 1,
+  "anim": "the sonic ring expanding outward and fading",
+  "vista": "arriba"
+ },
+ "fx_rayo_total": {
+  "size": 96,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art visual effect for a real-time creature battle game, bold readable silhouette, vivid saturated colors with a bright core and darker edges, dark outline where useful, transparent background, no creature, no character, no text, a massive horizontal beam of pure white and golden light filling the width, rainbow edges, crackling energy, starting from the right side flowing to the left, side view, the effect moves to the left",
+  "cola": ", impactful, high quality detailed pixel art",
+  "tandas": 1,
+  "anim": "the beam pulsing and crackling",
+  "vista": "lado"
+ },
+ "fx_refuerzo": {
+  "size": 64,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art visual effect for a real-time creature battle game, bold readable silhouette, vivid saturated colors with a bright core and darker edges, dark outline where useful, transparent background, no creature, no character, no text, a rising aura of red and orange energy with upward arrows and sparkles, as if powering up, empty center, front view",
+  "cola": ", impactful, high quality detailed pixel art",
+  "tandas": 1,
+  "anim": "the aura flames rising upward",
+  "vista": "frente"
+ },
+ "fx_colmillo_igneo": {
+  "size": 64,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art visual effect for a real-time creature battle game, bold readable silhouette, vivid saturated colors with a bright core and darker edges, dark outline where useful, transparent background, no creature, no character, no text, a pair of fiery fang shapes made of flames snapping shut like a bite, orange and yellow, side view, the effect moves to the left",
+  "cola": ", impactful, high quality detailed pixel art",
+  "tandas": 1,
+  "anim": "the flaming fangs biting shut and bursting into sparks",
+  "vista": "lado"
+ },
+ "fx_brasas": {
+  "size": 64,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art visual effect for a real-time creature battle game, bold readable silhouette, vivid saturated colors with a bright core and darker edges, dark outline where useful, transparent background, no creature, no character, no text, three small fiery embers in a fan spread, each with a little flame tail, flying left, side view, the effect moves to the left",
+  "cola": ", impactful, high quality detailed pixel art",
+  "tandas": 1,
+  "anim": "the three embers flickering",
+  "vista": "lado"
+ },
+ "fx_llamarada": {
+  "size": 96,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art visual effect for a real-time creature battle game, bold readable silhouette, vivid saturated colors with a bright core and darker edges, dark outline where useful, transparent background, no creature, no character, no text, a large roaring fireball with swirling layered flames, white hot core, big flame trail to the right, flying left, side view, the effect moves to the left",
+  "cola": ", impactful, high quality detailed pixel art",
+  "tandas": 1,
+  "anim": "the big fireball churning and roaring",
+  "vista": "lado"
+ },
+ "fx_anillo_igneo": {
+  "size": 96,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art visual effect for a real-time creature battle game, bold readable silhouette, vivid saturated colors with a bright core and darker edges, dark outline where useful, transparent background, no creature, no character, no text, top-down view of a ring of tall flames surrounding an empty center, orange and red with yellow tips, seen from above, top-down view, flat on the ground",
+  "cola": ", impactful, high quality detailed pixel art",
+  "tandas": 1,
+  "anim": "the ring of flames flaring outward",
+  "vista": "arriba"
+ },
+ "fx_lanzallamas": {
+  "size": 96,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art visual effect for a real-time creature battle game, bold readable silhouette, vivid saturated colors with a bright core and darker edges, dark outline where useful, transparent background, no creature, no character, no text, a wide horizontal jet of roaring flames flowing from right to left across the canvas, turbulent orange red and yellow, side view, the effect moves to the left",
+  "cola": ", impactful, high quality detailed pixel art",
+  "tandas": 1,
+  "anim": "the flame jet billowing and flickering",
+  "vista": "lado"
+ },
+ "fx_cola_marea": {
+  "size": 64,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art visual effect for a real-time creature battle game, bold readable silhouette, vivid saturated colors with a bright core and darker edges, dark outline where useful, transparent background, no creature, no character, no text, a curved crashing arc of water like a tail swipe, splashing droplets and foam, blue and white, side view, the effect moves to the left",
+  "cola": ", impactful, high quality detailed pixel art",
+  "tandas": 1,
+  "anim": "the water arc swiping and splashing",
+  "vista": "lado"
+ },
+ "fx_chorro": {
+  "size": 96,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art visual effect for a real-time creature battle game, bold readable silhouette, vivid saturated colors with a bright core and darker edges, dark outline where useful, transparent background, no creature, no character, no text, a pressurized horizontal water jet flowing from right to left, bright blue with white foam and spray, side view, the effect moves to the left",
+  "cola": ", impactful, high quality detailed pixel art",
+  "tandas": 1,
+  "anim": "the water jet rushing with spray",
+  "vista": "lado"
+ },
+ "fx_hidrobomba": {
+  "size": 96,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art visual effect for a real-time creature battle game, bold readable silhouette, vivid saturated colors with a bright core and darker edges, dark outline where useful, transparent background, no creature, no character, no text, a huge spinning sphere of water with swirling currents and spray, deep blue and white, flying left, side view, the effect moves to the left",
+  "cola": ", impactful, high quality detailed pixel art",
+  "tandas": 1,
+  "anim": "the water sphere spinning and sloshing",
+  "vista": "lado"
+ },
+ "fx_remolino": {
+  "size": 96,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art visual effect for a real-time creature battle game, bold readable silhouette, vivid saturated colors with a bright core and darker edges, dark outline where useful, transparent background, no creature, no character, no text, top-down view of a swirling blue whirlpool vortex with white foam spirals, seen from above, top-down view, flat on the ground",
+  "cola": ", impactful, high quality detailed pixel art",
+  "tandas": 1,
+  "anim": "the whirlpool spinning",
+  "vista": "arriba"
+ },
+ "fx_rocio": {
+  "size": 64,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art visual effect for a real-time creature battle game, bold readable silhouette, vivid saturated colors with a bright core and darker edges, dark outline where useful, transparent background, no creature, no character, no text, a gentle healing shower of sparkling water droplets and green plus signs falling softly, light blue glow, front view",
+  "cola": ", impactful, high quality detailed pixel art",
+  "tandas": 1,
+  "anim": "the healing droplets falling and sparkling",
+  "vista": "frente"
+ },
+ "fx_ola": {
+  "size": 96,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art visual effect for a real-time creature battle game, bold readable silhouette, vivid saturated colors with a bright core and darker edges, dark outline where useful, transparent background, no creature, no character, no text, top-down view of a circular wave of water crashing outward with white foam crests, seen from above, top-down view, flat on the ground",
+  "cola": ", impactful, high quality detailed pixel art",
+  "tandas": 1,
+  "anim": "the circular wave rolling outward",
+  "vista": "arriba"
+ },
+ "fx_hoja_filo": {
+  "size": 64,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art visual effect for a real-time creature battle game, bold readable silhouette, vivid saturated colors with a bright core and darker edges, dark outline where useful, transparent background, no creature, no character, no text, a sharp spinning green leaf blade with a light green slash trail, flying left, side view, the effect moves to the left",
+  "cola": ", impactful, high quality detailed pixel art",
+  "tandas": 1,
+  "anim": "the leaf spinning",
+  "vista": "lado"
+ },
+ "fx_latigo": {
+  "size": 64,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art visual effect for a real-time creature battle game, bold readable silhouette, vivid saturated colors with a bright core and darker edges, dark outline where useful, transparent background, no creature, no character, no text, a long green thorny vine whip cracking in an S curve with small leaves, side view, the effect moves to the left",
+  "cola": ", impactful, high quality detailed pixel art",
+  "tandas": 1,
+  "anim": "the vine whip lashing",
+  "vista": "lado"
+ },
+ "fx_esporas": {
+  "size": 64,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art visual effect for a real-time creature battle game, bold readable silhouette, vivid saturated colors with a bright core and darker edges, dark outline where useful, transparent background, no creature, no character, no text, a drifting cloud of glowing yellow-green sleepy spores and little zzz bubbles, front view",
+  "cola": ", impactful, high quality detailed pixel art",
+  "tandas": 1,
+  "anim": "the spores drifting and swirling",
+  "vista": "frente"
+ },
+ "fx_drenaje": {
+  "size": 64,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art visual effect for a real-time creature battle game, bold readable silhouette, vivid saturated colors with a bright core and darker edges, dark outline where useful, transparent background, no creature, no character, no text, a green glowing orb of absorbed life energy with leaf motes spiraling into it, flying left, side view, the effect moves to the left",
+  "cola": ", impactful, high quality detailed pixel art",
+  "tandas": 1,
+  "anim": "the orb pulsing and motes spiraling",
+  "vista": "lado"
+ },
+ "fx_tormenta_petalo": {
+  "size": 96,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art visual effect for a real-time creature battle game, bold readable silhouette, vivid saturated colors with a bright core and darker edges, dark outline where useful, transparent background, no creature, no character, no text, top-down view of a spiral storm of pink and white flower petals swirling in a ring, seen from above, top-down view, flat on the ground",
+  "cola": ", impactful, high quality detailed pixel art",
+  "tandas": 1,
+  "anim": "the petal storm swirling",
+  "vista": "arriba"
+ },
+ "fx_rayo_solar": {
+  "size": 96,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art visual effect for a real-time creature battle game, bold readable silhouette, vivid saturated colors with a bright core and darker edges, dark outline where useful, transparent background, no creature, no character, no text, a wide horizontal beam of bright golden sunlight with green leafy sparkles flowing from right to left, side view, the effect moves to the left",
+  "cola": ", impactful, high quality detailed pixel art",
+  "tandas": 1,
+  "anim": "the sunbeam shining and pulsing",
+  "vista": "lado"
+ },
+ "fx_espino": {
+  "size": 64,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art visual effect for a real-time creature battle game, bold readable silhouette, vivid saturated colors with a bright core and darker edges, dark outline where useful, transparent background, no creature, no character, no text, three sharp brown and green thorns in a fan spread, flying left, side view, the effect moves to the left",
+  "cola": ", impactful, high quality detailed pixel art",
+  "tandas": 1,
+  "anim": "the thorns spinning slightly",
+  "vista": "lado"
+ },
+ "fx_chispa": {
+  "size": 64,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art visual effect for a real-time creature battle game, bold readable silhouette, vivid saturated colors with a bright core and darker edges, dark outline where useful, transparent background, no creature, no character, no text, a small crackling ball of yellow electricity with tiny zigzag sparks, flying left, side view, the effect moves to the left",
+  "cola": ", impactful, high quality detailed pixel art",
+  "tandas": 1,
+  "anim": "the spark crackling",
+  "vista": "lado"
+ },
+ "fx_puno_voltio": {
+  "size": 64,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art visual effect for a real-time creature battle game, bold readable silhouette, vivid saturated colors with a bright core and darker edges, dark outline where useful, transparent background, no creature, no character, no text, an electric fist impact burst with yellow lightning zigzags radiating and a white flash, side view, the effect moves to the left",
+  "cola": ", impactful, high quality detailed pixel art",
+  "tandas": 1,
+  "anim": "the electric burst crackling outward",
+  "vista": "lado"
+ },
+ "fx_onda_estatica": {
+  "size": 96,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art visual effect for a real-time creature battle game, bold readable silhouette, vivid saturated colors with a bright core and darker edges, dark outline where useful, transparent background, no creature, no character, no text, top-down view of a ring of crackling yellow static electricity with zigzag arcs, seen from above, top-down view, flat on the ground",
+  "cola": ", impactful, high quality detailed pixel art",
+  "tandas": 1,
+  "anim": "the static ring crackling outward",
+  "vista": "arriba"
+ },
+ "fx_rayo": {
+  "size": 96,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art visual effect for a real-time creature battle game, bold readable silhouette, vivid saturated colors with a bright core and darker edges, dark outline where useful, transparent background, no creature, no character, no text, a jagged horizontal bolt of bright yellow and white lightning crossing from right to left with branching arcs, side view, the effect moves to the left",
+  "cola": ", impactful, high quality detailed pixel art",
+  "tandas": 1,
+  "anim": "the lightning bolt flickering and branching",
+  "vista": "lado"
+ },
+ "fx_trueno": {
+  "size": 96,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art visual effect for a real-time creature battle game, bold readable silhouette, vivid saturated colors with a bright core and darker edges, dark outline where useful, transparent background, no creature, no character, no text, a massive vertical lightning bolt striking down from a small dark cloud at the top to the ground, yellow and white with a ground flash, front view",
+  "cola": ", impactful, high quality detailed pixel art",
+  "tandas": 1,
+  "anim": "the thunderbolt striking and flashing",
+  "vista": "frente"
+ },
+ "fx_relampago": {
+  "size": 64,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art visual effect for a real-time creature battle game, bold readable silhouette, vivid saturated colors with a bright core and darker edges, dark outline where useful, transparent background, no creature, no character, no text, a streak of yellow lightning aura with sparks in the shape of a fast forward rush pointing left, side view, the effect moves to the left",
+  "cola": ", impactful, high quality detailed pixel art",
+  "tandas": 1,
+  "anim": "the lightning rush crackling forward",
+  "vista": "lado"
+ },
+ "fx_lanzarrocas": {
+  "size": 64,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art visual effect for a real-time creature battle game, bold readable silhouette, vivid saturated colors with a bright core and darker edges, dark outline where useful, transparent background, no creature, no character, no text, a chunky grey-brown boulder with cracks and small pebbles trailing, flying left, side view, the effect moves to the left",
+  "cola": ", impactful, high quality detailed pixel art",
+  "tandas": 1,
+  "anim": "the rock tumbling",
+  "vista": "lado"
+ },
+ "fx_golpe_roca": {
+  "size": 64,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art visual effect for a real-time creature battle game, bold readable silhouette, vivid saturated colors with a bright core and darker edges, dark outline where useful, transparent background, no creature, no character, no text, a heavy stone fist impact with shattering rock fragments and dust, side view, the effect moves to the left",
+  "cola": ", impactful, high quality detailed pixel art",
+  "tandas": 1,
+  "anim": "the rock impact shattering",
+  "vista": "lado"
+ },
+ "fx_avalancha": {
+  "size": 96,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art visual effect for a real-time creature battle game, bold readable silhouette, vivid saturated colors with a bright core and darker edges, dark outline where useful, transparent background, no creature, no character, no text, a cascade of large and small brown boulders falling from above with dust clouds, front view",
+  "cola": ", impactful, high quality detailed pixel art",
+  "tandas": 1,
+  "anim": "the boulders tumbling down",
+  "vista": "frente"
+ },
+ "fx_coraza": {
+  "size": 64,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art visual effect for a real-time creature battle game, bold readable silhouette, vivid saturated colors with a bright core and darker edges, dark outline where useful, transparent background, no creature, no character, no text, a hexagonal armor shield of grey stone plates forming around an empty center with a golden glint, front view",
+  "cola": ", impactful, high quality detailed pixel art",
+  "tandas": 1,
+  "anim": "the stone plates assembling and shining",
+  "vista": "frente"
+ },
+ "fx_terremoto": {
+  "size": 96,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art visual effect for a real-time creature battle game, bold readable silhouette, vivid saturated colors with a bright core and darker edges, dark outline where useful, transparent background, no creature, no character, no text, top-down view of the ground cracking in a radial pattern with brown shockwave ring and rising dust, seen from above, top-down view, flat on the ground",
+  "cola": ", impactful, high quality detailed pixel art",
+  "tandas": 1,
+  "anim": "the cracks spreading and shaking",
+  "vista": "arriba"
+ },
+ "fx_pedrisco": {
+  "size": 64,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art visual effect for a real-time creature battle game, bold readable silhouette, vivid saturated colors with a bright core and darker edges, dark outline where useful, transparent background, no creature, no character, no text, three sharp grey stones in a fan spread, flying left, side view, the effect moves to the left",
+  "cola": ", impactful, high quality detailed pixel art",
+  "tandas": 1,
+  "anim": "the stones spinning",
+  "vista": "lado"
+ },
+ "fx_picotazo": {
+  "size": 64,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art visual effect for a real-time creature battle game, bold readable silhouette, vivid saturated colors with a bright core and darker edges, dark outline where useful, transparent background, no creature, no character, no text, a sharp beak-shaped strike flash with white speed lines and a small star impact, side view, the effect moves to the left",
+  "cola": ", impactful, high quality detailed pixel art",
+  "tandas": 1,
+  "anim": "the peck strike flashing",
+  "vista": "lado"
+ },
+ "fx_rafaga": {
+  "size": 64,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art visual effect for a real-time creature battle game, bold readable silhouette, vivid saturated colors with a bright core and darker edges, dark outline where useful, transparent background, no creature, no character, no text, a crescent-shaped gust of pale green and white wind with swirl curls, flying left, side view, the effect moves to the left",
+  "cola": ", impactful, high quality detailed pixel art",
+  "tandas": 1,
+  "anim": "the gust swirling while flying",
+  "vista": "lado"
+ },
+ "fx_ala_corte": {
+  "size": 64,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art visual effect for a real-time creature battle game, bold readable silhouette, vivid saturated colors with a bright core and darker edges, dark outline where useful, transparent background, no creature, no character, no text, a sharp crescent wing slash of silver wind with feathers flying, pointing left, side view, the effect moves to the left",
+  "cola": ", impactful, high quality detailed pixel art",
+  "tandas": 1,
+  "anim": "the wing slash cutting and feathers scattering",
+  "vista": "lado"
+ },
+ "fx_tornado": {
+  "size": 96,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art visual effect for a real-time creature battle game, bold readable silhouette, vivid saturated colors with a bright core and darker edges, dark outline where useful, transparent background, no creature, no character, no text, a tall spinning tornado funnel of pale green and grey wind with leaves and debris, front view",
+  "cola": ", impactful, high quality detailed pixel art",
+  "tandas": 1,
+  "anim": "the tornado spinning",
+  "vista": "frente"
+ },
+ "fx_vendaval": {
+  "size": 96,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art visual effect for a real-time creature battle game, bold readable silhouette, vivid saturated colors with a bright core and darker edges, dark outline where useful, transparent background, no creature, no character, no text, a wide horizontal hurricane stream of swirling green and white wind currents flowing from right to left, side view, the effect moves to the left",
+  "cola": ", impactful, high quality detailed pixel art",
+  "tandas": 1,
+  "anim": "the hurricane wind rushing and swirling",
+  "vista": "lado"
+ },
+ "fx_viento_afin": {
+  "size": 64,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art visual effect for a real-time creature battle game, bold readable silhouette, vivid saturated colors with a bright core and darker edges, dark outline where useful, transparent background, no creature, no character, no text, a swirling upward aura of light green wind ribbons and small arrows, empty center, speed boost, front view",
+  "cola": ", impactful, high quality detailed pixel art",
+  "tandas": 1,
+  "anim": "the wind ribbons swirling upward",
+  "vista": "frente"
+ },
+ "fx_picadura": {
+  "size": 64,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art visual effect for a real-time creature battle game, bold readable silhouette, vivid saturated colors with a bright core and darker edges, dark outline where useful, transparent background, no creature, no character, no text, a sharp purple stinger strike with venom droplets and a small impact flash, side view, the effect moves to the left",
+  "cola": ", impactful, high quality detailed pixel art",
+  "tandas": 1,
+  "anim": "the sting striking and venom splashing",
+  "vista": "lado"
+ },
+ "fx_hilo": {
+  "size": 64,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art visual effect for a real-time creature battle game, bold readable silhouette, vivid saturated colors with a bright core and darker edges, dark outline where useful, transparent background, no creature, no character, no text, a white sticky silk thread shot with a web ball at the front, flying left, side view, the effect moves to the left",
+  "cola": ", impactful, high quality detailed pixel art",
+  "tandas": 1,
+  "anim": "the silk thread stretching and wobbling",
+  "vista": "lado"
+ },
+ "fx_zumbido": {
+  "size": 96,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art visual effect for a real-time creature battle game, bold readable silhouette, vivid saturated colors with a bright core and darker edges, dark outline where useful, transparent background, no creature, no character, no text, top-down view of a ring of buzzing vibration waves with insect wing shapes, green and yellow, seen from above, top-down view, flat on the ground",
+  "cola": ", impactful, high quality detailed pixel art",
+  "tandas": 1,
+  "anim": "the buzzing ring vibrating outward",
+  "vista": "arriba"
+ },
+ "fx_tijera": {
+  "size": 64,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art visual effect for a real-time creature battle game, bold readable silhouette, vivid saturated colors with a bright core and darker edges, dark outline where useful, transparent background, no creature, no character, no text, two crossing green slash marks forming a big X with bright edges, side view, the effect moves to the left",
+  "cola": ", impactful, high quality detailed pixel art",
+  "tandas": 1,
+  "anim": "the X slash crossing and fading",
+  "vista": "lado"
+ },
+ "fx_polvo_toxico": {
+  "size": 64,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art visual effect for a real-time creature battle game, bold readable silhouette, vivid saturated colors with a bright core and darker edges, dark outline where useful, transparent background, no creature, no character, no text, a billowing cloud of purple toxic powder with skull-free poison bubbles and sparkles, front view",
+  "cola": ", impactful, high quality detailed pixel art",
+  "tandas": 1,
+  "anim": "the toxic cloud billowing",
+  "vista": "frente"
+ },
+ "fx_aguijon": {
+  "size": 64,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art visual effect for a real-time creature battle game, bold readable silhouette, vivid saturated colors with a bright core and darker edges, dark outline where useful, transparent background, no creature, no character, no text, two sharp purple venomous stingers flying side by side to the left with small venom drips, side view, the effect moves to the left",
+  "cola": ", impactful, high quality detailed pixel art",
+  "tandas": 1,
+  "anim": "the stingers wobbling in flight",
+  "vista": "lado"
+ },
+ "fx_lenguetazo": {
+  "size": 64,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art visual effect for a real-time creature battle game, bold readable silhouette, vivid saturated colors with a bright core and darker edges, dark outline where useful, transparent background, no creature, no character, no text, a long ghostly purple tongue lick swipe with a spooky shimmer, side view, the effect moves to the left",
+  "cola": ", impactful, high quality detailed pixel art",
+  "tandas": 1,
+  "anim": "the ghostly tongue licking forward and back",
+  "vista": "lado"
+ },
+ "fx_bola_sombra": {
+  "size": 64,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art visual effect for a real-time creature battle game, bold readable silhouette, vivid saturated colors with a bright core and darker edges, dark outline where useful, transparent background, no creature, no character, no text, a dark sphere of swirling black and purple shadow energy with wisps, flying left, side view, the effect moves to the left",
+  "cola": ", impactful, high quality detailed pixel art",
+  "tandas": 1,
+  "anim": "the shadow sphere swirling",
+  "vista": "lado"
+ },
+ "fx_sombra_furtiva": {
+  "size": 64,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art visual effect for a real-time creature battle game, bold readable silhouette, vivid saturated colors with a bright core and darker edges, dark outline where useful, transparent background, no creature, no character, no text, a puff of dark purple shadow smoke with two glowing eyes appearing, sneaky ambush, front view",
+  "cola": ", impactful, high quality detailed pixel art",
+  "tandas": 1,
+  "anim": "the shadow smoke puffing and dissolving",
+  "vista": "frente"
+ },
+ "fx_pesadilla": {
+  "size": 96,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art visual effect for a real-time creature battle game, bold readable silhouette, vivid saturated colors with a bright core and darker edges, dark outline where useful, transparent background, no creature, no character, no text, dark purple shadow hands rising from a black pool reaching upward, nightmare wisps, front view",
+  "cola": ", impactful, high quality detailed pixel art",
+  "tandas": 1,
+  "anim": "the shadow hands rising and grasping",
+  "vista": "frente"
+ },
+ "fx_velo": {
+  "size": 64,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art visual effect for a real-time creature battle game, bold readable silhouette, vivid saturated colors with a bright core and darker edges, dark outline where useful, transparent background, no creature, no character, no text, a translucent dark violet veil aura with drifting wisps surrounding an empty center, front view",
+  "cola": ", impactful, high quality detailed pixel art",
+  "tandas": 1,
+  "anim": "the veil shimmering",
+  "vista": "frente"
+ },
+ "fx_garra_umbria": {
+  "size": 64,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art visual effect for a real-time creature battle game, bold readable silhouette, vivid saturated colors with a bright core and darker edges, dark outline where useful, transparent background, no creature, no character, no text, three dark purple shadow claw slashes with black wisps, side view, the effect moves to the left",
+  "cola": ", impactful, high quality detailed pixel art",
+  "tandas": 1,
+  "anim": "the shadow claws slashing and dissolving",
+  "vista": "lado"
+ },
+ "fx_confusion": {
+  "size": 64,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art visual effect for a real-time creature battle game, bold readable silhouette, vivid saturated colors with a bright core and darker edges, dark outline where useful, transparent background, no creature, no character, no text, a wobbling pink and purple psychic wave ring with spirals, flying left, side view, the effect moves to the left",
+  "cola": ", impactful, high quality detailed pixel art",
+  "tandas": 1,
+  "anim": "the psychic wave wobbling",
+  "vista": "lado"
+ },
+ "fx_psicorrayo": {
+  "size": 96,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art visual effect for a real-time creature battle game, bold readable silhouette, vivid saturated colors with a bright core and darker edges, dark outline where useful, transparent background, no creature, no character, no text, a horizontal beam of rippling pink and violet psychic energy rings flowing from right to left, side view, the effect moves to the left",
+  "cola": ", impactful, high quality detailed pixel art",
+  "tandas": 1,
+  "anim": "the psychic beam rippling",
+  "vista": "lado"
+ },
+ "fx_barrera": {
+  "size": 64,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art visual effect for a real-time creature battle game, bold readable silhouette, vivid saturated colors with a bright core and darker edges, dark outline where useful, transparent background, no creature, no character, no text, a translucent pink hexagonal force field dome with shimmering lines, empty center, front view",
+  "cola": ", impactful, high quality detailed pixel art",
+  "tandas": 1,
+  "anim": "the barrier shimmering",
+  "vista": "frente"
+ },
+ "fx_onda_mental": {
+  "size": 96,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art visual effect for a real-time creature battle game, bold readable silhouette, vivid saturated colors with a bright core and darker edges, dark outline where useful, transparent background, no creature, no character, no text, top-down view of a pulsing ring of pink psychic energy with spirals, seen from above, top-down view, flat on the ground",
+  "cola": ", impactful, high quality detailed pixel art",
+  "tandas": 1,
+  "anim": "the psychic ring pulsing outward",
+  "vista": "arriba"
+ },
+ "fx_teletransporte": {
+  "size": 64,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art visual effect for a real-time creature battle game, bold readable silhouette, vivid saturated colors with a bright core and darker edges, dark outline where useful, transparent background, no creature, no character, no text, a sparkling pink and white teleport flash with vertical light streaks and stars, front view",
+  "cola": ", impactful, high quality detailed pixel art",
+  "tandas": 1,
+  "anim": "the teleport flash sparkling and vanishing",
+  "vista": "frente"
+ },
+ "fx_psiquico": {
+  "size": 64,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art visual effect for a real-time creature battle game, bold readable silhouette, vivid saturated colors with a bright core and darker edges, dark outline where useful, transparent background, no creature, no character, no text, a distortion burst of pink and violet psychic force with warped rings around a bright center, front view",
+  "cola": ", impactful, high quality detailed pixel art",
+  "tandas": 1,
+  "anim": "the psychic force warping and pulsing",
+  "vista": "frente"
+ },
+ "fx_bosque_ancestral": {
+  "size": 96,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art visual effect for a real-time creature battle game, bold readable silhouette, vivid saturated colors with a bright core and darker edges, dark outline where useful, transparent background, no creature, no character, no text, top-down view of a ring of giant roots and ancient trees bursting from the ground with glowing green runes, seen from above, top-down view, flat on the ground",
+  "cola": ", impactful, high quality detailed pixel art",
+  "tandas": 1,
+  "anim": "the roots bursting upward in a ring",
+  "vista": "arriba"
+ },
+ "fx_alba_solar": {
+  "size": 96,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art visual effect for a real-time creature battle game, bold readable silhouette, vivid saturated colors with a bright core and darker edges, dark outline where useful, transparent background, no creature, no character, no text, a majestic horizontal beam of dawn light in gold, pink and orange with a sun flare at the right, flowing to the left, side view, the effect moves to the left",
+  "cola": ", impactful, high quality detailed pixel art",
+  "tandas": 1,
+  "anim": "the dawn beam blazing and shimmering",
+  "vista": "lado"
+ },
+ "fx_maremoto": {
+  "size": 96,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art visual effect for a real-time creature battle game, bold readable silhouette, vivid saturated colors with a bright core and darker edges, dark outline where useful, transparent background, no creature, no character, no text, a giant towering ocean wave crashing down with white foam crest, deep blue, front view",
+  "cola": ", impactful, high quality detailed pixel art",
+  "tandas": 1,
+  "anim": "the giant wave crashing down",
+  "vista": "frente"
+ },
+ "fx_destello_alba": {
+  "size": 96,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art visual effect for a real-time creature battle game, bold readable silhouette, vivid saturated colors with a bright core and darker edges, dark outline where useful, transparent background, no creature, no character, no text, top-down view of a radiant burst of golden dawn light rays in a ring with pink glow, seen from above, top-down view, flat on the ground",
+  "cola": ", impactful, high quality detailed pixel art",
+  "tandas": 1,
+  "anim": "the light burst radiating outward",
+  "vista": "arriba"
+ },
+ "fx_meditar": {
+  "size": 64,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art visual effect for a real-time creature battle game, bold readable silhouette, vivid saturated colors with a bright core and darker edges, dark outline where useful, transparent background, no creature, no character, no text, a calm aura of soft lavender light with floating lotus petals and small sparkles rising, empty center, front view",
+  "cola": ", impactful, high quality detailed pixel art",
+  "tandas": 1,
+  "anim": "the calm aura glowing and petals rising",
+  "vista": "frente"
+ },
+ "it_pocion": {
+  "size": 32,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art inventory item icon for a creature-collecting RPG, single object centered, bold dark outline, soft shading lit from the top-left, vivid colors, transparent background, readable at small size, a small round glass potion bottle with a cork, filled with glowing purple healing liquid, a tiny white sparkle",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "it_baya": {
+  "size": 32,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art inventory item icon for a creature-collecting RPG, single object centered, bold dark outline, soft shading lit from the top-left, vivid colors, transparent background, readable at small size, a plump round red berry with two green leaves and a small shine",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "it_revivir": {
+  "size": 32,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art inventory item icon for a creature-collecting RPG, single object centered, bold dark outline, soft shading lit from the top-left, vivid colors, transparent background, readable at small size, a glowing golden crystal shard with a warm yellow inner light, like a revive gem",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "it_repelente": {
+  "size": 32,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art inventory item icon for a creature-collecting RPG, single object centered, bold dark outline, soft shading lit from the top-left, vivid colors, transparent background, readable at small size, a small spray can with a green label and a nozzle, a puff of mist",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "it_cuerda": {
+  "size": 32,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art inventory item icon for a creature-collecting RPG, single object centered, bold dark outline, soft shading lit from the top-left, vivid colors, transparent background, readable at small size, a coiled brown escape rope with a knot",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "it_caramelo": {
+  "size": 32,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art inventory item icon for a creature-collecting RPG, single object centered, bold dark outline, soft shading lit from the top-left, vivid colors, transparent background, readable at small size, a rare candy wrapped in shiny blue and white paper with twisted ends, sparkling",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "it_nucleo": {
+  "size": 32,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art inventory item icon for a creature-collecting RPG, single object centered, bold dark outline, soft shading lit from the top-left, vivid colors, transparent background, readable at small size, a raw mineral core crystal cluster on a small rock base, glowing faintly (pale grey crystal, will be recolored)",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "it_hierba": {
+  "size": 32,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art inventory item icon for a creature-collecting RPG, single object centered, bold dark outline, soft shading lit from the top-left, vivid colors, transparent background, readable at small size, a bundle of bitter green herb leaves tied with a small string",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "it_amuleto": {
+  "size": 32,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art inventory item icon for a creature-collecting RPG, single object centered, bold dark outline, soft shading lit from the top-left, vivid colors, transparent background, readable at small size, a small charm amulet pendant on a cord, teardrop gem in a metal setting (pale grey gem, will be recolored)",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "it_pase": {
+  "size": 32,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art inventory item icon for a creature-collecting RPG, single object centered, bold dark outline, soft shading lit from the top-left, vivid colors, transparent background, readable at small size, a port pass ticket card with an anchor stamp and a little key attached",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "esf_esfera": {
+  "size": 32,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art inventory item icon for a creature-collecting RPG, single object centered, bold dark outline, soft shading lit from the top-left, vivid colors, transparent background, readable at small size, a capture sphere of our own design (NOT red and white, no horizontal band, no center button): a glossy orb surrounded by a thin tilted orbital ring with a small glowing gem on top, blue orb with a silver ring",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "esf_super": {
+  "size": 32,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art inventory item icon for a creature-collecting RPG, single object centered, bold dark outline, soft shading lit from the top-left, vivid colors, transparent background, readable at small size, a capture sphere of our own design (NOT red and white, no horizontal band, no center button): a glossy orb surrounded by a thin tilted orbital ring with a small glowing gem on top, green orb with a golden ring and two small fins",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "esf_ultra": {
+  "size": 32,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art inventory item icon for a creature-collecting RPG, single object centered, bold dark outline, soft shading lit from the top-left, vivid colors, transparent background, readable at small size, a capture sphere of our own design (NOT red and white, no horizontal band, no center button): a glossy orb surrounded by a thin tilted orbital ring with a small glowing gem on top, purple orb with a black and gold ring and star marks",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "esf_master": {
+  "size": 32,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art inventory item icon for a creature-collecting RPG, single object centered, bold dark outline, soft shading lit from the top-left, vivid colors, transparent background, readable at small size, a capture sphere of our own design (NOT red and white, no horizontal band, no center button): a glossy orb surrounded by a thin tilted orbital ring with a small glowing gem on top, radiant golden orb with a white crystal ring and a crown-like gem",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "esf_pesada": {
+  "size": 32,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art inventory item icon for a creature-collecting RPG, single object centered, bold dark outline, soft shading lit from the top-left, vivid colors, transparent background, readable at small size, a capture sphere of our own design (NOT red and white, no horizontal band, no center button): a glossy orb surrounded by a thin tilted orbital ring with a small glowing gem on top, heavy steel grey orb with a thick iron ring and rivets",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "esf_rapida": {
+  "size": 32,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art inventory item icon for a creature-collecting RPG, single object centered, bold dark outline, soft shading lit from the top-left, vivid colors, transparent background, readable at small size, a capture sphere of our own design (NOT red and white, no horizontal band, no center button): a glossy orb surrounded by a thin tilted orbital ring with a small glowing gem on top, yellow and orange orb with a ring shaped like lightning speed streaks",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "esf_nocturna": {
+  "size": 32,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art inventory item icon for a creature-collecting RPG, single object centered, bold dark outline, soft shading lit from the top-left, vivid colors, transparent background, readable at small size, a capture sphere of our own design (NOT red and white, no horizontal band, no center button): a glossy orb surrounded by a thin tilted orbital ring with a small glowing gem on top, dark navy orb with a crescent moon ring and tiny stars",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "esf_red": {
+  "size": 32,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art inventory item icon for a creature-collecting RPG, single object centered, bold dark outline, soft shading lit from the top-left, vivid colors, transparent background, readable at small size, a capture sphere of our own design (NOT red and white, no horizontal band, no center button): a glossy orb surrounded by a thin tilted orbital ring with a small glowing gem on top, teal orb with a ring of woven net pattern",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "med_raiz": {
+  "size": 32,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art inventory item icon for a creature-collecting RPG, single object centered, bold dark outline, soft shading lit from the top-left, vivid colors, transparent background, readable at small size, a shiny metal medal badge, round with a decorative rim, embossed symbol in the center, green medal with a sprouting root and leaf symbol",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "med_pena": {
+  "size": 32,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art inventory item icon for a creature-collecting RPG, single object centered, bold dark outline, soft shading lit from the top-left, vivid colors, transparent background, readable at small size, a shiny metal medal badge, round with a decorative rim, embossed symbol in the center, brown and grey medal with a rocky mountain peak symbol",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "med_oleaje": {
+  "size": 32,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art inventory item icon for a creature-collecting RPG, single object centered, bold dark outline, soft shading lit from the top-left, vivid colors, transparent background, readable at small size, a shiny metal medal badge, round with a decorative rim, embossed symbol in the center, blue medal with a curling ocean wave symbol",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "med_ascua": {
+  "size": 32,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art inventory item icon for a creature-collecting RPG, single object centered, bold dark outline, soft shading lit from the top-left, vivid colors, transparent background, readable at small size, a shiny metal medal badge, round with a decorative rim, embossed symbol in the center, orange and red medal with a flame symbol",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "med_cefiro": {
+  "size": 32,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art inventory item icon for a creature-collecting RPG, single object centered, bold dark outline, soft shading lit from the top-left, vivid colors, transparent background, readable at small size, a shiny metal medal badge, round with a decorative rim, embossed symbol in the center, light green and white medal with a swirling wind symbol",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "med_aurora": {
+  "size": 32,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art inventory item icon for a creature-collecting RPG, single object centered, bold dark outline, soft shading lit from the top-left, vivid colors, transparent background, readable at small size, a shiny metal medal badge, round with a decorative rim, embossed symbol in the center, violet and pink medal with a rising sun and aurora symbol",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "eq_brazalete": {
+  "size": 32,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art inventory item icon for a creature-collecting RPG, single object centered, bold dark outline, soft shading lit from the top-left, vivid colors, transparent background, readable at small size, an equipment accessory for a creature, made of plain grey metal with simple details (it will be recolored by material), a sturdy bracelet bracer",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "eq_anillo": {
+  "size": 32,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art inventory item icon for a creature-collecting RPG, single object centered, bold dark outline, soft shading lit from the top-left, vivid colors, transparent background, readable at small size, an equipment accessory for a creature, made of plain grey metal with simple details (it will be recolored by material), a ring with a round setting for a gem",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "eq_colgante": {
+  "size": 32,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art inventory item icon for a creature-collecting RPG, single object centered, bold dark outline, soft shading lit from the top-left, vivid colors, transparent background, readable at small size, an equipment accessory for a creature, made of plain grey metal with simple details (it will be recolored by material), a pendant necklace with a round locket",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "eq_botas": {
+  "size": 32,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art inventory item icon for a creature-collecting RPG, single object centered, bold dark outline, soft shading lit from the top-left, vivid colors, transparent background, readable at small size, an equipment accessory for a creature, made of plain grey metal with simple details (it will be recolored by material), a pair of small boots",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "eq_emblema": {
+  "size": 32,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art inventory item icon for a creature-collecting RPG, single object centered, bold dark outline, soft shading lit from the top-left, vivid colors, transparent background, readable at small size, an equipment accessory for a creature, made of plain grey metal with simple details (it will be recolored by material), a crest emblem brooch shaped like a small shield",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "eq_talisman": {
+  "size": 32,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art inventory item icon for a creature-collecting RPG, single object centered, bold dark outline, soft shading lit from the top-left, vivid colors, transparent background, readable at small size, an equipment accessory for a creature, made of plain grey metal with simple details (it will be recolored by material), a mystic talisman, a carved rune stone on a cord",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "menu_codice": {
+  "size": 32,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art inventory item icon for a creature-collecting RPG, single object centered, bold dark outline, soft shading lit from the top-left, vivid colors, transparent background, readable at small size, a simple bold UI menu icon, flat colors, thick outline, a thick red book with a creature paw print on the cover (creature encyclopedia)",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "menu_equipo": {
+  "size": 32,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art inventory item icon for a creature-collecting RPG, single object centered, bold dark outline, soft shading lit from the top-left, vivid colors, transparent background, readable at small size, a simple bold UI menu icon, flat colors, thick outline, three small round creature heads together (team)",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "menu_mapa": {
+  "size": 32,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art inventory item icon for a creature-collecting RPG, single object centered, bold dark outline, soft shading lit from the top-left, vivid colors, transparent background, readable at small size, a simple bold UI menu icon, flat colors, thick outline, a folded paper map with a red location pin",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "menu_mochila": {
+  "size": 32,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art inventory item icon for a creature-collecting RPG, single object centered, bold dark outline, soft shading lit from the top-left, vivid colors, transparent background, readable at small size, a simple bold UI menu icon, flat colors, thick outline, a brown adventure backpack",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "menu_equipamiento": {
+  "size": 32,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art inventory item icon for a creature-collecting RPG, single object centered, bold dark outline, soft shading lit from the top-left, vivid colors, transparent background, readable at small size, a simple bold UI menu icon, flat colors, thick outline, a small golden shield with a gem (equipment)",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "menu_ficha": {
+  "size": 32,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art inventory item icon for a creature-collecting RPG, single object centered, bold dark outline, soft shading lit from the top-left, vivid colors, transparent background, readable at small size, a simple bold UI menu icon, flat colors, thick outline, a trainer ID card with a portrait and lines",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "menu_guardar": {
+  "size": 32,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art inventory item icon for a creature-collecting RPG, single object centered, bold dark outline, soft shading lit from the top-left, vivid colors, transparent background, readable at small size, a simple bold UI menu icon, flat colors, thick outline, a green diary journal with a quill pen (save)",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "menu_opciones": {
+  "size": 32,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art inventory item icon for a creature-collecting RPG, single object centered, bold dark outline, soft shading lit from the top-left, vivid colors, transparent background, readable at small size, a simple bold UI menu icon, flat colors, thick outline, a silver cogwheel (settings)",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "menu_cerrar": {
+  "size": 32,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art inventory item icon for a creature-collecting RPG, single object centered, bold dark outline, soft shading lit from the top-left, vivid colors, transparent background, readable at small size, a simple bold UI menu icon, flat colors, thick outline, a red X mark (close)",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
  }
 }
