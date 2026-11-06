@@ -96,6 +96,8 @@ const CharFrames = {
     // el lanzamiento solo existe de lado; de frente o espalda se queda quieto
     let im = this.strip(k, n, vista);
     if (!im && n !== 'reposo') { n = 'reposo'; im = this.strip(k, n, vista); }
+    // si esa vista todavía no cargó, cualquier vista quieta del mismo personaje (nunca el dibujo viejo)
+    if (!im) for (const v of ['frente', 'lado', 'espalda']) { im = this.strip(k, 'reposo', v); if (im) { n = 'reposo'; break; } }
     if (!im) return false;
     const total = def.acciones[n];
     let f;
@@ -110,6 +112,8 @@ const CharFrames = {
     return true;
   },
 };
+// se cargan todas las tiras al abrir el juego, así nadie aparece un instante con el dibujo de antes
+for (const k in CharFrames.SET) for (const a in CharFrames.SET[k].acciones) for (const v of ['lado', 'frente', 'espalda']) if (a !== 'lanzar' || v === 'lado') CharFrames.strip(k, a, v);
 // mundo 3D: el sprite de cada persona se dibuja en un lienzo al doble de resolución, así 1 píxel del cuadro = 1 píxel
 {
   const _de = World.drawEntity;
