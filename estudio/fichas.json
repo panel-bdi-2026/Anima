@@ -4051,5 +4051,157 @@
   "cola": ", high quality detailed pixel art background, fills the whole square, no transparency",
   "tandas": 1,
   "no_bg": false
+ },
+ "nodo_atk": {
+  "size": 32,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art icon of a glowing constellation node for a skill tree on a dark starry background, a small round gem-like star token with a clear symbol in the center, bold dark outline, vivid glowing colors, transparent background, readable at 16 pixels, red-orange token with a small sword symbol (attack)",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "nodo_esp": {
+  "size": 32,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art icon of a glowing constellation node for a skill tree on a dark starry background, a small round gem-like star token with a clear symbol in the center, bold dark outline, vivid glowing colors, transparent background, readable at 16 pixels, violet token with a sparkling orb symbol (special power)",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "nodo_def": {
+  "size": 32,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art icon of a glowing constellation node for a skill tree on a dark starry background, a small round gem-like star token with a clear symbol in the center, bold dark outline, vivid glowing colors, transparent background, readable at 16 pixels, tan brown token with a shield symbol (defense)",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "nodo_hp": {
+  "size": 32,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art icon of a glowing constellation node for a skill tree on a dark starry background, a small round gem-like star token with a clear symbol in the center, bold dark outline, vivid glowing colors, transparent background, readable at 16 pixels, green token with a heart symbol (health)",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "nodo_vel": {
+  "size": 32,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art icon of a glowing constellation node for a skill tree on a dark starry background, a small round gem-like star token with a clear symbol in the center, bold dark outline, vivid glowing colors, transparent background, readable at 16 pixels, yellow token with a winged boot symbol (speed)",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "nodo_fuerza": {
+  "size": 32,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art icon of a glowing constellation node for a skill tree on a dark starry background, a small round gem-like star token with a clear symbol in the center, bold dark outline, vivid glowing colors, transparent background, readable at 16 pixels, warm red token with a clenched fist symbol",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "nodo_ferocidad": {
+  "size": 32,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art icon of a glowing constellation node for a skill tree on a dark starry background, a small round gem-like star token with a clear symbol in the center, bold dark outline, vivid glowing colors, transparent background, readable at 16 pixels, warm red token with three claw marks symbol",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "nodo_furia": {
+  "size": 32,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art icon of a glowing constellation node for a skill tree on a dark starry background, a small round gem-like star token with a clear symbol in the center, bold dark outline, vivid glowing colors, transparent background, readable at 16 pixels, warm red token with a flame symbol",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "nodo_punteria": {
+  "size": 32,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art icon of a glowing constellation node for a skill tree on a dark starry background, a small round gem-like star token with a clear symbol in the center, bold dark outline, vivid glowing colors, transparent background, readable at 16 pixels, blue token with a target bullseye symbol",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "nodo_celeridad": {
+  "size": 32,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art icon of a glowing constellation node for a skill tree on a dark starry background, a small round gem-like star token with a clear symbol in the center, bold dark outline, vivid glowing colors, transparent background, readable at 16 pixels, blue token with an hourglass symbol",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "nodo_contra": {
+  "size": 32,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art icon of a glowing constellation node for a skill tree on a dark starry background, a small round gem-like star token with a clear symbol in the center, bold dark outline, vivid glowing colors, transparent background, readable at 16 pixels, blue token with two crossed arrows bouncing back symbol",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "nodo_vitalidad": {
+  "size": 32,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art icon of a glowing constellation node for a skill tree on a dark starry background, a small round gem-like star token with a clear symbol in the center, bold dark outline, vivid glowing colors, transparent background, readable at 16 pixels, green token with a leaf symbol",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "nodo_piel": {
+  "size": 32,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art icon of a glowing constellation node for a skill tree on a dark starry background, a small round gem-like star token with a clear symbol in the center, bold dark outline, vivid glowing colors, transparent background, readable at 16 pixels, green token with a scale armor plate symbol",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "nodo_regen": {
+  "size": 32,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art icon of a glowing constellation node for a skill tree on a dark starry background, a small round gem-like star token with a clear symbol in the center, bold dark outline, vivid glowing colors, transparent background, readable at 16 pixels, green token with a water drop and sparkle symbol",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "nodo_move": {
+  "size": 32,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art icon of a glowing constellation node for a skill tree on a dark starry background, a small round gem-like star token with a clear symbol in the center, bold dark outline, vivid glowing colors, transparent background, readable at 16 pixels, white silver token with a scroll symbol (new attack)",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "nodo_key": {
+  "size": 32,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art icon of a glowing constellation node for a skill tree on a dark starry background, a small round gem-like star token with a clear symbol in the center, bold dark outline, vivid glowing colors, transparent background, readable at 16 pixels, big golden four-pointed star, radiant and important",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "nodo_lock": {
+  "size": 32,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art icon of a glowing constellation node for a skill tree on a dark starry background, a small round gem-like star token with a clear symbol in the center, bold dark outline, vivid glowing colors, transparent background, readable at 16 pixels, pale blue token with a padlock symbol",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "nodo_start": {
+  "size": 32,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art icon of a glowing constellation node for a skill tree on a dark starry background, a small round gem-like star token with a clear symbol in the center, bold dark outline, vivid glowing colors, transparent background, readable at 16 pixels, bright white glowing star core with soft rays",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "mochila_grande": {
+  "size": 96,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art item illustration of a sturdy adventure backpack for a young creature trainer, side three-quarter view, warm tan canvas with a red flap, brass buckle, a rolled blanket on top, small pockets and straps, a little charm hanging from a strap, bold dark outline, soft shading lit from the top-left, transparent background, single object centered",
+  "cola": ", high quality detailed pixel art",
+  "tandas": 1
  }
 }
