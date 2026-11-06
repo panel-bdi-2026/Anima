@@ -1371,5 +1371,31 @@
   ],
   "desc": "grass-type gym leader, a young woman gardener, human character for a creature-collecting RPG, cute but not chibi, proportions about 4 heads tall, clear readable face, detailed clothing folds, standing upright on two feet, full body, long green hair, wide straw sun hat with a pink ribbon, light green sundress with leaf patterns, a few leaves and vines as accessories, brown sandals, calm gentle smile",
   "tandas": 1
+ },
+ "fx_ascua": {
+  "size": 48,
+  "ref": "elegidos/ignito.png",
+  "refs": [
+   [
+    "elegidos/ignito.png",
+    "only use this as a reference for the pixel art style, colors of fire and outline; do NOT draw this creature"
+   ]
+  ],
+  "desc": "pixel art game visual effect for a creature battle, single object centered, transparent background, no character, readable at small size, a small glowing ember fireball projectile flying to the left, bright yellow core, orange and red flames trailing to the right, a few sparks",
+  "tandas": 1,
+  "cola": ", high quality detailed pixel art"
+ },
+ "fx_burbuja": {
+  "size": 48,
+  "ref": "elegidos/burbujo.png",
+  "refs": [
+   [
+    "elegidos/burbujo.png",
+    "only use this as a reference for the pixel art style and blue water colors; do NOT draw this creature"
+   ]
+  ],
+  "desc": "pixel art game visual effect for a creature battle, single object centered, transparent background, no character, readable at small size, a shiny water bubble projectile flying to the left, translucent light blue sphere with a white highlight, a couple of tiny bubbles trailing to the right",
+  "tandas": 1,
+  "cola": ", high quality detailed pixel art"
  }
 }
