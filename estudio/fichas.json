@@ -4203,5 +4203,197 @@
   "desc": "pixel art item illustration of a sturdy adventure backpack for a young creature trainer, side three-quarter view, warm tan canvas with a red flap, brass buckle, a rolled blanket on top, small pockets and straps, a little charm hanging from a strap, bold dark outline, soft shading lit from the top-left, transparent background, single object centered",
   "cola": ", high quality detailed pixel art",
   "tandas": 1
+ },
+ "git_pocion": {
+  "size": 64,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art inventory item icon for a creature-collecting RPG, single object centered, bold dark outline, soft shading lit from the top-left, vivid colors, transparent background, readable at small size, a small round glass potion bottle with a cork, filled with glowing purple healing liquid, a tiny white sparkle, the whole object fully inside the canvas with a clear empty margin on every side, centered",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "git_baya": {
+  "size": 64,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art inventory item icon for a creature-collecting RPG, single object centered, bold dark outline, soft shading lit from the top-left, vivid colors, transparent background, readable at small size, a plump round red berry with two green leaves and a small shine, the whole object fully inside the canvas with a clear empty margin on every side, centered",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "git_nucleo": {
+  "size": 64,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art inventory item icon for a creature-collecting RPG, single object centered, bold dark outline, soft shading lit from the top-left, vivid colors, transparent background, readable at small size, a raw mineral core crystal cluster on a small rock base, glowing faintly (pale grey crystal, will be recolored), the whole object fully inside the canvas with a clear empty margin on every side, centered",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "git_amuleto": {
+  "size": 64,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art inventory item icon for a creature-collecting RPG, single object centered, bold dark outline, soft shading lit from the top-left, vivid colors, transparent background, readable at small size, a small charm amulet pendant on a cord, teardrop gem in a metal setting (pale grey gem, will be recolored), the whole object fully inside the canvas with a clear empty margin on every side, centered",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "git_pase": {
+  "size": 64,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art inventory item icon for a creature-collecting RPG, single object centered, bold dark outline, soft shading lit from the top-left, vivid colors, transparent background, readable at small size, a port pass ticket card with an anchor stamp and a little key attached, the whole object fully inside the canvas with a clear empty margin on every side, centered",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "gesf_ultra": {
+  "size": 64,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art inventory item icon for a creature-collecting RPG, single object centered, bold dark outline, soft shading lit from the top-left, vivid colors, transparent background, readable at small size, a capture sphere of our own design (NOT red and white, no horizontal band, no center button): a glossy orb surrounded by a thin tilted orbital ring with a small glowing gem on top, purple orb with a black and gold ring and star marks, the whole object fully inside the canvas with a clear empty margin on every side, centered",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "gesf_master": {
+  "size": 64,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art inventory item icon for a creature-collecting RPG, single object centered, bold dark outline, soft shading lit from the top-left, vivid colors, transparent background, readable at small size, a capture sphere of our own design (NOT red and white, no horizontal band, no center button): a glossy orb surrounded by a thin tilted orbital ring with a small glowing gem on top, radiant golden orb with a white crystal ring and a crown-like gem, the whole object fully inside the canvas with a clear empty margin on every side, centered",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "gesf_nocturna": {
+  "size": 64,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art inventory item icon for a creature-collecting RPG, single object centered, bold dark outline, soft shading lit from the top-left, vivid colors, transparent background, readable at small size, a capture sphere of our own design (NOT red and white, no horizontal band, no center button): a glossy orb surrounded by a thin tilted orbital ring with a small glowing gem on top, dark navy orb with a crescent moon ring and tiny stars, the whole object fully inside the canvas with a clear empty margin on every side, centered",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "gesf_red": {
+  "size": 64,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art inventory item icon for a creature-collecting RPG, single object centered, bold dark outline, soft shading lit from the top-left, vivid colors, transparent background, readable at small size, a capture sphere of our own design (NOT red and white, no horizontal band, no center button): a glossy orb surrounded by a thin tilted orbital ring with a small glowing gem on top, teal orb with a ring of woven net pattern, the whole object fully inside the canvas with a clear empty margin on every side, centered",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "gmed_raiz": {
+  "size": 64,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art inventory item icon for a creature-collecting RPG, single object centered, bold dark outline, soft shading lit from the top-left, vivid colors, transparent background, readable at small size, a shiny metal medal badge, round with a decorative rim, embossed symbol in the center, green medal with a sprouting root and leaf symbol, the whole object fully inside the canvas with a clear empty margin on every side, centered",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "gmed_pena": {
+  "size": 64,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art inventory item icon for a creature-collecting RPG, single object centered, bold dark outline, soft shading lit from the top-left, vivid colors, transparent background, readable at small size, a shiny metal medal badge, round with a decorative rim, embossed symbol in the center, brown and grey medal with a rocky mountain peak symbol, the whole object fully inside the canvas with a clear empty margin on every side, centered",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "gmed_oleaje": {
+  "size": 64,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art inventory item icon for a creature-collecting RPG, single object centered, bold dark outline, soft shading lit from the top-left, vivid colors, transparent background, readable at small size, a shiny metal medal badge, round with a decorative rim, embossed symbol in the center, blue medal with a curling ocean wave symbol, the whole object fully inside the canvas with a clear empty margin on every side, centered",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "gmed_ascua": {
+  "size": 64,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art inventory item icon for a creature-collecting RPG, single object centered, bold dark outline, soft shading lit from the top-left, vivid colors, transparent background, readable at small size, a shiny metal medal badge, round with a decorative rim, embossed symbol in the center, orange and red medal with a flame symbol, the whole object fully inside the canvas with a clear empty margin on every side, centered",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "gmed_cefiro": {
+  "size": 64,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art inventory item icon for a creature-collecting RPG, single object centered, bold dark outline, soft shading lit from the top-left, vivid colors, transparent background, readable at small size, a shiny metal medal badge, round with a decorative rim, embossed symbol in the center, light green and white medal with a swirling wind symbol, the whole object fully inside the canvas with a clear empty margin on every side, centered",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "gmed_aurora": {
+  "size": 64,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art inventory item icon for a creature-collecting RPG, single object centered, bold dark outline, soft shading lit from the top-left, vivid colors, transparent background, readable at small size, a shiny metal medal badge, round with a decorative rim, embossed symbol in the center, violet and pink medal with a rising sun and aurora symbol, the whole object fully inside the canvas with a clear empty margin on every side, centered",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "geq_colgante": {
+  "size": 64,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art inventory item icon for a creature-collecting RPG, single object centered, bold dark outline, soft shading lit from the top-left, vivid colors, transparent background, readable at small size, an equipment accessory for a creature, made of plain grey metal with simple details (it will be recolored by material), a pendant necklace with a round locket, the whole object fully inside the canvas with a clear empty margin on every side, centered",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "geq_botas": {
+  "size": 64,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art inventory item icon for a creature-collecting RPG, single object centered, bold dark outline, soft shading lit from the top-left, vivid colors, transparent background, readable at small size, an equipment accessory for a creature, made of plain grey metal with simple details (it will be recolored by material), a pair of small boots, the whole object fully inside the canvas with a clear empty margin on every side, centered",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "geq_emblema": {
+  "size": 64,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art inventory item icon for a creature-collecting RPG, single object centered, bold dark outline, soft shading lit from the top-left, vivid colors, transparent background, readable at small size, an equipment accessory for a creature, made of plain grey metal with simple details (it will be recolored by material), a crest emblem brooch shaped like a small shield, the whole object fully inside the canvas with a clear empty margin on every side, centered",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "geq_talisman": {
+  "size": 64,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art inventory item icon for a creature-collecting RPG, single object centered, bold dark outline, soft shading lit from the top-left, vivid colors, transparent background, readable at small size, an equipment accessory for a creature, made of plain grey metal with simple details (it will be recolored by material), a mystic talisman, a carved rune stone on a cord, the whole object fully inside the canvas with a clear empty margin on every side, centered",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "gmenu_codice": {
+  "size": 64,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art inventory item icon for a creature-collecting RPG, single object centered, bold dark outline, soft shading lit from the top-left, vivid colors, transparent background, readable at small size, a simple bold UI menu icon, flat colors, thick outline, a thick red book with a creature paw print on the cover (creature encyclopedia), the whole object fully inside the canvas with a clear empty margin on every side, centered",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "gmenu_equipo": {
+  "size": 64,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art inventory item icon for a creature-collecting RPG, single object centered, bold dark outline, soft shading lit from the top-left, vivid colors, transparent background, readable at small size, a simple bold UI menu icon, flat colors, thick outline, three small round creature heads together (team), the whole object fully inside the canvas with a clear empty margin on every side, centered",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "gmenu_equipamiento": {
+  "size": 64,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art inventory item icon for a creature-collecting RPG, single object centered, bold dark outline, soft shading lit from the top-left, vivid colors, transparent background, readable at small size, a simple bold UI menu icon, flat colors, thick outline, a small golden shield with a gem (equipment), the whole object fully inside the canvas with a clear empty margin on every side, centered",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "gmenu_ficha": {
+  "size": 64,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art inventory item icon for a creature-collecting RPG, single object centered, bold dark outline, soft shading lit from the top-left, vivid colors, transparent background, readable at small size, a simple bold UI menu icon, flat colors, thick outline, a trainer ID card with a portrait and lines, the whole object fully inside the canvas with a clear empty margin on every side, centered",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "gmenu_guardar": {
+  "size": 64,
+  "ref": "elegidos/ignito.png",
+  "refs": [],
+  "desc": "pixel art inventory item icon for a creature-collecting RPG, single object centered, bold dark outline, soft shading lit from the top-left, vivid colors, transparent background, readable at small size, a simple bold UI menu icon, flat colors, thick outline, a green diary journal with a quill pen (save), the whole object fully inside the canvas with a clear empty margin on every side, centered",
+  "cola": ", high quality pixel art icon",
+  "tandas": 1
  }
 }
