@@ -1,0 +1,203 @@
+<title>Códice de Región Alba</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@500;700&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,800&display=swap">
+<style>
+/* Libreta de campo de Región Alba: lámina verde salvia como el pasto del juego, tinta ciruela de la interfaz, acento ámbar de la medalla */
+:root {
+  --bg: #e4ead9; --panel: #f3f6ee; --stage: #d6e1c7; --ink: #2a2236; --muted: #64607a; --line: #c4ceb5; --accent: #c9761d; --accent-ink: #fff8ec;
+  --display: 'Pixelify Sans', 'Courier New', monospace; --body: 'Nunito Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #1b1724; --panel: #251f31; --stage: #2f3a2b; --ink: #ece6f4; --muted: #a39cb8; --line: #3a3348; --accent: #f0a540; --accent-ink: #1b1724; color-scheme: dark } }
+:root[data-theme="dark"] { --bg: #1b1724; --panel: #251f31; --stage: #2f3a2b; --ink: #ece6f4; --muted: #a39cb8; --line: #3a3348; --accent: #f0a540; --accent-ink: #1b1724; color-scheme: dark }
+* { box-sizing: border-box }
+body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 15px; line-height: 1.5 }
+.wrap { max-width: 1180px; margin: 0 auto; padding-block: 28px 64px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)) }
+header { display: grid; gap: 6px; margin-bottom: 18px }
+h1 { font-family: var(--display); font-weight: 700; font-size: clamp(30px, 5vw, 46px); line-height: 1.05; margin: 0; text-wrap: balance; letter-spacing: .01em }
+.sub { color: var(--muted); margin: 0; max-width: 64ch }
+nav { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); display: flex; flex-wrap: wrap; gap: 6px; padding-block: 10px; border-bottom: 2px solid var(--line); margin-bottom: 18px }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg) }
+nav a { font-family: var(--display); font-size: 17px; text-decoration: none; color: var(--ink); padding: 6px 12px; border: 2px solid var(--line); border-radius: 3px }
+nav a[aria-current="page"] { background: var(--ink); color: var(--bg); border-color: var(--ink) }
+nav a .cnt { font-family: var(--body); font-size: 12px; color: var(--muted); margin-left: 4px }
+nav a[aria-current="page"] .cnt { color: var(--bg); opacity: .75 }
+nav a:focus-visible, button:focus-visible, input:focus-visible, .card:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px }
+.tools { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 14px }
+.tools input { font: inherit; padding: 7px 10px; border: 2px solid var(--line); border-radius: 3px; background: var(--panel); color: var(--ink); min-width: 0; flex: 1 1 200px; max-width: 320px }
+.chip { font: 600 12px/1 var(--body); letter-spacing: .04em; text-transform: uppercase; padding: 6px 9px; border-radius: 3px; border: 2px solid transparent; cursor: pointer; color: #fff; background: var(--c, #888) }
+.chip[aria-pressed="false"] { background: transparent; color: var(--ink); border-color: var(--c, #888) }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 12px }
+.card { background: var(--panel); border: 2px solid var(--line); border-radius: 4px; padding: 10px; display: grid; gap: 6px; cursor: pointer; text-align: left; font: inherit; color: inherit; min-width: 0 }
+.card:hover { border-color: var(--accent) }
+.stage { background: var(--stage); border-radius: 3px; aspect-ratio: 1; width: 100%; max-width: 100%; display: block; image-rendering: pixelated }
+.name { font-family: var(--display); font-size: 18px; line-height: 1.1; display: flex; justify-content: space-between; gap: 6px; align-items: baseline }
+.num { font-family: var(--body); font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums }
+.types { display: flex; gap: 4px; flex-wrap: wrap }
+.t { font: 800 10px/1 var(--body); letter-spacing: .06em; text-transform: uppercase; color: #fff; padding: 4px 6px; border-radius: 2px; background: var(--c) }
+.meta { font-size: 12.5px; color: var(--muted) }
+.icono { width: 32px; height: 32px; image-rendering: pixelated; justify-self: start }
+dialog { border: 2px solid var(--line); border-radius: 6px; background: var(--panel); color: var(--ink); width: min(920px, calc(100vw - 24px)); max-height: calc(100vh - 40px); padding: 0 }
+dialog::backdrop { background: rgba(20, 16, 30, .6) }
+.dlg { padding: 18px; display: grid; gap: 14px }
+.dlg-head { display: flex; justify-content: space-between; gap: 12px; align-items: start }
+.dlg-head h2 { font-family: var(--display); font-size: 30px; margin: 0; line-height: 1.1 }
+.close { font: 700 15px var(--body); background: var(--ink); color: var(--bg); border: 0; border-radius: 3px; padding: 8px 12px; cursor: pointer }
+.rows { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px }
+.rows figure { margin: 0; display: grid; gap: 4px }
+.rows figcaption { font-size: 12.5px; color: var(--muted) }
+.desc { margin: 0; max-width: 65ch }
+.el-group { margin-block: 18px 8px; font-family: var(--display); font-size: 20px }
+.el-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px }
+.el { background: var(--panel); border: 2px solid var(--line); border-radius: 4px; padding: 10px; display: grid; justify-items: center; gap: 6px; text-align: center; font-size: 12.5px }
+.el img { width: 64px; height: 64px; image-rendering: pixelated; background: var(--stage); border-radius: 3px; padding: 4px; box-sizing: content-box }
+.note { font-size: 13px; color: var(--muted); max-width: 70ch; margin: 0 0 12px }
+section[hidden] { display: none }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto } }
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>Códice de Región Alba</h1>
+    <p class="sub">Todos los diseños nuevos del juego, hechos con PixelLab: las 80 ánimas, los personajes, los ataques y los elementos de la interfaz. Toca una ficha para ver todas sus animaciones.</p>
+  </header>
+  <nav aria-label="Secciones">
+    <a href="#animas" data-v="animas">Ánimas<span class="cnt" id="c-animas"></span></a>
+    <a href="#personajes" data-v="personajes">Personajes<span class="cnt" id="c-personajes"></span></a>
+    <a href="#ataques" data-v="ataques">Ataques<span class="cnt" id="c-ataques"></span></a>
+    <a href="#elementos" data-v="elementos">Objetos e íconos<span class="cnt" id="c-elementos"></span></a>
+  </nav>
+
+  <section id="v-animas">
+    <div class="tools"><input id="q" type="search" placeholder="Buscar ánima" aria-label="Buscar ánima"><div class="types" id="tf"></div></div>
+    <div class="grid" id="g-animas"></div>
+  </section>
+  <section id="v-personajes" hidden>
+    <p class="note">Cada personaje tiene su dibujo base de perfil, 8 direcciones, y animaciones de quieto y caminar de lado, de frente y de espalda. Los que combaten también lanzan su ánima, y el protagonista corre.</p>
+    <div class="grid" id="g-personajes"></div>
+  </section>
+  <section id="v-ataques" hidden>
+    <p class="note">Un efecto propio para cada ataque, según su forma: proyectiles que vuelan, rayos, ondas y zonas vistas desde arriba, golpes, mejoras y curaciones.</p>
+    <div class="tools"><div class="types" id="tf2"></div></div>
+    <div class="grid" id="g-ataques"></div>
+  </section>
+  <section id="v-elementos" hidden><div id="g-elementos"></div></section>
+</div>
+
+<dialog id="dlg" aria-labelledby="dlg-t"><div class="dlg" id="dlg-in"></div></dialog>
+
+<script>
+(async function () {
+  const D = await (await fetch('datos.json')).json();
+  const T = D.tipos, $ = (s) => document.querySelector(s);
+  const imgs = {}, live = new Set();
+  const img = (src) => imgs[src] || (imgs[src] = Object.assign(new Image(), { src }));
+  const tchip = (t) => `<span class="t" style="--c:${T[t] ? T[t].color : '#888'}">${T[t] ? T[t].name : t}</span>`;
+  // un lienzo que reproduce una fila de una tira (o varias filas seguidas)
+  function stage(src, size, rows, frames, fps, scale) {
+    const c = document.createElement('canvas'); c.width = size; c.height = size; c.className = 'stage';
+    c._a = { im: img(src), size, rows, frames, fps, t0: performance.now() };
+    live.add(c); return c;
+  }
+  function tick(now) {
+    for (const c of live) {
+      if (!c.isConnected) { live.delete(c); continue; }
+      const a = c._a, im = a.im; if (!im.complete || !im.naturalWidth) continue;
+      if (c.offsetParent === null) continue;
+      const total = a.rows.reduce((s, r) => s + r[1], 0);
+      let f = Math.floor((now - a.t0) / 1000 * a.fps) % total, r = 0;
+      while (f >= a.rows[r][1]) { f -= a.rows[r][1]; r++; }
+      const x = c.getContext('2d'); x.imageSmoothingEnabled = false; x.clearRect(0, 0, a.size, a.size);
+      x.drawImage(im, f * a.size, a.rows[r][0] * a.size, a.size, a.size, 0, 0, a.size, a.size);
+    }
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const FPS = reduce ? 3 : 9;
+
+  // ---------- ánimas ----------
+  const ACC = ['Reposo', 'Caminar', 'Correr', 'Atacar de cerca', 'Disparar', 'Recibir golpe', 'Caer', 'Caminar de frente', 'Caminar de espalda'];
+  const tipos = [...new Set(D.animas.flatMap((a) => a.types))];
+  const on = new Set();
+  $('#tf').innerHTML = tipos.map((t) => `<button class="chip" aria-pressed="false" data-t="${t}" style="--c:${T[t].color}">${T[t].name}</button>`).join('');
+  function pintaAnimas() {
+    const q = $('#q').value.trim().toLowerCase(), g = $('#g-animas'); g.textContent = '';
+    for (const a of D.animas) {
+      if (q && !a.name.toLowerCase().includes(q)) continue;
+      if (on.size && !a.types.some((t) => on.has(t))) continue;
+      const b = document.createElement('button'); b.className = 'card';
+      b.innerHTML = `<div class="name"><span>${a.name}</span><span class="num">#${String(a.n).padStart(3, '0')}</span></div><div class="types">${a.types.map(tchip).join('')}</div>`;
+      // en la grilla: reposo, caminar y atacar de lado, seguidos
+      b.prepend(stage(`img/a_${a.key}.png`, a.size, [[0, a.filas[0]], [1, a.filas[1]], [1, a.filas[1]], [3, a.filas[3]]], 0, FPS));
+      b.onclick = () => abrirAnima(a);
+      g.append(b);
+    }
+  }
+  $('#q').oninput = pintaAnimas;
+  $('#tf').onclick = (e) => { const t = e.target.dataset.t; if (!t) return; on.has(t) ? on.delete(t) : on.add(t); e.target.setAttribute('aria-pressed', on.has(t)); pintaAnimas(); };
+  function abrirAnima(a) {
+    const box = $('#dlg-in');
+    box.innerHTML = `<div class="dlg-head"><div><h2 id="dlg-t">${a.name}</h2><div class="types">${a.types.map(tchip).join('')}</div></div><button class="close" id="x">Cerrar</button></div>
+      <p class="desc">${a.desc}</p>${a.icon ? `<div class="meta">Ícono del menú: <img class="icono" alt="" src="${a.icon}"></div>` : ''}<div class="rows" id="rows"></div>`;
+    const rows = box.querySelector('#rows');
+    a.filas.forEach((n, i) => { if (!n) return; const f = document.createElement('figure'); f.append(stage(`img/a_${a.key}.png`, a.size, [[i, n]], 0, FPS)); f.insertAdjacentHTML('beforeend', `<figcaption>${ACC[i]}</figcaption>`); rows.append(f); });
+    box.querySelector('#x').onclick = () => $('#dlg').close();
+    $('#dlg').showModal();
+  }
+
+  // ---------- personajes ----------
+  function pintaPersonajes() {
+    const g = $('#g-personajes'); g.textContent = '';
+    for (const p of D.personajes) {
+      const b = document.createElement('button'); b.className = 'card';
+      b.innerHTML = `<div class="name"><span>${p.name}</span></div>`;
+      b.prepend(stage(`img/p_${p.key}.png`, 64, [[1, 8], [2, 8], [3, 8]], 0, FPS));
+      b.onclick = () => {
+        const box = $('#dlg-in');
+        box.innerHTML = `<div class="dlg-head"><h2 id="dlg-t">${p.name}</h2><button class="close" id="x">Cerrar</button></div><div class="rows" id="rows"></div>`;
+        p.filas.forEach((nom, i) => { const f = document.createElement('figure'); f.append(stage(`img/p_${p.key}.png`, 64, [[i, nom === 'reposo' ? 5 : 8]], 0, nom === 'reposo' ? 5 : FPS)); f.insertAdjacentHTML('beforeend', `<figcaption>${nom[0].toUpperCase() + nom.slice(1)}</figcaption>`); box.querySelector('#rows').append(f); });
+        box.querySelector('#x').onclick = () => $('#dlg').close();
+        $('#dlg').showModal();
+      };
+      g.append(b);
+    }
+  }
+
+  // ---------- ataques ----------
+  const tiposA = [...new Set(D.ataques.map((a) => a.type))], onA = new Set();
+  $('#tf2').innerHTML = tiposA.map((t) => `<button class="chip" aria-pressed="false" data-t="${t}" style="--c:${T[t].color}">${T[t].name}</button>`).join('');
+  function pintaAtaques() {
+    const g = $('#g-ataques'); g.textContent = '';
+    for (const a of D.ataques) {
+      if (onA.size && !onA.has(a.type)) continue;
+      const c = document.createElement('div'); c.className = 'card'; c.style.cursor = 'default';
+      c.innerHTML = `<div class="name"><span>${a.name}</span></div><div class="types">${tchip(a.type)}</div><div class="meta">${a.kind}. ${a.desc}${a.anim ? '' : ' (animación en camino)'}</div>`;
+      c.prepend(stage(`img/f_${a.key}.png`, a.size, [[0, a.frames]], 0, FPS + 2));
+      g.append(c);
+    }
+  }
+  $('#tf2').onclick = (e) => { const t = e.target.dataset.t; if (!t) return; onA.has(t) ? onA.delete(t) : onA.add(t); e.target.setAttribute('aria-pressed', onA.has(t)); pintaAtaques(); };
+
+  // ---------- elementos ----------
+  function pintaElementos() {
+    const g = $('#g-elementos'); let html = '', grupo = null;
+    for (const e of D.elementos) {
+      if (e.group !== grupo) { if (grupo) html += '</div>'; grupo = e.group; html += `<h3 class="el-group">${grupo}</h3><div class="el-grid">`; }
+      html += `<div class="el"><img alt="" src="${e.img}"><span>${e.name}</span></div>`;
+    }
+    g.innerHTML = html + '</div>';
+  }
+
+  $('#c-animas').textContent = D.animas.length; $('#c-personajes').textContent = D.personajes.length;
+  $('#c-ataques').textContent = D.ataques.length; $('#c-elementos').textContent = D.elementos.length;
+  pintaAnimas(); pintaPersonajes(); pintaAtaques(); pintaElementos();
+  const VIS = ['animas', 'personajes', 'ataques', 'elementos'];
+  function ruta() {
+    const v = VIS.includes(location.hash.slice(1)) ? location.hash.slice(1) : 'animas';
+    for (const k of VIS) { $('#v-' + k).hidden = k !== v; document.querySelector(`nav a[data-v="${k}"]`).setAttribute('aria-current', k === v ? 'page' : 'false'); }
+  }
+  addEventListener('hashchange', ruta); ruta();
+})();
+</script>
