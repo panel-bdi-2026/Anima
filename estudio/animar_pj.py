@@ -13,6 +13,9 @@ ACC = {
 }
 # qué acciones lleva cada personaje (vistas: todas, o solo 'lado' para las poses de combate)
 EXTRA = {'pj_player': ['correr', 'lanzar'], 'pj_rival': ['lanzar'], 'pj_hiedra': ['lanzar']}
+# todos los que combaten lanzan su ánima
+for _k in 'grunt lass boy hiker scientist worker sailor kid2 youngster smith monk jogger girl vesper swimmer fisher bug artist nyx selene neron bruna brisa ascua'.split():
+    EXTRA['pj_' + _k] = ['lanzar']
 
 
 def una(pj, a, d):

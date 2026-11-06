@@ -1506,10 +1506,10 @@
   "refs": [
    [
     "personajes/oldman_viejo64.png",
-    "concept reference (old low resolution sprite of this human character): keep the outfit, colors, hairstyle and accessories, redraw it as a detailed high quality pixel art character"
+    "concept reference of ONE single character (old low resolution sprite): keep the outfit, colors and hairstyle; draw only this one person"
    ]
   ],
-  "desc": "old grandfather, bald with white sideburns, round dark glasses, brown cardigan jacket, beige pants, walking with good posture, human character for a creature-collecting RPG, cute but not chibi, proportions about 4 heads tall, clear readable face, detailed clothing, standing upright on two feet in a neutral pose with arms relaxed at the sides, empty hands, full body, ",
+  "desc": "ONLY ONE single person, alone, no other characters, old grandfather, bald with white sideburns, round dark glasses, brown cardigan jacket, beige pants, walking with good posture, human character for a creature-collecting RPG, cute but not chibi, proportions about 4 heads tall, clear readable face, detailed clothing, standing upright on two feet in a neutral pose with arms relaxed at the sides, empty hands, full body, ",
   "tandas": 1
  },
  "pj_kid2": {
@@ -1614,10 +1614,10 @@
   "refs": [
    [
     "personajes/guard_viejo64.png",
-    "concept reference (old low resolution sprite of this human character): keep the outfit, colors, hairstyle and accessories, redraw it as a detailed high quality pixel art character"
+    "concept reference of ONE single character (old low resolution sprite): keep the outfit, colors and hairstyle; draw only this one person"
    ]
   ],
-  "desc": "town guard man, navy blue peaked cap, navy uniform with gold buttons, dark boots, serious but friendly, human character for a creature-collecting RPG, cute but not chibi, proportions about 4 heads tall, clear readable face, detailed clothing, standing upright on two feet in a neutral pose with arms relaxed at the sides, empty hands, full body, ",
+  "desc": "ONLY ONE single person, alone, no other characters, town guard man, navy blue peaked cap, navy uniform with gold buttons, dark boots, serious but friendly, human character for a creature-collecting RPG, cute but not chibi, proportions about 4 heads tall, clear readable face, detailed clothing, standing upright on two feet in a neutral pose with arms relaxed at the sides, empty hands, full body, ",
   "tandas": 1
  },
  "pj_fisher": {
@@ -1734,10 +1734,10 @@
   "refs": [
    [
     "personajes/nurse_viejo64.png",
-    "concept reference (old low resolution sprite of this human character): keep the outfit, colors, hairstyle and accessories, redraw it as a detailed high quality pixel art character"
+    "concept reference of ONE single character (old low resolution sprite): keep the outfit, colors and hairstyle; draw only this one person"
    ]
   ],
-  "desc": "creature center nurse, pink hair, white nurse cap with a red cross, pink dress with white apron, warm smile, human character for a creature-collecting RPG, cute but not chibi, proportions about 4 heads tall, clear readable face, detailed clothing, standing upright on two feet in a neutral pose with arms relaxed at the sides, empty hands, full body, ",
+  "desc": "ONLY ONE single person, alone, no other characters, creature center nurse, pink hair, white nurse cap with a red cross, pink dress with white apron, warm smile, human character for a creature-collecting RPG, cute but not chibi, proportions about 4 heads tall, clear readable face, detailed clothing, standing upright on two feet in a neutral pose with arms relaxed at the sides, empty hands, full body, ",
   "tandas": 1
  },
  "pj_neron": {
@@ -1770,10 +1770,10 @@
   "refs": [
    [
     "personajes/clerk_viejo64.png",
-    "concept reference (old low resolution sprite of this human character): keep the outfit, colors, hairstyle and accessories, redraw it as a detailed high quality pixel art character"
+    "concept reference of ONE single character (old low resolution sprite): keep the outfit, colors and hairstyle; draw only this one person"
    ]
   ],
-  "desc": "shop clerk man, short dark hair, blue apron over a white shirt, dark pants, friendly smile, human character for a creature-collecting RPG, cute but not chibi, proportions about 4 heads tall, clear readable face, detailed clothing, standing upright on two feet in a neutral pose with arms relaxed at the sides, empty hands, full body, ",
+  "desc": "ONLY ONE single person, alone, no other characters, shop clerk man, short dark hair, blue apron over a white shirt, dark pants, friendly smile, human character for a creature-collecting RPG, cute but not chibi, proportions about 4 heads tall, clear readable face, detailed clothing, standing upright on two feet in a neutral pose with arms relaxed at the sides, empty hands, full body, ",
   "tandas": 1
  },
  "pj_bruna": {
@@ -3912,6 +3912,54 @@
   "estilo": "elegidos/trueno_umbrio.png",
   "desc": "tiny 32x32 menu icon of this exact creature, whole body visible, side view facing left, simplified with fewer details and bold readable shapes, thick dark outline, clear silhouette, the same colors and key features",
   "cola": ", high quality pixel art icon",
+  "tandas": 1
+ },
+ "pj2_oldman": {
+  "size": 64,
+  "ref": "personajes/oldman_viejo64.png",
+  "refs": [
+   [
+    "personajes/oldman_viejo64.png",
+    "concept reference of ONE single character (old low resolution sprite): keep the outfit, colors and hairstyle; draw only this one person"
+   ]
+  ],
+  "desc": "ONLY ONE single person, alone, no other characters, old grandfather, bald with white sideburns, round dark glasses, brown cardigan jacket, beige pants, walking with good posture, human character for a creature-collecting RPG, cute but not chibi, proportions about 4 heads tall, clear readable face, detailed clothing, standing upright on two feet in a neutral pose with arms relaxed at the sides, empty hands, full body, ",
+  "tandas": 1
+ },
+ "pj2_guard": {
+  "size": 64,
+  "ref": "personajes/guard_viejo64.png",
+  "refs": [
+   [
+    "personajes/guard_viejo64.png",
+    "concept reference of ONE single character (old low resolution sprite): keep the outfit, colors and hairstyle; draw only this one person"
+   ]
+  ],
+  "desc": "ONLY ONE single person, alone, no other characters, town guard man, navy blue peaked cap, navy uniform with gold buttons, dark boots, serious but friendly, human character for a creature-collecting RPG, cute but not chibi, proportions about 4 heads tall, clear readable face, detailed clothing, standing upright on two feet in a neutral pose with arms relaxed at the sides, empty hands, full body, ",
+  "tandas": 1
+ },
+ "pj2_nurse": {
+  "size": 64,
+  "ref": "personajes/nurse_viejo64.png",
+  "refs": [
+   [
+    "personajes/nurse_viejo64.png",
+    "concept reference of ONE single character (old low resolution sprite): keep the outfit, colors and hairstyle; draw only this one person"
+   ]
+  ],
+  "desc": "ONLY ONE single person, alone, no other characters, creature center nurse, pink hair, white nurse cap with a red cross, pink dress with white apron, warm smile, human character for a creature-collecting RPG, cute but not chibi, proportions about 4 heads tall, clear readable face, detailed clothing, standing upright on two feet in a neutral pose with arms relaxed at the sides, empty hands, full body, ",
+  "tandas": 1
+ },
+ "pj2_clerk": {
+  "size": 64,
+  "ref": "personajes/clerk_viejo64.png",
+  "refs": [
+   [
+    "personajes/clerk_viejo64.png",
+    "concept reference of ONE single character (old low resolution sprite): keep the outfit, colors and hairstyle; draw only this one person"
+   ]
+  ],
+  "desc": "ONLY ONE single person, alone, no other characters, shop clerk man, short dark hair, blue apron over a white shirt, dark pants, friendly smile, human character for a creature-collecting RPG, cute but not chibi, proportions about 4 heads tall, clear readable face, detailed clothing, standing upright on two feet in a neutral pose with arms relaxed at the sides, empty hands, full body, ",
   "tandas": 1
  }
 }
