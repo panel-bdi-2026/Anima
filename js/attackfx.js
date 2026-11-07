@@ -26,6 +26,9 @@ const AttackFX = {
     pesadilla: [96, 9, 'frente'], velo: [64, 9, 'frente'], garra_umbria: [64, 9, 'lado'], confusion: [64, 9, 'lado'], psicorrayo: [96, 9, 'lado'],
     barrera: [64, 9, 'frente'], onda_mental: [96, 9, 'arriba'], teletransporte: [64, 9, 'frente'], psiquico: [64, 9, 'frente'], bosque_ancestral: [96, 9, 'arriba'],
     alba_solar: [96, 9, 'lado'], maremoto: [96, 9, 'frente'], destello_alba: [96, 9, 'arriba'], meditar: [64, 9, 'frente'],
+    // ataques de los iniciales (recoloreados a partir de efectos de la misma forma)
+    chispa_estelar: [64, 9, 'lado'], maullido_lunar: [96, 9, 'arriba'], rizo_piedra: [64, 9, 'lado'], alud_rizado: [64, 9, 'lado'],
+    zarpa_nocturna: [64, 9, 'lado'], eclipse_felino: [64, 9, 'frente'],
   },
   tex: {}, live: [],
   keyOf(m) {

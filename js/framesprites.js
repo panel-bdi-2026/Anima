@@ -237,7 +237,8 @@ const FrameSprites = {
 {
   const _draw = CreatureAnim.draw;
   CreatureAnim.draw = function (ctx, e, o) {
-    if (FrameSprites.has(o.sp)) { const r = FrameSprites.draw(ctx, e, o); if (r) return r; }
+    // con dibujo nuevo: mientras carga no se muestra nada (antes se veía un instante el dibujo viejo por piezas)
+    if (FrameSprites.has(o.sp)) { const r = FrameSprites.draw(ctx, e, o); return r || null; }
     return _draw.call(this, ctx, e, o);
   };
   // los retratos de menú no se agrandan por etapa (tienen que caber en su recuadro)
@@ -261,5 +262,27 @@ const FrameSprites = {
       this.cache[key] = c;
     }
     return this.cache[key];
+  };
+}
+
+// carga por adelantado: al entrar a un mapa, las ánimas del equipo, las de la zona y las de los personajes
+FrameSprites.preload = function (list) {
+  for (const sp of new Set(list)) {
+    if (!this.has(sp)) continue;
+    for (const acc of ['reposo', 'caminar', 'atacar', 'disparar', 'golpe']) for (const v of ['lado', 'frente', 'espalda']) this.base(sp, acc, v);
+    try { this.icon(sp); } catch (e) { /* aún cargando */ }
+  }
+};
+{
+  const _lm = World.loadMap;
+  World.loadMap = function (id, ...rest) {
+    const r = _lm.call(this, id, ...rest);
+    try {
+      const m = MAPS[id], list = (G ? G.party.map((c) => c.sp) : []);
+      if (m.encounters) for (const e of m.encounters.list) list.push(e.sp);
+      for (const n of m.npcs || []) { if (n.creature) list.push(n.creature); if (n.trainer && n.trainer.party) for (const [k] of n.trainer.party) list.push(k); }
+      FrameSprites.preload(list);
+    } catch (e) { /* sin precarga */ }
+    return r;
   };
 }

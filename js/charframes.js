@@ -101,7 +101,8 @@ const CharFrames = {
     if (!im) return false;
     const total = def.acciones[n];
     let f;
-    if (n === 'reposo') f = Math.floor(t * 4) % total;
+    // quieto en su pose base; cada tanto (7 a 11 s, distinto por persona) hace su gesto completo, lento
+    if (n === 'reposo') { const P = 7 + ((k.length * 3) % 5), tt = ((t % P) + P) % P, gd = total / 2.6; f = tt > P - gd ? Math.min(total - 1, Math.floor((tt - (P - gd)) * 2.6)) : 0; }
     else if (n === 'lanzar') f = Math.min(total - 1, Math.floor(t * 14));
     else f = 1 + Math.floor(t * (n === 'correr' ? 16 : 11)) % (total - 1);  // el cuadro 0 es la pose base: el ciclo usa 1..8
     const x0 = Math.round(fx - 16), y0 = Math.round(fy - (def.feet + 1) / 2);
@@ -125,7 +126,7 @@ for (const k in CharFrames.SET) for (const a in CharFrames.SET[k].acciones) for 
     const accion = e.moving ? (corre ? 'correr' : 'caminar') : 'reposo';
     // cada personaje con su propio desfase, así no respiran todos a la vez
     const seed = e.def ? (e.def.x * 7 + e.def.y * 13) % 10 : 0;
-    if (!CharFrames.draw(ctx, k, e.dir, accion, Engine.time + seed * 0.37, sx + 8, sy + 15 - hop)) return _de.call(this, ctx, e, cx, cy);
+    if (!CharFrames.draw(ctx, k, e.dir, accion, Engine.time + seed * 1.13, sx + 8, sy + 15 - hop)) return _de.call(this, ctx, e, cx, cy);
   };
 }
 // combate: el jugador se mueve por el campo

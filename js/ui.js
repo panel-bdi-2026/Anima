@@ -324,7 +324,7 @@ class SummaryScreen {
       Font.draw(ctx, 'Vínculo', x0 + 10, 174, '#2a2236');
       const hearts = Math.min(5, Math.floor(c.bond / 40));
       for (let k = 0; k < 5; k++) Font.draw(ctx, '♥', x0 + 60 + k * 9, 174, k < hearts ? '#e84870' : '#c8c0d0');
-      Font.draw(ctx, c.bond >= BOND_HIGH ? 'Te tiene mucho cariño.' : 'Os estáis conociendo.', x0 + 10, 190, '#5a5068');
+      Font.draw(ctx, c.bond >= BOND_HIGH ? 'Te tiene mucho cariño.' : 'Se están conociendo.', x0 + 10, 190, '#5a5068');
       Font.draw(ctx, 'Ímpetu: cuerpo a cuerpo y cargas.', x0 + 10, 206, '#8a8098');
       Font.draw(ctx, 'Temple: distancia y esquivas.', x0 + 10, 217, '#8a8098');
     } else if (this.page === 1) {

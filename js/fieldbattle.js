@@ -152,8 +152,9 @@ Object.assign(BattleScene.prototype, {
       const [x0, y0, x1, y1] = F.rect;
       ctx.globalAlpha = pulse;
       const o = Math.floor(t * 20) % 6;
-      for (let x = x0; x < x1; x += 6) { P(ctx, x + o, y0, 4, 1, col); P(ctx, x + o, y1, 4, 1, col); }
-      for (let y = y0; y < y1; y += 6) { P(ctx, x0, y + o, 1, 4, col); P(ctx, x1, y + o, 1, 4, col); }
+      const ok = (x, y) => { const tt = World.tileAt(Math.floor(x / 16), Math.floor(y / 16)); return tt && !tt.solid; };
+      for (let x = x0; x < x1; x += 6) { if (ok(x + o, y0)) P(ctx, x + o, y0, 4, 1, col); if (ok(x + o, y1)) P(ctx, x + o, y1, 4, 1, col); }
+      for (let y = y0; y < y1; y += 6) { if (ok(x0, y + o)) P(ctx, x0, y + o, 1, 4, col); if (ok(x1, y + o)) P(ctx, x1, y + o, 1, 4, col); }
       ctx.globalAlpha = 1;
       return;
     }
@@ -163,6 +164,8 @@ Object.assign(BattleScene.prototype, {
       const on = (i + Math.floor(t * 12)) % 5 !== 0;
       if (!on) continue;
       const x = Math.round(cx + Math.cos(a) * R), y = Math.round(cy + Math.sin(a) * R);
+      // solo sobre suelo transitable: el borde no cruza paredes, muebles ni el vacío de las salas
+      const tt = World.tileAt(Math.floor(x / 16), Math.floor(y / 16)); if (!tt || tt.solid) continue;
       ctx.globalAlpha = pulse; P(ctx, x, y, 2, 2, col);
       ctx.globalAlpha = pulse * 0.3; P(ctx, x - 1, y - 1, 4, 4, col);
     }
@@ -267,6 +270,16 @@ const Field = {
       const t = World.tileAt(Math.floor(cand[0] / 16), Math.floor(cand[1] / 16));
       if (t && !t.solid) foe = cand;
     }
+    // si el ánima cae sobre un mueble o una pared (p. ej. la mesa del laboratorio), sale en la casilla libre más cercana
+    const free = (pt) => {
+      const tx = Math.floor(pt[0] / 16), ty = Math.floor((pt[1] - 3) / 16);
+      if (this.freeTile(tx, ty)) return pt;
+      let best = null, bd = 1e9;
+      for (let dy = -3; dy <= 3; dy++) for (let dx = -3; dx <= 3; dx++) { const x = tx + dx, y = ty + dy; if (!this.freeTile(x, y)) continue; const d = dx * dx + dy * dy; if (d < bd) { bd = d; best = this.center(x, y); } }
+      return best || pt;
+    };
+    ally = free(ally);
+    { const t = World.tileAt(Math.floor(foe[0] / 16), Math.floor((foe[1] - 3) / 16)); if (!opts.foePos && (!t || (t.solid && !t.water))) foe = free(foe); }
     const center = [(ally[0] + foe[0]) / 2, (ally[1] + foe[1]) / 2];
     return { center, R: FIELD_R, foeStart: foe, allyStart: ally };
   },

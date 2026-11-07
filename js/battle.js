@@ -270,7 +270,16 @@ class BattleScene {
     this.banners.push({ text, t: 0, dur, color });
     return wait(dur);
   }
-  addNum(x, y, text, color) { this.nums.push({ x, y, text, color, t: 0 }); }
+  // números y avisos flotantes: un mismo aviso reciente no se repite (se renueva) y los textos no se encima
+  addNum(x, y, text, color) {
+    const same = this.nums.find((n) => n.text === text && n.t < 0.7 && Math.abs(n.x - x) < 30 && Math.abs(n.y - y) < 30);
+    if (same) { same.t = Math.min(same.t, 0.15); same.x = x; return; }
+    const busy = (yy) => this.nums.some((n) => n.t < 0.6 && Math.abs(n.x - x) < Math.max(16, Font.width(n.text) / 2 + Font.width(String(text)) / 2) && Math.abs(n.y - yy) < 9);
+    const y0 = y, top = (World.cam ? World.cam[1] : 0) + 30; // bajo el marcador de arriba no se leen: ahí se apilan hacia abajo
+    for (let k = 0; k < 6 && busy(y); k++) y -= 10;
+    if (y < top) { y = Math.max(y0, top); for (let k = 0; k < 6 && busy(y); k++) y += 10; }
+    this.nums.push({ x, y, text, color, t: 0 });
+  }
   sparkle(x, y, color, n = 10) {
     for (let i = 0; i < n; i++) { const a = U.rand(Math.PI * 2), s = U.rand(30, 90); this.parts.push({ x, y, vx: Math.cos(a) * s, vy: Math.sin(a) * s, life: U.rand(0.3, 0.7), max: 0.7, color, size: U.randi(1, 2) }); }
   }
