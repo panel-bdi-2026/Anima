@@ -49,6 +49,11 @@ const CharFrames = {
     worker: { feet: 63, acciones: { reposo: 5, caminar: 9, lanzar: 9 } },
     youngster: { feet: 60, acciones: { reposo: 5, caminar: 9, lanzar: 9 } },
   },
+  // personajes con cuadro de ojos cerrados (assets/personajes/<clave>/parpadeo_<vista>.png, hechos con PixelLab)
+  BLINK: {
+    frente: new Set(['artist', 'ascua', 'baker', 'boy', 'brisa', 'bruna', 'bug', 'clerk', 'farmer', 'fisher', 'girl', 'grunt', 'guard', 'guide', 'hiedra', 'hiker', 'jogger', 'kid2', 'lass', 'mailman', 'mom', 'monk', 'neron', 'nurse', 'nyx', 'oldwoman', 'player', 'prof', 'rival', 'sailor', 'scientist', 'selene', 'smith', 'swimmer', 'vesper', 'worker', 'youngster']),
+    lado: new Set(['ascua', 'bruna', 'hiedra', 'mom', 'neron', 'nyx', 'player', 'prof', 'rival', 'selene', 'vesper']),
+  },
   img: {},
   strip(k, accion, vista) {
     const key = k + '/' + accion + '_' + vista;
@@ -105,6 +110,11 @@ const CharFrames = {
     if (n === 'reposo') { const P = 7 + ((k.length * 3) % 5), tt = ((t % P) + P) % P, gd = total / 2.6; f = tt > P - gd ? Math.min(total - 1, Math.floor((tt - (P - gd)) * 2.6)) : 0; }
     else if (n === 'lanzar') f = Math.min(total - 1, Math.floor(t * 14));
     else f = 1 + Math.floor(t * (n === 'correr' ? 16 : 11)) % (total - 1);  // el cuadro 0 es la pose base: el ciclo usa 1..8
+    // parpadeo: en la pose base, cada 3 a 5 s cierra los ojos un instante (a veces dos veces seguidas)
+    if (n === 'reposo' && f === 0 && this.BLINK[vista] && this.BLINK[vista].has(k)) {
+      const B = 3.2 + (k.length % 4) * 0.55, tb = ((t % B) + B) % B, dbl = Math.floor(t / B) % 3 === 0;
+      if (tb < 0.12 || (dbl && tb > 0.28 && tb < 0.4)) { const bi = this.strip(k, 'parpadeo', vista); if (bi) im = bi; }
+    }
     const x0 = Math.round(fx - 16), y0 = Math.round(fy - (def.feet + 1) / 2);
     ctx.save();
     if (vista === 'lado' && dir === 'right') { ctx.translate(x0 + 32, y0); ctx.scale(-1, 1); ctx.drawImage(im, f * 64, 0, 64, 64, 0, 0, 32, 32); }
@@ -115,6 +125,7 @@ const CharFrames = {
 };
 // se cargan todas las tiras al abrir el juego, así nadie aparece un instante con el dibujo de antes
 for (const k in CharFrames.SET) for (const a in CharFrames.SET[k].acciones) for (const v of ['lado', 'frente', 'espalda']) if (a !== 'lanzar' || v === 'lado') CharFrames.strip(k, a, v);
+for (const v in CharFrames.BLINK) for (const k of CharFrames.BLINK[v]) CharFrames.strip(k, 'parpadeo', v);
 // mundo 3D: el sprite de cada persona se dibuja en un lienzo al doble de resolución, así 1 píxel del cuadro = 1 píxel
 {
   const _de = World.drawEntity;
