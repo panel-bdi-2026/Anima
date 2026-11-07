@@ -289,10 +289,13 @@ World3D.buildBuilding = function (b) {
     add(doorM, new THREE.PlaneGeometry(0.5, 0.9), ax, 0.47, az + ad / 2 + 0.01);
     box(beamM, 0.6, 0.06, 0.08, ax, 0.96, az + ad / 2 + 0.03);
   }
+  const bigMats = new Set([wallF, wallS, roofM, gableM, ridgeM]);
+  for (const [mat] of buckets) if (mat.map && mat.map === K._brick) bigMats.add(mat);
   // ---------- mallas (una por material) ----------
   for (const [mat, geos] of buckets) {
     const mesh = new THREE.Mesh(K.merge(geos), mat);
-    mesh.castShadow = mesh.receiveShadow = true;
+    // sombra solo de lo grande (paredes, tejado, hastiales, chimenea): las piezas chicas no cambian la sombra y cuestan un dibujo más cada una
+    mesh.receiveShadow = true; mesh.castShadow = bigMats.has(mat);
     grp.add(mesh);
   }
   this.root.add(grp);
