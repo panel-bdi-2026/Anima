@@ -123,7 +123,12 @@ const FrameSprites = {
     if (A.hurtT > 0.2) shake = 1;
     if (o.faintT !== undefined) alpha = Math.max(0, 1 - Math.max(0, o.faintT - 0.9) * 2);   // termina de caer y se desvanece
     // fuera de los menús, cada etapa de evolución se ve más grande que la anterior
-    const sc = (o.scale || 1) * (o.S || 40) / 80 * (o.portrait ? 1 : this.stageScale(o.sp)), Wd = size * sc;
+    let sc = (o.scale || 1) * (o.S || 40) / 80 * (o.portrait ? 1 : this.stageScale(o.sp));
+    // en combate, cada píxel del dibujo ocupa exactamente un píxel del lienzo: nada se pierde ni se estira
+    // (achicar a la mitad o a 0,65 borraba detalle y lo hacía ver borroso)
+    const enCombate = 'dodge' in o && !o.portrait;
+    if (enCombate) { const t = ctx.getTransform().a || 1; sc = Math.max(1, Math.round(sc * t)) / t; }
+    const Wd = size * sc;
     let x0 = Math.round(o.px - Wd / 2), y0 = Math.round(o.py - (feet + 1) * sc);
     if (shake) { x0 += Math.round((Math.random() - 0.5) * 2); y0 += Math.round((Math.random() - 0.5)); }
     const flip = vista === 'lado' && o.flip;
@@ -147,7 +152,13 @@ const FrameSprites = {
     else if (A.trail.length) A.trail.length = 0;
     for (const tr of A.trail) { ctx.globalAlpha = a0 * tr.a * alpha; blit(fb, tr.x, tr.y); tr.a *= 0.7; }
     ctx.globalAlpha = a0 * alpha;
-    if (o.outline) {                                       // contorno de color en combate (blanco aliado, rojo rival)
+    if (o.outline && enCombate) {                          // aliado / rival: una marca de color bajo los pies
+      ctx.save(); ctx.globalAlpha = a0 * 0.5;
+      const rw = Math.round(size * sc * 0.28), cx = Math.round(o.px), cy = Math.round(o.py);
+      ctx.fillStyle = o.outline; ctx.globalAlpha = a0 * 0.35;
+      for (let i = -rw; i <= rw; i++) { const h = Math.max(1, Math.round(Math.sqrt(1 - (i / rw) * (i / rw)) * 4)); ctx.fillRect(cx + i, cy - h, 1, h * 2); }
+      ctx.restore(); ctx.globalAlpha = a0 * alpha;
+    } else if (o.outline) {                                // contorno de color (fuera del combate)
       const ob = tinted(o.outline, 'outBufF'), w = o.outlineW || 1, a1 = ctx.globalAlpha;
       ctx.globalAlpha = a1 * (o.outlineA || 0.9);
       for (const [dx, dy] of [[-w, 0], [w, 0], [0, -w], [0, w]]) blit(ob, x0 + dx, y0 + dy);

@@ -761,6 +761,8 @@ for (int i = 0; i < 6; i++) { vec2 d = base - uPush[i].xy; float l = length(d); 
   },
   // ---------- luz del día y de la noche ----------
   syncLight(world) {
+    // en combate, sin desenfoque de profundidad: las ánimas se ven nítidas en todo el campo
+    if (this.post) this.post.uniforms.dof.value = world.battle ? 0 : (this.dofBase !== undefined ? this.dofBase : 1);
     if (this.mode !== 'out') return this.syncLightInside(world);
     const L = world.lightLevel(), a = U.clamp(L.a / 0.75, 0, 1);
     const night = a, rain = Weather.isRain(Weather.at(world.map));

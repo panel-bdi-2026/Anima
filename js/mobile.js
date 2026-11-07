@@ -542,7 +542,7 @@ Mobile.frameStat = function () {
   if (this.slowT > 4000 && Options.quality === 'auto' && this.autoQ !== 'baja') { this.autoQ = this.autoQ === 'alta' ? 'media' : 'baja'; this.slowT = 0; this.ema = 0; }
 };
 if (typeof World3D !== 'undefined') {
-  const Q = { alta: { dpr: 1.5, max: 1700, shadow: 2048, dof: 1 }, media: { dpr: 1, max: 1000, shadow: 1024, dof: 1 }, baja: { dpr: 0.85, max: 680, shadow: 512, dof: 0 } };
+  const Q = { alta: { dpr: 2, max: 2200, shadow: 2048, dof: 1 }, media: { dpr: 1, max: 1000, shadow: 1024, dof: 1 }, baja: { dpr: 0.85, max: 680, shadow: 512, dof: 0 } };
   World3D.fitCanvas = function () {
     const q = Q[Mobile.quality()] || Q.alta;
     const r = Engine.canvas.getBoundingClientRect(), dpr = Math.min(window.devicePixelRatio || 1, q.dpr);
@@ -559,7 +559,10 @@ if (typeof World3D !== 'undefined') {
     if (this.cv.width !== w || this.cv.height !== h) { this.r.setSize(w, h, false); this.rt.setSize(w, h); this.post.uniforms.res.value.set(w, h); }
     this.dofBase = q.dof;
     if (this.sun && this.sun.shadow.mapSize.x !== q.shadow) { this.sun.shadow.mapSize.set(q.shadow, q.shadow); if (this.sun.shadow.map) { this.sun.shadow.map.dispose(); this.sun.shadow.map = null; } }
-    if (this.post.uniforms.dof.value === 1 || this.post.uniforms.dof.value === 0) this.post.uniforms.dof.value = q.dof;
+    // en combate, sin desenfoque de profundidad (las ánimas se ven nítidas en todo el campo)
+    if (this.post.uniforms.dof.value === 1 || this.post.uniforms.dof.value === 0) this.post.uniforms.dof.value = World.battle ? 0 : q.dof;
+    // al estirar la imagen a la pantalla, píxeles nítidos (sin suavizado)
+    if (st.imageRendering !== 'pixelated') st.imageRendering = 'pixelated';
   };
 }
 
