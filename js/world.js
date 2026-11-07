@@ -17,6 +17,9 @@ const World = {
     Scenes.clear();
     this.busy = 0; this.battle = null; this.blackingOut = false;
     Scenes.push(this);
+    // partidas dañadas: si la posición guardada no es una casilla válida del mapa, se vuelve al último lugar de descanso
+    { const m = MAPS[G.map];
+      if (m && !(G.x >= 0 && G.y >= 0 && G.x < m.w && G.y < m.h)) { const h = G.lastHeal || { map: 'casa_jugador', x: 6, y: 4 }; G.map = h.map; G.x = h.x; G.y = h.y; } }
     this.loadMap(G.map, G.x, G.y, G.dir);
     Fade.in(0.4);
   },
@@ -467,6 +470,7 @@ const World = {
     Game.healAll();
     await Fade.out(0.8);
     this.loadMap(G.lastHeal.map, G.lastHeal.x, G.lastHeal.y, 'up');
+    this.syncPos(); // si no, la partida guardaba la posición del combate perdido (fuera del mapa al continuar)
     await Fade.in(0.6);
     await say('Te despiertas descansado. Tus ánimas se han recuperado.');
     this.blackingOut = false;
