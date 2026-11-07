@@ -621,7 +621,7 @@ const World = {
       const bob = Math.sin(Engine.time * 2.5) * 2;
       drawShadow(ctx, sx + 8, sy + 15, 11, 3, 0.3);
       if (e.animSeed === undefined) e.animSeed = Math.random() * 6;
-      CreatureAnim.draw(ctx, e, { sp: e.def.creature, S: 32, px: sx + 8, py: sy + 14, flip: false, t: Engine.time, dt: 1 / 60 });
+      CreatureAnim.draw(ctx, e, { sp: e.def.creature, S: SPECIES[e.def.creature] && SPECIES[e.def.creature].legendary ? 28 : 20, px: sx + 8, py: sy + 14, flip: false, t: Engine.time, dt: 1 / 60 });
       if (Math.floor(Engine.time * 4) % 3 === 0) P(ctx, sx + U.randi(-6, 20), sy - U.randi(0, 20), 2, 2, '#fff8c0');
       return;
     }
@@ -631,7 +631,7 @@ const World = {
       drawShadow(ctx, sx + 8, sy + 14, 6, 2, 0.25);
       if (e.animSeed === undefined) e.animSeed = Math.random() * 6;
       if (e.animSp !== c.sp) { e.animSp = c.sp; e.anim = null; }
-      CreatureAnim.draw(ctx, e, { sp: c.sp, S: 22, shiny: c.shiny, px: sx + 8, py: sy + 15, flip: e.dir === 'right', view: e.dir === 'down' ? 'front' : e.dir === 'up' ? 'back' : 'side', t: Engine.time, dt: 1 / 60, speed: e.moving ? 60 : 0 });
+      CreatureAnim.draw(ctx, e, { sp: c.sp, S: SPECIES[c.sp] && SPECIES[c.sp].legendary ? 28 : 20, shiny: c.shiny, px: sx + 8, py: sy + 15, flip: e.dir === 'right', view: e.dir === 'down' ? 'front' : e.dir === 'up' ? 'back' : 'side', t: Engine.time, dt: 1 / 60, speed: e.moving ? 60 : 0 });
     } else {
       const look = e === this.player ? LOOKS.player : LOOKS[e.look] || LOOKS.boy;
       const spr = CharSprites.get(look);

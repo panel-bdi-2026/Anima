@@ -18,6 +18,28 @@ const Codice = {
     const im = this.img[h];
     return im.complete && im.naturalWidth ? im : null;
   },
+  // escala del ánima respecto de una de primera etapa (igual que en el mapa y en el combate)
+  escala(sp) {
+    const leg = sp.legendary ? 28 / 20 : 1;
+    return leg * (typeof FrameSprites !== 'undefined' && FrameSprites.has(sp.key) ? FrameSprites.stageScale(sp.key) : 1);
+  },
+  // silueta chica, del color c, de un cuadro del dibujo (sx, sy, w, h) a la escala f
+  mini(im, w, h, f, c) {
+    const [o, x] = U.makeCanvas(Math.max(1, Math.round(w * f)), Math.max(1, Math.round(h * f)));
+    x.imageSmoothingEnabled = false; x.drawImage(im, 0, 0, w, h, 0, 0, o.width, o.height);
+    x.globalCompositeOperation = 'source-in'; x.fillStyle = c; x.fillRect(0, 0, o.width, o.height);
+    return o;
+  },
+  // comparación de tamaño: el protagonista y el ánima, con las mismas proporciones que en el juego
+  // (un píxel del dibujo del protagonista es medio píxel del mundo; uno del ánima, un cuarto)
+  tamano(sp, F) {
+    const k = 'tam:' + sp.key; if (this[k]) return this[k];
+    if (typeof CharFrames === 'undefined' || typeof FrameSprites === 'undefined' || !FrameSprites.has(sp.key)) return null;
+    const pj = CharFrames.strip('player', 'reposo', 'lado'), an = FrameSprites.base(sp.key, 'reposo', 'lado');
+    if (!pj || !an) return null;
+    const [S, feet] = FrameSprites.DATA[sp.key], pf = CharFrames.SET.player.feet + 1;
+    return (this[k] = { pj: this.mini(pj, 64, pf, F, '#9a8e7c'), an: this.mini(an, S, feet + 1, F / 2 * this.escala(sp), '#2b2638') });
+  },
   // silueta (sombra) del dibujo grande del ánima
   silueta(sp) {
     const k = 'sil:' + sp.key;
@@ -76,6 +98,15 @@ DexScreen.prototype.draw = function (ctx) {
     }
     Font.draw(ctx, 'Evolución', X, y, ACC);
     Font.wrap(evoText(sp), W - X - 14).forEach((ln, k) => Font.draw(ctx, ln, X, y + 13 + k * 12, '#4a4250'));
+    // tamaño comparado con el protagonista, chico, debajo de la lámina
+    const tm = Codice.tamano(sp, 0.42);
+    if (tm) {
+      const base = 207, cx = 112;
+      Font.draw(ctx, 'Tamaño', 14, 186, MUTED);
+      P(ctx, 62, base, 92, 1, '#c8bca2');
+      ctx.drawImage(tm.pj, cx - 22 - Math.round(tm.pj.width / 2), base - tm.pj.height);
+      ctx.drawImage(tm.an, cx + 14 - Math.round(tm.an.width / 2), base - tm.an.height);
+    }
     Font.drawCenter(ctx, 'Z / X: volver   ↑↓: otra ánima', 84, 214, MUTED);
     return;
   }
