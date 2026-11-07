@@ -243,7 +243,8 @@ Object.assign(Story.scripts, {
     const c = newCreature(def.creature, def.lv); c.alpha = true;
     const res = await Battle.wild(c, { foePos: [npc.x * 16 + 8, npc.y * 16 + 12], hideNpc: npc, boss: true, music: 'boss' });
     if (res !== 'win' && res !== 'caught') { Sound.music(World.map.music); return; }
-    Game.setFlag('dng_boss_' + G.dng.seed);
+    // la misma marca que esconde al jefe (incluye el piso); antes no coincidía y el alfa volvía a aparecer
+    Game.setFlag(def.hideIf || ('dng_boss_' + G.dng.seed));
     World.refreshNpcs();
     // botín
     const loot = Dungeon.loot();
