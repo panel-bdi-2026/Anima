@@ -18,13 +18,34 @@ const Codice = {
     const im = this.img[h];
     return im.complete && im.naturalWidth ? im : null;
   },
+  // escala del ánima respecto de la de primera etapa (igual que en el mapa y en el combate)
+  escala(sp) {
+    const leg = sp.legendary ? 28 / 20 : 1;
+    return leg * (typeof FrameSprites !== 'undefined' && FrameSprites.has(sp.key) ? FrameSprites.stageScale(sp.key) : 1);
+  },
+  // silueta del protagonista a la misma escala que las ánimas del Códice: en el juego, un píxel de su dibujo
+  // es medio píxel del mundo y uno del ánima, un cuarto; acá el ánima va a un píxel por píxel, así que él va al doble
+  protagonista() {
+    if (this._pj) return this._pj;
+    if (typeof CharFrames === 'undefined') return null;
+    const im = CharFrames.strip('player', 'reposo', 'lado'); if (!im) return null;
+    const def = CharFrames.SET.player, [c, x] = U.makeCanvas(128, (def.feet + 1) * 2);
+    x.imageSmoothingEnabled = false; x.drawImage(im, 0, 0, 64, def.feet + 1, 0, 0, 128, (def.feet + 1) * 2);
+    // sombra oscura con un borde claro de un píxel (se distingue sobre fondos claros y oscuros)
+    const [o, ox] = U.makeCanvas(c.width + 2, c.height + 2);
+    for (const [dx, dy] of [[0, 1], [2, 1], [1, 0], [1, 2]]) ox.drawImage(c, dx, dy);
+    ox.globalCompositeOperation = 'source-in'; ox.fillStyle = '#fff6e0'; ox.fillRect(0, 0, o.width, o.height);
+    x.globalCompositeOperation = 'source-in'; x.fillStyle = '#1a1626'; x.fillRect(0, 0, c.width, c.height);
+    ox.globalCompositeOperation = 'source-over'; ox.drawImage(c, 1, 1);
+    return (this._pj = o);
+  },
   // silueta (sombra) del dibujo grande del ánima
   silueta(sp) {
     const k = 'sil:' + sp.key;
     if (this[k]) return this[k];
-    const src = CreatureGfx.get(sp.key, 96);
-    if (typeof FrameSprites !== 'undefined' && FrameSprites.has(sp.key) && !FrameSprites.still(sp.key, 96)) return null;
-    const [c, x] = U.makeCanvas(src.width, src.height); x.drawImage(src, 0, 0);
+    if (typeof FrameSprites === 'undefined' || !FrameSprites.has(sp.key)) return null;
+    const im = FrameSprites.base(sp.key, 'reposo', 'lado'); if (!im) return null;
+    const [S] = FrameSprites.DATA[sp.key], [c, x] = U.makeCanvas(S, S); x.drawImage(im, 0, 0, S, S, 0, 0, S, S);
     x.globalCompositeOperation = 'source-in'; x.fillStyle = '#2a2438'; x.fillRect(0, 0, c.width, c.height);
     return (this[k] = c);
   },
@@ -47,10 +68,17 @@ DexScreen.prototype.draw = function (ctx) {
     const f = Codice.fondo(hab);
     if (f) ctx.drawImage(f, x, y, 144, 144); else P(ctx, x, y, 144, 144, '#c8d0b8');
     if (!seen) { ctx.globalAlpha = 0.35; P(ctx, x, y, 144, 144, '#1a1626'); ctx.globalAlpha = 1; }
-    ctx.globalAlpha = 0.35; P(ctx, x + 44, y + 128, 56, 4, '#0c0a14'); ctx.globalAlpha = 1;
     ctx.save(); ctx.beginPath(); ctx.rect(x, y, 144, 144); ctx.clip();
-    if (seen) CreatureAnim.portrait(ctx, sp.key, 80, false, x + 72 - 40, y + 130 - 80, 'codice', { scale: 1 });
-    else { const s = Codice.silueta(sp); if (s) ctx.drawImage(s, x + 72 - s.width / 2, y + 132 - s.height); }
+    // silueta del protagonista a escala, para comparar el tamaño (las mismas proporciones que en el juego)
+    const pj = Codice.protagonista();
+    if (pj) {
+      // borde claro y relleno oscuro: se distingue sobre fondos claros y oscuros
+      ctx.globalAlpha = 0.55; ctx.drawImage(pj, x + 3, y + 135 - pj.height); ctx.globalAlpha = 1;
+    }
+    const k = Codice.escala(sp);
+    ctx.globalAlpha = 0.35; P(ctx, x + 96 - Math.round(20 * k), y + 130, Math.round(40 * k), 4, '#0c0a14'); ctx.globalAlpha = 1;
+    if (seen) CreatureAnim.portrait(ctx, sp.key, 80, false, x + 96 - 40, y + 133 - 80, 'codice', { scale: k });
+    else { const s = Codice.silueta(sp); if (s) { const feet = FrameSprites.DATA[sp.key][1]; ctx.drawImage(s, 0, 0, s.width, s.height, Math.round(x + 96 - s.width * k / 2), Math.round(y + 133 - (feet + 1) * k), Math.round(s.width * k), Math.round(s.height * k)); } }
     ctx.restore();
     // pestaña con el nombre del hábitat
     const hn = Codice.NOMBRE[hab], w = Font.width(hn) + 10;
