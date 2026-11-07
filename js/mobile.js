@@ -158,8 +158,16 @@ const Mobile = {
     }
     if (ctxName === 'capture') return [B('back', 'Volver', ['KeyE'], ax, ay, u * 0.56, { col: '#f0c040' }), B('cyc', 'Esfera', ['KeyR'], ax - u * 1.35, ay + u * 0.3, u * 0.44, { col: '#c0c0d0' }), corner('pause', 'Pausa', ['Enter'], 0)];
     if (ctxName === 'throw') return [B('back', 'Salir', ['KeyX'], ax, ay, u * 0.54, { col: '#e06060' }), B('cyc', 'Cambiar', ['KeyR'], ax - u * 1.35, ay + u * 0.3, u * 0.44, { col: '#c0c0d0' })];
-    // menús y título: igual que al caminar y al hablar (sin cruceta): el joystick aparece donde apoyas
-    // el dedo, y A y B quedan siempre en el mismo lugar
+    // menús y título (sin cruceta: el joystick aparece donde apoyas el dedo). A y B van en el margen
+    // derecho, en diagonal, si cabe: ahí no tapan opciones ni números. Si no hay margen, como al caminar.
+    const ml = gr.left - this.ins.l, bot = this.vh - this.ins.b;
+    if (Math.min(ml, mr) >= u * 1.25) {
+      const br = Math.min(u * 0.5, mr / 2 - 6), cx = gr.right + mr / 2;
+      return [
+        B('a', 'A', ['KeyZ'], Math.min(cx + br * 0.45, this.vw - this.ins.r - br * 0.9 - 4), bot - br - u * 1.05, br * 0.9, { col: '#58c060' }),
+        B('b', 'B', ['KeyX'], cx - br * 0.55, bot - br * 0.85 - u * 0.15, br * 0.8, { col: '#e06060' }),
+      ];
+    }
     return [
       B('a', 'A', ['KeyZ'], ax, ay, u * 0.62, { col: '#58c060' }),
       B('b', 'B', ['KeyX'], ax - u * 1.45, ay + u * 0.45, u * 0.5, { col: '#e06060' }),
