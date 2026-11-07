@@ -631,8 +631,8 @@ for (int i = 0; i < 6; i++) { vec2 d = base - uPush[i].xy; float l = length(d); 
       for (const e of world.entities()) {
         if (e.hidden || e.gone) continue;
         // personas y compañero a doble resolución (sprites HD)
-        const s = this.sprite(e, 64, 72, 58, 2);
-        s.x.setTransform(1, 0, 0, 1, 0, 0); s.x.clearRect(0, 0, 128, 144); s.x.setTransform(2, 0, 0, 2, 0, 0);
+        const s = this.sprite(e, 64, 72, 58, 4);
+        s.x.setTransform(1, 0, 0, 1, 0, 0); s.x.clearRect(0, 0, 256, 288); s.x.setTransform(4, 0, 0, 4, 0, 0);
         World.hiDraw = true;
         try { world.drawEntity(s.x, e, e.px - 24, e.py - 44); } finally { World.hiDraw = false; s.x.setTransform(1, 0, 0, 1, 0, 0); }
         s.t.needsUpdate = true;
@@ -644,8 +644,8 @@ for (int i = 0; i < 6; i++) { vec2 d = base - uPush[i].xy; float l = length(d); 
       for (const c of list) {
         if (c.ambush && c.state === 'wander') continue;
         // a doble resolución: el ánima se dibuja con sus píxeles originales (ver Critters.draw)
-        const s = this.sprite(c, 80, 80, 66, 2);
-        s.x.setTransform(1, 0, 0, 1, 0, 0); s.x.clearRect(0, 0, 160, 160); s.x.setTransform(2, 0, 0, 2, 0, 0);
+        const s = this.sprite(c, 80, 80, 66, 4);
+        s.x.setTransform(1, 0, 0, 1, 0, 0); s.x.clearRect(0, 0, 320, 320); s.x.setTransform(4, 0, 0, 4, 0, 0);
         Critters.list = [c]; if (baits) Critters.baits = [];
         try { Critters.draw(s.x, c.x - 40, c.y - 64, world); } finally { s.x.setTransform(1, 0, 0, 1, 0, 0); }
         Critters.list = list; if (baits) Critters.baits = baits;
@@ -659,9 +659,10 @@ for (int i = 0; i < 6; i++) { vec2 d = base - uPush[i].xy; float l = length(d); 
       if (B) {
         for (const f of B.fighters()) {
           if (f.inBall) continue;
-          const s = this.sprite(f, 160, 160, 132, 2);
-          s.x.setTransform(1, 0, 0, 1, 0, 0); s.x.clearRect(0, 0, 320, 320);
-          s.x.setTransform(2, 0, 0, 2, (80 - f.x) * 2, (132 - (f.y + 4)) * 2);
+          // lienzo a 4 píxeles por píxel del mundo: el ánima se dibuja con todo su detalle sin agrandarla
+          const s = this.sprite(f, 160, 160, 132, 4);
+          s.x.setTransform(1, 0, 0, 1, 0, 0); s.x.clearRect(0, 0, 640, 640);
+          s.x.setTransform(4, 0, 0, 4, (80 - f.x) * 4, (132 - (f.y + 4)) * 4);
           try { B.drawFighter(s.x, f); } finally { s.x.setTransform(1, 0, 0, 1, 0, 0); }
           s.t.needsUpdate = true;
           s.mesh.position.set(f.x / 16, 0, (f.y + 4) / 16);

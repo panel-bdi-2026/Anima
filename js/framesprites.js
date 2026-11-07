@@ -124,10 +124,8 @@ const FrameSprites = {
     if (o.faintT !== undefined) alpha = Math.max(0, 1 - Math.max(0, o.faintT - 0.9) * 2);   // termina de caer y se desvanece
     // fuera de los menús, cada etapa de evolución se ve más grande que la anterior
     let sc = (o.scale || 1) * (o.S || 40) / 80 * (o.portrait ? 1 : this.stageScale(o.sp));
-    // en combate, cada píxel del dibujo ocupa exactamente un píxel del lienzo: nada se pierde ni se estira
-    // (achicar a la mitad o a 0,65 borraba detalle y lo hacía ver borroso)
+    // tamaño de siempre; el lienzo 3D va a 4 píxeles por píxel del mundo, así el dibujo no se achica
     const enCombate = 'dodge' in o && !o.portrait;
-    if (enCombate) { const t = ctx.getTransform().a || 1; sc = Math.max(1, Math.round(sc * t)) / t; }
     const Wd = size * sc;
     let x0 = Math.round(o.px - Wd / 2), y0 = Math.round(o.py - (feet + 1) * sc);
     if (shake) { x0 += Math.round((Math.random() - 0.5) * 2); y0 += Math.round((Math.random() - 0.5)); }
