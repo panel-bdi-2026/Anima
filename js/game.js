@@ -189,5 +189,7 @@ function calcDamage(att, def, move, attStats, defStats, attTypes, defTypes, mods
 
 function expYield(defender, trainer) {
   const sp = SPECIES[defender.sp];
-  return Math.floor((sp.exp * defender.lv) / 7 * (trainer ? 1.5 : 0.85));
+  // ritmo del comienzo: por debajo del nivel 20 se gana más experiencia (x1,6 en nivel 5, x1 en nivel 20)
+  const early = defender.lv < 20 ? 1 + ((20 - defender.lv) / 15) * 0.6 : 1;
+  return Math.floor((sp.exp * defender.lv) / 7 * (trainer ? 1.5 : 0.85) * early);
 }

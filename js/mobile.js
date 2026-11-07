@@ -173,6 +173,12 @@ const Mobile = {
       B('b', 'B', ['KeyX'], ax - u * 1.45, ay + u * 0.45, u * 0.5, { col: '#e06060' }),
     ];
   },
+  // cuántas casillas del juego tapan los botones de combate por la derecha (para correr la cámara)
+  battleCover() {
+    if (!this.u || !this.vw) return 0;
+    const gr = this.gameRect(), left = this.vw - this.ins.r - this.u * 3.4, px = Math.max(0, gr.right - left);
+    return U.clamp((px / gr.width) * WIDE / 20 * 0.5, 0, 3);
+  },
   usesJoy(c) { return c === 'world' || c === 'talk' || c === 'menu' || c === 'title' || c === 'battle' || c === 'capture'; },
   // ---------- toques ----------
   gameRect() { return Engine.canvas.getBoundingClientRect(); },

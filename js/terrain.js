@@ -29,7 +29,7 @@ const ramp = (list) => list.map(hexRGB);
 
 // materiales del suelo
 const MAT = { grass: 0, tall: 1, path: 2, sand: 3, ash: 4, burnt: 5, cave: 6, water: 7, cwater: 8, lava: 9, cliff: 10, cwall: 11, hedge: 12, snow: 13 };
-const SOFT = new Set([MAT.grass, MAT.path, MAT.sand, MAT.ash, MAT.burnt, MAT.cave, MAT.water, MAT.cwater, MAT.lava]);
+const SOFT = new Set([MAT.grass, MAT.tall, MAT.path, MAT.sand, MAT.ash, MAT.burnt, MAT.cave, MAT.water, MAT.cwater, MAT.lava]);
 const HEIGHT = [2, 2, 1, 1, 1, 1, 1, 0, 0, 0, 5, 5, 4, 2];
 const PALS = {
   grass: ramp(['#2c6434', '#3a7c3c', '#4a9442', '#5caa4c', '#72bf58', '#8fd26a', '#b2e488']),
@@ -53,14 +53,29 @@ const PALS = {
 PALS.grassWarm = ramp(['#2e5a24', '#3b6e2a', '#4a8433', '#5a9a3c', '#6eb048', '#88c45a', '#a8d878', '#c8eaa0']);
 PALS.grassCool = ramp(['#24563a', '#2e6a44', '#3a8050', '#48965c', '#5aac6a', '#74c07e', '#96d49c', '#bce6bc']);
 PALS.grassMix = Array.from({ length: 6 }, (_, k) => PALS.grassWarm.map((c, i) => c.map((v, j) => Math.round(v + (PALS.grassCool[i][j] - v) * (k / 5) * 0.8))));
+PALS.dryGrass = ramp(['#3a5626', '#4a6c2c', '#5c8234', '#70983e', '#86ac4a', '#9ebe5e', '#b8d27a', '#d2e49a']);
+
+// caminos con el estilo de cada pueblo: adoquines en Roca (gris), Brasa (basalto) y Aurora (piedra clara lila);
+// grava clara en Céfiro y arena firme de puerto en Marea. Villa Musgo, Alba y las rutas: tierra.
+const PATH_LOOK = {
+  ciudad_roca: { pal: ramp(['#4a4644', '#5e5a56', '#74706a', '#8a857e', '#a09a92', '#b6b0a6', '#cac4b8']), cobble: [6, 5] },
+  ciudad_brasa: { pal: ramp(['#3a2e2c', '#4c3e3a', '#5e4c46', '#725c54', '#866e62', '#9a8070', '#ae9480']), cobble: [7, 5] },
+  ciudad_aurora: { pal: ramp(['#5a5470', '#6e6886', '#848098', '#9c98ae', '#b4b0c4', '#cac8d8', '#e0dee8']), cobble: [6, 4] },
+  pico_cefiro: { pal: ramp(['#6a645a', '#807a6e', '#989284', '#aea898', '#c2bcac', '#d4cebe', '#e4dfd0']) },
+  puerto_marea: { pal: ramp(['#8a7656', '#a08a66', '#b49e78', '#c6b08a', '#d6c29c', '#e4d2b0', '#f0e2c6']) },
+};
 const Terrain = {
   // hierba: manchas cálidas/frías, matas de briznas con punta clara y base oscura, tréboles y florecillas
   grassPixel(N, x, y, b, lush) {
     const patch = N.smooth(x / 52 + 200, y / 52 + 200) + (lush ? 0.18 : 0);
     const tb = U.clamp((patch + N.smooth(x / 17 + 70, y / 17 + 70) * 0.25 - 0.5) / 0.4 + b * 0.25, 0, 0.999);
-    const pal = PALS.grassMix[Math.floor(tb * PALS.grassMix.length)], L = pal.length;
+    // manchas de pasto más seco (amarillento) aquí y allá
+    const dry = N.smooth(x / 38 + 500, y / 38 + 500) + b * 0.06 > 0.77 && !lush;
+    const pal = dry ? PALS.dryGrass : PALS.grassMix[Math.floor(tb * PALS.grassMix.length)], L = pal.length;
     const tone = N.smooth(x / 30, y / 30) * 0.6 + N.smooth(x / 9 + 9, y / 9 + 4) * 0.4;
     let idx = 1.1 + tone * (L - 5) + b * 0.35, rgb = null;
+    // variación a gran escala: lomas más claras y hondonadas más oscuras, para que el verde no sea parejo
+    idx += (N.smooth(x / 90 + 300, y / 90 + 300) - 0.5) * 2.4;
     // matas de briznas (celdas de 6 px con una mata cada una, según la densidad)
     const C = 5, dens = 0.4 + N.smooth(x / 23 + 40, y / 23 + 40) * 0.5;
     const gx0 = Math.floor(x / C), gy0 = Math.floor(y / C);
@@ -171,6 +186,14 @@ const Terrain = {
             const k = (x + ((y >> 2) & 1) * 2) % 4;
             idx += k === 0 ? 1.4 : k === 2 ? -0.6 : 0;
             if (ly % 5 === 4) idx -= 0.8;
+          } else if (mm === MAT.path && PATH_LOOK[m.id]) {
+            const P = PATH_LOOK[m.id]; pal = P.pal;
+            if (P.cobble) {
+              // adoquines en hileras alternadas, con junta oscura y canto iluminado arriba
+              const [cw, ch] = P.cobble, row = Math.floor(y / ch), xx = x + (row & 1) * (cw >> 1), col = Math.floor(xx / cw), ex = xx - col * cw, ey = y - row * ch;
+              if (ex === 0 || ey === 0) idx = 0.4 + b * 0.5;
+              else idx = 2 + N.h(col * 7 + 3, row * 5 + 1) * 2.2 + b * 0.45 + (ey === 1 ? 0.9 : ey === ch - 1 ? -0.7 : 0) + (ex === 1 ? 0.3 : 0);
+            } else if (hs < 0.05) idx += 1.5; else if (N.h(x, y - 1) < 0.05) idx -= 1.5;
           } else if (mm === MAT.path || mm === MAT.sand) {
             if (hs < 0.03) idx += 1.5; else if (N.h(x, y - 1) < 0.03) idx -= 1.5;
             if (mm === MAT.sand) idx += Math.sin(x * 0.35 + y * 0.9 + N.smooth(x / 20, y / 20) * 6) * 0.45;

@@ -427,7 +427,7 @@ Object.assign(Story.scripts, {
     await say([`Así que tú eres ${G.name}.`, 'Soy Nyx. Durante siglos, el sol ha decidido quién vive en la luz.', 'Con el Gran Eclipse, todas las ánimas serán iguales en la oscuridad.', 'No te dejaré estropearlo. ¡Contempla el poder de Eclipsor!'], { speaker: 'Nyx' });
     const ar = MAPS[G.map].arena;
     if (ar) { await World.walkTo(World.player, ar.x + Math.floor(ar.w / 2), ar.y + ar.h - 1); World.player.dir = 'up'; }
-    const res = await Battle.trainer({ title: 'Nyx', cls: 'Comandante', name: 'Nyx', party: [['penumbro', 40], ['vampirax', 41], ['lunavela', 41], ['micelion', 41], ['eclipsor', 45]], look: 'nyx', skill: 0.93, boss: true, hpMul: 1.25, music: 'boss', npc: n });
+    const res = await Battle.trainer({ title: 'Nyx', cls: 'Comandante', name: 'Nyx', party: [['penumbro', 40], ['vampirax', 41], ['lunavela', 41], ['micelion', 41], ['eclipsor', 45]], look: 'nyx', skill: 0.93, boss: true, final: true, hpMul: 1.25, music: 'boss', npc: n });
     if (res !== 'win') return;
     Game.setFlag('nyx_done');
     await say(['No... la oscuridad... se disipa...', 'Quizá... la luz y la sombra deban convivir.'], { speaker: 'Nyx' });

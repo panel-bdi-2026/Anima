@@ -463,12 +463,30 @@ const World = {
     this.busy++;
     try { await this.blackout0(); } finally { this.busy--; this.blackingOut = false; }
   },
+  // Centro visitado más cercano (en número de mapas recorridos desde aquí)
+  nearestCentro(from) {
+    const ok = new Set(G.centros || []); if (G.lastHeal && /^centro_/.test(G.lastHeal.map)) ok.add(G.lastHeal.map);
+    if (!ok.size || !MAPS[from]) return null;
+    const seen = new Set([from]), q = [from];
+    while (q.length) {
+      const id = q.shift(), m = MAPS[id]; if (!m) continue;
+      if (ok.has(id)) return id;
+      const next = [].concat(Object.values(m.edges || {}).map((e) => e.to), (m.warps || []).map((w) => w.to), (m.buildings || []).map((b) => b.to));
+      for (const n of next) if (n && MAPS[n] && !seen.has(n)) { seen.add(n); q.push(n); }
+    }
+    return null;
+  },
   async blackout0() {
     Sound.stopMusic();
-    await say(['¡No te quedan ánimas en condiciones!', `¡${G.name} perdió el conocimiento!`]);
-    G.money = Math.floor(G.money / 2);
+    // derrota más suave: se pierde una cuarta parte del dinero (no la mitad) y se despierta en el
+    // Centro ya visitado más cercano (no en el último donde se curó, que podía quedar muy atrás)
+    const lost = Math.floor(G.money / 4);
+    await say(['¡No te quedan ánimas en condiciones!', `¡${G.name} perdió el conocimiento!`].concat(lost > 0 ? [`En la confusión se te cayeron $${lost}.`] : []));
+    G.money -= lost;
     Game.healAll();
     await Fade.out(0.8);
+    const near = this.nearestCentro(G.map);
+    if (near) G.lastHeal = { map: near, x: 6, y: 4 };
     this.loadMap(G.lastHeal.map, G.lastHeal.x, G.lastHeal.y, 'up');
     this.syncPos(); // si no, la partida guardaba la posición del combate perdido (fuera del mapa al continuar)
     await Fade.in(0.6);

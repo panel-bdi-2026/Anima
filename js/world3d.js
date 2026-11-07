@@ -349,7 +349,7 @@ const World3D = {
       if (has) continue;
       const mat = new THREE.MeshLambertMaterial({ color: wallC, transparent: true });
       const wall = new THREE.Mesh(new THREE.BoxGeometry(0.18, WH, m.h - 1), mat);
-      wall.position.set(side ? m.w + 0.09 : -0.09, WH / 2, (m.h - 1) / 2 + 1); wall.castShadow = wall.receiveShadow = true;
+      wall.position.set(side ? m.w + 0.09 : -0.09, WH / 2, (m.h - 1) / 2 + 1); wall.castShadow = wall.receiveShadow = true; wall.userData.sideWall = true;
       this.root.add(wall);
     }
     // zócalo delantero
@@ -404,12 +404,28 @@ const World3D = {
     this.root.add(sides, tops);
   },
   buildWater(world) {
-    const m = world.map, pos = [], uv = [];
+    const m = world.map, pos = [], uv = [], col = [];
+    const wet = (tx, ty) => { const d = world.tileAt(tx, ty); return !!(d && d.water) || tx < 0 || ty < 0 || tx >= m.w || ty >= m.h; };
+    // junto a la orilla el brillo se desvanece (sin cuadrados duros encima del suelo pintado)
+    const alpha = (x, z) => {
+      let dmin = 1;
+      for (let ty = Math.floor(z) - 1; ty <= Math.floor(z) + 1; ty++) for (let tx = Math.floor(x) - 1; tx <= Math.floor(x) + 1; tx++) {
+        if (wet(tx, ty)) continue;
+        const ex = Math.max(tx - x, 0, x - (tx + 1)), ez = Math.max(ty - z, 0, z - (ty + 1));
+        dmin = Math.min(dmin, Math.hypot(ex, ez));
+      }
+      const a = Math.min(1, dmin / 0.7); return a * a * (3 - 2 * a);
+    };
     for (let ty = 0; ty < m.h; ty++) for (let tx = 0; tx < m.w; tx++) {
-      const d = world.tileAt(tx, ty); if (!d || !d.water) continue;
-      const x0 = tx, x1 = tx + 1, z0 = ty, z1 = ty + 1;
-      pos.push(x0, 0, z0, x0, 0, z1, x1, 0, z0, x1, 0, z0, x0, 0, z1, x1, 0, z1);
-      uv.push(x0 / 4, z0 / 4, x0 / 4, z1 / 4, x1 / 4, z0 / 4, x1 / 4, z0 / 4, x0 / 4, z1 / 4, x1 / 4, z1 / 4);
+      if (!wet(tx, ty)) continue;
+      let edge = false; for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) if (!wet(tx + dx, ty + dy)) edge = true;
+      const n = edge ? 4 : 1, st = 1 / n;
+      for (let j = 0; j < n; j++) for (let i = 0; i < n; i++) {
+        const x0 = tx + i * st, x1 = x0 + st, z0 = ty + j * st, z1 = z0 + st;
+        pos.push(x0, 0, z0, x0, 0, z1, x1, 0, z0, x1, 0, z0, x0, 0, z1, x1, 0, z1);
+        uv.push(x0 / 4, z0 / 4, x0 / 4, z1 / 4, x1 / 4, z0 / 4, x1 / 4, z0 / 4, x0 / 4, z1 / 4, x1 / 4, z1 / 4);
+        for (const [x, z] of [[x0, z0], [x0, z1], [x1, z0], [x1, z0], [x0, z1], [x1, z1]]) col.push(1, 1, 1, edge ? alpha(x, z) : 1);
+      }
     }
     if (!pos.length) return;
     // textura de destellos
@@ -418,8 +434,8 @@ const World3D = {
     for (let i = 0; i < 40; i++) { const px = Math.floor(Math.random() * 64), py = Math.floor(Math.random() * 64); x.globalAlpha = 0.4 + Math.random() * 0.6; x.fillRect(px, py, 2 + Math.floor(Math.random() * 3), 1); }
     const t = this.tex(c, true);
     const geo = new THREE.BufferGeometry();
-    geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); geo.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2)); geo.computeVertexNormals();
-    const mat = new THREE.MeshStandardMaterial({ color: '#a8dcff', map: t, transparent: true, opacity: 0.32, roughness: 0.12, metalness: 0.1, depthWrite: false });
+    geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); geo.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2)); geo.setAttribute('color', new THREE.Float32BufferAttribute(col, 4)); geo.computeVertexNormals();
+    const mat = new THREE.MeshStandardMaterial({ color: '#a8dcff', map: t, vertexColors: true, transparent: true, opacity: 0.32, roughness: 0.12, metalness: 0.1, depthWrite: false });
     const w = new THREE.Mesh(geo, mat); w.position.y = 0.03; w.renderOrder = 2; w.receiveShadow = true;
     this.root.add(w); this.water = t;
   },
@@ -468,7 +484,7 @@ const World3D = {
     }
     this.windU = this.windU || { value: 0 };
     const wind = (mat) => { mat.onBeforeCompile = (sh) => { sh.uniforms.uWind = this.windU; sh.vertexShader = 'uniform float uWind;\n' + sh.vertexShader.replace('#include <begin_vertex>', '#include <begin_vertex>\n#ifdef USE_INSTANCING\ntransformed.x += sin(uWind * 1.3 + instanceMatrix[3].x * 1.7 + instanceMatrix[3].z * 0.9) * 0.035 * max(position.y, 0.0);\n#endif'); }; return mat; };
-    const o = new THREE.Object3D();
+    const o = new THREE.Object3D(), tint = new THREE.Color();
     for (const v in byV) {
       const list = byV[v], tex = this.treeTex(parseInt(v, 10)), border = v.endsWith('b');
       const g = new THREE.PlaneGeometry(26 / 16, 34 / 16); g.translate(0, 17 / 16 - 2 / 16, 0);
@@ -477,7 +493,10 @@ const World3D = {
       if (border) (this.borderMats = this.borderMats || []).push(mat);
       const inst = new THREE.InstancedMesh(g, mat, list.length);
       inst.customDepthMaterial = depth; inst.castShadow = true;
-      list.forEach((T, i) => { o.position.set(T.x, 0, T.z); o.rotation.set(-W3.PITCH * 0.35, 0, 0); o.scale.set(T.s, T.s, T.s); o.updateMatrix(); inst.setMatrixAt(i, o.matrix); T.inst = inst; T.i = i; T.matrix = o.matrix.clone(); });
+      list.forEach((T, i) => { o.position.set(T.x, 0, T.z); o.rotation.set(-W3.PITCH * 0.35, 0, 0); o.scale.set(T.s, T.s, T.s); o.updateMatrix(); inst.setMatrixAt(i, o.matrix); T.inst = inst; T.i = i; T.matrix = o.matrix.clone();
+        // cada árbol con su tono (más claro, más oscuro, más cálido o más frío): el bosque no se ve como un muro repetido
+        const tx = Math.floor(T.x), tz = Math.floor(T.z), l = 0.84 + hash2(tx * 13, tz * 7) * 0.24, w = (hash2(tx * 5, tz * 11) - 0.5) * 0.16;
+        inst.setColorAt(i, tint.setRGB(Math.min(1, l * (1 + w)), Math.min(1, l), Math.min(1, l * (1 - w)))); });
       this.root.add(inst);
     }
   },
@@ -545,7 +564,7 @@ const World3D = {
     if (this.grass.length) {
       // textura de mata: hojas finas con base oscura y puntas claras, con contorno
       const volc = !!world.map.volcanic;
-      const gt = this.grassTex(volc ? ['#2a4a20', '#4a7a2a', '#8ab040', '#c8e070'] : ['#2e6e2c', '#4aa43c', '#76cc4c', '#d0f488']);
+      const gt = this.grassTex(volc ? ['#2a201e', '#5a3a2a', '#a8703a', '#e8b060'] : ['#2e6e2c', '#4aa43c', '#76cc4c', '#d0f488']);
       const gm = new THREE.MeshLambertMaterial({ map: gt, alphaTest: 0.5, side: THREE.DoubleSide });
       // viento y apartarse al paso de personajes y criaturas (hasta 6 a la vez)
       this.windU = this.windU || { value: 0 };
@@ -559,19 +578,24 @@ transformed.x += sin(uWind * 1.8 + base.x * 1.3 + base.y * 0.7) * 0.06 * hgt;
 for (int i = 0; i < 6; i++) { vec2 d = base - uPush[i].xy; float l = length(d); float k = uPush[i].z * max(0.0, 1.0 - l / 0.9); transformed.x += (d.x / (l + 0.01)) * k * 0.35 * hgt; transformed.y -= k * 0.25 * hgt; }
 #endif`);
       };
+      // en suelo volcánico, matorral seco y chamuscado (no pasto verde)
       // cada casilla: 9 matas de frente a la cámara (nunca se ven de canto), en tres variantes
-      const cols = volc ? ['#2a4a20', '#4a7a2a', '#8ab040', '#c8e070'] : ['#2e6e2c', '#4aa43c', '#76cc4c', '#d0f488'];
+      const cols = volc ? ['#2a201e', '#5a3a2a', '#a8703a', '#e8b060'] : ['#2e6e2c', '#4aa43c', '#76cc4c', '#d0f488'];
       const geo = new THREE.PlaneGeometry(0.62, 0.66); geo.translate(0, 0.31, 0);
       const meshes = [0, 1, 2].map((v) => {
         const m = gm.clone(); m.map = this.grassClump(cols, v); m.onBeforeCompile = gm.onBeforeCompile;
         const inst = new THREE.InstancedMesh(geo, m, this.grass.length * 9); inst.count = 0; inst.castShadow = true; return inst;
       });
       const o = new THREE.Object3D(), tint = new THREE.Color();
+      const gset = new Set(this.grass.map(([x, y]) => x + ',' + y)), isG = (x, y) => gset.has(x + ',' + y);
       for (const [tx, ty] of this.grass) {
         for (let c = 0; c < 9; c++) {
           const gx = c % 3, gz = Math.floor(c / 3);
+          // en la orilla de la mancha, matas más ralas y bajas: el borde queda irregular, no un rectángulo
+          const out = (gx === 0 && !isG(tx - 1, ty)) + (gx === 2 && !isG(tx + 1, ty)) + (gz === 0 && !isG(tx, ty - 1)) + (gz === 2 && !isG(tx, ty + 1));
+          if (out && hash2(tx * 17 + c, ty * 23) < 0.3 + out * 0.2) continue;
           const cx = tx + 0.18 + gx * 0.32 + (gz % 2) * 0.12 + (hash2(tx * 3 + c, ty) - 0.5) * 0.12, cz = ty + 0.22 + gz * 0.3 + (hash2(tx, ty * 3 + c) - 0.5) * 0.1;
-          const h = 0.8 + hash2(tx * 7 + c, ty * 5) * 0.45, v = Math.floor(hash2(tx * 11 + c, ty * 13) * 3), inst = meshes[v];
+          const h = (0.8 + hash2(tx * 7 + c, ty * 5) * 0.45) * (out ? 0.72 : 1), v = Math.floor(hash2(tx * 11 + c, ty * 13) * 3), inst = meshes[v];
           o.position.set(cx, 0, cz); o.rotation.set(-W3.PITCH * 0.22, (hash2(c, tx * ty) - 0.5) * 0.6, 0); o.scale.set(0.9 + hash2(tx, c) * 0.3, h, 1); o.updateMatrix();
           inst.setMatrixAt(inst.count, o.matrix);
           const l = 0.9 + hash2(tx * 5 + c, ty * 9) * 0.22; tint.setRGB(l * (0.95 + hash2(c, tx) * 0.1), l * 1.03, l * 0.9); inst.setColorAt(inst.count, tint);
@@ -713,8 +737,8 @@ for (int i = 0; i < 6; i++) { vec2 d = base - uPush[i].xy; float l = length(d); 
     try {
       for (const oy of [0, 240, 480]) { x.save(); x.translate(wx, wy + oy); world.drawAnimTiles(x, wx, wy + oy, L); x.restore(); }
     } finally { W = oldW; world.animTiles = keep; }
-    // la hierba alta se pinta sin animar en el suelo (las matas de pie la cubren)
-    for (const [tx, ty] of this.grass) if (Math.abs(tx * 16 - p.px) < 340 && Math.abs(ty * 16 - p.py) < 280) { x.drawImage(Tiles.get('tallgrass', 0, Math.floor(hash2(tx, ty) * 3)), tx * 16, ty * 16); x.fillStyle = 'rgba(8,30,10,0.18)'; x.fillRect(tx * 16, ty * 16, 16, 16); }
+    // (el suelo bajo la hierba alta ya viene pintado del terreno, con su borde irregular; antes aquí se
+    //  pintaba un cuadro verde por casilla y la mancha se veía como una alfombra rectangular)
     this.gTex.needsUpdate = true;
   },
   // ---------- transparencias por oclusión ----------
@@ -737,7 +761,8 @@ for (int i = 0; i < 6; i++) { vec2 d = base - uPush[i].xy; float l = length(d); 
         const top = Math.min(this.project(mx, B.top, zm)[1], this.project(mx, B.wallH, B.z0 - 0.2)[1]), bot = this.project(mx, 0, B.z1)[1];
         if (p.s[1] > top + 2 && p.s[1] < bot + 4) hide = true;
       }
-      const goal = hide ? 0.28 : 1;
+      // con el recorte circular basta un toque de transparencia para notar que hay algo delante
+      const goal = hide ? (B.cut ? 0.85 : 0.28) : 1;
       B.op += (goal - B.op) * 0.18;
       for (const m of B.mats) m.opacity = B.op;
       B.grp.traverse((o) => { if (o.isMesh) o.castShadow = true; });
@@ -850,7 +875,11 @@ for (int i = 0; i < 6; i++) { vec2 d = base - uPush[i].xy; float l = length(d); 
     // en combate la cámara ya no se acerca (las ánimas se veían crecer al empezar la pelea)
     // en combate la cámara se acerca un poco al círculo de batalla (las ánimas miden lo mismo que en el
     // mapa, así que se agranda todo por igual: ánimas, entrenador y arena)
-    const dist = U.lerp(base, base * 0.8, this.zoomK = U.lerp(this.zoomK || 0, B ? 1 : 0, 0.05));
+    // en el celular (pantalla chica) se acerca más: las ánimas se ven más grandes
+    const phone = typeof Mobile !== 'undefined' && Mobile.active && Mobile.isPhone();
+    const dist = U.lerp(base, base * (phone ? 0.7 : 0.8), this.zoomK = U.lerp(this.zoomK || 0, B ? 1 : 0, 0.05));
+    // con botones táctiles encima del juego, la pelea se corre a la izquierda para que no tapen al rival
+    if (B && typeof Mobile !== 'undefined' && Mobile.active && Mobile.battleCover) tx += Mobile.battleCover() * (this.zoomK || 0);
     if (!this.camT || this.camMap !== m.id) { this.camT = [tx, tz]; this.camMap = m.id; }
     else { const k = B ? 0.16 : 0.12; this.camT[0] += (tx - this.camT[0]) * k; this.camT[1] += (tz - this.camT[1]) * k; }
     const [cx, cz] = this.camT;

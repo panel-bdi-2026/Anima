@@ -114,7 +114,33 @@ const HouseKit = {
 // es la de siempre): wall / roof (colores), tall (alto ×), pitch (inclinación del tejado),
 // timber (entramado de vigas), stone (planta baja de piedra), porch (porche con postes),
 // dormer (buhardilla), annex (cobertizo a un lado: -1 o 1), chim (chimenea: -1 izquierda, 1 derecha).
-World3D.buildBuilding = function (b) {
+// cada pueblo con su propio estilo de casas (colores, materiales y formas); el Centro, la tienda y los
+// gimnasios quedan iguales en todas partes para reconocerlos. Solo en el mundo (no en el título).
+const TOWN_LOOK = {
+  villa_musgo: { walls: ['#efe2c4', '#e3dcb6', '#dfe6c8', '#f2e8d4'], roofs: ['#6a9a44', '#a87844', '#5a8a50', '#b08040'], timber: 0.7, porch: 0.4, pitch: [0.44, 0.52] },
+  ciudad_roca: { walls: ['#b8b0a8', '#a8a29a', '#c4bcb0'], roofs: ['#64748c', '#7a6a5e', '#5a7090'], stone: 1, tall: [1.1, 1.3], pitch: [0.24, 0.3] },
+  puerto_marea: { walls: ['#f6f4ee', '#e6eef4', '#f4ece0'], roofs: ['#3a7ab0', '#c8603a', '#2e8a8a'], porch: 0.5, pitch: [0.28, 0.34] },
+  ciudad_brasa: { walls: ['#7a6660', '#6a5650', '#8a7068'], roofs: ['#a8402a', '#7a3020', '#c05a2a'], stone: 1, pitch: [0.3, 0.36] },
+  pico_cefiro: { walls: ['#e8dcc4', '#d8cbb0', '#e4d6be'], roofs: ['#7a5a44', '#e8eef4', '#6a5040'], timber: 1, stone: 1, pitch: [0.62, 0.72], dormer: 0.3 },
+  ciudad_aurora: { walls: ['#ece6f4', '#e4e0ee', '#f2eef8'], roofs: ['#6a5ac8', '#5450a8', '#8a68cc'], tall: [1.25, 1.4], dormer: 0.6, pitch: [0.44, 0.5] },
+};
+World3D.townLook = function (b) {
+  if (this !== World3D || !World.map || !b.style || b.wall || b.roof) return b;
+  const L = TOWN_LOOK[World.map.id]; if (!L) return b;
+  const h = (k) => hash2(b.x * 13 + k * 7, b.y * 31 + k * 3), pick = (a, k) => a[Math.floor(h(k) * a.length) % a.length], rng = (r, k) => r[0] + (r[1] - r[0]) * h(k);
+  const shape = { pitch: L.pitch ? rng(L.pitch, 3) : undefined, tall: L.tall ? rng(L.tall, 4) : undefined, stone: !!L.stone && h(6) < L.stone };
+  // casas: colores y formas del pueblo
+  if (b.style.startsWith('house')) return Object.assign({}, b, shape, {
+    wall: pick(L.walls, 1), roof: pick(L.roofs, 2),
+    timber: !!L.timber && h(5) < L.timber, porch: !!L.porch && h(7) < L.porch, dormer: !!L.dormer && h(8) < L.dormer,
+    chim: h(9) < 0.5 ? -1 : 1,
+  });
+  // Centro, tienda, gimnasio y casas especiales: sus colores de siempre (para reconocerlos), con la forma del pueblo
+  if (b.style === 'tower') return b;
+  return Object.assign({}, b, shape, { timber: !!L.timber && L.timber >= 1 && !Buildings.STYLES[b.style].sign });
+};
+World3D.buildBuilding = function (b0) {
+  const b = this.townLook(b0);
   const S0 = Buildings.STYLES[b.style] || Buildings.STYLES.house;
   const S = b.wall || b.roof ? Object.assign({}, S0, b.wall ? { wall: b.wall } : null, b.roof ? { roof: b.roof } : null) : S0;
   const img = Buildings.get(b.style, b.w, b.h, b.door), Hp = img.height;
@@ -124,7 +150,9 @@ World3D.buildBuilding = function (b) {
   const seed = (b.x * 31 + b.y * 17) | 0, house = b.style.startsWith('house'), shop = !!S.sign;
   const doorTx = b.door !== undefined ? b.door : Math.floor(b.w / 2), doorX = b.x + doorTx + 0.5;
   const grp = new THREE.Group(), mats = [];
-  const M = (o) => { const m = new THREE.MeshLambertMaterial(Object.assign({ transparent: true }, o)); mats.push(m); return m; };
+  // en el mundo, un círculo alrededor del jugador deja verlo a través del edificio (en vez de volver todo el edificio transparente)
+  const cut = this === World3D;
+  const M = (o) => { const m = new THREE.MeshLambertMaterial(Object.assign({ transparent: true }, o)); if (cut) this.cutaway(m); mats.push(m); return m; };
   const K = HouseKit, buckets = new Map();
   // pieza: geometría colocada (giro en Y alrededor de la casa + traslado) en el «balde» de su material
   const add = (mat, geo, x, y, z, ry = 0, rx = 0) => {
@@ -244,7 +272,7 @@ World3D.buildBuilding = function (b) {
     const chx = b.chim === -1 ? b.x + 0.9 : b.x + wd - 0.9, chz = zm - depth * 0.18, chM = M({ map: K.brickTex() });
     const chH = 1.1; box(chM, 0.42, chH, 0.42, chx, y1 - 0.1, chz);
     box(beamM, 0.52, 0.08, 0.52, chx, y1 - 0.1 + chH / 2 + 0.04, chz);
-    this.chimney = this.chimney || new Map(); this.chimney.set(b, [chx, y1 + chH / 2, chz]);
+    this.chimney = this.chimney || new Map(); this.chimney.set(b0, [chx, y1 + chH / 2, chz]);
   }
   // ---------- variaciones (opcionales) ----------
   // entramado: vigas a la vista (banda sobre las ventanas, retícula en los costados y cruz en los hastiales)
@@ -301,5 +329,5 @@ World3D.buildBuilding = function (b) {
   this.root.add(grp);
   // sombra de contacto alrededor de la base (oclusión ambiental)
   this.root.add(this.aoPatch(cx, cz, wd + 0.9, depth + 0.9));
-  this.buildings.push({ b, grp, mats, faceM: glassM, op: 1, x0: cx - wd / 2, x1: cx + wd / 2, z0: front - depth, z1: front, top: y1, wallH: hgt, door: [doorX, front + 0.4] });
+  this.buildings.push({ b: b0, grp, mats, cut, faceM: glassM, op: 1, x0: cx - wd / 2, x1: cx + wd / 2, z0: front - depth, z1: front, top: y1, wallH: hgt, door: [doorX, front + 0.4] });
 };

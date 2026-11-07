@@ -139,6 +139,16 @@ Object.assign(BattleScene.prototype, {
       const a = angTo(e, f) + (Math.random() < 0.5 ? 1.4 : -1.4);
       f.dodgeT = 0.24; f.dodgeCd = f.dodgeMax = DODGE_CD; f.invuln = 0.2; f.vx = Math.cos(a) * 220; f.vy = Math.sin(a) * 220; return;
     }
+    // defiende: si el rival se acerca al entrenador o prepara un ataque, le lanza uno de sus ataques
+    // (mientras capturas, tus golpes nunca lo debilitan: lo dejan con 1 PS como mínimo, ver battle.js)
+    if (!e.inBall && !e.fainted && (U.dist(e.x, e.y, T.x, T.y) < 70 || (e.act && !e.act.fired)) && Math.random() < dt * 1.2) {
+      const moves = f.c.moves || [];
+      for (let i = 0; i < moves.length; i++) {
+        const m = MOVES[moves[i]]; if (!m || (f.cds && f.cds[i] > 0) || m.kind === 'buff' || m.kind === 'heal' || m.kind === 'blink') continue;
+        f.ang = angTo(f, e); f.aimAng = f.ang;
+        if (this.startMove(f, i) !== false) return;
+      }
+    }
     const ang = Math.atan2(e.y - T.y, e.x - T.x), dd = Math.min(46, U.dist(T.x, T.y, e.x, e.y) * 0.5);
     const gx = T.x + Math.cos(ang) * dd + Math.cos(ang + Math.PI / 2) * 22, gy = T.y + Math.sin(ang) * dd + Math.sin(ang + Math.PI / 2) * 22;
     const dx = gx - f.x, dy = gy - f.y, l = Math.hypot(dx, dy);

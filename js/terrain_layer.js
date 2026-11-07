@@ -104,7 +104,11 @@
       if (sx < -16 || sy < -16 || sx > W || sy > H) continue;
       const v = Math.floor(hash2(tx, ty) * 3);
       if (t === 'water' || t === 'cavewater') ctx.drawImage(Obj.get('waterfx', (fr + tx) % 4, v), sx, sy);
-      else if (t === 'lava') ctx.drawImage(Obj.get('lavafx', (fr + ty) % 3, v), sx, sy);
+      else if (t === 'lava') {
+        // el brillo animado va en cuadros de 16: en la orilla de la lava no se pinta, así el borde sigue suave
+        const lv = (x, y) => { const d = this.tileAt(x, y); return !d || d.t === 'lava'; };
+        if (lv(tx - 1, ty) && lv(tx + 1, ty) && lv(tx, ty - 1) && lv(tx, ty + 1)) ctx.drawImage(Obj.get('lavafx', (fr + ty) % 3, v), sx, sy);
+      }
       else if (t === 'flower') ctx.drawImage(Obj.get('flower', Math.floor(Engine.time * 1.5 + tx * 0.7) % 2, v), sx, sy);
       else if (t === 'tallgrass') {
         if (!movers) movers = this.entities().filter((e) => !e.hidden && !e.gone && e.moving);

@@ -287,11 +287,44 @@ const Field = {
 
 // ---------- inicio del combate en el sitio ----------
 class FieldIntro {
-  constructor(boss) { this.t = 0; this.boss = boss; }
-  update(dt) { this.t += dt; if (this.t >= 0.5) this.done(); }
+  // star: { kind: 'LEGENDARIO' | 'ALFA', name, col } -> entrada especial (franjas de cine, destello y cartel)
+  constructor(boss, star) {
+    this.t = 0; this.boss = boss; this.star = star || null; this.dur = star ? 1.9 : 0.5;
+    if (star) { Sound.sfx('shake'); setTimeout(() => Sound.sfx('super'), 350); }
+  }
+  update(dt) {
+    this.t += dt;
+    if (this.star && this.t > 0.6 && (Input.pressed('a') || Input.pressed('b') || Input.mouse.pressed[0])) this.t = Math.max(this.t, this.dur - 0.25);
+    if (this.t >= this.dur) this.done();
+  }
   draw(ctx) {
-    const k = this.t / 0.5;
-    if (k < 0.4 && Math.floor(this.t * 30) % 2) { ctx.globalAlpha = 0.5; P(ctx, 0, 0, W, H, this.boss ? '#ffb0a0' : '#ffffff'); ctx.globalAlpha = 1; }
+    const S = this.star;
+    if (!S) {
+      const k = this.t / 0.5;
+      if (k < 0.4 && Math.floor(this.t * 30) % 2) { ctx.globalAlpha = 0.5; P(ctx, 0, 0, W, H, this.boss ? '#ffb0a0' : '#ffffff'); ctx.globalAlpha = 1; }
+      return;
+    }
+    const t = this.t, out = Math.max(0, (t - (this.dur - 0.3)) / 0.3), inn = Math.min(1, t / 0.3), vis = inn * (1 - out);
+    // destellos del color del tipo
+    if (t < 0.5 && Math.floor(t * 24) % 2) { ctx.globalAlpha = 0.45; P(ctx, 0, 0, W, H, S.col); ctx.globalAlpha = 1; }
+    // oscurecer y franjas de cine
+    ctx.globalAlpha = 0.35 * vis; P(ctx, 0, 0, W, H, '#000000'); ctx.globalAlpha = 1;
+    const bar = Math.round(34 * vis); P(ctx, 0, 0, W, bar, '#000000'); P(ctx, 0, H - bar, W, bar, '#000000');
+    // cartel: «¡LEGENDARIO!» grande y el nombre debajo, entrando desde los lados
+    if (t > 0.35) {
+      const k = Math.min(1, (t - 0.35) / 0.25), ease = 1 - Math.pow(1 - k, 3);
+      if (!this.big) {
+        const txt = '¡' + S.kind + '!', w = Font.width(txt) + 4;
+        const [c, x] = U.makeCanvas(w, 11); Font.drawOutlined(x, txt, 2, 2, '#ffffff', '#000000'); this.big = c;
+      }
+      const sc = 3, bw = this.big.width * sc, bx = Math.round(W / 2 - bw / 2 - (1 - ease) * W), by = 82;
+      ctx.globalAlpha = 1 - out;
+      P(ctx, 0, by - 6, W, 54, 'rgba(0,0,0,0.45)'); P(ctx, 0, by - 6, W, 1, S.col); P(ctx, 0, by + 47, W, 1, S.col);
+      ctx.imageSmoothingEnabled = false; ctx.drawImage(this.big, bx, by, bw, this.big.height * sc);
+      const nx = Math.round(W / 2 + (1 - ease) * W);
+      Font.drawOutlined(ctx, S.name, Math.round(nx - Font.width(S.name) / 2), by + 36, S.col, '#000000');
+      ctx.globalAlpha = 1;
+    }
   }
 }
 
@@ -307,7 +340,11 @@ Battle.start = async function (opts) {
   const dx = field.foeStart[0] - pc[0], dy = field.foeStart[1] - pc[1];
   p.dir = Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? 'right' : 'left') : (dy > 0 ? 'down' : 'up');
   Sound.sfx('alert');
-  await runScene(new FieldIntro(opts.boss || legendary));
+  // entrada especial para legendarios, alfas y la batalla final
+  const w0 = opts.wild, star = opts.final ? { kind: 'BATALLA FINAL', name: (opts.name || '') + ' · Equipo Eclipse', col: '#c070ff' }
+    : w0 && (legendary || w0.alpha) ? { kind: legendary ? 'LEGENDARIO' : 'ALFA', name: SPECIES[w0.sp].name, col: legendary ? '#ffd860' : '#ff4060' } : null;
+  if (star && Shake.start) Shake.start(3, 0.5);
+  await runScene(new FieldIntro(opts.boss || legendary, star));
   const b = new BattleScene(Object.assign({ bg: map.bg }, opts));
   b.field = field;
   b.hideNpc = opts.hideNpc || null;

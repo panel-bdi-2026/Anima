@@ -570,6 +570,7 @@ class BattleScene {
     if (att.boss && att.sp.legendary) dmg *= 0.85;
     dmg = Math.max(1, Math.round(dmg));
     tgt.hp -= dmg; att.dmgDealt += dmg; this.lastDmgT = this.t;
+    if (this.capture && att.side === 'ally' && tgt === this.foe && tgt.hp < 1) tgt.hp = 1; // capturando: tu ánima no lo debilita
     tgt.flash = 0.15;
     // empuje
     const kb = (m.knock ? 160 : 70) + (r.crit ? 40 : 0);

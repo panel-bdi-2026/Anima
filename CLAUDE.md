@@ -61,4 +61,6 @@ Abre http://localhost:8080. El kit `tools/testkit.js` (objeto `T`: `T.quick`, `T
 
 Prueba automática: `npm i --no-save playwright && npx playwright install chromium && node tools/smoke.js`
 
+Partida completa automática (prueba larga, 1–3 horas, con `node server.js` corriendo): `node tools/partida.js [carpeta] [inicial 0|1|2]`. Deja registro y capturas en `tools/shots/partida/`. Úsala antes de cambios grandes de historia, mapas o dificultad.
+
 Cambios visuales: seguir `docs/estilo.md` (dirección de arte) y comparar con `node tools/capturas.js URL_ANTES URL_DESPUES [escena…]`, que deja capturas de antes y después en `tools/shots/capturas/`.

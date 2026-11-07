@@ -62,6 +62,12 @@ const AttackFX = {
       obj.center.set(0.5, o.anchorBottom ? 0.08 : 0.5);
     }
     obj.renderOrder = 12;
+    // los efectos grandes tapaban a las ánimas: un poco más chicos y algo transparentes
+    // (los de Mente, que son nubes enteras de color, más todavía)
+    const mv = MOVES[k], mind = mv && mv.type === 'mente', big = o.w > 2.4, beam = o.tilt !== undefined;
+    const ks = beam ? 1 : mind ? 0.78 : big ? 0.86 : 1; // los rayos conservan su largo (llegan hasta donde pegan)
+    o.w *= ks; o.h *= ks;
+    o.maxOp = mind ? 0.62 : big ? 0.8 : 0.92;
     obj.scale.set(o.w, o.h, 1);
     World3D.scene.add(obj);
     const e = Object.assign({ k, obj, t, n, age: 0, dur: 0.5, loop: false }, o);
@@ -82,7 +88,7 @@ const AttackFX = {
       const fr = Math.floor(q);
       e.t.offset.x = (e.flip ? fr + 1 : fr) / e.n;
       const left = e.dur - e.age;
-      e.obj.material.opacity = left < 0.12 ? Math.max(0, left / 0.12) : 1;
+      e.obj.material.opacity = (e.maxOp || 1) * (left < 0.12 ? Math.max(0, left / 0.12) : 1);
     }
     this.live = this.live.filter((e) => {
       if (e.age < e.dur) return true;

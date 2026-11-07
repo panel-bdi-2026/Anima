@@ -183,7 +183,10 @@ DexScreen.prototype.draw = function (ctx) {
   const _load = World.loadMap;
   World.loadMap = function (id, ...rest) {
     const r = _load.call(this, id, ...rest);
-    if (G && typeof id === 'string' && id.startsWith('centro_')) G.lastHeal = { map: id, x: 6, y: 4 };
+    if (G && typeof id === 'string' && id.startsWith('centro_')) {
+      G.lastHeal = { map: id, x: 6, y: 4 };
+      G.centros = G.centros || []; if (!G.centros.includes(id)) G.centros.push(id); // para despertar en el más cercano
+    }
     return r;
   };
 }
