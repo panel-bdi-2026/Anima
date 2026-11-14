@@ -10,6 +10,9 @@ Referencia: el estilo «HD-2D» (Octopath Traveler). Personajes y objetos en pix
 4. **Brillos suaves, nunca planos.** Halos, haces de luz, rayos de sol y humo usan degradados (`TitleArt.softTex`, `smokeTex`, sombreadores con desvanecido). Ningún brillo termina en un borde duro.
 5. **Pixel art nítido y estable.** Texturas pequeñas con paleta corta; se ven con el muestreo «píxel nítido sin titileo» de `World3D.pixelize`.
 6. **Movimiento sutil.** Viento en el pasto, humo que sube, agua que corre, polvo en la luz. Lento y continuo.
+7. **Un solo tamaño de píxel.** Ánimas, personajes, efectos de ataque, árboles y suelo: un píxel del dibujo mide medio píxel del mundo (32 píxeles por casilla). Un dibujo con más detalle que eso se reduce (`estudio`/`reducir.py`: el color más repetido de cada bloque y contorno oscuro), nunca se muestra achicado: achicado se ve borroso.
+8. **Volumen de verdad.** Lo que tiene cuerpo (árboles, casas, rocas) es 3D con luz por cara y sombra; los dibujos planos de pie quedan para personajes, ánimas y efectos.
+9. **Interfaz limpia.** Paneles oscuros translúcidos con esquinas redondeadas y un borde claro apenas visible (`UI.box` «dark», `hudPanel2`); el color va en los acentos (medallón del tipo, barras), no en el marco.
 
 ## Detalles técnicos
 

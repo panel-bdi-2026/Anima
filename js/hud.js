@@ -17,11 +17,11 @@ UI.box = function (ctx, x, y, w, h, style = 'light') {
     P(ctx, x + 2, y + h - 3, w - 4, 1, '#d9c9a6');
     P(ctx, x + 2, y + 3, 1, h - 6, '#e8dcc0'); P(ctx, x + w - 3, y + 3, 1, h - 6, '#d9c9a6');
   } else if (style === 'dark') {
-    ctx.globalAlpha = 0.88; _round(ctx, x, y, w, h, '#120e20'); ctx.globalAlpha = 1;
-    P(ctx, x + 2, y, w - 4, 1, '#6a5a98'); P(ctx, x + 2, y + h - 1, w - 4, 1, '#3a3060');
-    P(ctx, x, y + 2, 1, h - 4, '#4a3e78'); P(ctx, x + w - 1, y + 2, 1, h - 4, '#3a3060');
-    P(ctx, x + 1, y + 1, 1, 1, '#6a5a98'); P(ctx, x + w - 2, y + 1, 1, 1, '#6a5a98');
-    P(ctx, x + 2, y + 1, w - 4, 1, 'rgba(255,255,255,0.08)');
+    // oscuro y translúcido, con un borde claro apenas visible (el mismo estilo que los paneles del combate)
+    ctx.globalAlpha = 0.8; _round(ctx, x, y, w, h, '#0c0a16'); ctx.globalAlpha = 0.14;
+    P(ctx, x + 2, y, w - 4, 1, '#ffffff'); P(ctx, x + 2, y + h - 1, w - 4, 1, '#ffffff'); P(ctx, x, y + 2, 1, h - 4, '#ffffff'); P(ctx, x + w - 1, y + 2, 1, h - 4, '#ffffff');
+    P(ctx, x + 1, y + 1, 1, 1, '#ffffff'); P(ctx, x + w - 2, y + 1, 1, 1, '#ffffff'); P(ctx, x + 1, y + h - 2, 1, 1, '#ffffff'); P(ctx, x + w - 2, y + h - 2, 1, 1, '#ffffff');
+    ctx.globalAlpha = 1;
   } else if (style === 'panel') {
     _round(ctx, x, y, w, h, '#2a1f3e');
     const g = ctx.createLinearGradient(0, y, 0, y + h);
@@ -29,12 +29,11 @@ UI.box = function (ctx, x, y, w, h, style = 'light') {
     ctx.fillStyle = g; ctx.fillRect(x + 1, y + 1, w - 2, h - 2);
     P(ctx, x + 1, y + 1, w - 2, 1, '#ffffff');
   } else if (style === 'title') {
-    ctx.globalAlpha = 0.35; _round(ctx, x + 2, y + 3, w, h, '#100818'); ctx.globalAlpha = 1;
-    _round(ctx, x, y, w, h, '#e8b840');
-    const g = ctx.createLinearGradient(0, y, 0, y + h);
-    g.addColorStop(0, '#5a4aa8'); g.addColorStop(1, '#2e2462');
-    ctx.fillStyle = g; ctx.fillRect(x + 2, y + 1, w - 4, h - 2); ctx.fillRect(x + 1, y + 2, w - 2, h - 4);
-    P(ctx, x + 3, y + 2, w - 6, 1, '#7a6ac8');
+    // cartel del lugar: panel oscuro translúcido con una línea dorada abajo
+    ctx.globalAlpha = 0.8; _round(ctx, x, y, w, h, '#0c0a16'); ctx.globalAlpha = 0.16;
+    P(ctx, x + 2, y, w - 4, 1, '#ffffff'); P(ctx, x, y + 2, 1, h - 4, '#ffffff'); P(ctx, x + w - 1, y + 2, 1, h - 4, '#ffffff');
+    ctx.globalAlpha = 1;
+    P(ctx, x + 6, y + h - 3, w - 12, 1, '#e8b840');
   }
 };
 UI.cursor = function (ctx, x, y, color = '#c04830') {
