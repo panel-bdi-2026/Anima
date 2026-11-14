@@ -251,8 +251,10 @@ for (const k in FrameSprites.DATA) { const [s, f] = FrameSprites.DATA[k]; FrameS
   const _portrait = CreatureAnim.portrait;
   CreatureAnim.portrait = function (ctx, sp, S, shiny, x, y, key, o = {}) { return _portrait.call(this, ctx, sp, S, shiny, x, y, key, Object.assign({ portrait: true }, o)); };
   const _get = CreatureGfx.get;
+  // mientras carga el dibujo nuevo se devuelve un cuadro vacío (antes se veía un instante el dibujo viejo)
+  const vacio = {};
   CreatureGfx.get = function (sp, S, shiny) {
-    if (FrameSprites.has(sp)) { const c = FrameSprites.still(sp, S, shiny); if (c) return c; }
+    if (FrameSprites.has(sp)) { const c = FrameSprites.still(sp, S, shiny); return c || vacio[S] || (vacio[S] = U.makeCanvas(S, S)[0]); }
     return _get.call(this, sp, S, shiny);
   };
   // el destello guardado se arma con la imagen fija: si se pidió antes de cargar, se rehace
@@ -260,7 +262,7 @@ for (const k in FrameSprites.DATA) { const [s, f] = FrameSprites.DATA[k]; FrameS
   CreatureGfx.flash = function (sp, S, color = '#ffffff') {
     if (!FrameSprites.has(sp)) return _flash.call(this, sp, S, color);
     const src = FrameSprites.still(sp, S);
-    if (!src) return _flash.call(this, sp, S, color);
+    if (!src) return CreatureGfx.get(sp, S);
     const key = sp + ':' + S + ':ff' + color;
     if (!this.cache[key]) {
       const [c, x] = U.makeCanvas(S, S);
