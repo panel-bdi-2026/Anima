@@ -1105,29 +1105,34 @@ class BattleScene {
   drawHud(ctx) {
     // panel aliado
     const a = this.ally, f = this.foe;
-    const panel = (x, fi, right) => {
-      hudPanel(ctx, x, 3, 150, 35, TYPES[fi.types ? fi.types[0] : SPECIES[fi.c.sp].types[0]].color);
-      const c = fi.c, name = fi.side === 'ally' ? cName(c) : SPECIES[c.sp].name;
-      Font.draw(ctx, name, x + 5, 7, '#ffffff');
-      Font.drawRight(ctx, 'Nv' + c.lv, x + 145, 7, '#d8d0f0');
+    // panel: oscuro y translúcido, esquinas redondeadas, medallón con la cara del ánima en el color de su tipo
+    // (el aliado con el medallón a la izquierda; el rival, a la derecha)
+    const panel = (x, fi) => {
+      const ally = fi.side === 'ally', col = TYPES[fi.types ? fi.types[0] : SPECIES[fi.c.sp].types[0]].color;
+      hudPanel2(ctx, x, 3, 150, 35);
+      const mx = ally ? x + 17 : x + 133, cx0 = ally ? x + 35 : x + 5, cw = 110;
+      hudMedal(ctx, mx, 20, fi.c.sp, fi.c.shiny, col, fi.hp <= 0);
+      const c = fi.c, name = ally ? cName(c) : SPECIES[c.sp].name;
+      Font.draw(ctx, name, cx0, 7, '#ffffff', '#000000');
+      Font.drawRight(ctx, 'Nv' + c.lv, cx0 + cw, 7, '#e8c070');
       const r = Math.max(0, fi.hp) / fi.maxHp;
       // daño diferido: una barra clara se vacía tras el golpe
       if (fi.hpShow === undefined || fi.hpShow < r) fi.hpShow = r; else fi.hpShow = Math.max(r, fi.hpShow - 0.006);
-      UI.bar(ctx, x + 5, 20, 140, 4, fi.hpShow, '#f8f0e0');
-      P(ctx, x + 5, 20, Math.round(140 * U.clamp(r, 0, 1)), 4, UI.hpColor(r)); P(ctx, x + 5, 20, Math.round(140 * U.clamp(r, 0, 1)), 1, U.shade(UI.hpColor(r), 0.2));
-      if (fi.side === 'ally') {
-        Font.draw(ctx, `${Math.max(0, Math.ceil(fi.hp))}/${fi.maxHp}`, x + 5, 26, '#c0b8d8');
+      hudBar(ctx, cx0, 19, cw, 5, r, UI.hpColor(r), fi.hpShow);
+      if (ally) {
+        Font.draw(ctx, `${Math.max(0, Math.ceil(fi.hp))}/${fi.maxHp}`, cx0, 27, '#b8b0d0');
         // sinergia
         const full = fi.syn >= 100;
-        UI.bar(ctx, x + 70, 28, 75, 3, fi.syn / 100, full ? (Math.floor(this.t * 8) % 2 ? '#ffe060' : '#ff9030') : '#b070f0');
-        Font.draw(ctx, full ? 'F!' : '', x + 58, 25, '#ffe060');
+        hudBar(ctx, cx0 + 50, 29, cw - 50, 3, fi.syn / 100, full ? (Math.floor(this.t * 8) % 2 ? '#ffe060' : '#ff9030') : '#b070f0');
+        if (full) Font.draw(ctx, 'F!', cx0 + 38, 26, '#ffe060');
       } else {
-        if (G.caught[fi.sp.id]) ctx.drawImage(Icons.sphere('esfera', 8), x + 5, 26);
-        fi.sp.types.forEach((t, k) => UI.typeBadge(ctx, t, x + 16 + k * 32, 25));
-        if (!this.wild) for (let k = 0; k < this.foeQueue.length; k++) P(ctx, x + 145 - k * 7 - 5, 27, 5, 5, k < this.foeQueue.length - this.foeIdx - (fi.fainted ? 1 : 0) ? '#f8d048' : '#555');
+        let tx = cx0;
+        if (G.caught[fi.sp.id]) { ctx.drawImage(Icons.sphere('esfera', 8), tx, 27); tx += 11; }
+        fi.sp.types.forEach((t, k) => UI.typeBadge(ctx, t, tx + k * 32, 26));
+        if (!this.wild) for (let k = 0; k < this.foeQueue.length; k++) pixCircle(ctx, cx0 + cw - 2 - k * 7, 29, 2, k < this.foeQueue.length - this.foeIdx - (fi.fainted ? 1 : 0) ? '#f8d048' : '#4a4458');
       }
-      let sx = x + (fi.side === 'ally' ? 112 : 60);
-      for (const s in fi.status) { const lab = { burn: 'QUE', poison: 'ENV', para: 'PAR', slow: 'LEN', confuse: 'CNF' }[s]; P(ctx, sx, 26 - (fi.side === 'ally' ? 9 : 0), 18, 7, '#5a4070'); Font.draw(ctx, lab, sx + 1, 25 - (fi.side === 'ally' ? 9 : 0), '#ffffff'); sx += 19; }
+      let sx = ally ? cx0 + 76 : cx0 + 66;
+      for (const s in fi.status) { const lab = { burn: 'QUE', poison: 'ENV', para: 'PAR', slow: 'LEN', confuse: 'CNF' }[s]; const sc = { burn: '#c04020', poison: '#8040a0', para: '#b09010', slow: '#4060a0', confuse: '#a04080' }[s] || '#5a4070'; P(ctx, sx + 1, 26 - (ally ? 9 : 0), 17, 7, sc); P(ctx, sx, 27 - (ally ? 9 : 0), 19, 5, sc); Font.draw(ctx, lab, sx + 1, 25 - (ally ? 9 : 0), '#ffffff'); sx += 20; }
     };
     if (a) panel(HUD_L, a);
     if (f) panel(HUD_R, f);

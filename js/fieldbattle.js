@@ -117,7 +117,8 @@ Object.assign(BattleScene.prototype, {
     const F = this.field;
     if (this.ally && this.foe && this.state !== 'intro') {
       const mx = (this.ally.x + this.foe.x) / 2, my = (this.ally.y + this.foe.y) / 2;
-      return [U.lerp(F.center[0], mx, 0.6), U.lerp(F.center[1], my, 0.6) - 10];
+      // la cámara sigue a las dos ánimas (con la cámara cerca, el centro de la arena quedaba lejos de la pelea)
+      return [U.lerp(F.center[0], mx, 0.85), U.lerp(F.center[1], my, 0.85) - 10];
     }
     return [F.center[0], F.center[1] - 10];
   },

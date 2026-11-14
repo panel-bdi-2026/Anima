@@ -506,7 +506,7 @@ talentPoints = function (c) { if (!c.board) Board.owned(c); return Board.points(
   BP.drawHud = function (ctx) {
     _hud.call(this, ctx);
     const a = this.ally;
-    if (a && a.shield > 0) { const w = Math.round(110 * Math.min(1, a.shield / a.maxHp)); P(ctx, HUD_L + 5, 17, w, 2, '#a0e8ff'); }
+    if (a && a.shield > 0) { const w = Math.round(110 * Math.min(1, a.shield / a.maxHp)); P(ctx, HUD_L + 35, 16, w, 2, '#a0e8ff'); }
   };
 }
 

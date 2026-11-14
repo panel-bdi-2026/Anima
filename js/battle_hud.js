@@ -16,6 +16,34 @@ function hudPanel(ctx, x, y, w, h, accent) {
   P(ctx, x + 1, y + h - 2, w - 2, 1, '#2a2440');
 }
 
+// panel nuevo: oscuro, translúcido y con esquinas redondeadas (sin bordes de colores)
+function hudPanel2(ctx, x, y, w, h) {
+  const a = ctx.globalAlpha;
+  ctx.globalAlpha = a * 0.78;
+  P(ctx, x + 2, y, w - 4, h, '#0c0a16'); P(ctx, x + 1, y + 1, 1, h - 2, '#0c0a16'); P(ctx, x + w - 2, y + 1, 1, h - 2, '#0c0a16'); P(ctx, x, y + 2, 1, h - 4, '#0c0a16'); P(ctx, x + w - 1, y + 2, 1, h - 4, '#0c0a16');
+  ctx.globalAlpha = a * 0.14;
+  P(ctx, x + 2, y, w - 4, 1, '#ffffff'); P(ctx, x + 2, y + h - 1, w - 4, 1, '#ffffff'); P(ctx, x, y + 2, 1, h - 4, '#ffffff'); P(ctx, x + w - 1, y + 2, 1, h - 4, '#ffffff');
+  P(ctx, x + 1, y + 1, 1, 1, '#ffffff'); P(ctx, x + w - 2, y + 1, 1, 1, '#ffffff'); P(ctx, x + 1, y + h - 2, 1, 1, '#ffffff'); P(ctx, x + w - 2, y + h - 2, 1, 1, '#ffffff');
+  ctx.globalAlpha = a;
+}
+// barra redondeada; 'lag' es el daño que todavía se está vaciando (barra clara)
+function hudBar(ctx, x, y, w, h, v, col, lag) {
+  const fill = (k, c) => { const n = Math.round(w * U.clamp(k, 0, 1)); if (n <= 0) return; P(ctx, x + (n > 2 ? 1 : 0), y, Math.max(1, n - (n > 2 ? 2 : 0)), h, c); if (n > 2) P(ctx, x, y + 1, n, h - 2, c); };
+  P(ctx, x + 1, y, w - 2, h, '#2a2638'); P(ctx, x, y + 1, w, h - 2, '#2a2638');
+  if (lag !== undefined && lag > v) fill(lag, '#f8f0e0');
+  fill(v, col);
+  const n = Math.round(w * U.clamp(v, 0, 1)); if (n > 2) P(ctx, x + 1, y, n - 2, 1, U.shade(col, 0.25));
+}
+// medallón: círculo con el anillo del color del tipo y la cara del ánima adentro
+function hudMedal(ctx, cx, cy, sp, shiny, col, ko) {
+  pixCircle(ctx, cx, cy, 15, '#0c0a16'); pixCircle(ctx, cx, cy, 14, col); pixCircle(ctx, cx, cy, 12, U.shade(col, -0.62));
+  const ic = CreatureGfx.get(sp, 24, shiny);
+  ctx.save(); ctx.beginPath(); ctx.arc(cx, cy, 12, 0, Math.PI * 2); ctx.clip();
+  if (ko) ctx.globalAlpha = 0.35;
+  ctx.drawImage(ic, cx - 12, cy - 12);
+  ctx.restore();
+}
+
 // tarjeta de un ataque (barra inferior y selector táctico)
 BattleScene.prototype.drawMoveCard = function (ctx, f, i, x, y, w, h, o = {}) {
   const mk = f.c.moves[i];

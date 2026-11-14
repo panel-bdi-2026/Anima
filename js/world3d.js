@@ -877,7 +877,16 @@ for (int i = 0; i < 6; i++) { vec2 d = base - uPush[i].xy; float l = length(d); 
     // mapa, así que se agranda todo por igual: ánimas, entrenador y arena)
     // en el celular (pantalla chica) se acerca más: las ánimas se ven más grandes
     const phone = typeof Mobile !== 'undefined' && Mobile.active && Mobile.isPhone();
-    const dist = U.lerp(base, base * (phone ? 0.7 : 0.8), this.zoomK = U.lerp(this.zoomK || 0, B ? 1 : 0, 0.05));
+    // en combate la cámara se acomoda a las dos ánimas: bien cerca cuando están juntas y se abre lo justo
+    // para que ambas queden en pantalla (las ánimas son las protagonistas, no el paisaje)
+    let near = base * (phone ? 0.7 : 0.8);
+    if (B && B.ally && B.foe && this.mode === 'out') {
+      const sep = Math.hypot(B.ally.x - B.foe.x, (B.ally.y - B.foe.y) * 1.6) / 16;
+      const want = U.clamp(6.5 + sep * 0.95, phone ? 8 : 9, near);
+      this.battleDist = this.battleDist === undefined ? want : U.lerp(this.battleDist, want, want > this.battleDist ? 0.08 : 0.025);
+      near = this.battleDist;
+    } else this.battleDist = undefined;
+    const dist = U.lerp(base, near, this.zoomK = U.lerp(this.zoomK || 0, B ? 1 : 0, 0.05));
     // con botones táctiles encima del juego, la pelea se corre a la izquierda para que no tapen al rival
     if (B && typeof Mobile !== 'undefined' && Mobile.active && Mobile.battleCover) tx += Mobile.battleCover() * (this.zoomK || 0);
     if (!this.camT || this.camMap !== m.id) { this.camT = [tx, tz]; this.camMap = m.id; }
