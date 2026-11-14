@@ -62,12 +62,9 @@ const AttackFX = {
       obj.center.set(0.5, o.anchorBottom ? 0.08 : 0.5);
     }
     obj.renderOrder = 12;
-    // los efectos grandes tapaban a las ánimas: un poco más chicos y algo transparentes
-    // (los de Mente, que son nubes enteras de color, más todavía)
-    const mv = MOVES[k], mind = mv && mv.type === 'mente', big = o.w > 2.4, beam = o.tilt !== undefined;
-    const ks = beam ? 1 : mind ? 0.78 : big ? 0.86 : 1; // los rayos conservan su largo (llegan hasta donde pegan)
-    o.w *= ks; o.h *= ks;
-    o.maxOp = mind ? 0.62 : big ? 0.8 : 0.92;
+    // colores sólidos (transparentes se veían lavados); solo las nubes grandes de Mente dejan ver un poco
+    const mv = MOVES[k], mind = mv && mv.type === 'mente', big = o.w > 2.4;
+    o.maxOp = mind && big ? 0.85 : 1;
     obj.scale.set(o.w, o.h, 1);
     World3D.scene.add(obj);
     const e = Object.assign({ k, obj, t, n, age: 0, dur: 0.5, loop: false }, o);
@@ -101,6 +98,18 @@ const AttackFX = {
   },
   // tamaño en unidades del mundo (1 = una casilla = 16 px del combate)
   U(px) { return px / 16; },
+  // tamaño de un cartel a la misma escala de píxel que las ánimas y personajes (un píxel del dibujo = medio
+  // píxel del mundo), con un tope para que los efectos grandes no tapen a las ánimas
+  px(k, tope) { return this.U(Math.min(this.DATA[k][0] * 0.5, tope || 40)); },
+  // estallido de píxeles cuadrados del color del tipo cuando un golpe conecta
+  impact(type, x, y, fuerte) {
+    const T = TYPES[type]; if (!T || typeof FX3D === 'undefined') return;
+    const C = [U.shade(T.color, 0.55), U.shade(T.color, 0.2), T.color, U.shade(T.color, -0.35)], n = fuerte ? 30 : 18;
+    for (let i = 0; i < n; i++) {
+      const a = Math.random() * Math.PI * 2, v = 1.4 + Math.random() * (fuerte ? 3.6 : 2.6);
+      FX3D.emit({ x: x / 16, y: 0.5, z: y / 16 + 0.2, vx: Math.cos(a) * v, vy: 0.5 + Math.random() * 2.6, vz: Math.sin(a) * v * 0.7, c: C[i % 4], life: 0.22 + Math.random() * 0.3, s: 0.06 + Math.random() * 0.07, drag: 0.9, g: type === 'agua' ? 6 : type === 'roca' ? 9 : 0 });
+    }
+  },
 };
 
 {
@@ -132,7 +141,7 @@ const AttackFX = {
       case 'proj':
         for (const p of this.projs.slice(p0)) {
           p._fxAF = true;
-          AttackFX.spawn(k, { follow: p, followAlive: () => this.projs.includes(p), flip: p.vx > 0, w: U2(big ? 40 : 28), h: U2(big ? 40 : 28), dur: 3, loop: true, fps: 16, lift: 0.5 });
+          AttackFX.spawn(k, { follow: p, followAlive: () => this.projs.includes(p), flip: p.vx > 0, w: AttackFX.px(k, 34), h: AttackFX.px(k, 34), dur: 3, loop: true, fps: 16, lift: 0.5 });
         }
         break;
       case 'beam':
@@ -160,26 +169,33 @@ const AttackFX = {
       case 'melee': case 'stealth':
         for (const e of nuevos) if (e.k === 'slash') {
           e._fxAF = true;
-          AttackFX.spawn(k, { x: e.x + Math.cos(e.ang) * 6, y: e.y + Math.sin(e.ang) * 6, flip: Math.cos(e.ang) > 0, w: U2(big ? 52 : 38), h: U2(big ? 52 : 38), dur: 0.34 });
+          AttackFX.spawn(k, { x: e.x + Math.cos(e.ang) * 6, y: e.y + Math.sin(e.ang) * 6, flip: Math.cos(e.ang) > 0, w: AttackFX.px(k, 40), h: AttackFX.px(k, 40), dur: 0.34 });
         }
         break;
       case 'dash':
-        if (f.dash) AttackFX.spawn(k, { follow: f, followAlive: () => !!f.dash, flip, w: U2(big ? 56 : 44), h: U2(big ? 56 : 44), dur: 1.2, loop: true, fps: 20, lift: 0.5 });
+        if (f.dash) AttackFX.spawn(k, { follow: f, followAlive: () => !!f.dash, flip, w: AttackFX.px(k, 44), h: AttackFX.px(k, 44), dur: 1.2, loop: true, fps: 20, lift: 0.5 });
         break;
       case 'buff': {
         const e = nuevos.find((x) => x.k === 'ring');
         if (e) e._fxAF = true;
-        const s = m.debuff ? Math.max(48, m.radius * 1.2) : 40;
-        AttackFX.spawn(k, { follow: f, w: U2(s), h: U2(s), dur: 0.7, anchorBottom: true, lift: 0 });
+        const s = m.debuff ? U2(Math.max(48, m.radius * 1.2)) : AttackFX.px(k, 40);
+        AttackFX.spawn(k, { follow: f, w: s, h: s, dur: 0.7, anchorBottom: true, lift: 0 });
         break;
       }
       case 'heal':
-        AttackFX.spawn(k, { follow: f, w: U2(40), h: U2(40), dur: 0.8, anchorBottom: true, lift: 0 });
+        AttackFX.spawn(k, { follow: f, w: AttackFX.px(k, 40), h: AttackFX.px(k, 40), dur: 0.8, anchorBottom: true, lift: 0 });
         break;
       case 'blink':
-        AttackFX.spawn(k, { follow: f, w: U2(40), h: U2(40), dur: 0.5, anchorBottom: true, lift: 0 });
+        AttackFX.spawn(k, { follow: f, w: AttackFX.px(k, 40), h: AttackFX.px(k, 40), dur: 0.5, anchorBottom: true, lift: 0 });
         break;
     }
+    return r;
+  };
+  // al conectar un golpe: estallido de píxeles del color del tipo (más grande si es eficaz o crítico)
+  const _hit = BP.hit;
+  BP.hit = function (tgt, att, m, mult, ...rest) {
+    const h0 = tgt ? tgt.hp : 0, r = _hit.call(this, tgt, att, m, mult, ...rest);
+    if (on() && tgt && m && m.type && h0 - tgt.hp > 0) AttackFX.impact(m.type, tgt.x, tgt.y, (mult || 1) > 1 || (tgt.types && typeMult(m.type, tgt.types) > 1));
     return r;
   };
   // los efectos de volumen que reemplaza el dibujo nuevo se ocultan (las partículas y luces siguen)

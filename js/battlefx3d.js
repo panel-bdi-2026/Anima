@@ -90,7 +90,7 @@ const FX3D = {
   flash(type, x, y, z, power = 1, dur = 0.25) {
     if (!this.init()) return;
     const L = this.lights.reduce((a, b) => (a.t / (a.dur || 1) > b.t / (b.dur || 1) ? a : b));
-    L.l.position.set(x, y + 0.4, z); L.l.color.copy(this.rgb((this.COL[type] || this.COL.normal)[1])); L.t = 0; L.dur = dur; L.power = 6 * power;
+    L.l.position.set(x, y + 0.4, z); L.l.color.copy(this.rgb((this.COL[type] || this.COL.normal)[1])); L.t = 0; L.dur = dur; L.power = 3.4 * power; // más suave: con la cámara cerca, el golpe quemaba la imagen en blanco
   },
   wave(type, x, z, r = 1.4, dur = 0.45) {
     if (!this.init()) return;
@@ -150,7 +150,8 @@ const FX3D = {
       const type = Object.keys(this.COL).find((k) => TYPES[k] && TYPES[k].color === e.color) || 'normal';
       for (let k = 0; k < 4; k++) { const d = Math.random() * e.len; this.emit({ x: (e.x + Math.cos(e.ang) * d) / 16, y: 0.45, z: (e.y + Math.sin(e.ang) * d) / 16, vx: this.rand(-0.6, 0.6), vy: this.rand(0.2, 1.2), vz: this.rand(-0.6, 0.6), c: (this.COL[type] || this.COL.normal)[k % 3], life: 0.3, s: 0.07 }); }
     }
-    this.matAdd.uniforms.scale.value = World3D.cv ? World3D.cv.height * 3.8 : 1300;
+    // tamaño de las partículas: con la cámara cerca del combate se veían enormes y tapaban a las ánimas
+    this.matAdd.uniforms.scale.value = World3D.cv ? World3D.cv.height * 2.4 : 900;
     this.smoke.material.uniforms.scale.value = this.matAdd.uniforms.scale.value;
   },
   clear() {
