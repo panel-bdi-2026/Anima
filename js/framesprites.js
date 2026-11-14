@@ -6,7 +6,9 @@
 //  Cada animación es una tira PNG en assets/animas/<especie>/<acción>_<vista>.png,
 //  con cuadros cuadrados de SIZE píxeles que miran a la izquierda (el cuadro 0 es el dibujo base).
 //  Vistas: lado, frente, espalda (la derecha es el espejo del lado).
-//  Escala: 80 píxeles de cuadro = 40 unidades del sprite clásico (las formas finales, de 96 o más, se ven más grandes).
+//  Escala: 40 píxeles de cuadro = 40 unidades del sprite clásico (las formas finales, de 48 o más, se ven más grandes).
+//  Un píxel del dibujo mide lo mismo que uno del protagonista (medio píxel del mundo): los dibujos de PixelLab
+//  (de 80 a 112 píxeles) se redujeron a la mitad con contorno oscuro, para que se vean nítidos y no borrosos.
 //  Variocolor: la misma tira con el tono girado, igual que hacía el sprite clásico.
 // ============================================================
 const FrameSprites = {
@@ -27,6 +29,8 @@ const FrameSprites = {
     buclon: [80, 71], monteriz: [96, 88], parker: [80, 68], gatumbra: [80, 68], umbrapanter: [96, 87], aurelina: [96, 93],
     florizo: [96, 83], trueno_umbrio: [96, 92],
   },
+  // los cuadros se guardan a la mitad del tamaño original de PixelLab (ver arriba)
+  HALF: true,
   // cuántos cuadros tiene cada acción (iguales para todas)
   ACC: { reposo: 5, caminar: 9, correr: 9, atacar: 9, disparar: 9, golpe: 5, caer: 9 },
   img: {},
@@ -123,7 +127,7 @@ const FrameSprites = {
     if (A.hurtT > 0.2) shake = 1;
     if (o.faintT !== undefined) alpha = Math.max(0, 1 - Math.max(0, o.faintT - 0.9) * 2);   // termina de caer y se desvanece
     // fuera de los menús, cada etapa de evolución se ve más grande que la anterior
-    let sc = (o.scale || 1) * (o.S || 40) / 80 * (o.portrait ? 1 : this.stageScale(o.sp));
+    let sc = (o.scale || 1) * (o.S || 40) / 40 * (o.portrait ? 1 : this.stageScale(o.sp));
     // tamaño de siempre; el lienzo 3D va a 4 píxeles por píxel del mundo, así el dibujo no se achica
     const enCombate = 'dodge' in o && !o.portrait;
     const Wd = size * sc;
@@ -178,7 +182,7 @@ const FrameSprites = {
       this.stage = {};
       for (const s of SPECIES_LIST) { let n = 1, k = s.key; while (pre[k]) { n++; k = pre[k]; } this.stage[s.key] = n; }
     }
-    const n = this.stage[sp] || 1, sz = (this.DATA[sp] || [80])[0], leg = SPECIES[sp] && SPECIES[sp].legendary;
+    const n = this.stage[sp] || 1, sz = (this.DATA[sp] || [40])[0] * 2, leg = SPECIES[sp] && SPECIES[sp].legendary;
     if (leg) return 1;                                     // las legendarias ya tienen su propio tamaño de combate
     return n >= 3 || (n === 1 && sz >= 96) ? 1.3 : n === 2 ? 1.12 : 1;
   },
@@ -234,6 +238,8 @@ const FrameSprites = {
     return c;
   },
 };
+// tamaños a la mitad: [cuadro, fila de los pies]
+for (const k in FrameSprites.DATA) { const [s, f] = FrameSprites.DATA[k]; FrameSprites.DATA[k] = [s / 2, Math.floor(f / 2)]; }
 {
   const _draw = CreatureAnim.draw;
   CreatureAnim.draw = function (ctx, e, o) {

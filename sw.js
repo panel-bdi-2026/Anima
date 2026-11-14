@@ -3,7 +3,7 @@
 // - Los scripts publicados llevan el código de su versión (js/x.js?v=abc1234): nunca cambian, así que se usan
 //   directo desde el celular; al llegar una versión nueva se borran las copias de las versiones anteriores.
 // - Los dibujos (assets/) se muestran al instante desde el celular y se actualizan por detrás.
-const CACHE = 'anima-v2';
+const CACHE = 'anima-v3'; // v3: dibujos de ánimas a la mitad (los viejos no sirven con el código nuevo)
 self.addEventListener('install', () => { self.skipWaiting(); });
 self.addEventListener('activate', (e) => {
   e.waitUntil(caches.keys().then((ks) => Promise.all(ks.filter((k) => k !== CACHE).map((k) => caches.delete(k)))).then(() => self.clients.claim()));
