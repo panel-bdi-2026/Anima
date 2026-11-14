@@ -31,14 +31,14 @@ const Codice = {
     return o;
   },
   // comparación de tamaño: el protagonista y el ánima, con las mismas proporciones que en el juego
-  // (un píxel del dibujo del protagonista es medio píxel del mundo; uno del ánima, un cuarto)
+  // (un píxel del dibujo, del protagonista o del ánima, es medio píxel del mundo)
   tamano(sp, F) {
     const k = 'tam:' + sp.key; if (this[k]) return this[k];
     if (typeof CharFrames === 'undefined' || typeof FrameSprites === 'undefined' || !FrameSprites.has(sp.key)) return null;
     const pj = CharFrames.strip('player', 'reposo', 'lado'), an = FrameSprites.base(sp.key, 'reposo', 'lado');
     if (!pj || !an) return null;
     const [S, feet] = FrameSprites.DATA[sp.key], pf = CharFrames.SET.player.feet + 1;
-    return (this[k] = { pj: this.mini(pj, 64, pf, F, '#9a8e7c'), an: this.mini(an, S, feet + 1, F / 2 * this.escala(sp), '#2b2638') });
+    return (this[k] = { pj: this.mini(pj, 64, pf, F, '#9a8e7c'), an: this.mini(an, S, feet + 1, F * this.escala(sp), '#2b2638') });
   },
   // silueta (sombra) del dibujo grande del ánima
   silueta(sp) {

@@ -226,6 +226,12 @@
     const row = (...k) => { const r = el('div', 'row'); r.append(...k); return r; };
     // etiqueta pequeña en la esquina superior izquierda; al tocarla se abre el panel
     const bar = el('button', '', PR ? `VERSIÓN DE PRUEBA #${PR}` : 'VERSIÓN DE PRUEBA'); bar.type = 'button'; bar.id = 'canal-prueba';
+    // fluidez: cuadros por segundo de verdad en este aparato (60 = perfecto; menos de 40 se nota a saltos)
+    {
+      const label = bar.textContent; let n = 0, t0 = performance.now();
+      const tick = (now) => { n++; if (now - t0 >= 1000) { bar.textContent = `${label} · ${Math.round(n * 1000 / (now - t0))} FPS`; n = 0; t0 = now; } requestAnimationFrame(tick); };
+      requestAnimationFrame(tick);
+    }
     const panel = el('div'); panel.id = 'canal-panel';
     const box = el('div', 'box'), title = el('div', 't'), msg = el('div', 'msg');
     // nota para Claude (aparece al tocar «Revisar con Claude»)

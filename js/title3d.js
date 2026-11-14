@@ -493,6 +493,11 @@ const Title3D = {
     // ---------- ánima legendaria que cruza el cielo ----------
     const leg = CreatureGfx.get('marealis', 96), lt = tex(leg);
     this.legend = new THREE.Mesh(new THREE.PlaneGeometry(9, 9), new THREE.MeshBasicMaterial({ map: lt, alphaTest: 0.5, side: THREE.DoubleSide, color: '#ffc8d8', fog: false })); S.add(this.legend);
+    // si su dibujo todavía no cargó (sale vacío), se pone apenas llegue
+    if (typeof FrameSprites !== 'undefined' && !FrameSprites.still('marealis', 96)) {
+      const poner = () => { const c = FrameSprites.still('marealis', 96); if (c) { lt.image = c; lt.needsUpdate = true; } else setTimeout(poner, 300); };
+      FrameSprites.base('marealis', 'reposo', 'lado'); setTimeout(poner, 300);
+    }
     // pájaros
     this.birds = [];
     // silueta de pájaro en dos poses (alas arriba / abajo), pixelada

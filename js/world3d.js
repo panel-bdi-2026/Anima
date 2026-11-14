@@ -20,7 +20,7 @@ if (Options.gfx3d === undefined) Options.gfx3d = true;
 }
 
 const W3 = {
-  PITCH: 50 * Math.PI / 180, DIST: 21, FOV: 32,
+  PITCH: 46 * Math.PI / 180, DIST: 19, FOV: 33,
   SPR: 1.1,  // escala de personajes y criaturas
   TREE: 1.35, // escala de los árboles
 };
@@ -122,8 +122,8 @@ const World3D = {
           col = aces(col * exposure);
           float l = dot(col, vec3(0.299, 0.587, 0.114));
           col = mix(col, col * vec3(0.9, 0.96, 1.12), (1. - l) * 0.3);
-          col = mix(col, col * vec3(1.06, 1.0, 0.92), l * 0.25);
-          col = mix(vec3(l), col, 1.12);
+          col = mix(col, col * vec3(1.08, 1.01, 0.88), l * 0.35);
+          col = mix(vec3(l), col, 1.18);
           vec2 q = vUv - 0.5; col *= 1. - dot(q, q) * 0.6;
           gl_FragColor = vec4(toSRGB(col), 1.);
         }`,
@@ -630,8 +630,10 @@ for (int i = 0; i < 6; i++) { vec2 d = base - uPush[i].xy; float l = length(d); 
     const n = Math.round(m.w * m.h / 6), pos = new Float32Array(n * 3);
     for (let i = 0; i < n; i++) { pos[i * 3] = Math.random() * m.w; pos[i * 3 + 1] = 0.3 + Math.random() * 2.5; pos[i * 3 + 2] = Math.random() * m.h; }
     const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-    const [c, x] = U.makeCanvas(8, 8); const gr = x.createRadialGradient(4, 4, 0, 4, 4, 4); gr.addColorStop(0, 'rgba(255,255,255,1)'); gr.addColorStop(1, 'rgba(255,255,255,0)'); x.fillStyle = gr; x.fillRect(0, 0, 8, 8);
-    const mat = new THREE.PointsMaterial({ size: 0.12, map: new THREE.CanvasTexture(c), transparent: true, depthWrite: false, color: '#fff8d0', blending: THREE.AdditiveBlending, opacity: 0.6 });
+    // motas de polvo y polen: cuadraditos de luz (píxeles), como el polvo que flota al sol
+    const [c, x] = U.makeCanvas(4, 4); x.fillStyle = '#ffffff'; x.fillRect(0, 0, 4, 4);
+    const mt = new THREE.CanvasTexture(c); mt.magFilter = mt.minFilter = THREE.NearestFilter; mt.generateMipmaps = false;
+    const mat = new THREE.PointsMaterial({ size: 0.075, map: mt, transparent: true, depthWrite: false, color: '#fff2c0', blending: THREE.AdditiveBlending, opacity: 0.6 });
     this.motes = new THREE.Points(g, mat); this.root.add(this.motes); this.moteBase = pos.slice();
   },
   // ---------- sprites dinámicos (personajes, criaturas) ----------
@@ -648,6 +650,13 @@ for (int i = 0; i < 6; i++) { vec2 d = base - uPush[i].xy; float l = length(d); 
     s.seen = this.frame;
     return s;
   },
+  // ¿toca volver a dibujar este sprite? Sus animaciones van de 5 a 16 cuadros por segundo: alcanza con
+  // rehacerlo y subirlo a la tarjeta gráfica 30 veces por segundo (antes 60). La posición se mueve igual
+  // en cada cuadro (es la del modelo 3D), así que el andar sigue suave.
+  redraw(s) {
+    if (!s.drawn || ((this.frame + (s.par = s.par !== undefined ? s.par : (this.parN = (this.parN || 0) + 1) & 1)) & 1)) { s.drawn = true; return true; }
+    return false;
+  },
   syncSprites(world) {
     const _sh = drawShadow;
     drawShadow = function () {};
@@ -656,10 +665,12 @@ for (int i = 0; i < 6; i++) { vec2 d = base - uPush[i].xy; float l = length(d); 
         if (e.hidden || e.gone) continue;
         // personas y compañero a doble resolución (sprites HD)
         const s = this.sprite(e, 64, 72, 58, 4);
-        s.x.setTransform(1, 0, 0, 1, 0, 0); s.x.clearRect(0, 0, 256, 288); s.x.setTransform(4, 0, 0, 4, 0, 0);
-        World.hiDraw = true;
-        try { world.drawEntity(s.x, e, e.px - 24, e.py - 44); } finally { World.hiDraw = false; s.x.setTransform(1, 0, 0, 1, 0, 0); }
-        s.t.needsUpdate = true;
+        if (this.redraw(s)) {
+          s.x.setTransform(1, 0, 0, 1, 0, 0); s.x.clearRect(0, 0, 256, 288); s.x.setTransform(4, 0, 0, 4, 0, 0);
+          World.hiDraw = true;
+          try { world.drawEntity(s.x, e, e.px - 24, e.py - 44); } finally { World.hiDraw = false; s.x.setTransform(1, 0, 0, 1, 0, 0); }
+          s.t.needsUpdate = true;
+        }
         s.mesh.position.set((e.px + 8) / 16, 0, (e.py + 14) / 16);
         s.mesh.visible = true;
       }
@@ -669,11 +680,13 @@ for (int i = 0; i < 6; i++) { vec2 d = base - uPush[i].xy; float l = length(d); 
         if (c.ambush && c.state === 'wander') continue;
         // a doble resolución: el ánima se dibuja con sus píxeles originales (ver Critters.draw)
         const s = this.sprite(c, 80, 80, 66, 4);
-        s.x.setTransform(1, 0, 0, 1, 0, 0); s.x.clearRect(0, 0, 320, 320); s.x.setTransform(4, 0, 0, 4, 0, 0);
-        Critters.list = [c]; if (baits) Critters.baits = [];
-        try { Critters.draw(s.x, c.x - 40, c.y - 64, world); } finally { s.x.setTransform(1, 0, 0, 1, 0, 0); }
-        Critters.list = list; if (baits) Critters.baits = baits;
-        s.t.needsUpdate = true;
+        if (this.redraw(s)) {
+          s.x.setTransform(1, 0, 0, 1, 0, 0); s.x.clearRect(0, 0, 320, 320); s.x.setTransform(4, 0, 0, 4, 0, 0);
+          Critters.list = [c]; if (baits) Critters.baits = [];
+          try { Critters.draw(s.x, c.x - 40, c.y - 64, world); } finally { s.x.setTransform(1, 0, 0, 1, 0, 0); }
+          Critters.list = list; if (baits) Critters.baits = baits;
+          s.t.needsUpdate = true;
+        }
         s.mesh.position.set(c.x / 16, 0, (c.y + 2) / 16);
         s.mesh.visible = true;
       }
@@ -685,10 +698,12 @@ for (int i = 0; i < 6; i++) { vec2 d = base - uPush[i].xy; float l = length(d); 
           if (f.inBall) continue;
           // lienzo a 4 píxeles por píxel del mundo: el ánima se dibuja con todo su detalle sin agrandarla
           const s = this.sprite(f, 160, 160, 132, 4);
-          s.x.setTransform(1, 0, 0, 1, 0, 0); s.x.clearRect(0, 0, 640, 640);
-          s.x.setTransform(4, 0, 0, 4, (80 - f.x) * 4, (132 - (f.y + 4)) * 4);
-          try { B.drawFighter(s.x, f); } finally { s.x.setTransform(1, 0, 0, 1, 0, 0); }
-          s.t.needsUpdate = true;
+          if (this.redraw(s)) {
+            s.x.setTransform(1, 0, 0, 1, 0, 0); s.x.clearRect(0, 0, 640, 640);
+            s.x.setTransform(4, 0, 0, 4, (80 - f.x) * 4, (132 - (f.y + 4)) * 4);
+            try { B.drawFighter(s.x, f); } finally { s.x.setTransform(1, 0, 0, 1, 0, 0); }
+            s.t.needsUpdate = true;
+          }
           s.mesh.position.set(f.x / 16, 0, (f.y + 4) / 16);
         }
         if (B.trainer && B.drawTrainer) {
@@ -830,7 +845,7 @@ for (int i = 0; i < 6; i++) { vec2 d = base - uPush[i].xy; float l = length(d); 
         }
       }
     }
-    if (this.motes) { this.motes.material.color.set(night > 0.5 ? '#c8ff80' : '#fff8d0'); this.motes.material.size = night > 0.5 ? 0.16 : 0.1; this.motes.material.opacity = night > 0.5 ? 0.9 : 0.45; }
+    if (this.motes) { this.motes.material.color.set(night > 0.5 ? '#c8ff80' : '#fff0b8'); this.motes.material.size = night > 0.5 ? 0.11 : 0.075; this.motes.material.opacity = night > 0.5 ? 0.9 : 0.7; }
     this.night = night;
   },
   // interiores (luz cálida de techo, ventanas con luz de día) y cuevas (oscuridad y antorcha)
@@ -877,7 +892,16 @@ for (int i = 0; i < 6; i++) { vec2 d = base - uPush[i].xy; float l = length(d); 
     // mapa, así que se agranda todo por igual: ánimas, entrenador y arena)
     // en el celular (pantalla chica) se acerca más: las ánimas se ven más grandes
     const phone = typeof Mobile !== 'undefined' && Mobile.active && Mobile.isPhone();
-    const dist = U.lerp(base, base * (phone ? 0.7 : 0.8), this.zoomK = U.lerp(this.zoomK || 0, B ? 1 : 0, 0.05));
+    // en combate la cámara se acomoda a las dos ánimas: bien cerca cuando están juntas y se abre lo justo
+    // para que ambas queden en pantalla (las ánimas son las protagonistas, no el paisaje)
+    let near = base * (phone ? 0.7 : 0.8);
+    if (B && B.ally && B.foe && this.mode === 'out') {
+      const sep = Math.hypot(B.ally.x - B.foe.x, (B.ally.y - B.foe.y) * 1.6) / 16;
+      const want = U.clamp(6.5 + sep * 0.95, phone ? 8 : 9, near);
+      this.battleDist = this.battleDist === undefined ? want : U.lerp(this.battleDist, want, want > this.battleDist ? 0.08 : 0.025);
+      near = this.battleDist;
+    } else this.battleDist = undefined;
+    const dist = U.lerp(base, near, this.zoomK = U.lerp(this.zoomK || 0, B ? 1 : 0, 0.05));
     // con botones táctiles encima del juego, la pelea se corre a la izquierda para que no tapen al rival
     if (B && typeof Mobile !== 'undefined' && Mobile.active && Mobile.battleCover) tx += Mobile.battleCover() * (this.zoomK || 0);
     if (!this.camT || this.camMap !== m.id) { this.camT = [tx, tz]; this.camMap = m.id; }
@@ -891,7 +915,8 @@ for (int i = 0; i < 6; i++) { vec2 d = base - uPush[i].xy; float l = length(d); 
     this.cam.updateMatrixWorld();
     // el sol recorre el cielo según la hora: sale por la derecha, se pone por la izquierda; al amanecer y al atardecer las sombras se alargan
     let off;
-    if (this.mode === 'out') { const h = U.clamp(Clock.hour(), 6, 18), a = Math.round(((h - 6) / 12) * Math.PI * 200) / 200, el = Math.sin(a); off = [Math.cos(a) * 15, 4 + el * 15, 6 + (1 - el) * 2]; }
+    // sol bajo: sombras largas todo el día (como en los juegos «HD-2D»), más todavía al amanecer y al atardecer
+    if (this.mode === 'out') { const h = U.clamp(Clock.hour(), 6, 18), a = Math.round(((h - 6) / 12) * Math.PI * 200) / 200, el = Math.sin(a); off = [Math.cos(a) * 15 + 3, 5 + el * 9, 8 + (1 - el) * 2]; }
     else off = [-11, 17, 7];
     // sombras estables: el centro de la sombra se ajusta a la rejilla de texeles del mapa de sombras
     // (si no, al moverse la cámara los bordes de las sombras 'nadan' y parpadean)
